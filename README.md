@@ -87,7 +87,7 @@ To get started with development:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/comet.git
+   git clone https://github.com/Thavarshan/comet.git
    cd comet
    ```
 
@@ -100,13 +100,13 @@ To get started with development:
 3. **Run the application in development mode:**
 
    ```bash
-   npm run electron:serve
+   npm run start
    ```
 
 4. **Build the application for production:**
 
    ```bash
-   npm run electron:build
+   npm run make
    ```
 
 5. **Test your changes:**
@@ -134,7 +134,7 @@ To get started with development:
 ## 🧑‍💻 Contributors
 
 - **Jerome Thayananthajothy** - Project Lead & Developer
-- [**Contributors List**](https://github.com/yourusername/comet/graphs/contributors) - A big thank you to all the amazing contributors!
+- [**Contributors List**](https://github.com/Thavarshan/comet/graphs/contributors) - A big thank you to all the amazing contributors!
 
 ## 📄 License
 
