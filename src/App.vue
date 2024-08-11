@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import SaveDirectory from './components/SaveDirectory.vue';
+import SaveDirectory from '@/components/SaveDirectory.vue';
+import { useToast } from '@/components/ui/toast/use-toast';
+import { Toaster } from '@/components/ui/toast';
+import { Button } from '@/components/ui/button';
 import {
-  TransitionRoot,
-  TransitionChild,
   Dialog,
-  DialogPanel,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
-} from '@headlessui/vue';
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Cross1Icon,
+  UpdateIcon,
+  TrashIcon,
+} from '@radix-icons/vue';
 
-const isOpen = ref<boolean>(false);
 const files = ref<File[] | undefined>();
 const saveDirectory = ref<string | undefined>();
 const convertTo = ref<string | undefined>('mp4');
+const { toast } = useToast();
 
 onMounted(async () => {
   saveDirectory.value = await window.electron.getDownloadsPath();
@@ -40,18 +51,48 @@ function handleSaveDirectoryUpdate(directory: string) {
   saveDirectory.value = directory;
 }
 
-function setIsOpen(value) {
-  isOpen.value = value;
+function setFormat(format: string) {
+  convertTo.value = format;
 }
 
-function setConvertTo(format: string) {
-  convertTo.value = format;
-  setIsOpen(false);
+function removeFile(index: number) {
+  files.value?.splice(index, 1);
+}
+
+function clearAllFiles() {
+  files.value = [];
+}
+
+async function convertFiles() {
+  if (!files.value || !convertTo.value || !saveDirectory.value) {
+    return;
+  }
+
+  for (const file of files.value) {
+    try {
+      const filePath = file.path; // Get the file path
+      const outputFormat = convertTo.value;
+      const outputDirectory = saveDirectory.value;
+
+      const outputFilePath = await window.electron.convertVideo(filePath, outputFormat, outputDirectory);
+
+      toast({
+        title: 'File converted',
+        description: `Converted file saved to ${outputFilePath}`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error converting file',
+        description: error.message,
+      });
+    }
+  }
 }
 </script>
 
 <template>
-  <div class="font-[sans-serif] antialiased text-slate-600">
+  <Toaster />
+  <div class="font-[sans-serif] text-slate-600">
     <div class="bg-slate-50 p-6">
       <label for="file-uploader"
         class="bg-slate-50 font-semibold text-base rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto">
@@ -63,16 +104,24 @@ function setConvertTo(format: string) {
             d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
             data-original="#000000" />
         </svg>
-        <input type="file" id='file-uploader' class="hidden" @change="handleUpload" multiple>
+        <input type="file" id='file-uploader' class="hidden" @change="handleUpload" multiple accept="video/*">
         <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag your files here. The file size should be less than 15 MB.</p>
       </label>
     </div>
-    <div class="px-6 py-4 bg-slate-100 border-y border-slate-200">
+    <div class="flex items-center justify-between px-6 py-4 bg-slate-100 border-y border-slate-200">
       <SaveDirectory v-if="saveDirectory" :default-save-directory="saveDirectory" @directory-selected="handleSaveDirectoryUpdate" />
+      <div class="space-x-3">
+        <Button v-if="files?.length" type="button" variant="outline" class="text-destructive" @click="clearAllFiles">
+          <TrashIcon class="size-4 mr-2" /> Clear all
+        </Button>
+        <Button type="button" @click="convertFiles" :disabled="!files?.length || !saveDirectory" class="bg-blue-500 text-white">
+          <UpdateIcon class="size-4 mr-2" /> Convert
+        </Button>
+      </div>
     </div>
     <div class="bg-white px-6">
       <ul role="list" class="divide-y divide-slate-100">
-        <li class="flex justify-between items-center gap-x-6" v-for="file in files" :key="file.name">
+        <li class="flex justify-between items-center gap-x-6" v-for="(file, index) in files" :key="file.name">
           <div class="flex min-w-0 gap-x-4 py-6">
             <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -86,65 +135,57 @@ function setConvertTo(format: string) {
                 <span>&middot;</span>
                 <p class="text-xs font-medium text-slate-500">
                   Converting from
-                  <span class="font-mono p-1 rounded bg-slate-100 text-slate-600">{{ file.name.split('.').pop() }}</span>
+                  <span class="font-mono text-slate-800">{{ file.name.split('.').pop() }}</span>
                   to
-                  <button class="p-1 rounded bg-slate-100 text-slate-600 font-mono underline" type="button" @click.prevent="setIsOpen(true)">.{{ convertTo }}</button>
+                  <Dialog>
+                    <DialogTrigger as-child>
+                      <button class="p-1 rounded bg-slate-100 text-slate-800 font-mono underline">.{{ convertTo }}</button>
+                    </DialogTrigger>
+                    <DialogContent class="sm:max-w-[425px] rounded-lg">
+                      <DialogHeader>
+                        <DialogTitle>Choose format</DialogTitle>
+                        <DialogDescription>
+                          Select the format you want to convert the file to.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div class="h-56 overflow-hidden">
+                        <div class="mt-4 h-56 overflow-y-auto">
+                          <ul role="list" class="grid grid-cols-3 gap-4">
+                            <li v-for="format in conversionFormats" :key="format" class="flex items-center gap-2">
+                              <button
+                                type="button"
+                                class="flex items-center justify-center p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-800 flex-1"
+                                :class="{ 'bg-blue-500 hover:bg-blue-600 text-white': convertTo === format }"
+                                @click.prevent="setFormat(format)"
+                              >
+                                <span class="text-sm font-medium">{{ format }}</span>
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <DialogClose as-child>
+                          <Button type="button" variant="outline">
+                            Close
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </p>
               </div>
             </div>
           </div>
           <div class="shrink-0 flex items-center gap-x-3">
-            <button class="inline-flex items-center justify-center gap-x-1 px-3 py-1 text-sm font-semibold leading-6 text-white whitespace-no-wrap bg-blue-500 border border-blue-500 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:shadow-none" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>
-              <span>Convert</span>
-            </button>
+            <Button type="button" variant="outline" class="text-destructive" @click="removeFile(index)">
+              <Cross1Icon class="size-4" />
+            </Button>
           </div>
         </li>
       </ul>
     </div>
-    <TransitionRoot :show="isOpen" as="template">
-        <Dialog @close="setIsOpen">
-          <TransitionChild
-            enter="duration-300 ease-out"
-            enter-from="opacity-0"
-            enter-to="opacity-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100"
-            leave-to="opacity-0"
-          >
-            <div class="fixed inset-0 bg-black/30" />
-          </TransitionChild>
-          <TransitionChild
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel class="fixed inset-0 flex items-center justify-center p-4">
-              <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
-                <DialogTitle class="text-lg font-medium text-slate-900">Choose conversion format</DialogTitle>
-                <div class="h-56 overflow-hidden">
-                  <div class="mt-4 h-56 overflow-y-auto">
-                    <ul role="list" class="grid grid-cols-3 gap-4">
-                      <li v-for="format in conversionFormats" :key="format" class="flex items-center gap-2 text-center">
-                        <button type="button" class="flex items-center justify-center p-2 rounded-lg bg-slate-50 hover:bg-slate-100 flex-1" @click.prevent="setConvertTo(format)">
-                          <span class="text-sm font-medium text-slate-800">{{ format }}</span>
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="mt-6 flex justify-end space-x-4">
-                  <button class="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold leading-6 text-slate-600 whitespace-no-wrap bg-white border border-slate-200 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:shadow-none" type="button" @click.prevent="setIsOpen(false)">Close</button>
-                </div>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </Dialog>
-    </TransitionRoot>
   </div>
 </template>
+
+

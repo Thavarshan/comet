@@ -5,4 +5,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('electron', {
   selectDirectory: () => ipcRenderer.invoke('dialog:selectDirectory'),
   getDownloadsPath: () => ipcRenderer.invoke('getDownloadsPath'),
+  convertVideo: (filePath: string, outputFormat: string, saveDirectory: string) => {
+    return ipcRenderer.invoke('convert-video', { filePath, outputFormat, saveDirectory });
+  },
 });

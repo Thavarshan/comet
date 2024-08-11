@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { Button } from '@/components/ui/button';
+import {
+  ClipboardIcon,
+} from '@radix-icons/vue';
 
 const props = defineProps<{
-    defaultSaveDirectory?: string;
+  defaultSaveDirectory?: string;
 }>();
 
 const selectedDirectory = ref<string | undefined>(props.defaultSaveDirectory);
@@ -10,19 +14,21 @@ const selectedDirectory = ref<string | undefined>(props.defaultSaveDirectory);
 const emit = defineEmits(['directory-selected']);
 
 async function handleDirectorySelection(event: Event) {
-    const directory = await window.electron.selectDirectory();
+  const directory = await window.electron.selectDirectory();
 
-    if (directory) {
-        selectedDirectory.value = directory;
-    }
+  if (directory) {
+    selectedDirectory.value = directory;
+  }
 
-    emit('directory-selected', selectedDirectory);
+  emit('directory-selected', selectedDirectory);
 }
 </script>
 
 <template>
-    <div class="flex items-center gap-x-4 code">
-        <button class="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold leading-6 text-slate-600 whitespace-no-wrap bg-white border border-slate-200 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:shadow-none" @click="handleDirectorySelection">Save to</button>
-        <p v-if="selectedDirectory" class="rounded px-2 py-1 bg-slate-200 border border-slate-300 font-mono font-medium text-slate-900 text-xs">:{{ selectedDirectory }}</p>
-    </div>
+  <div class="flex items-center gap-x-4 code">
+    <Button variant="outline" type="button" @click="handleDirectorySelection">
+      <ClipboardIcon class="size-4 mr-2" /> Save to
+    </Button>
+    <p v-if="selectedDirectory" class="rounded px-2 py-1 bg-slate-200 border border-slate-300 font-mono font-medium text-slate-900 text-xs">:{{ selectedDirectory }}</p>
+  </div>
 </template>

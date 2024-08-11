@@ -1,6 +1,25 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import os from 'os';
+import fs from 'fs';
+import { spawn } from 'child_process';
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegStatic from 'ffmpeg-static';
+
+const ffmpegProcess = spawn(ffmpegStatic, ['-version'], {
+  env: process.env,  // Use the current environment
+});
+
+ffmpegProcess.stdout.on('data', (data) => {
+  console.log(`ffmpeg output: ${data}`);
+});
+
+ffmpegProcess.on('error', (error) => {
+  console.error(`ffmpeg error: ${error}`);
+});
+
+fs.chmodSync(ffmpegStatic, '755');
+ffmpeg.setFfmpegPath(ffmpegStatic);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -10,7 +29,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: process.env.NODE_ENV === 'development' ? 1200 : 800,
+    width: 1200,
     height: 600,
     resizable: false,
     webPreferences: {
@@ -49,6 +68,19 @@ app.on('ready', () => {
 
   ipcMain.handle('getDownloadsPath', async () => {
     return path.join(os.homedir(), 'Downloads');
+  });
+
+  ipcMain.handle('convert-video', async (_event, { filePath, outputFormat, saveDirectory }) => {
+    return new Promise((resolve, reject) => {
+      const outputFilePath = path.join(saveDirectory, `${path.parse(filePath).name}.${outputFormat}`);
+
+      ffmpeg(filePath)
+        .setFfmpegPath(ffmpegStatic) // Set ffmpeg path
+        .toFormat(outputFormat)
+        .on('end', () => resolve(outputFilePath))
+        .on('error', reject)
+        .save(outputFilePath);
+    });
   });
 });
 
