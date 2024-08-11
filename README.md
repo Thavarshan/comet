@@ -36,7 +36,6 @@ comet/
 │
 ├── .vite/                           # Vite configuration directory
 ├── .vscode/                         # VSCode settings directory
-├── node_modules/                    # Node.js modules
 ├── src/
 │   ├── assets/
 │   │   ├── css/
