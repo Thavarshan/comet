@@ -12,10 +12,14 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "chmod +x node_modules/ffmpeg-static/ffmpeg",
-    "dev": "electron-forge start",
+    "clean": "rm -rf node_modules",
+    "build:mac": "npm run clean && npm_config_platform=darwin npm_config_arch=x64 npm install && electron-builder build --mac",
+    "build:linux": "npm run clean && npm_config_platform=linux npm_config_arch=x64 npm install && electron-builder build --linux",
+    "build:win": "npm run clean && npm_config_platform=win32 npm_config_arch=x64 npm install && electron-builder build --win",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "dev": "electron-forge start",
     "test": "vitest",
     "lint": "eslint --ext .ts,.tsx ."
   },
@@ -64,10 +68,5 @@
     "typescript": "~4.5.4",
     "vite": "^5.4.0",
     "vitest": "^2.0.5"
-  },
-  "build": {
-    "files": [
-      "bin/**/*"
-    ]
   }
 }

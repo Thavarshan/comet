@@ -25,7 +25,7 @@ const files = ref<File[] | undefined>();
 const saveDirectory = ref<string | undefined>();
 const convertTo = ref<string | undefined>('mp4');
 const { toast } = useToast();
-const conversionProgress = ref<number | null>(null);
+const conversionProgress = ref<Record<string, number>>({});
 const converting = ref(false);
 
 onMounted(async () => {
@@ -39,15 +39,8 @@ onMounted(async () => {
     });
   });
 
-  window.electron.on('quarantine-status', (_event: any, message: string) => {
-    toast({
-      title: 'Quarantine Status',
-      description: message,
-    });
-  });
-
-  window.electron.on('conversion-progress', (_event: any, progress: any) => {
-    conversionProgress.value = progress.percent || 0;
+  window.electron.on('conversion-progress', (_event: any, { filePath, progress }: { filePath: string, progress: number; }) => {
+    conversionProgress.value[filePath] = progress;
   });
 
   window.electron.on('conversion-error', (_event: any, error: string) => {
@@ -63,7 +56,6 @@ onMounted(async () => {
 onUnmounted(() => {
   // Cleanup IPC listeners to avoid memory leaks
   window.electron.removeAllListeners('ffmpeg-status');
-  window.electron.removeAllListeners('quarantine-status');
   window.electron.removeAllListeners('conversion-progress');
   window.electron.removeAllListeners('conversion-error');
 });
@@ -81,7 +73,6 @@ const conversionFormats = [
 function handleUpload(event: Event) {
   const inputElement = event.target as HTMLInputElement;
   files.value = Array.from(inputElement.files ?? []);
-
   emit('files-uploaded', files);
 }
 
@@ -94,12 +85,16 @@ function setFormat(format: string) {
 }
 
 function removeFile(index: number) {
-  files.value?.splice(index, 1);
+  if (files.value) {
+    const file = files.value[index];
+    delete conversionProgress.value[file.path];
+    files.value.splice(index, 1);
+  }
 }
 
 function clearAllFiles() {
   files.value = [];
-  conversionProgress.value = null;
+  conversionProgress.value = {};
 }
 
 async function convertFiles() {
@@ -112,11 +107,11 @@ async function convertFiles() {
     return;
   }
 
-  converting.value = true; // Set converting state to true when starting conversion
+  converting.value = true;
 
   for (const file of files.value) {
     try {
-      const filePath = (file as any).path; // Ensure we're sending only the file path
+      const filePath = (file as any).path;
       const outputFormat = convertTo.value;
       const outputDirectory = saveDirectory.value;
 
@@ -126,6 +121,8 @@ async function convertFiles() {
         title: 'File converted',
         description: `Converted file saved to ${outputFilePath}`,
       });
+
+      delete conversionProgress.value[filePath]; // Clear progress once done
     } catch (error) {
       toast({
         title: 'Error converting file',
@@ -135,17 +132,16 @@ async function convertFiles() {
     }
   }
 
-  converting.value = false; // Reset converting state after conversion
+  converting.value = false;
 }
 </script>
-
 
 <template>
   <Toaster />
   <div>
     <div class="bg-slate-50 p-6 overflow-hidden">
       <label for="file-uploader"
-        class="bg-slate-50 font-semibold text-base rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto">
+        class="bg-slate-50 font-semibold text-base rounded-lg h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-2 fill-slate-400" viewBox="0 0 32 32">
           <path
             d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
@@ -194,7 +190,7 @@ async function convertFiles() {
       <ul role="list" class="divide-y divide-slate-100 h-full overflow-y-auto px-6">
         <li class="flex justify-between items-center gap-x-6" v-for="(file, index) in files" :key="file.name">
           <div class="flex min-w-0 gap-x-4 py-3">
-            <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+            <div class="p-4 rounded-lg bg-slate-100 border border-slate-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
               </svg>
@@ -210,7 +206,7 @@ async function convertFiles() {
                   to
                   <Dialog>
                     <DialogTrigger as-child>
-                      <button class="p-1 rounded bg-slate-100 text-slate-800 font-mono underline">.{{ convertTo }}</button>
+                      <button class="p-1 rounded bg-slate-100 text-slate-800 font-mono underline">{{ convertTo }}</button>
                     </DialogTrigger>
                     <DialogContent class="sm:max-w-[425px] rounded-lg">
                       <DialogHeader>
@@ -225,8 +221,8 @@ async function convertFiles() {
                             <li v-for="format in conversionFormats" :key="format" class="flex items-center gap-2">
                               <button
                                 type="button"
-                                class="flex items-center justify-center p-2 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-800 flex-1"
-                                :class="{ 'bg-blue-500 hover:bg-blue-600 text-white': convertTo === format }"
+                                class="flex items-center justify-center p-2 rounded-lg flex-1"
+                                :class="convertTo === format ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-slate-50 hover:bg-slate-100 text-slate-800'"
                                 @click.prevent="setFormat(format)"
                               >
                                 <span class="text-sm font-medium">{{ format }}</span>
@@ -255,12 +251,6 @@ async function convertFiles() {
           </div>
         </li>
       </ul>
-    </div>
-    <div v-if="conversionProgress !== null" class="p-4">
-      <p>Conversion Progress: {{ conversionProgress }}%</p>
-      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-        <div :style="{ width: conversionProgress + '%' }" class="bg-blue-600 h-2.5 rounded-full"></div>
-      </div>
     </div>
   </div>
 </template>

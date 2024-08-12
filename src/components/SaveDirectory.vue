@@ -20,7 +20,8 @@ async function handleDirectorySelection(event: Event) {
     selectedDirectory.value = directory;
   }
 
-  emit('directory-selected', selectedDirectory);
+  // Emit the value of selectedDirectory, not the ref object itself
+  emit('directory-selected', selectedDirectory.value);
 }
 </script>
 
