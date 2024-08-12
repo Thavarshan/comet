@@ -1,6 +1,7 @@
 # Comet | Video Converter
 
 ![Comet UI](./src/assets/images/screenshot.png)
+![Comet Demo](./src/assets/images/demo.gif)
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
 
@@ -8,17 +9,18 @@
 
 Comet's goal is to provide a free, user-friendly, and visually appealing application for converting video files. Whether you need to convert a single video or multiple files at once, Comet is here to help.
 
-### Key Features (Planned)
+### Key Features (Planned and Implemented)
 
 - **Cross-Platform Compatibility:** Runs on macOS, Windows, and Linux.
 - **Multiple Video Formats:** Supports conversion to a wide range of video formats including MP4, MKV, AVI, MOV, and more.
 - **Bulk File Conversion:** Easily upload and convert multiple files in one go.
 - **User-Friendly Interface:** A clean and intuitive UI that simplifies the conversion process.
+- **Real-Time Conversion Feedback:** Conversion progress is tracked and displayed to the user, with real-time updates and error handling.
 - **Fast Conversion:** Powered by FFmpeg, known for its speed and efficiency in video processing.
 
 ### Current Status
 
-The project is currently in the early stages of development. So far, we have focused on building the basic UI, including features like bulk file uploads. The core video conversion functionality using FFmpeg is in the planning and initial implementation stages.
+The project has made significant progress, with the basic UI now fully implemented, including bulk file uploads and conversion status tracking. The core video conversion functionality using FFmpeg has been successfully integrated, with ongoing improvements to the user experience, such as real-time feedback during the conversion process.
 
 ## 🛠️ Technologies Used
 
@@ -36,6 +38,11 @@ comet/
 │
 ├── .vite/                           # Vite configuration directory
 ├── .vscode/                         # VSCode settings directory
+├── bin/                             # Custom FFmpeg binaries
+│   └── ffmpeg/                      # FFmpeg binaries for different platforms
+│       ├── linux/
+│       ├── mac/
+│       └── win/
 ├── src/
 │   ├── assets/
 │   │   ├── css/
@@ -78,6 +85,7 @@ We welcome contributions and collaboration! Whether you're a seasoned developer 
 3. **Set Up the Environment:** Follow the steps below to get the project running on your local machine.
 4. **Create a Branch:** Create a new branch for the feature or fix you plan to work on.
 5. **Submit a Pull Request:** Once your changes are ready, submit a pull request to the `main` branch of this repository.
+6. **Star the Repository:** If you like this project, please give it a star on GitHub. It helps us gain visibility and grow our community!
 
 ### Getting Started
 
@@ -114,13 +122,14 @@ To get started with development:
 
 ## 📝 Roadmap
 
-- **Phase 1:** Basic UI Implementation (In Progress)
+- **Phase 1:** Basic UI Implementation (Completed)
   - File upload functionality.
   - Simple file selection and list management.
 
-- **Phase 2:** FFmpeg Integration
+- **Phase 2:** FFmpeg Integration (In Progress)
   - Implement core conversion functionality.
   - Support for multiple video formats.
+  - Real-time conversion feedback.
 
 - **Phase 3:** UI Enhancements and Customization Options
   - Output format selection and settings.

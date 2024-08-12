@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import SaveDirectory from '@/components/SaveDirectory.vue';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Toaster } from '@/components/ui/toast';
@@ -18,15 +18,54 @@ import {
   Cross1Icon,
   UpdateIcon,
   TrashIcon,
+  ReloadIcon,
 } from '@radix-icons/vue';
 
 const files = ref<File[] | undefined>();
 const saveDirectory = ref<string | undefined>();
 const convertTo = ref<string | undefined>('mp4');
 const { toast } = useToast();
+const conversionProgress = ref<number | null>(null);
+const converting = ref(false);
 
 onMounted(async () => {
   saveDirectory.value = await window.electron.getDownloadsPath();
+
+  // Listen for backend messages
+  window.electron.on('ffmpeg-status', (_event: any, message: string) => {
+    toast({
+      title: 'FFmpeg Status',
+      description: message,
+    });
+  });
+
+  window.electron.on('quarantine-status', (_event: any, message: string) => {
+    toast({
+      title: 'Quarantine Status',
+      description: message,
+    });
+  });
+
+  window.electron.on('conversion-progress', (_event: any, progress: any) => {
+    conversionProgress.value = progress.percent || 0;
+  });
+
+  window.electron.on('conversion-error', (_event: any, error: string) => {
+    converting.value = false;
+    toast({
+      title: 'Error',
+      description: error,
+      variant: 'destructive',
+    });
+  });
+});
+
+onUnmounted(() => {
+  // Cleanup IPC listeners to avoid memory leaks
+  window.electron.removeAllListeners('ffmpeg-status');
+  window.electron.removeAllListeners('quarantine-status');
+  window.electron.removeAllListeners('conversion-progress');
+  window.electron.removeAllListeners('conversion-error');
 });
 
 const emit = defineEmits(['files-uploaded']);
@@ -34,10 +73,9 @@ const emit = defineEmits(['files-uploaded']);
 const conversionFormats = [
   'mp4', 'webm', 'ogg', 'flv', 'avi',
   'mov', 'wmv', '3gp', 'mkv', 'm4v',
-  'mpg', 'mpeg', 'vob', 'rmvb', 'ts',
-  'asf', 'divx', 'f4v', 'h264', 'hevc',
-  'm2ts', 'm2v', 'mts', 'ogv', 'rm',
-  'swf', 'vob', 'xvid',
+  'mpg', 'mpeg', 'vob', 'ts', 'asf',
+  'f4v', 'h264', 'hevc', 'm2ts', 'm2v',
+  'mts', 'ogv', 'rm', 'swf', 'xvid',
 ];
 
 function handleUpload(event: Event) {
@@ -61,16 +99,24 @@ function removeFile(index: number) {
 
 function clearAllFiles() {
   files.value = [];
+  conversionProgress.value = null;
 }
 
 async function convertFiles() {
   if (!files.value || !convertTo.value || !saveDirectory.value) {
+    toast({
+      title: 'Error',
+      description: 'Please select files and a save directory.',
+      variant: 'destructive',
+    });
     return;
   }
 
+  converting.value = true; // Set converting state to true when starting conversion
+
   for (const file of files.value) {
     try {
-      const filePath = file.path; // Get the file path
+      const filePath = (file as any).path; // Ensure we're sending only the file path
       const outputFormat = convertTo.value;
       const outputDirectory = saveDirectory.value;
 
@@ -83,17 +129,21 @@ async function convertFiles() {
     } catch (error) {
       toast({
         title: 'Error converting file',
-        description: error.message,
+        description: error.message || 'An error occurred during the conversion.',
+        variant: 'destructive',
       });
     }
   }
+
+  converting.value = false; // Reset converting state after conversion
 }
 </script>
 
+
 <template>
   <Toaster />
-  <div class="font-[sans-serif] text-slate-600">
-    <div class="bg-slate-50 p-6">
+  <div>
+    <div class="bg-slate-50 p-6 overflow-hidden">
       <label for="file-uploader"
         class="bg-slate-50 font-semibold text-base rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-2 fill-slate-400" viewBox="0 0 32 32">
@@ -105,24 +155,45 @@ async function convertFiles() {
             data-original="#000000" />
         </svg>
         <input type="file" id='file-uploader' class="hidden" @change="handleUpload" multiple accept="video/*">
-        <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag your files here. The file size should be less than 15 MB.</p>
+        <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag your files here</p>
       </label>
     </div>
     <div class="flex items-center justify-between px-6 py-4 bg-slate-100 border-y border-slate-200">
       <SaveDirectory v-if="saveDirectory" :default-save-directory="saveDirectory" @directory-selected="handleSaveDirectoryUpdate" />
-      <div class="space-x-3">
-        <Button v-if="files?.length" type="button" variant="outline" class="text-destructive" @click="clearAllFiles">
+      <div class="flex items-center space-x-3">
+        <Button
+          v-if="files?.length"
+          type="button"
+          variant="outline"
+          class="text-destructive"
+          @click="clearAllFiles"
+          :disabled="converting"
+        >
           <TrashIcon class="size-4 mr-2" /> Clear all
         </Button>
-        <Button type="button" @click="convertFiles" :disabled="!files?.length || !saveDirectory" class="bg-blue-500 text-white">
+        <Button
+          v-if="!converting"
+          type="button"
+          @click="convertFiles"
+          :disabled="!files?.length || !saveDirectory"
+          class="bg-blue-500 text-white"
+        >
           <UpdateIcon class="size-4 mr-2" /> Convert
+        </Button>
+        <Button
+          v-else
+          type="button"
+          disabled
+          class="bg-blue-500 text-white flex items-center"
+        >
+          <ReloadIcon class="size-4 mr-2 animate-spin" /> Converting...
         </Button>
       </div>
     </div>
-    <div class="bg-white px-6">
-      <ul role="list" class="divide-y divide-slate-100">
+    <div class="bg-white py-3 h-60">
+      <ul role="list" class="divide-y divide-slate-100 h-full overflow-y-auto px-6">
         <li class="flex justify-between items-center gap-x-6" v-for="(file, index) in files" :key="file.name">
-          <div class="flex min-w-0 gap-x-4 py-6">
+          <div class="flex min-w-0 gap-x-4 py-3">
             <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -178,14 +249,18 @@ async function convertFiles() {
             </div>
           </div>
           <div class="shrink-0 flex items-center gap-x-3">
-            <Button type="button" variant="outline" class="text-destructive" @click="removeFile(index)">
+            <Button type="button" variant="outline" class="text-destructive" @click="removeFile(index)" :disabled="converting">
               <Cross1Icon class="size-4" />
             </Button>
           </div>
         </li>
       </ul>
     </div>
+    <div v-if="conversionProgress !== null" class="p-4">
+      <p>Conversion Progress: {{ conversionProgress }}%</p>
+      <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        <div :style="{ width: conversionProgress + '%' }" class="bg-blue-600 h-2.5 rounded-full"></div>
+      </div>
+    </div>
   </div>
 </template>
-
-
