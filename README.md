@@ -1,4 +1,4 @@
-# Comet | Video Converter
+# ☄️ Comet | Video Converter
 
 ![Comet UI](./src/assets/images/screenshot_1.png)
 ![Comet UI](./src/assets/images/screenshot_2.png)
