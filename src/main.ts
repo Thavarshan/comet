@@ -1,4 +1,10 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  globalShortcut
+} from 'electron';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
@@ -12,8 +18,15 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
   ffmpegStatic = require('ffmpeg-static');
 }
 
+/**
+ * Get the path to the FFmpeg binary.
+ *
+ * @returns {string} The path to the FFmpeg binary.
+ * @throws Will throw an error if the FFmpeg binary is not found.
+ */
 export function getFfmpegPath(): string {
   try {
+    // Try to get the system FFmpeg path
     const ffmpegPath = execSync('which ffmpeg').toString().trim();
     if (fs.existsSync(ffmpegPath)) {
       return ffmpegPath;
@@ -35,12 +48,14 @@ if (process.platform === 'win32' && require('electron-squirrel-startup')) {
   app.quit();
 }
 
+// Get the FFmpeg path
 const ffmpegPath = getFfmpegPath();
 
 if (ffmpegPath) {
   try {
+    // Ensure FFmpeg binary is executable
     if (fs.existsSync(ffmpegPath)) {
-      fs.chmodSync(ffmpegPath, '755'); // Ensure FFmpeg binary is executable
+      fs.chmodSync(ffmpegPath, '755');
     }
     ffmpeg.setFfmpegPath(ffmpegPath);
   } catch (err) {
@@ -52,9 +67,14 @@ if (ffmpegPath) {
   app.quit(); // Quit if FFmpeg binary is not found
 }
 
+const isDev = process.env.NODE_ENV === 'development';
+
+/**
+ * Create the main application window.
+ */
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
-    width: 700,
+    width: isDev ? 1200 : 700,
     height: 600,
     resizable: false,
     show: false,
@@ -69,21 +89,31 @@ const createWindow = () => {
     mainWindow.show();
   });
 
-  const isDev = process.env.NODE_ENV === 'development';
   const mainWindowUrl = isDev
-    ? process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL // Ensure this env variable is available
+    ? process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL
     : `file://${path.join(__dirname, `../renderer/${process.env.MAIN_WINDOW_VITE_NAME}/index.html`)}`;
 
   mainWindow.loadURL(mainWindowUrl);
 
   if (isDev) {
-    // mainWindow.webContents.openDevTools();
+    // Uncomment to open DevTools in development mode
+    mainWindow.webContents.openDevTools();
+  }
+
+  if (!isDev) {
+    // Disable reload shortcuts in production
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    globalShortcut.register('CmdOrCtrl+R', () => { });
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    globalShortcut.register('F5', () => { });
   }
 };
 
+// Event: App is ready
 app.on('ready', () => {
   createWindow();
 
+  // Handle directory selection dialog
   ipcMain.handle('dialog:selectDirectory', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
@@ -92,10 +122,12 @@ app.on('ready', () => {
     return result.canceled ? null : result.filePaths[0];
   });
 
+  // Handle request for downloads path
   ipcMain.handle('getDownloadsPath', () => {
     return path.join(os.homedir(), 'Downloads');
   });
 
+  // Handle video conversion
   ipcMain.handle('convert-video', async (_event, { filePath, outputFormat, saveDirectory }) => {
     try {
       const outputFilePath = path.join(saveDirectory, `${path.parse(filePath).name}.${outputFormat}`);
@@ -122,12 +154,14 @@ app.on('ready', () => {
   });
 });
 
+// Event: All windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
+// Event: App is activated (e.g., clicked on the dock icon)
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();

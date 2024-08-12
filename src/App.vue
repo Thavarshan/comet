@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
-import SaveDirectory from '@/components/SaveDirectory.vue';
+import {
+  Dropfile,
+  SaveDirectory,
+} from '@/components/blocks';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Toaster } from '@/components/ui/toast';
 import { Button } from '@/components/ui/button';
@@ -62,7 +65,7 @@ onUnmounted(() => {
 
 const emit = defineEmits(['files-uploaded']);
 
-const conversionFormats = [
+const CONVERSION_FORMATS = [
   'mp4', 'webm', 'ogg', 'flv', 'avi',
   'mov', 'wmv', '3gp', 'mkv', 'm4v',
   'mpg', 'mpeg', 'vob', 'ts', 'asf',
@@ -70,10 +73,8 @@ const conversionFormats = [
   'mts', 'ogv', 'rm', 'swf', 'xvid',
 ];
 
-function handleUpload(event: Event) {
-  const inputElement = event.target as HTMLInputElement;
-  files.value = Array.from(inputElement.files ?? []);
-  emit('files-uploaded', files);
+function handleUpload(uploads: FileList) {
+  files.value = Array.from(uploads);
 }
 
 function handleSaveDirectoryUpdate(directory: string) {
@@ -140,19 +141,7 @@ async function convertFiles() {
   <Toaster />
   <div>
     <div class="bg-slate-50 p-6 overflow-hidden">
-      <label for="file-uploader"
-        class="bg-slate-50 font-semibold text-base rounded-lg h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-2 fill-slate-400" viewBox="0 0 32 32">
-          <path
-            d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
-            data-original="#000000" />
-          <path
-            d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
-            data-original="#000000" />
-        </svg>
-        <input type="file" id='file-uploader' class="hidden" @change="handleUpload" multiple accept="video/*">
-        <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag your files here</p>
-      </label>
+      <Dropfile @file-uploaded="handleUpload" />
     </div>
     <div class="flex items-center justify-between px-6 py-4 bg-slate-100 border-y border-slate-200">
       <SaveDirectory v-if="saveDirectory" :default-save-directory="saveDirectory" @directory-selected="handleSaveDirectoryUpdate" />
@@ -198,7 +187,7 @@ async function convertFiles() {
             <div class="min-w-0 flex-auto">
               <p class="text-sm font-semibold leading-6 text-slate-800 truncate">{{ file.name }}</p>
               <div class="flex items-center gap-x-2">
-                <p class="text-xs font-medium text-slate-500">{{ Math.round(file.size * 0.000001) }} MB</p>
+                <p class="text-xs font-medium text-slate-500">{{ (file.size * 0.000001).toFixed(2) }} MB</p>
                 <span>&middot;</span>
                 <p class="text-xs font-medium text-slate-500">
                   Converting from
@@ -218,7 +207,7 @@ async function convertFiles() {
                       <div class="h-56 overflow-hidden">
                         <div class="mt-4 h-56 overflow-y-auto">
                           <ul role="list" class="grid grid-cols-3 gap-4">
-                            <li v-for="format in conversionFormats" :key="format" class="flex items-center gap-2">
+                            <li v-for="format in CONVERSION_FORMATS" :key="format" class="flex items-center gap-2">
                               <button
                                 type="button"
                                 class="flex items-center justify-center p-2 rounded-lg flex-1"
