@@ -1,6 +1,7 @@
 # Comet | Video Converter
 
-![Comet UI](./src/assets/images/screenshot.png)
+![Comet UI](./src/assets/images/screenshot_1.png)
+![Comet UI](./src/assets/images/screenshot_2.png)
 ![Comet Demo](./src/assets/images/demo.gif)
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
