@@ -74,6 +74,8 @@ const isDev = process.env.NODE_ENV === 'development';
  */
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
+    title: 'Comet | Video Converter',
+    icon: './assets/icon/icon.png',
     width: isDev ? 1200 : 700,
     height: 600,
     resizable: false,

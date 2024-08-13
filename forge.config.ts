@@ -12,9 +12,23 @@ const config: ForgeConfig = {
     asar: {
       unpack: '**/node_modules/ffmpeg-static/ffmpeg',
     },
+    icon: 'src/assets/images/icon/icon',
   },
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    new MakerSquirrel({}),
+    new MakerZIP({}, ['darwin']),
+    new MakerRpm({}),
+    new MakerDeb({}),
+    {
+      name: '@electron-forge/maker-deb',
+      config: {
+        options: {
+          icon: 'src/assets/images/icon/icon.png',
+        }
+      }
+    }
+  ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
