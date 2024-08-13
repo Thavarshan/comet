@@ -23,7 +23,7 @@ Comet's goal is to provide a free, user-friendly, and visually appealing applica
 
 ### Current Status
 
-The project has made significant progress, with the basic UI now fully implemented, including bulk file uploads and conversion status tracking. The core video conversion functionality using FFmpeg has been successfully integrated, with ongoing improvements to the user experience, such as real-time feedback during the conversion process.
+The project has made significant progress, with the basic UI now fully implemented, including bulk file uploads, conversion status tracking, and real-time feedback during the conversion process. The core video conversion functionality using FFmpeg has been successfully integrated, and the application is now stable and functional. We are currently focusing on signing the app, packaging it for distribution, and ensuring cross-platform compatibility.
 
 ## 🛠️ Technologies Used
 
@@ -46,16 +46,25 @@ comet/
 │       ├── linux/
 │       ├── mac/
 │       └── win/
+├── out/                             # Build output directory
 ├── src/
 │   ├── assets/
 │   │   ├── css/
 │   │   │   └── index.css            # Global CSS file
 │   │   └── images/
+│   │       ├── icon/                # Icons for the application
+│   │       ├── demo.gif             # GIF demonstrating app usage
+│   │       ├── logo.png             # Logo image
+│   │       ├── screenshot_1.png     # UI screenshot for README
+│   │       ├── screenshot_2.png     # UI screenshot for README
 │   │       └── screenshot.png       # UI screenshot for README
 │   ├── components/
-│   │   ├── Dropfile.vue             # Dropfile component for file uploads
-│   │   └── SaveDirectory.vue        # Component to handle save directory selection
-│   ├── global.d.ts                  # Global TypeScript declarations
+│   │   ├── blocks/                  # Main components for the app
+│   │   │   ├── Dropfile.vue         # Dropfile component for file uploads
+│   │   │   └── SaveDirectory.vue    # Component to handle save directory selection
+│   │   └── ui/                      # UI-related components
+│   ├── lib/
+│   │   ├── utils.ts                 # Utility functions
 │   ├── main.ts                      # Main process file
 │   ├── preload.ts                   # Preload script
 │   ├── renderer.ts                  # Renderer process entry point
@@ -63,6 +72,7 @@ comet/
 │
 ├── .editorconfig                    # Editor configuration
 ├── .eslintrc.json                   # ESLint configuration
+├── .gitattributes                   # Git attributes configuration
 ├── .gitignore                       # Git ignore file
 ├── LICENSE                          # License file
 ├── index.html                       # Entry HTML file
@@ -129,17 +139,19 @@ To get started with development:
   - File upload functionality.
   - Simple file selection and list management.
 
-- **Phase 2:** FFmpeg Integration (In Progress)
+- **Phase 2:** FFmpeg Integration (Completed)
   - Implement core conversion functionality.
   - Support for multiple video formats.
   - Real-time conversion feedback.
 
-- **Phase 3:** UI Enhancements and Customization Options
+- **Phase 3:** UI Enhancements and Customization Options (Completed)
   - Output format selection and settings.
   - Batch processing capabilities.
 
-- **Phase 4:** Cross-Platform Testing and Release
+- **Phase 4:** Cross-Platform Testing and Release (In Progress)
   - Test and refine the app on macOS, Windows, and Linux.
+  - **Sign the app** to ensure it is trusted by operating systems.
+  - **Package the app for distribution** on various platforms.
   - Prepare for the first public release.
 
 ## 🧑‍💻 Contributors
@@ -163,5 +175,3 @@ If you find this project helpful or interesting, please consider giving it a ⭐
 ---
 
 Thank you for visiting our project! We’re excited to bring this tool to life and make video conversion easy and accessible for everyone. Any help, be it in coding, testing, or simply providing feedback, is invaluable. Let's create something great together!
-
----
