@@ -11,6 +11,9 @@ import fs from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
 import { execSync } from 'child_process';
 
+// Set app name
+app.setName('Comet');
+
 // Conditionally import ffmpeg-static only in the main process
 let ffmpegStatic: string | undefined;
 

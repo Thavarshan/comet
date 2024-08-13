@@ -21,5 +21,8 @@
         "SwitchCase": 1
       }
     ]
-  }
+  },
+  "ignorePatterns": [
+    "*.test.ts"
+  ]
 }

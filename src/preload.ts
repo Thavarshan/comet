@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('electron', {
   },
 
   // New methods for listening to events
-  on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: any[]) => void) => {
+  on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => {
     ipcRenderer.on(channel, callback);
   },
 

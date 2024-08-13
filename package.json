@@ -1,6 +1,6 @@
 {
   "name": "comet",
-  "productName": "comet",
+  "productName": "Comet",
   "version": "1.0.0",
   "description": "A simple video converter",
   "main": ".vite/build/main.js",
