@@ -1,10 +1,12 @@
 <p align="center"><a href="https://thavarshan.com" target="_blank"><img src="https://github.com/Thavarshan/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
 
+## About Comet
+
+**Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
+
 ![Comet UI](./src/assets/images/screenshot_1.png)
 ![Comet UI](./src/assets/images/screenshot_2.png)
 ![Comet Demo](./src/assets/images/demo.gif)
-
-**Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
 
 ## 🚀 Project Overview
 
