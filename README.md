@@ -1,4 +1,4 @@
-# ☄️ Comet | Video Converter
+<p align="center"><a href="https://thavarshan.com" target="_blank"><img src="https://github.com/Thavarshan/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
 
 ![Comet UI](./src/assets/images/screenshot_1.png)
 ![Comet UI](./src/assets/images/screenshot_2.png)
