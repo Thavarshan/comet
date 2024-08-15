@@ -18,6 +18,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "types": [
+      "node",
+      "jsdpn",
       "cypress"
     ]
   },
