@@ -20,7 +20,7 @@ let ffmpegStatic: string | undefined;
  *
  * @throws {Error} Will throw an error if the FFmpeg binary is not found.
  */
-function getFfmpegPath(): string {
+export function getFfmpegPath(): string {
   try {
     const ffmpegPath = execSync('which ffmpeg').toString().trim();
 
@@ -66,10 +66,10 @@ const isDev = process.env.NODE_ENV === 'development';
 /**
  * Create the main application window.
  */
-function createWindow() {
+export function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Comet | Video Converter',
-    icon: path.join(__dirname, 'assets', 'icon', 'icon.png'),
+    icon: path.join(__dirname, 'assets', 'images', 'icon', 'icon.png'),
     width: isDev ? 1200 : 700,
     height: 600,
     resizable: false,
@@ -86,8 +86,8 @@ function createWindow() {
   });
 
   const mainWindowUrl = isDev
-    ? process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL
-    : `file://${path.join(__dirname, '../renderer', process.env.MAIN_WINDOW_VITE_NAME, 'index.html')}`;
+    ? process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL || 'default_dev_url'
+    : `file://${path.join(__dirname, '../renderer', process.env.MAIN_WINDOW_VITE_NAME || 'default_name', 'index.html')}`;
 
   mainWindow.loadURL(mainWindowUrl);
 

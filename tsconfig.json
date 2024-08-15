@@ -16,6 +16,17 @@
       ]
     },
     "moduleResolution": "node",
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "types": [
+      "cypress"
+    ]
+  },
+  "include": [
+    "./**/*",
+    "src/**/*",
+    "tests/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

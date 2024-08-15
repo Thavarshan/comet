@@ -30,6 +30,8 @@ declare global {
       removeAllListeners: (channel: string) => void;
     };
   }
+
+  let __DEV__: boolean;
 }
 
 declare module 'vite' {
