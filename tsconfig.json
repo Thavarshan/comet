@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "commonjs",
+    "module": "ESNext",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "paths": {
       "@/*": [
@@ -19,16 +19,18 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "jsdpn",
-      "cypress"
+      "vite/client" // Includes Vite-specific types
     ]
   },
   "include": [
     "./**/*",
     "src/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "cypress/**/*" // Include Cypress files
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "**/*.spec.ts" // Exclude test files from the main build
   ]
 }
