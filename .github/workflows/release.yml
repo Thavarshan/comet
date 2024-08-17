@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -22,13 +22,10 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build the app
-        run: npm run make
-
-      - name: List output directory contents
-        run: ls -R out/make
+      - name: Build and Package the app
+        run: npm run package
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
@@ -36,69 +33,13 @@ jobs:
           name: comet-${{ matrix.os }}
           path: out/make/**/*.*
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: comet-ubuntu-latest
-          path: ./artifacts/ubuntu
+          name: comet-${{ matrix.os }}
+          path: ./artifacts/${{ matrix.os }}
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: comet-windows-latest
-          path: ./artifacts/windows
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: comet-macos-latest
-          path: ./artifacts/macos
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Publish to GitHub Releases
+        run: npm run publish -- --prerelease
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset for Ubuntu
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/ubuntu/**/*.*
-          asset_name: comet-ubuntu-${{ github.sha }}.zip
-          asset_content_type: application/zip
-
-      - name: Upload Release Asset for Windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/windows/**/*.*
-          asset_name: comet-windows-${{ github.sha }}.zip
-          asset_content_type: application/zip
-
-      - name: Upload Release Asset for macOS
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/macos/**/*.*
-          asset_name: comet-macos-${{ github.sha }}.zip
-          asset_content_type: application/zip
