@@ -23,6 +23,8 @@ import {
   TrashIcon,
   ReloadIcon,
 } from '@radix-icons/vue';
+import { Channel } from './enums/channel';
+import { SUPPORTED_FORMATS } from './consts/formats';
 
 const files = ref<File[] | undefined>();
 const saveDirectory = ref<string | undefined>();
@@ -35,18 +37,20 @@ onMounted(async () => {
   saveDirectory.value = await window.electron.getDownloadsPath();
 
   // Listen for backend messages
-  window.electron.on('ffmpeg-status', (_event: any, message: string) => {
+  window.electron.on(Channel.FFMPEG_STATUS, (_event: any, message: string) => {
     toast({
       title: 'FFmpeg Status',
       description: message,
     });
   });
 
-  window.electron.on('conversion-progress', (_event: any, { filePath, progress }: { filePath: string, progress: number; }) => {
+  window.electron.on(Channel.CONVERSION_PROGRESS, (
+    _event: any, { filePath, progress }: { filePath: string, progress: number; }
+  ) => {
     conversionProgress.value[filePath] = progress;
   });
 
-  window.electron.on('conversion-error', (_event: any, error: string) => {
+  window.electron.on(Channel.CONVERSION_ERROR, (_event: any, error: string) => {
     converting.value = false;
     toast({
       title: 'Error',
@@ -58,20 +62,12 @@ onMounted(async () => {
 
 onUnmounted(() => {
   // Cleanup IPC listeners to avoid memory leaks
-  window.electron.removeAllListeners('ffmpeg-status');
-  window.electron.removeAllListeners('conversion-progress');
-  window.electron.removeAllListeners('conversion-error');
+  window.electron.removeAllListeners(Channel.FFMPEG_STATUS);
+  window.electron.removeAllListeners(Channel.CONVERSION_PROGRESS);
+  window.electron.removeAllListeners(Channel.CONVERSION_ERROR);
 });
 
 const emit = defineEmits(['files-uploaded']);
-
-const CONVERSION_FORMATS = [
-  'mp4', 'webm', 'ogg', 'flv', 'avi',
-  'mov', 'wmv', '3gp', 'mkv', 'm4v',
-  'mpg', 'mpeg', 'vob', 'ts', 'asf',
-  'f4v', 'h264', 'hevc', 'm2ts', 'm2v',
-  'mts', 'ogv', 'rm', 'swf', 'xvid',
-];
 
 function handleUpload(uploads: FileList) {
   files.value = Array.from(uploads);
@@ -116,7 +112,11 @@ async function convertFiles() {
       const outputFormat = convertTo.value;
       const outputDirectory = saveDirectory.value;
 
-      const outputFilePath = await window.electron.convertVideo(filePath, outputFormat, outputDirectory);
+      const outputFilePath = await window.electron.convertVideo(
+        filePath,
+        outputFormat,
+        outputDirectory
+      );
 
       toast({
         title: 'File converted',
@@ -207,7 +207,7 @@ async function convertFiles() {
                       <div class="h-56 overflow-hidden">
                         <div class="mt-4 h-56 overflow-y-auto">
                           <ul role="list" class="grid grid-cols-3 gap-4">
-                            <li v-for="format in CONVERSION_FORMATS" :key="format" class="flex items-center gap-2">
+                            <li v-for="format in SUPPORTED_FORMATS" :key="format" class="flex items-center gap-2">
                               <button
                                 type="button"
                                 class="flex items-center justify-center p-2 rounded-lg flex-1"

@@ -1,12 +1,13 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { Channel } from './enums/channel';
 
 contextBridge.exposeInMainWorld('electron', {
-  selectDirectory: () => ipcRenderer.invoke('dialog:selectDirectory'),
-  getDownloadsPath: () => ipcRenderer.invoke('getDownloadsPath'),
+  selectDirectory: () => ipcRenderer.invoke(Channel.DIALOG_SELECT_DIRECTORY),
+  getDownloadsPath: () => ipcRenderer.invoke(Channel.GET_DOWNLOADS_PATH),
   convertVideo: (filePath: string, outputFormat: string, saveDirectory: string) => {
-    return ipcRenderer.invoke('convert-video', { filePath, outputFormat, saveDirectory });
+    return ipcRenderer.invoke(Channel.CONVERT_VIDEO, { filePath, outputFormat, saveDirectory });
   },
-  on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => {
+  on: (channel: string, callback: (event: IpcRendererEvent, ...args: unknown[]) => void) => {
     ipcRenderer.on(channel, callback);
   },
   removeAllListeners: (channel: string) => {

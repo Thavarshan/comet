@@ -20,7 +20,13 @@
       {
         "SwitchCase": 1
       }
-    ]
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 80
+      }
+    ],
   },
   "ignorePatterns": [
     "*.test.ts"

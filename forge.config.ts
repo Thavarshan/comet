@@ -13,6 +13,13 @@ const config: ForgeConfig = {
       unpack: '**/node_modules/ffmpeg-static/ffmpeg',
     },
     icon: 'src/assets/images/icon/icon',
+    extraResource: 'node_modules/ffmpeg-static/ffmpeg',
+    osxSign: {},
+    osxNotarize: {
+      appleId: process.env.APPLE_ID,
+      appleIdPassword: process.env.APPLE_ID_PASSWORD,
+      teamId: process.env.TEAM_ID,
+    },
   },
   rebuildConfig: {},
   makers: [
