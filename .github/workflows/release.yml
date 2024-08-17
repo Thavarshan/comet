@@ -6,11 +6,11 @@ on:
       - 'v*.*.*'
 
 jobs:
-  build-and-release:
-    runs-on: ${{ matrix.os }}
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build and Package the app
         run: npm run package
@@ -33,11 +33,34 @@ jobs:
           name: comet-${{ matrix.os }}
           path: out/make/**/*.*
 
-      - name: Download Artifacts
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download Artifacts (Linux)
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/download-artifact@v2
         with:
-          name: comet-${{ matrix.os }}
-          path: ./artifacts/${{ matrix.os }}
+          name: comet-ubuntu-latest
+          path: ./artifacts/ubuntu
+
+      - name: Download Artifacts (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: actions/download-artifact@v2
+        with:
+          name: comet-windows-latest
+          path: ./artifacts/windows
+
+      - name: Download Artifacts (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: actions/download-artifact@v2
+        with:
+          name: comet-macos-latest
+          path: ./artifacts/macos
 
       - name: Publish to GitHub Releases
         run: npm run publish -- --prerelease
