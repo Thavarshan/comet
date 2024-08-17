@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -27,12 +27,14 @@ jobs:
       - name: Build the app
         run: npm run make
 
+      - name: List output directory contents
+        run: ls -R out/make
+
       - name: Upload Release Asset
         uses: actions/upload-artifact@v2
         with:
           name: comet-${{ matrix.os }}
-          path: out/make/${{ matrix.os }}/*.*
-
+          path: out/make/**/*.*
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -54,6 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: out/make/*.*
+          asset_path: out/make/**/*.*
           asset_name: comet-${{ matrix.os }}-${{ github.sha }}.zip
           asset_content_type: application/zip
