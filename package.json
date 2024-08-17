@@ -26,7 +26,7 @@
     "build:win": "npm_config_platform=win32 npm_config_arch=x64 npm install && electron-builder build --win",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "publish": "npx electron-forge publish --prerelease",
     "dev": "electron-forge start",
     "lint": "eslint --ext .ts,.tsx ."
   },
