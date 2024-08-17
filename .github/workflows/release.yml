@@ -30,16 +30,20 @@ jobs:
       - name: List output directory contents
         run: ls -R out/make
 
-      - name: Upload Release Asset
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: comet-${{ matrix.os }}
           path: out/make/**/*.*
+
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Create GitHub Release
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -50,7 +54,8 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Assets
+      - name: Upload Release Asset
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
