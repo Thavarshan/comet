@@ -16,9 +16,9 @@ const config: ForgeConfig = {
     },
     icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
     executableName: 'comet',
-    extraResource: process.platform === 'win32' || process.platform === 'linux'
-      ? path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg')
-      : undefined,
+    extraResource: process.platform === 'win32'
+      ? path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg.exe')
+      : path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg'),
     // Bypassing signing and notarization for now
     // ...(process.platform === 'darwin' && {
     //   osxSign: {},
