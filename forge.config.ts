@@ -7,6 +7,7 @@ import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 import { PublisherGithub } from '@electron-forge/publisher-github';
+import path from 'path';
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -15,7 +16,7 @@ const config: ForgeConfig = {
     },
     icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
     executableName: 'comet',
-    extraResource: 'node_modules/ffmpeg-static/ffmpeg',
+    extraResource: path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg'),
     // Bypassing the sigining and notarisation for now
     // ...(process.platform === 'darwin' && {
     //   osxSign: {},
