@@ -39,9 +39,28 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: comet-ubuntu-latest
+          path: ./artifacts/ubuntu
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: comet-windows-latest
+          path: ./artifacts/windows
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: comet-macos-latest
+          path: ./artifacts/macos
 
       - name: Create Release
         id: create_release
@@ -54,13 +73,32 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset for Ubuntu
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: out/make/**/*.*
-          asset_name: comet-${{ matrix.os }}-${{ github.sha }}.zip
+          asset_path: ./artifacts/ubuntu/**/*.*
+          asset_name: comet-ubuntu-${{ github.sha }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset for Windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/windows/**/*.*
+          asset_name: comet-windows-${{ github.sha }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset for macOS
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/macos/**/*.*
+          asset_name: comet-macos-${{ github.sha }}.zip
           asset_content_type: application/zip
