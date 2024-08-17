@@ -16,8 +16,10 @@ const config: ForgeConfig = {
     },
     icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
     executableName: 'comet',
-    extraResource: path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg'),
-    // Bypassing the sigining and notarisation for now
+    extraResource: process.platform === 'win32' || process.platform === 'linux'
+      ? path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg')
+      : undefined,
+    // Bypassing signing and notarization for now
     // ...(process.platform === 'darwin' && {
     //   osxSign: {},
     //   osxNotarize: {
