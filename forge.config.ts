@@ -16,14 +16,15 @@ const config: ForgeConfig = {
     icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
     executableName: 'comet',
     extraResource: 'node_modules/ffmpeg-static/ffmpeg',
-    ...(process.platform === 'darwin' && {
-      osxSign: {},
-      osxNotarize: {
-        appleId: process.env.APPLE_ID,
-        appleIdPassword: process.env.APPLE_ID_PASSWORD,
-        teamId: process.env.TEAM_ID,
-      },
-    }),
+    // Bypassing the sigining and notarisation for now
+    // ...(process.platform === 'darwin' && {
+    //   osxSign: {},
+    //   osxNotarize: {
+    //     appleId: process.env.APPLE_ID,
+    //     appleIdPassword: process.env.APPLE_ID_PASSWORD,
+    //     teamId: process.env.TEAM_ID,
+    //   },
+    // }),
   },
   rebuildConfig: {},
   makers: [
