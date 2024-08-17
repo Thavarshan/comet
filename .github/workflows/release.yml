@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Add node_modules/.bin to PATH
-        run: echo "::add-path::$(npm bin)"
+        run: echo "PATH=$(npm bin):\$PATH" >> $GITHUB_ENV
 
       - name: Build and Package the app
         run: npm run package
