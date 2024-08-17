@@ -1,4 +1,4 @@
-name: Build and Release
+name: Release
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  build:
+  release:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
