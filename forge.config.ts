@@ -14,6 +14,7 @@ const config: ForgeConfig = {
       unpack: '**/node_modules/ffmpeg-static/**',
     },
     icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
+    executableName: 'comet',
     extraResource: 'node_modules/ffmpeg-static/ffmpeg',
     ...(process.platform === 'darwin' && {
       osxSign: {},
