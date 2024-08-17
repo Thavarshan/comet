@@ -10,16 +10,18 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 const config: ForgeConfig = {
   packagerConfig: {
     asar: {
-      unpack: '**/node_modules/ffmpeg-static/ffmpeg',
+      unpack: '**/node_modules/ffmpeg-static/**',
     },
-    icon: 'src/assets/images/icon/icon',
+    icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
     extraResource: 'node_modules/ffmpeg-static/ffmpeg',
-    osxSign: {},
-    osxNotarize: {
-      appleId: process.env.APPLE_ID,
-      appleIdPassword: process.env.APPLE_ID_PASSWORD,
-      teamId: process.env.TEAM_ID,
-    },
+    ...(process.platform === 'darwin' && {
+      osxSign: {},
+      osxNotarize: {
+        appleId: process.env.APPLE_ID,
+        appleIdPassword: process.env.APPLE_ID_PASSWORD,
+        teamId: process.env.TEAM_ID,
+      },
+    }),
   },
   rebuildConfig: {},
   makers: [
@@ -38,11 +40,8 @@ const config: ForgeConfig = {
   ],
   plugins: [
     new VitePlugin({
-      // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-      // If you are familiar with Vite configuration, it will look really familiar.
       build: [
         {
-          // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: 'src/main.ts',
           config: 'vite.main.config.ts',
         },
@@ -58,8 +57,6 @@ const config: ForgeConfig = {
         },
       ],
     }),
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
     new FusesPlugin({
       version: FuseVersion.V1,
       [FuseV1Options.RunAsNode]: false,
