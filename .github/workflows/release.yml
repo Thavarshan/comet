@@ -26,6 +26,8 @@ jobs:
 
       - name: Build and Package the app
         run: npm run package
+        env:
+          NODE_ENV: production
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
