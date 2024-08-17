@@ -13,6 +13,9 @@ import os from 'os';
 import { Event } from './enums/event';
 import { Channel } from './enums/channel';
 import { Platform } from './enums/platform';
+import { updateElectronApp } from './lib/auto-updater';
+
+updateElectronApp();
 
 app.setName('Comet');
 

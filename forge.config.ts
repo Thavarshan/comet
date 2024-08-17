@@ -6,6 +6,7 @@ import { MakerRpm } from '@electron-forge/maker-rpm';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
+import { PublisherGithub } from '@electron-forge/publisher-github';
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -25,18 +26,17 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
+    new MakerSquirrel({
+      certificateFile: './cert.pfx',
+      certificatePassword: process.env.CERTIFICATE_PASSWORD
+    }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
-    new MakerDeb({}),
-    {
-      name: '@electron-forge/maker-deb',
-      config: {
-        options: {
-          icon: 'src/assets/images/icon/icon.png',
-        }
+    new MakerDeb({
+      options: {
+        icon: 'src/assets/images/icon/icon.png',
       }
-    }
+    }),
   ],
   plugins: [
     new VitePlugin({
@@ -67,6 +67,15 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    new PublisherGithub({
+      repository: {
+        owner: 'thavarshan',
+        name: 'comet',
+      },
+      prerelease: true,
+    })
+  ]
 };
 
 export default config;
