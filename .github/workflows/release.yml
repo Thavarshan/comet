@@ -24,9 +24,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Add node_modules/.bin to PATH
-        run: echo "PATH=$(npm bin):\$PATH" >> $GITHUB_ENV
-
       - name: Build and Package the app
         run: npm run package
         env:
@@ -66,6 +63,9 @@ jobs:
         with:
           name: comet-macos-latest
           path: ./artifacts/macos
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Publish to GitHub Releases
         run: npm run publish -- --prerelease
