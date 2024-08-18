@@ -78,7 +78,10 @@ const config: ForgeConfig = {
         owner: 'thavarshan',
         name: 'comet',
       },
+      generateReleaseNotes: true,
       prerelease: true,
+      tagPrefix: 'v',
+      draft: true,
     })
   ]
 };
