@@ -24,7 +24,7 @@ declare global {
   interface Window {
     electron: {
       selectDirectory: () => Promise<string | undefined>;
-      getDownloadsPath: () => string;
+      getDesktopPath: () => string;
       convertVideo: (filePath: string, outputFormat: string, saveDirectory: string) => Promise<string>;
       on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => void;
       removeAllListeners: (channel: string) => void;

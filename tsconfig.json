@@ -1,36 +1,18 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "commonjs",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "rootDir": ".",
-    "outDir": "dist",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
+    "outDir": "dist",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "types": [
-      "node",
-      "vite/client" // Includes Vite-specific types
-    ]
-  },
-  "include": [
-    "./**/*",
-    "src/**/*",
-    "tests/**/*",
-    "cypress/**/*" // Include Cypress files
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.spec.ts" // Exclude test files from the main build
-  ]
+    "resolveJsonModule": true
+  }
 }

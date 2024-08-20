@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vite';
 import { getBuildConfig, external, pluginHotRestart } from './vite.base.config';
