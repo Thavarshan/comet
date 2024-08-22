@@ -62,6 +62,10 @@
     "typescript": "~4.5.4",
     "vite": "^5.4.2"
   },
+  "packagerConfig": {
+    "name": "Comet",
+    "executableName": "Comet"
+  },
   "build": {
     "asarUnpack": [
       "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",

@@ -1,7 +1,7 @@
 import type { ForgeConfig } from '@electron-forge/shared-types';
 import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import { MakerZIP } from '@electron-forge/maker-zip';
-// import { MakerDeb } from '@electron-forge/maker-deb';
+import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
@@ -11,6 +11,8 @@ import { PublisherGithub } from '@electron-forge/publisher-github';
 const config: ForgeConfig = {
   packagerConfig: {
     icon: 'src/assets/images/icon/icon',
+    name: 'Comet',
+    executableName: 'Comet',
     asar: {
       unpack: "**/node_modules/ffmpeg-static/**"
     },
@@ -22,19 +24,14 @@ const config: ForgeConfig = {
     }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
-    {
-      name: '@electron-forge/maker-deb',
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      executableName: "Comet",
-      config: {
-        options: {
-          icon: 'src/assets/images/icon/icon.png',
-          name: 'Comet',
-          productName: 'Comet'
-        }
+    new MakerDeb({
+      options: {
+        name: 'Comet',
+        productName: 'Comet',
+        bin: 'Comet',
+        icon: 'src/assets/images/icon/icon.png',
       }
-    },
+    }),
   ],
   plugins: [
     new VitePlugin({
