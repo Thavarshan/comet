@@ -33,6 +33,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "test": "echo \"No test specified\" && exit 0",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
