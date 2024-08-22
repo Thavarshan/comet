@@ -4,15 +4,16 @@
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
 
-![Comet UI](./src/assets/images/screenshot_1.png)
-![Comet UI](./src/assets/images/screenshot_2.png)
+![Comet UI 1](./src/assets/images/screenshot_1.png)
+![Comet UI 2](./src/assets/images/screenshot_2.png)
+![Comet UI 3](./src/assets/images/screenshot_3.png)
 ![Comet Demo](./src/assets/images/demo.gif)
 
-## 🚀 Project Overview
+## Project Overview
 
 Comet's goal is to provide a free, user-friendly, and visually appealing application for converting video files. Whether you need to convert a single video or multiple files at once, Comet is here to help.
 
-### Key Features (Planned and Implemented)
+### Key Features
 
 - **Cross-Platform Compatibility:** Runs on macOS, Windows, and Linux.
 - **Multiple Video Formats:** Supports conversion to a wide range of video formats including MP4, MKV, AVI, MOV, and more.
@@ -23,9 +24,13 @@ Comet's goal is to provide a free, user-friendly, and visually appealing applica
 
 ### Current Status
 
-The project has made significant progress, with the basic UI now fully implemented, including bulk file uploads, conversion status tracking, and real-time feedback during the conversion process. The core video conversion functionality using FFmpeg has been successfully integrated, and the application is now stable and functional. We are currently focusing on signing the app, packaging it for distribution, and ensuring cross-platform compatibility.
+The project has made significant progress:
 
-## 🛠️ Technologies Used
+- **Basic UI and Core Functionality:** The user interface is fully implemented, supporting bulk file uploads, conversion status tracking, and real-time feedback.
+- **FFmpeg Integration:** The core video conversion functionality is complete, making the app fully functional.
+- **Cross-Platform Distributables:** Distributables for macOS, Windows, and Linux have been successfully created. However, due to the high cost of an Apple Developer membership, the app is currently not code-signed or notarized for macOS, which may present challenges when running it on Mac devices.
+
+## Technologies Used
 
 - **Electron:** For building the cross-platform desktop application.
 - **Vue.js (with Composition API and TypeScript):** For the frontend UI.
@@ -34,62 +39,58 @@ The project has made significant progress, with the basic UI now fully implement
 - **Vite:** For fast and modern build tooling.
 - **Tailwind CSS:** For styling and responsive design.
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 comet/
 │
-├── .vite/                           # Vite configuration directory
-├── .vscode/                         # VSCode settings directory
-├── bin/                             # Custom FFmpeg binaries
-│   └── ffmpeg/                      # FFmpeg binaries for different platforms
-│       ├── linux/
-│       ├── mac/
-│       └── win/
-├── out/                             # Build output directory
+├── .github/                        # GitHub-specific files, including workflows
+├── .vite/                          # Vite cache directory
+├── .vscode/                        # VSCode settings directory
+├── bin/                            # Custom scripts and binaries
+│   └── converter.sh                # Shell script for video conversion
+├── node_modules/                   # Node.js dependencies
+├── out/                            # Build output directory
+├── scripts/                        # Custom scripts
+│   └── postinstall.js              # Script to run after installation
 ├── src/
 │   ├── assets/
-│   │   ├── css/
-│   │   │   └── index.css            # Global CSS file
-│   │   └── images/
-│   │       ├── icon/                # Icons for the application
-│   │       ├── demo.gif             # GIF demonstrating app usage
-│   │       ├── logo.png             # Logo image
-│   │       ├── screenshot_1.png     # UI screenshot for README
-│   │       ├── screenshot_2.png     # UI screenshot for README
-│   │       └── screenshot.png       # UI screenshot for README
-│   ├── components/
-│   │   ├── blocks/                  # Main components for the app
-│   │   │   ├── Dropfile.vue         # Dropfile component for file uploads
-│   │   │   └── SaveDirectory.vue    # Component to handle save directory selection
-│   │   └── ui/                      # UI-related components
+│   │   ├── css/                    # Global CSS file
+│   │   └── images/                 # Image assets for the application
 │   ├── lib/
-│   │   ├── utils.ts                 # Utility functions
-│   ├── main.ts                      # Main process file
-│   ├── preload.ts                   # Preload script
-│   ├── renderer.ts                  # Renderer process entry point
-│   └── App.vue                      # Main Vue component
+│   │   └── utils.ts                # Utility functions
+│   ├── ui/
+│   │   ├── blocks/                 # Main components for the app
+│   │   └── components/             # UI-related components
+│   ├── main.ts                     # Main process file
+│   ├── preload.ts                  # Preload script
+│   ├── renderer.ts                 # Renderer process entry point
+│   └── app.vue                     # Main Vue component
 │
-├── .editorconfig                    # Editor configuration
-├── .eslintrc.json                   # ESLint configuration
-├── .gitattributes                   # Git attributes configuration
-├── .gitignore                       # Git ignore file
-├── LICENSE                          # License file
-├── index.html                       # Entry HTML file
-├── postcss.config.js                # PostCSS configuration
-├── tailwind.config.js               # Tailwind CSS configuration
-├── package-lock.json                # Lockfile for npm dependencies
-├── package.json                     # Node.js project configuration
-├── tsconfig.json                    # TypeScript configuration
-├── README.md                        # Project README file
-├── forge.config.ts                  # Electron Forge configuration
-├── vite.base.config.ts              # Vite base configuration
-├── vite.main.config.ts              # Vite main process configuration
-├── vite.preload.config.ts           # Vite preload script configuration
-└── vite.renderer.config.ts          # Vite renderer process configuration
+├── .editorconfig                   # Editor configuration
+├── .eslintrc.json                  # ESLint configuration
+├── .gitattributes                  # Git attributes configuration
+├── .gitignore                      # Git ignore file
+├── .prettierrc                     # Prettier configuration
+├── LICENSE                         # License file
+├── index.html                      # Entry HTML file
+├── postcss.config.js               # PostCSS configuration
+├── tailwind.config.js              # Tailwind CSS configuration
+├── components.json                 # Component configuration
+├── package-lock.json               # Lockfile for npm dependencies
+├── package.json                    # Node.js project configuration
+├── tsconfig.json                   # TypeScript configuration
+├── README.md                       # Project README file
+├── forge.config.ts                 # Electron Forge configuration
+├── forge.env.d.ts                  # Environment type declarations
+├── shims-vue.d.ts                  # TypeScript shims for Vue
+├── vite.base.config.ts             # Vite base configuration
+├── vite.main.config.ts             # Vite main process configuration
+├── vite.preload.config.ts          # Vite preload script configuration
+└── vite.renderer.config.ts         # Vite renderer process configuration
 ```
 
-## 🚧 How to Contribute
+## How to Contribute
 
 We welcome contributions and collaboration! Whether you're a seasoned developer or just starting out, there's a place for you in our project. Here's how you can help:
 
@@ -133,7 +134,7 @@ To get started with development:
    - Ensure your changes do not break existing functionality.
    - Write unit tests if possible and applicable.
 
-## 📝 Roadmap
+## Roadmap
 
 - **Phase 1:** Basic UI Implementation (Completed)
   - File upload functionality.
@@ -150,25 +151,25 @@ To get started with development:
 
 - **Phase 4:** Cross-Platform Testing and Release (In Progress)
   - Test and refine the app on macOS, Windows, and Linux.
-  - **Sign the app** to ensure it is trusted by operating systems.
   - **Package the app for distribution** on various platforms.
+  - **Overcome code signing challenges**, particularly on macOS due to the cost of an Apple Developer membership.
   - Prepare for the first public release.
 
-## 🧑‍💻 Contributors
+## Contributors
 
 - **Jerome Thayananthajothy** - Project Lead & Developer
 - [**Contributors List**](https://github.com/stellar-comet/comet/graphs/contributors) - A big thank you to all the amazing contributors!
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🌟 Acknowledgements
+## Acknowledgements
 
 - [FFmpeg](https://ffmpeg.org/) - The powerful multimedia framework that makes this project possible.
 - The Electron and Vue.js communities for their fantastic tools and support.
 
-## 🙌 Support
+## Support
 
 If you find this project helpful or interesting, please consider giving it a ⭐ on GitHub. Your support and feedback are greatly appreciated!
 
