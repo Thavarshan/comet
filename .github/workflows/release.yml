@@ -25,12 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Electron dependencies
+      - name: Set up Electron dependencies on macOS
+        if: runner.os == 'macOS'
         run: |
-          if [ "${{ matrix.os }}" == "macos-latest" ]; then
-            brew install wine mono;
-          fi
-        if: runner.os == 'Linux' || runner.os == 'macOS'
+          brew install --cask wine-stable
+          brew install mono
 
       - name: Build Electron app
         run: |
