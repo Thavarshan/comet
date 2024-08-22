@@ -10,7 +10,6 @@ import ffmpegStatic from 'ffmpeg-static';
 import * as os from 'os';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import fs from 'node:fs';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -31,24 +30,31 @@ function createWindow() {
     width: isDev ? 1200 : 700,
     height: 600,
     resizable: false,
+    autoHideMenuBar: true,
     icon: path.join(__dirname, 'assets', 'images', 'icon', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
+  mainWindow.setVisibleOnAllWorkspaces(true);
+  mainWindow.setFullScreenable(false);
+  mainWindow.setMenuBarVisibility(false);
+
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
   }
 
   // Open the DevTools.
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-};
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -80,7 +86,9 @@ app.whenReady().then(() => {
     }
   ) => {
     return new Promise<string>((resolve, reject) => {
-      const outputFileName = path.basename(filePath, path.extname(filePath)) + '.' + outputFormat;
+      const outputFileName = path.basename(filePath, path.extname(filePath))
+        + '.'
+        + outputFormat;
       const outputPath = path.join(saveDirectory, outputFileName);
 
       ffmpeg(filePath)

@@ -21,13 +21,12 @@ import {
   DialogTrigger,
 } from '@/ui/components/dialog';
 import {
-  Cross1Icon,
-  UpdateIcon,
-  TrashIcon,
-  ReloadIcon,
-  VideoIcon,
-  WidthIcon,
-} from '@radix-icons/vue';
+  XMarkIcon,
+  ArchiveBoxArrowDownIcon,
+  ArrowPathIcon,
+  VideoCameraIcon,
+  TrashIcon
+} from '@heroicons/vue/24/outline';
 
 const files = ref<File[]>([]);
 const saveDirectory = ref<string | undefined>();
@@ -128,7 +127,7 @@ async function convertFiles() {
         <Dialog>
           <DialogTrigger as-child>
             <Button variant="outline">
-              <WidthIcon class="size-4 mr-2" />
+              <ArchiveBoxArrowDownIcon class="size-4 mr-2" />
               Convert to: <Badge variant="secondary" class="ml-2">{{ convertTo }}</Badge>
             </Button>
           </DialogTrigger>
@@ -181,7 +180,7 @@ async function convertFiles() {
           :disabled="!files?.length || !saveDirectory"
           class="bg-blue-500 text-white"
         >
-          <UpdateIcon class="size-4 mr-2" /> Convert
+          <ArrowPathIcon class="size-4 mr-2" /> Convert
         </Button>
         <Button
           v-else
@@ -189,7 +188,7 @@ async function convertFiles() {
           disabled
           class="bg-blue-500 text-white flex items-center"
         >
-          <ReloadIcon class="size-4 mr-2 animate-spin" /> Converting...
+          <ArrowPathIcon class="size-4 mr-2 animate-spin" /> Converting...
         </Button>
       </div>
     </div>
@@ -199,7 +198,7 @@ async function convertFiles() {
           <li class="flex justify-between items-center gap-x-6" v-for="(file, index) in files" :key="file.name">
             <div class="flex items-center min-w-0 gap-x-3 py-3">
               <div class="p-4 rounded-lg bg-slate-100 border border-slate-200">
-                <VideoIcon class="size-8 text-slate-400" />
+                <VideoCameraIcon class="size-8 text-slate-400" />
               </div>
               <div class="min-w-0 flex-auto">
                 <p class="text-sm font-semibold leading-6 text-slate-800 truncate">{{ file.name }}</p>
@@ -217,7 +216,7 @@ async function convertFiles() {
             </div>
             <div class="shrink-0 flex items-center gap-x-3">
               <Button type="button" variant="outline" class="text-destructive" @click="removeFile(index)" :disabled="converting">
-                <Cross1Icon class="size-4" />
+                <XMarkIcon class="size-4" />
               </Button>
             </div>
           </li>
