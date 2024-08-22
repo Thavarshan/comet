@@ -22,15 +22,21 @@ const config: ForgeConfig = {
     new MakerSquirrel({
       setupIcon: 'src/assets/images/icon/icon.ico'
     }),
+    new MakerZIP({}, ['win32']),
     new MakerZIP({}, ['darwin']),
-    new MakerRpm({}),
+    new MakerZIP({}, ['linux']),
+    new MakerRpm({}, ['x64']),
+    new MakerRpm({}, ['arm64']),
     new MakerDeb({
       options: {
-        name: 'comet',
-        productName: 'Comet',
         icon: 'src/assets/images/icon/icon.png',
       }
-    }),
+    }, ['x64']),
+    new MakerDeb({
+      options: {
+        icon: 'src/assets/images/icon/icon.png',
+      }
+    }, ['arm64']),
   ],
   plugins: [
     new VitePlugin({
