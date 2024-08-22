@@ -1,42 +1,70 @@
 import type { ForgeConfig } from '@electron-forge/shared-types';
-import { MakerSquirrel } from '@electron-forge/maker-squirrel';
-import { MakerZIP } from '@electron-forge/maker-zip';
-import { MakerDeb } from '@electron-forge/maker-deb';
-import { MakerRpm } from '@electron-forge/maker-rpm';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 import { PublisherGithub } from '@electron-forge/publisher-github';
+import packageJson from './package.json';
+import path from 'node:path';
+
+const { version } = packageJson;
+const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
+
+const commonLinuxConfig = {
+  categories: ['Video', 'Utility'],
+  mimeType: ['x-scheme-handler/comet'],
+};
 
 const config: ForgeConfig = {
   packagerConfig: {
-    name: 'comet',
-    executableName: 'Comet',
-    icon: 'src/assets/images/icon/icon',
+    name: 'Comet',
+    executableName: 'comet',
+    icon: 'src/assets/images/icons/icon',
+    appBundleId: 'com.thavarshan.comet',
+    appCategoryType: 'public.app-category.video',
     asar: {
       unpack: "**/node_modules/ffmpeg-static/**"
     },
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({
-      setupIcon: 'src/assets/images/icon/icon.ico'
-    }),
-    new MakerZIP({}, ['win32']),
-    new MakerZIP({}, ['darwin']),
-    new MakerZIP({}, ['linux']),
-    new MakerRpm({}, ['x64']),
-    new MakerRpm({}, ['arm64']),
-    new MakerDeb({
-      options: {
-        icon: 'src/assets/images/icon/icon.png',
-      }
-    }, ['x64']),
-    new MakerDeb({
-      options: {
-        icon: 'src/assets/images/icon/icon.png',
-      }
-    }, ['arm64']),
+    {
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: (arch: string) => ({
+        name: 'Comet',
+        authors: 'Jerome Thayananthajothy',
+        exe: 'Comet.exe',
+        noMsi: true,
+        setupExe: `comet-${version}-win32-${arch}-setup.exe`,
+        setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
+      }),
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+      config: {
+        name: 'Comet'
+      },
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      platforms: ['linux'],
+      config: commonLinuxConfig,
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      platforms: ['linux'],
+      config: commonLinuxConfig,
+    },
+    {
+      name: '@reforged/maker-appimage',
+      platforms: ['linux'],
+      config: {
+        options: {
+          categories: commonLinuxConfig.categories,
+        },
+      },
+    },
   ],
   plugins: [
     new VitePlugin({

@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, arm64]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -23,6 +24,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Set up Wine and Mono for Windows build on macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install --cask wine-stable mono
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: ${{ matrix.os }}
 
       - name: Publish to GitHub Releases
         run: npm run publish

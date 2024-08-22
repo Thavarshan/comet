@@ -1,13 +1,20 @@
 {
   "name": "comet",
   "productName": "Comet",
+  "private": true,
   "version": "0.0.2",
   "description": "A simple video converter",
-  "keywords": [],
+  "keywords": [
+    "comet",
+    "video",
+    "converter",
+    "ffmpeg"
+  ],
   "author": {
     "name": "Jerome Thayananthajothy",
     "email": "tjthavarshan@gmail.com"
   },
+  "homepage": "https://comet.thavarshan.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/stellar-comet/comet.git"
@@ -16,6 +23,9 @@
     "url": "https://github.com/stellar-comet/comet/issues"
   },
   "license": "MIT",
+  "config": {
+    "forge": "./forge.config.ts"
+  },
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -61,6 +71,9 @@
     "ts-node": "^10.9.2",
     "typescript": "~4.5.4",
     "vite": "^5.4.2"
+  },
+  "engines": {
+    "node": ">= 20.10.0"
   },
   "build": {
     "asarUnpack": [
