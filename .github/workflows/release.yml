@@ -6,7 +6,7 @@ on:
       - release
 
 jobs:
-  release:
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -39,7 +39,29 @@ jobs:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: ${{ matrix.os }}
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}-distributables
+          path: out/make  # Adjust the path to where your distributables are stored
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: all-distributables
+
+      - name: List downloaded files
+        run: ls -R all-distributables
+
       - name: Publish to GitHub Releases
-        run: npm run publish
+        run: |
+          npm run publish -- --dir=all-distributables --verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
