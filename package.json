@@ -59,6 +59,7 @@
     "executableName": "Comet"
   },
   "build": {
+    "executableName": "Comet",
     "asarUnpack": [
       "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
       "node_modules/ffmpeg-static/index.js",
