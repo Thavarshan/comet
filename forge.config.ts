@@ -55,16 +55,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-rpm',
       platforms: ['linux'],
       config: commonLinuxConfig,
-    },
-    {
-      name: '@reforged/maker-appimage',
-      platforms: ['linux'],
-      config: {
-        options: {
-          categories: commonLinuxConfig.categories,
-        },
-      },
-    },
+    }
   ],
   plugins: [
     new VitePlugin({
