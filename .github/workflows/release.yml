@@ -71,20 +71,12 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v${{ env.VERSION }}
-          release_name: Release v${{ env.VERSION }}
-          draft: true
-          prerelease: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload Assets to Release
+      - name: Create and Upload to Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "all-distributables/**/*"
           tag: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
+          draft: true
+          prerelease: true
+          artifacts: "all-distributables/**/*"
           token: ${{ secrets.GH_TOKEN }}

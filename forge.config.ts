@@ -93,18 +93,6 @@ const config: ForgeConfig = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
-  ],
-  publishers: [
-    new PublisherGithub({
-      repository: {
-        owner: 'stellar-comet',
-        name: 'comet',
-      },
-      generateReleaseNotes: true,
-      prerelease: true,
-      tagPrefix: 'v',
-      draft: true,
-    })
   ]
 };
 
