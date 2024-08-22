@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
         arch: [x64, arm64]
     runs-on: ${{ matrix.os }}
 
@@ -76,23 +76,36 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { data: releases } = await github.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
             const tagName = `v${process.env.VERSION}`;
-            let release = releases.find(release => release.tag_name === tagName);
-            if (!release) {
-              release = await github.repos.createRelease({
+            let release = null;
+            try {
+              const { data: releases } = await github.rest.repos.listReleases({
                 owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag_name: tagName,
-                name: `Release v${process.env.VERSION}`,
-                draft: true,
-                prerelease: true
+                repo: context.repo.repo
               });
+              release = releases.find(release => release.tag_name === tagName);
+            } catch (error) {
+              core.setFailed(`Failed to list releases: ${error.message}`);
             }
-            return { release_id: release.id, upload_url: release.upload_url };
+
+            if (!release) {
+              try {
+                const response = await github.rest.repos.createRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_name: tagName,
+                  name: `Release v${process.env.VERSION}`,
+                  draft: true,
+                  prerelease: true
+                });
+                release = response.data;
+              } catch (error) {
+                core.setFailed(`Failed to create release: ${error.message}`);
+              }
+            }
+
+            core.setOutput('release_id', release.id);
+            core.setOutput('upload_url', release.upload_url);
 
       - name: Upload to GitHub Release
         run: |
