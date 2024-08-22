@@ -1,5 +1,7 @@
 {
+  "name": "comet",
   "productName": "Comet",
+  "executableName": "Comet",
   "version": "1.0.0",
   "description": "A simple video converter",
   "keywords": [],
