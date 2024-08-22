@@ -27,6 +27,7 @@ const config: ForgeConfig = {
       options: {
         name: 'Comet',
         productName: 'Comet',
+        bin: 'Comet',
         icon: 'src/assets/images/icon/icon.png',
       }
     }),
