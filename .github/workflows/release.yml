@@ -9,8 +9,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest]
-        arch: [x64]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, arm64]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Cache Node.js modules
         id: cache-node-modules
@@ -58,7 +58,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Extract version from package.json
         id: version
@@ -71,49 +71,24 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Create GitHub Release
+      - name: Create Release
         id: create_release
-        uses: actions/github-script@v6
+        uses: actions/create-release@v1
         with:
-          script: |
-            const tagName = `v${process.env.VERSION}`;
-            let release = null;
-            try {
-              const { data: releases } = await github.rest.repos.listReleases({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              release = releases.find(release => release.tag_name === tagName);
-            } catch (error) {
-              core.setFailed(`Failed to list releases: ${error.message}`);
-            }
-
-            if (!release) {
-              try {
-                const response = await github.rest.repos.createRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  tag_name: tagName,
-                  name: `Release v${process.env.VERSION}`,
-                  draft: true,
-                  prerelease: true
-                });
-                release = response.data;
-              } catch (error) {
-                core.setFailed(`Failed to create release: ${error.message}`);
-              }
-            }
-
-            core.setOutput('release_id', release.id);
-            core.setOutput('upload_url', release.upload_url);
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          draft: true
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to GitHub Release
         run: |
           for file in all-distributables/**/*; do
             if [ -f "$file" ]; then
               echo "Uploading $file to GitHub release"
-              gh release upload ${{ steps.create_release.outputs.release_id }} "$file" --clobber
+              gh release upload ${{ steps.create_release.outputs.upload_url }} "$file" --clobber
             fi
           done
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
