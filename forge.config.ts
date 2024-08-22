@@ -100,7 +100,7 @@ const config: ForgeConfig = {
         owner: 'stellar-comet',
         name: 'comet',
       },
-      generateReleaseNotes: false,
+      generateReleaseNotes: true,
       prerelease: true,
       tagPrefix: 'v',
       draft: true,
