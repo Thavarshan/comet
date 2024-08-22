@@ -66,7 +66,7 @@ const config: ForgeConfig = {
   publishers: [
     new PublisherGithub({
       repository: {
-        owner: 'thavarshan',
+        owner: 'stellar-comet',
         name: 'comet',
       },
       generateReleaseNotes: true,
