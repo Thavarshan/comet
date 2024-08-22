@@ -22,14 +22,17 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Cache Node.js modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
         run: npm install
-
-      - name: Set up Wine and Mono for Windows build on macOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          brew install --cask wine-stable
-          brew install mono
 
       - name: Build Electron app
         run: |
@@ -52,6 +55,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Restore Node.js modules cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -62,6 +81,6 @@ jobs:
 
       - name: Publish to GitHub Releases
         run: |
-          npm run publish -- --dir=all-distributables --verbose
+          npx electron-forge publish --dir=all-distributables --verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
