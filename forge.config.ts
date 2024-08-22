@@ -25,6 +25,8 @@ const config: ForgeConfig = {
     new MakerRpm({}),
     new MakerDeb({
       options: {
+        name: 'comet',
+        productName: 'Comet',
         icon: 'src/assets/images/icon/icon.png',
       }
     }),

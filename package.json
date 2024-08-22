@@ -57,8 +57,7 @@
     "vite": "^5.4.2"
   },
   "packagerConfig": {
-    "executableName": "Comet",
-    "icon": "src/assets/icon.png"
+    "executableName": "comet"
   },
   "build": {
     "asarUnpack": [
