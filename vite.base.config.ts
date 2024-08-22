@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { builtinModules } from 'node:module';
 import type { AddressInfo } from 'node:net';
 import type { ConfigEnv, Plugin, UserConfig } from 'vite';
@@ -27,7 +26,7 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
 }
 
 export function getDefineKeys(names: string[]) {
-  const define: { [name: string]: VitePluginRuntimeKeys; } = {};
+  const define: { [name: string]: VitePluginRuntimeKeys } = {};
 
   return names.reduce((acc, name) => {
     const NAME = name.toUpperCase();
@@ -51,7 +50,7 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
       [VITE_NAME]: JSON.stringify(name),
     };
     return { ...acc, ...def };
-  }, {} as Record<string, unknown>);
+  }, {} as Record<string, any>);
 
   return define;
 }

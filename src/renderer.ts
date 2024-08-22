@@ -29,6 +29,6 @@
 import './assets/css/index.css';
 
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from './ui/app.vue';
 
 createApp(App).mount('#app');

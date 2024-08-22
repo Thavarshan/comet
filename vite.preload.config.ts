@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vite';
 import { getBuildConfig, external, pluginHotRestart } from './vite.base.config';
+import path from 'node:path';
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -24,6 +24,12 @@ export default defineConfig((env) => {
       },
     },
     plugins: [pluginHotRestart('reload')],
+    resolve: {
+      preserveSymlinks: true,
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);

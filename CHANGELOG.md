@@ -4,6 +4,4 @@
 
 ## [Release v0.0.1](https://github.com/Thavarshan/filterable/compare/v1.0.0...Release v0.0.1) - 2024-08-17
 
-## v1.0.0 - 2024-08-17
-
-Initial release.
+Initial alpha release for public testing and feedback.

@@ -1,53 +1,36 @@
 {
-  "name": "comet",
-  "productName": "comet",
-  "version": "0.0.1",
+  "name": "@stellar-comet/comet",
+  "productName": "Comet",
+  "version": "1.0.0",
   "description": "A simple video converter",
-  "main": ".vite/build/main.js",
-  "keywords": [
-    "electron",
-    "typescript",
-    "ffmpeg",
-    "comet"
-  ],
+  "keywords": [],
   "author": {
     "name": "Jerome Thayananthajothy",
     "email": "tjthavarshan@gmail.com"
   },
   "license": "MIT",
+  "main": ".vite/build/main.js",
   "scripts": {
-    "postinstall": "node scripts/postinstall.js",
-    "clean": "rimraf node_modules",
-    "prebuild:mac": "npm run clean",
-    "build:mac": "npm_config_platform=darwin npm_config_arch=x64 npm install && electron-builder build --mac",
-    "prebuild:linux": "npm run clean",
-    "build:linux": "npm_config_platform=linux npm_config_arch=x64 npm install && electron-builder build --linux",
-    "prebuild:win": "npm run clean",
-    "build:win": "npm_config_platform=win32 npm_config_arch=x64 npm install && electron-builder build --win",
+    "start": "electron-forge start",
+    "dev": "npm run start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish --prerelease",
-    "dev": "electron-forge start",
+    "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
+    "@electron-forge/publisher-github": "^7.4.0",
+    "@heroicons/vue": "^2.1.5",
     "@radix-icons/vue": "^1.0.0",
-    "@vee-validate/zod": "^4.13.2",
-    "@vueuse/core": "^10.11.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.5",
     "electron-squirrel-startup": "^1.0.1",
-    "electron-updater": "^6.2.1",
     "ffmpeg-static": "^5.2.0",
     "fluent-ffmpeg": "^2.1.3",
-    "radix-vue": "^1.9.3",
-    "tailwind-merge": "^2.5.0",
+    "radix-vue": "^1.9.4",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "vaul-vue": "^0.2.0",
-    "vee-validate": "^4.13.2",
-    "vue": "^3.4.37",
-    "zod": "^3.23.8"
+    "vue": "^3.4.38"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
@@ -58,27 +41,26 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron-forge/plugin-vite": "^7.4.0",
-    "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@types/fluent-ffmpeg": "^2.1.25",
-    "@types/node": "^22.2.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "autoprefixer": "^10.4.20",
-    "cross-env": "^7.0.3",
-    "electron": "31.3.1",
+    "electron": "32.0.1",
     "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.29.1",
     "postcss": "^8.4.41",
-    "rimraf": "^3.0.2",
-    "sinon": "^18.0.0",
-    "tailwindcss": "^3.4.9",
+    "tailwindcss": "^3.4.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.1.6",
-    "vite": "^5.4.0"
+    "typescript": "~4.5.4",
+    "vite": "^5.4.2"
   },
-  "packagerConfig": {
-    "executableName": "comet"
+  "build": {
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json"
+    ]
   }
 }

@@ -1,4 +1,4 @@
-<p align="center"><a href="https://thavarshan.com" target="_blank"><img src="https://github.com/Thavarshan/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
 
 ## About Comet
 
@@ -107,7 +107,7 @@ To get started with development:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Thavarshan/comet.git
+   git clone https://github.com/stellar-comet/comet.git
    cd comet
    ```
 
@@ -157,7 +157,7 @@ To get started with development:
 ## 🧑‍💻 Contributors
 
 - **Jerome Thayananthajothy** - Project Lead & Developer
-- [**Contributors List**](https://github.com/Thavarshan/comet/graphs/contributors) - A big thank you to all the amazing contributors!
+- [**Contributors List**](https://github.com/stellar-comet/comet/graphs/contributors) - A big thank you to all the amazing contributors!
 
 ## 📄 License
 

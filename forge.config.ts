@@ -7,33 +7,19 @@ import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
 import { PublisherGithub } from '@electron-forge/publisher-github';
-import path from 'path';
 
 const config: ForgeConfig = {
   packagerConfig: {
+    icon: 'src/assets/images/icon',
+    executableName: 'Comet',
     asar: {
-      unpack: '**/node_modules/ffmpeg-static/**',
+      unpack: "**/node_modules/ffmpeg-static/**"
     },
-    icon: process.platform === 'win32' ? 'src/assets/images/icon/icon.ico' : 'src/assets/images/icon/icon.icns',
-    executableName: 'comet',
-    extraResource: process.platform === 'win32'
-      ? path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg.exe')
-      : path.resolve(__dirname, 'node_modules', 'ffmpeg-static', 'ffmpeg'),
-    // Bypassing signing and notarization for now
-    // ...(process.platform === 'darwin' && {
-    //   osxSign: {},
-    //   osxNotarize: {
-    //     appleId: process.env.APPLE_ID,
-    //     appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    //     teamId: process.env.TEAM_ID,
-    //   },
-    // }),
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      certificateFile: './cert.pfx',
-      certificatePassword: process.env.CERTIFICATE_PASSWORD
+      setupIcon: 'src/assets/images/icon/icon.ico'
     }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
@@ -45,8 +31,11 @@ const config: ForgeConfig = {
   ],
   plugins: [
     new VitePlugin({
+      // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
+      // If you are familiar with Vite configuration, it will look really familiar.
       build: [
         {
+          // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: 'src/main.ts',
           config: 'vite.main.config.ts',
         },
@@ -62,6 +51,8 @@ const config: ForgeConfig = {
         },
       ],
     }),
+    // Fuses are used to enable/disable various Electron functionality
+    // at package time, before code signing the application
     new FusesPlugin({
       version: FuseVersion.V1,
       [FuseV1Options.RunAsNode]: false,
