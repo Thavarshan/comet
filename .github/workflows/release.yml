@@ -28,7 +28,8 @@ jobs:
       - name: Set up Wine and Mono for Windows build on macOS
         if: matrix.os == 'macos-latest'
         run: |
-          brew install --cask wine-stable mono
+          brew install --cask wine-stable
+          brew install mono
 
       - name: Build Electron app
         run: |
