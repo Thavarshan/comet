@@ -80,15 +80,11 @@ jobs:
           draft: true
           prerelease: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
-      - name: Upload to GitHub Release
-        run: |
-          for file in all-distributables/**/*; do
-            if [ -f "$file" ]; then
-              echo "Uploading $file to GitHub release"
-              gh release upload ${{ steps.create_release.outputs.upload_url }} "$file" --clobber
-            fi
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Upload Assets to Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "all-distributables/**/*"
+          tag: v${{ env.VERSION }}
+          token: ${{ secrets.PAT_TOKEN }}
