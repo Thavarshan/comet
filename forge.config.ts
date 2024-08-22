@@ -11,7 +11,7 @@ import { PublisherGithub } from '@electron-forge/publisher-github';
 const config: ForgeConfig = {
   packagerConfig: {
     icon: 'src/assets/images/icon/icon',
-    name: 'Comet',
+    name: 'comet',
     executableName: 'Comet',
     asar: {
       unpack: "**/node_modules/ffmpeg-static/**"
@@ -26,6 +26,8 @@ const config: ForgeConfig = {
     new MakerRpm({}),
     new MakerDeb({
       options: {
+        name: 'comet',
+        productName: 'Comet',
         icon: 'src/assets/images/icon/icon.png',
       }
     }),
