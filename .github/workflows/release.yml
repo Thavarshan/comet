@@ -80,11 +80,11 @@ jobs:
           draft: true
           prerelease: true
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Assets to Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "all-distributables/**/*"
           tag: v${{ env.VERSION }}
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
