@@ -1,5 +1,5 @@
 {
-  "name": "@stellar-comet/comet",
+  "name": "comet",
   "productName": "Comet",
   "version": "1.0.0",
   "description": "A simple video converter",
