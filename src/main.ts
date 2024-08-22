@@ -5,9 +5,12 @@ import {
   dialog,
   IpcMainInvokeEvent
 } from 'electron';
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegStatic from 'ffmpeg-static';
 import * as os from 'os';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import fs from 'node:fs';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -28,6 +31,7 @@ function createWindow() {
     width: isDev ? 1200 : 700,
     height: 600,
     resizable: false,
+    icon: path.join(__dirname, 'assets', 'images', 'icon', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -52,6 +56,9 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
 
+  const ffmpegPath = ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
+  ffmpeg.setFfmpegPath(ffmpegPath);
+
   ipcMain.handle('get-desktop-path', () => {
     return getDesktopPath();
   });
@@ -72,8 +79,19 @@ app.whenReady().then(() => {
       saveDirectory: string;
     }
   ) => {
-    dialog.showMessageBox({
-      message: `Converting ${filePath} to ${outputFormat} in ${saveDirectory}`,
+    return new Promise<string>((resolve, reject) => {
+      const outputFileName = path.basename(filePath, path.extname(filePath)) + '.' + outputFormat;
+      const outputPath = path.join(saveDirectory, outputFileName);
+
+      ffmpeg(filePath)
+        .output(outputPath)
+        .on('end', () => {
+          resolve(outputPath);
+        })
+        .on('error', (error: Error) => {
+          reject(error);
+        })
+        .save(outputPath);
     });
   });
 });

@@ -6,17 +6,28 @@ import { MakerRpm } from '@electron-forge/maker-rpm';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
+import { PublisherGithub } from '@electron-forge/publisher-github';
 
 const config: ForgeConfig = {
   packagerConfig: {
-    asar: true,
+    icon: 'src/assets/images/icon',
+    executableName: 'Comet',
+    asar: {
+      unpack: "**/node_modules/ffmpeg-static/**"
+    },
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({}),
+    new MakerSquirrel({
+      setupIcon: 'src/assets/images/icon/icon.ico'
+    }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
-    new MakerDeb({})
+    new MakerDeb({
+      options: {
+        icon: 'src/assets/images/icon/icon.png',
+      }
+    }),
   ],
   plugins: [
     new VitePlugin({
@@ -52,6 +63,18 @@ const config: ForgeConfig = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    new PublisherGithub({
+      repository: {
+        owner: 'thavarshan',
+        name: 'comet',
+      },
+      generateReleaseNotes: true,
+      prerelease: true,
+      tagPrefix: 'v',
+      draft: true,
+    })
+  ]
 };
 
 export default config;
