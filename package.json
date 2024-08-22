@@ -1,12 +1,19 @@
 {
   "name": "comet",
-  "productName": "Comet",
+  "productName": "comet",
   "version": "1.0.0",
   "description": "A simple video converter",
   "keywords": [],
   "author": {
     "name": "Jerome Thayananthajothy",
     "email": "tjthavarshan@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stellar-comet/comet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stellar-comet/comet/issues"
   },
   "license": "MIT",
   "main": ".vite/build/main.js",
