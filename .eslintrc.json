@@ -26,6 +26,15 @@
       {
         "code": 120
       }
+    ],
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
     ]
   },
   "ignorePatterns": [

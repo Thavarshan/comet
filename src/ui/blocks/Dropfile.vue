@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import {
-  CloudArrowUpIcon,
-} from '@heroicons/vue/24/outline';
+  CloudUpload,
+} from 'lucide-vue-next';
+import { CONVERSION_FORMATS } from '@/consts/formats';
 
 const emit = defineEmits(['file-uploaded']);
 const isDragging = ref(false);
+
+const acceptFormats = computed(() => {
+  return CONVERSION_FORMATS.map((format) => `.${format}`).join(',');
+});
 
 const handleUpload = (event: Event) => {
   const files = (event.target as HTMLInputElement).files;
@@ -43,8 +48,8 @@ const handleDrop = (event: DragEvent) => {
     @dragleave="handleDragLeave"
     @drop="handleDrop"
   >
-    <CloudArrowUpIcon class="size-12 mb-2 text-slate-400" />
-    <input type="file" id='file-uploader' class="hidden" @change="handleUpload" multiple accept="video/*">
+    <CloudUpload class="size-12 mb-2 text-slate-400" />
+    <input type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptFormats">
     <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag and drop your files here</p>
   </label>
 </template>

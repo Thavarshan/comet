@@ -26,7 +26,8 @@ declare global {
       selectDirectory: () => Promise<string | undefined>;
       getDesktopPath: () => string;
       getFilePath: (file: File) => string;
-      convertVideo: (filePath: string, outputFormat: string, saveDirectory: string) => Promise<string>;
+      cancelConversion: (id: number | string) => Promise<unknown>;
+      convertVideo: (id: string, filePath: string, outputFormat: string, saveDirectory: string) => Promise<string>;
       on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => void;
       removeAllListeners: (channel: string) => void;
     };
@@ -41,4 +42,33 @@ declare module 'vite' {
     forgeConfig: VitePluginConfig;
     forgeConfigSelf: VitePluginConfig[K][number];
   }
+}
+
+declare module 'ffmpeg-probe' {
+  interface FFProbeResult {
+    streams: Array<{
+      codec_name: string;
+      codec_type: string;
+      width?: number;
+      height?: number;
+      [key: string]: unknown;
+    }>;
+    format: {
+      filename: string;
+      nb_streams: number;
+      nb_programs: number;
+      format_name: string;
+      format_long_name: string;
+      start_time: string;
+      duration: string;
+      size: string;
+      bit_rate: string;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  }
+
+  function ffprobe(filePath: string): Promise<FFProbeResult>;
+
+  export = ffprobe;
 }
