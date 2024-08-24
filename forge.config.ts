@@ -95,8 +95,3 @@ const config: ForgeConfig = {
     }),
   ]
 };
-
-export default config;
-"electronInstallerDebian": {
-  "bin": "Application Name";
-},
