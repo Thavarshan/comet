@@ -9,6 +9,9 @@ const { version } = packageJson;
 const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
 
 const commonLinuxConfig = {
+  name: 'comet',
+  productName: 'Comet',
+  bin: 'Comet',
   categories: ['Video', 'Utility'],
   mimeType: ['x-scheme-handler/comet'],
 };
@@ -52,7 +55,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-rpm',
       platforms: ['linux'],
       config: commonLinuxConfig,
-    }
+    },
   ],
   plugins: [
     new VitePlugin({
@@ -94,3 +97,6 @@ const config: ForgeConfig = {
 };
 
 export default config;
+"electronInstallerDebian": {
+  "bin": "Application Name";
+},
