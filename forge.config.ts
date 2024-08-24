@@ -2,7 +2,6 @@ import type { ForgeConfig } from '@electron-forge/shared-types';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
-import { PublisherGithub } from '@electron-forge/publisher-github';
 import packageJson from './package.json';
 import path from 'node:path';
 
@@ -17,12 +16,12 @@ const commonLinuxConfig = {
 const config: ForgeConfig = {
   packagerConfig: {
     name: 'Comet',
-    executableName: 'comet',
+    executableName: 'Comet',
     icon: 'src/assets/images/icons/icon',
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
     asar: {
-      unpack: "**/node_modules/ffmpeg-static/**"
+      unpack: "**/node_modules/{ffmpeg-static,ffprobe-static}/**",
     },
   },
   rebuildConfig: {},
@@ -42,9 +41,7 @@ const config: ForgeConfig = {
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
-      config: {
-        name: 'Comet'
-      },
+      config: {},
     },
     {
       name: '@electron-forge/maker-deb',

@@ -11,14 +11,16 @@ contextBridge.exposeInMainWorld('electron', {
   selectDirectory: () => ipcRenderer.invoke('dialog:select-directory'),
   getDesktopPath: () => ipcRenderer.invoke('get-desktop-path'),
   getFilePath: (file: File) => webUtils.getPathForFile(file),
+  cancelConversion: (id: number) => ipcRenderer.invoke('cancel-conversion', id),
   convertVideo: (
+    id: string,
     filePath: string,
     outputFormat: string,
     saveDirectory: string
   ) => {
     return ipcRenderer.invoke(
       'convert-video',
-      { filePath, outputFormat, saveDirectory }
+      { id, filePath, outputFormat, saveDirectory }
     );
   },
   on: (

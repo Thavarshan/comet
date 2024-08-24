@@ -18,8 +18,9 @@ import {
   TooltipTrigger
 } from '@/ui/components/tooltip';
 import {
-  FolderOpenIcon,
-} from '@heroicons/vue/24/outline';
+  FolderInput,
+  FolderOpenDot
+} from 'lucide-vue-next';
 
 const props = defineProps<{
   defaultSaveDirectory?: string;
@@ -49,7 +50,7 @@ async function handleDirectorySelection(event: Event) {
           <Tooltip>
             <TooltipTrigger>
               <Button variant="outline" type="button">
-                <FolderOpenIcon class="size-4 mr-2" /> Save to
+                <FolderInput class="size-4 mr-2" /> Save to
               </Button>
             </TooltipTrigger>
             <TooltipContent align="start">
@@ -70,7 +71,7 @@ async function handleDirectorySelection(event: Event) {
               </p>
               <div v-if="selectedDirectory" class="mt-4 flex items-center gap-x-4 border border-slate-300 rounded-lg bg-slate-100 p-1">
                 <Button type="button" variant="outline" @click="handleDirectorySelection">
-                  <FolderOpenIcon class="size-4" />
+                  <FolderOpenDot class="size-4" />
                 </Button>
                 <div class="flex-1 font-mono font-medium text-slate-800 text-xs truncate">:{{ selectedDirectory }}</div>
               </div>

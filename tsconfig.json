@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "vite/client" // Includes Vite-specific types
+      "vite/client"
     ]
   },
   "include": [
