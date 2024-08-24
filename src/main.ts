@@ -14,7 +14,6 @@ import path from 'node:path';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -29,18 +28,17 @@ function parseTimemark(timemark: string) {
   const parts = timemark.split(':').reverse();
   let seconds = 0;
 
-  if (parts.length > 0) seconds += parseFloat(parts[0]); // seconds.xxx
-  if (parts.length > 1) seconds += parseInt(parts[1]) * 60; // minutes
-  if (parts.length > 2) seconds += parseInt(parts[2]) * 3600; // hours
+  if (parts.length > 0) seconds += parseFloat(parts[0]);
+  if (parts.length > 1) seconds += parseInt(parts[1]) * 60;
+  if (parts.length > 2) seconds += parseInt(parts[2]) * 3600;
 
   return seconds;
 }
 
 function createWindow() {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: isDev ? 1200 : 700,
-    height: 810,
+    height: 710,
     resizable: false,
     autoHideMenuBar: true,
     icon: path.join(__dirname, 'assets', 'images', 'icon', 'icon.png'),
@@ -62,15 +60,11 @@ function createWindow() {
     );
   }
 
-  // Open the DevTools.
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
 
@@ -149,18 +143,16 @@ app.whenReady().then(() => {
   ipcMain.handle('cancel-conversion', (event: IpcMainInvokeEvent, id: string) => {
     const process = ffmpegProcesses.get(id);
     if (process) {
-      process.kill('SIGKILL'); // Terminate the FFmpeg process
+      process.kill('SIGKILL');
       ffmpegProcesses.delete(id);
-      event.sender.send('conversion-canceled', { id }); // Inform the frontend that the conversion was canceled
+      event.sender.send('conversion-canceled', { id });
       return true;
     }
     return false;
   });
 });
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -168,12 +160,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

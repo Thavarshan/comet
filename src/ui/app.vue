@@ -199,7 +199,7 @@ function cancelConversion(index: number) {
 </script>
 
 <template>
-  <Toaster />
+  <Toaster :duration="3000" />
   <div>
     <div class="bg-slate-50 p-6 overflow-hidden">
       <Dropfile @file-uploaded="handleUpload" />
@@ -275,8 +275,8 @@ function cancelConversion(index: number) {
         </Button>
       </div>
     </div>
-    <div class="bg-white h-[435px]">
-      <ScrollArea class="h-[435px] w-full px-6">
+    <div class="bg-white h-[335px]">
+      <ScrollArea class="h-[335px] w-full px-6">
         <ul role="list" class="divide-y divide-slate-100 h-full overflow-y-auto">
           <li class="flex justify-between items-center gap-x-6" v-for="(item, index) in items" :key="item.name">
             <div class="flex items-center min-w-0 gap-x-3 py-6">
