@@ -7,8 +7,7 @@
 ![Comet UI 1](./src/assets/images/screenshot_1.png)
 ![Comet UI 2](./src/assets/images/screenshot_2.png)
 ![Comet UI 3](./src/assets/images/screenshot_3.png)
-
-[![Comet Demo](https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/Banner.jpg)](https://github.com/stellar-comet/comet/blob/main/src/assets/videos/demo.mp4)
+![Comet Demo](./src/assets/images/demo.gif)
 
 ## Project Overview
 
