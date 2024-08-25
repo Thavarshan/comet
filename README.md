@@ -8,14 +8,7 @@
 ![Comet UI 2](./src/assets/images/screenshot_2.png)
 ![Comet UI 3](./src/assets/images/screenshot_3.png)
 
-<div style="padding:56.25% 0 0 0;position:relative;">
-    <iframe src="https://player.vimeo.com/video/1002513386?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-            frameborder="0"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-            style="position:absolute;top:0;left:0;width:100%;height:100%;"
-            title="Comet Video Converter v0.0.3 - Demo"></iframe>
-</div>
-<script src="https://player.vimeo.com/api/player.js"></script>
+[![Comet Demo](https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/Banner.jpg)](https://raw.githubusercontent.com/stellar-comet/comet/main/path/to/demo.mp4)
 
 ## Project Overview
 
