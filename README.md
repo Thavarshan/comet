@@ -1,4 +1,4 @@
-<p align="center"><a href="https://thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
 
 ## About Comet
 
@@ -7,7 +7,8 @@
 ![Comet UI 1](./src/assets/images/screenshot_1.png)
 ![Comet UI 2](./src/assets/images/screenshot_2.png)
 ![Comet UI 3](./src/assets/images/screenshot_3.png)
-![Comet Demo](./src/assets/images/demo.gif)
+
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./src/assets/images/demo.gif" width="600" alt="Comet Demo"></a></p>
 
 ## Project Overview
 
