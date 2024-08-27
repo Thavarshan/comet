@@ -39,5 +39,15 @@
   },
   "ignorePatterns": [
     "*.test.ts"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "tests/**/*"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
   ]
 }

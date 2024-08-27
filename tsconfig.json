@@ -19,14 +19,17 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      "vite/client"
+      "@types/node",
+      "jsdom",
+      "vite/client",
+      "@vue/runtime-core"
     ]
   },
   "include": [
     "./**/*",
     "src/**/*",
     "tests/**/*",
-    "cypress/**/*" // Include Cypress files
+    "cypress/**/*"
   ],
   "exclude": [
     "node_modules",
