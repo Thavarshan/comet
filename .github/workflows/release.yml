@@ -80,42 +80,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Import PFX certificate
+      - name: Package Electron App
         run: |
-          certutil -f -p ${{ secrets.CERT_PASSWORD }} -importpfx my "$(pwd)\\tools\\certs\\dev-cert.pfx"
-        shell: pwsh
+          npx electron-packager . Comet --platform=win32 --arch=${{ matrix.arch }} --out=out --overwrite
 
-      - name: Build Electron app
+      - name: Convert Electron App to AppX
         run: |
-          npm run make -- --arch=${{ matrix.arch }}
-        env:
-          ELECTRON_CACHE: ${{ runner.temp }}/electron
-          npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: win32
-          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
-          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-
-      - name: Verify signing tools
-        run: |
-          signtool verify /v /pa "$(pwd)\\out\\make\\appx\\${{ matrix.arch }}\\*.appx"
-        shell: pwsh
-
-      - name: Debug - Show certificate details
-        run: |
-          certutil -store my
-        shell: pwsh
-
-      - name: Extract version from package.json on Windows
-        run: |
-          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
-          Write-Host "VERSION=$VERSION" >> $env:GITHUB_ENV
+          electron-windows-store --input-directory out\Comet-win32-${{ matrix.arch }} --output-directory out\appx --package-version 1.0.0.0 --package-name Comet --package-display-name "Comet Video Converter" --package-description "A simple video converter" --package-executable Comet.exe --publisher "CN=${{ secrets.PUBLISHER }}" --dev-cert $(pwd)\\tools\\certs\\dev-cert.pfx --cert-pass ${{ secrets.CERT_PASSWORD }} --windows-kit ${{ env.WINDOWS_KIT_PATH }}
         shell: pwsh
 
       - name: Upload files to Cloudflare R2
         run: |
-          Get-ChildItem -Path out\make\ -File | ForEach-Object {
+          Get-ChildItem -Path out\appx -File | ForEach-Object {
             Write-Host "Uploading $($_.Name)"
-            aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
+            aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v1.0.0.0/$($_.Name)" `
               --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
           }
         shell: pwsh
