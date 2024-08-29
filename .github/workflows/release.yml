@@ -9,8 +9,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x64, arm64]
+        os: [macos-latest]
+        arch: [arm64]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -78,7 +78,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
           aws configure set aws_secret_access_key ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
-          aws configure set default.region eu-west-1
+          aws configure set default.region weur
           aws configure set default.output json
         env:
           CLOUDFLARE_ACCESS_KEY: ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
