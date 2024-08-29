@@ -80,6 +80,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Import PFX certificate
+        run: |
+          certutil -f -p ${{ secrets.CERT_PASSWORD }} -importpfx my "$(pwd)\\tools\\certs\\dev-cert.pfx"
+        shell: pwsh
+
       - name: Build Electron app
         run: |
           npm run make -- --arch=${{ matrix.arch }}
