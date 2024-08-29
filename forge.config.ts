@@ -53,6 +53,7 @@ const config: ForgeConfig = {
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
         devCert: 'tools/certs/dev-cert.pfx',
         certPass: process.env.CERT_PASS,
+        windowsKit: process.env.WINDOWS_KIT_PATH,
         icon: path.resolve(iconDir, 'icon.ico'),
       },
     },

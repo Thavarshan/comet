@@ -58,6 +58,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Set PowerShell Execution Policy
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+        shell: pwsh
+
+      - name: Set up environment variables
+        run: |
+          echo "WINDOWS_KIT_PATH=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.17763.0\\x64" >> $env:GITHUB_ENV
+        shell: pwsh
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -77,6 +87,7 @@ jobs:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: win32
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
 
       - name: Extract version from package.json on Windows
         run: |
