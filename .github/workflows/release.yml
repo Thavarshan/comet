@@ -44,20 +44,17 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Configure AWS credentials
+      - name: Upload files to Cloudflare R2
         run: |
-          aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          aws configure set default.region us-east-1
-
-      - name: Upload each file to Cloudflare R2
-        run: |
-          echo "R2_BUCKET: ${{ secrets.R2_BUCKET }}"
-          echo "R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}"
           for file in $(find out/make/ -type f); do
             filename=$(basename $file)
             echo "Uploading $filename"
-            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$filename" \
-              --endpoint-url="${{ secrets.R2_ENDPOINT }}" \
-              --acl public-read
+            gh workflow run magicwallet/r2-upload@main \
+              -f endpoint=${{ secrets.R2_ENDPOINT }} \
+              -f access_key_id=${{ secrets.R2_ACCESS_KEY_ID }} \
+              -f secret_access_key=${{ secrets.R2_ACCESS_SECRET_KEY }} \
+              -f bucket=${{ secrets.R2_BUCKET }} \
+              -f file=$file \
+              -f destination="/releases/v${{ env.VERSION }}/$filename"
           done
+        shell: bash
