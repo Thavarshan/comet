@@ -36,8 +36,8 @@ jobs:
       - name: Extract version from package.json
         id: version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          node -e "const fs = require('fs'); const version = JSON.parse(fs.readFileSync('package.json')).version; console.log(`VERSION=${version}`);" >> $GITHUB_ENV
+        shell: bash
 
       - name: Download artifacts
         uses: actions/download-artifact@v3
