@@ -71,21 +71,13 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Install AWS CLI
-        run: sudo apt-get install -y awscli
-
-      - name: Configure AWS CLI for Cloudflare R2
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
-          aws configure set aws_secret_access_key ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
-          aws configure set default.region weur
-          aws configure set default.output json
-        env:
-          CLOUDFLARE_ACCESS_KEY: ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
-          CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
-
       - name: Upload artifacts to Cloudflare R2
-        run: |
-          aws s3 sync all-distributables/ s3://comet/releases/v${{ env.VERSION }}/ --endpoint-url ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
-        env:
-          CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+        uses: ryand56/r2-upload-action@latest
+        with:
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ secrets.R2_BUCKET }}
+          source-dir: all-distributables
+          destination-dir: releases/v${{ env.VERSION }}/
+
