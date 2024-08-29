@@ -1,4 +1,4 @@
-name: Release Mac/Linux
+name: Release
 
 on:
   push:
@@ -52,6 +52,9 @@ jobs:
           AWS_REGION: ${{ secrets.R2_REGION }}
 
   build-and-publish-windows:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
     runs-on: windows-latest
 
     steps:
@@ -68,10 +71,10 @@ jobs:
 
       - name: Build Electron app
         run: |
-          npm run make -- --arch=x64
+          npm run make -- --arch=${{ matrix.arch }}
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
-          npm_config_arch: x64
+          npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: win32
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
 
@@ -79,6 +82,7 @@ jobs:
         run: |
           $VERSION = (Get-Content package.json | ConvertFrom-Json).version
           Write-Host "VERSION=$VERSION" >> $env:GITHUB_ENV
+        shell: pwsh
 
       - name: Upload files to Cloudflare R2
         run: |
@@ -94,10 +98,16 @@ jobs:
           AWS_REGION: ${{ secrets.R2_REGION }}
 
   create-release:
+    if: false
     needs: [build-and-publish-mac-linux, build-and-publish-windows]
     runs-on: ubuntu-latest
 
     steps:
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
