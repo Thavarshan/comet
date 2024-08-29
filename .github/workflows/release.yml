@@ -71,12 +71,21 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Create and Upload to Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: v${{ env.VERSION }}
-          name: v${{ env.VERSION }}
-          draft: true
-          prerelease: true
-          artifacts: "all-distributables/**/*"
-          token: ${{ secrets.GH_TOKEN }}
+      - name: Install AWS CLI
+        run: sudo apt-get install -y awscli
+
+      - name: Configure AWS CLI for Cloudflare R2
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
+          aws configure set aws_secret_access_key ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+          aws configure set default.region eu-west-1
+          aws configure set default.output json
+        env:
+          CLOUDFLARE_ACCESS_KEY: ${{ secrets.CLOUDFLARE_ACCESS_KEY }}
+          CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+
+      - name: Upload artifacts to Cloudflare R2
+        run: |
+          aws s3 sync all-distributables/ s3://comet/releases/v${{ env.VERSION }}/ --endpoint-url ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+        env:
+          CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
