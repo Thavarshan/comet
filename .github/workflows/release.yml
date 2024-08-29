@@ -2,16 +2,16 @@ name: Release
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x64, arm64]
-    runs-on: ${{ matrix.os }}
+        os: [macos-latest]
+        arch: [x64]
 
     steps:
       - name: Checkout code
@@ -21,15 +21,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-
-      - name: Cache Node.js modules
-        id: cache-node-modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
         run: npm install
@@ -71,16 +62,18 @@ jobs:
         with:
           path: all-distributables
 
+      - name: Configure AWS credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
       - name: Upload each file to Cloudflare R2
         run: |
           for file in $(find all-distributables/ -type f); do
             filename=$(basename $file)
             echo "Uploading $filename"
-            gh workflow run magicwallet/r2-upload@main \
-              --with endpoint=${{ secrets.R2_ENDPOINT }} \
-              --with access_key_id=${{ secrets.R2_ACCESS_KEY_ID }} \
-              --with secret_access_key=${{ secrets.R2_SECRET_ACCESS_KEY }} \
-              --with bucket=${{ secrets.R2_BUCKET }} \
-              --with file=$file \
-              --with destination=releases/v${{ env.VERSION }}/$filename
+            aws s3 cp $file s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$filename \
+              --endpoint-url=${{ secrets.R2_ENDPOINT }} \
+              --acl public-read
           done
