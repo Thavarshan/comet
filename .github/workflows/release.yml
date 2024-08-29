@@ -36,27 +36,14 @@ jobs:
       - name: Extract version from package.json
         id: version
         run: |
-          node -e "const fs = require('fs'); const version = JSON.parse(fs.readFileSync('package.json')).version; console.log(`VERSION=${version}`);" >> $GITHUB_ENV
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
         shell: bash
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: all-distributables
-
-      - name: Upload files to Cloudflare R2
+      - name: Upload each file to Cloudflare R2
         run: |
           for file in $(find out/make/ -type f); do
-            filename=$(basename $file)
-            echo "Uploading $filename"
-            gh workflow run randomairborne/r2-release@main \
-              -f endpoint=${{ secrets.R2_ENDPOINT }} \
-              -f accesskeyid=${{ secrets.R2_ACCESS_KEY_ID }} \
-              -f secretaccesskey=${{ secrets.R2_ACCESS_SECRET_KEY }} \
-              -f bucket=${{ secrets.R2_BUCKET }} \
-              -f file=$file \
-              -f destination="/releases/v${{ env.VERSION }}/$filename"
+            echo "Uploading $(basename "$file")"
+            gh api --method POST -H "Accept: application/vnd.github.v3+json" /repos/${{ github.repository }}/dispatches --input-json "{\"event_type\":\"upload_to_r2\",\"client_payload\":{\"endpoint\":\"${{ secrets.R2_ENDPOINT }}\",\"access_key_id\":\"${{ secrets.R2_ACCESS_KEY_ID }}\",\"secret_access_key\":\"${{ secrets.R2_ACCESS_SECRET_KEY }}\",\"bucket\":\"${{ secrets.R2_BUCKET }}\",\"file\":\"$file\",\"destination\":\"/releases/v${{ env.VERSION }}/$(basename "$file")\"}}"
           done
         shell: bash
-        env:
-         GH_TOKEN: ${{ secrets.GH_TOKEN }}
