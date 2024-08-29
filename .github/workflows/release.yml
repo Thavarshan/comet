@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
@@ -31,27 +31,36 @@ jobs:
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: ${{ matrix.os }}
+          npm_config_platform: ${{ matrix.os == 'macos-latest' && 'darwin' || matrix.os == 'ubuntu-latest' && 'linux' || 'win32' }}
 
       - name: Extract version from package.json
         id: version
         run: |
-          VERSION=$(node -e "console.log(require('./package.json').version);")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          node -e "console.log(require('./package.json').version);" > version.txt
+          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
         shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Extract version on Windows
+        id: version_windows
+        run: |
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+        shell: powershell
+        if: runner.os == 'Windows'
 
       - name: Upload files to Cloudflare R2
         run: |
           for file in $(find out/make/ -type f); do
             echo "Uploading $(basename "$file")"
-            gh api \
-              -X POST \
-              -F "event_type=upload_to_r2" \
-              -F "client_payload[endpoint]=${{ secrets.R2_ENDPOINT }}" \
-              -F "client_payload[access_key_id]=${{ secrets.R2_ACCESS_KEY_ID }}" \
-              -F "client_payload[secret_access_key]=${{ secrets.R2_SECRET_ACCESS_KEY }}" \
-              -F "client_payload[bucket]=${{ secrets.R2_BUCKET }}" \
-              -F "client_payload[file]=$file" \
-              -F "client_payload[destination]=/releases/v${{ env.VERSION }}/$(basename "$file")"
+            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" --endpoint-url="${{ secrets.R2_ENDPOINT }}"
           done
         shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
+    defaults:
+      run:
+        shell: bash
+        if: runner.os != 'Windows'
