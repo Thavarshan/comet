@@ -31,8 +31,8 @@ jobs:
           npm install -g electron-windows-store
           electron-windows-store --input-directory=out/make/ --output-directory=out/appx/ --package-version=${{ github.event.inputs.version }} --package-name=my-electron-app --publisher="CN=${{ secrets.CN_PUBLISHER }}" --windows-kit="C:\Program Files (x86)\Windows Kits\10\bin\x64"
         shell: powershell
-        # Replace "CN=YOUR_PUBLISHER" with your actual publisher information
-        # Ensure the Windows Kit path is correct
+        env:
+          CERT_PASS: ${{ secrets.CERT_PASS }}
 
       - name: Upload .appx files to Cloudflare R2
         run: |
