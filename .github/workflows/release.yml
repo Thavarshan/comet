@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-publish-mac-linux:
+    if: false
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
