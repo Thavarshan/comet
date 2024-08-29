@@ -76,11 +76,11 @@ jobs:
           for file in $(find all-distributables/ -type f); do
             filename=$(basename $file)
             echo "Uploading $filename"
-            gh run-action ryand56/r2-upload-action@latest \
-              --with r2-account-id=${{ secrets.R2_ACCOUNT_ID }} \
-              --with r2-access-key-id=${{ secrets.R2_ACCESS_KEY_ID }} \
-              --with r2-secret-access-key=${{ secrets.R2_SECRET_ACCESS_KEY }} \
-              --with r2-bucket=${{ secrets.R2_BUCKET }} \
-              --with source-dir=$file \
-              --with destination-dir=releases/v${{ env.VERSION }}/$filename
+            gh workflow run magicwallet/r2-upload@main \
+              --with endpoint=${{ secrets.R2_ENDPOINT }} \
+              --with access_key_id=${{ secrets.R2_ACCESS_KEY_ID }} \
+              --with secret_access_key=${{ secrets.R2_SECRET_ACCESS_KEY }} \
+              --with bucket=${{ secrets.R2_BUCKET }} \
+              --with file=$file \
+              --with destination=releases/v${{ env.VERSION }}/$filename
           done
