@@ -71,23 +71,16 @@ jobs:
         with:
           path: all-distributables
 
-      - name: Create and Upload to Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: v${{ env.VERSION }}
-          name: v${{ env.VERSION }}
-          draft: true
-          prerelease: true
-          artifacts: "all-distributables/**/*"
-          token: ${{ secrets.GH_TOKEN }}
-
-      - name: Upload artifacts to Cloudflare R2
-        uses: ryand56/r2-upload-action@latest
-        with:
-          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
-          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
-          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: all-distributables/**/*
-          destination-dir: releases/v${{ env.VERSION }}/
-
+      - name: Upload each file to Cloudflare R2
+        run: |
+          for file in $(find all-distributables/ -type f); do
+            filename=$(basename $file)
+            echo "Uploading $filename"
+            gh run-action ryand56/r2-upload-action@latest \
+              --with r2-account-id=${{ secrets.R2_ACCOUNT_ID }} \
+              --with r2-access-key-id=${{ secrets.R2_ACCESS_KEY_ID }} \
+              --with r2-secret-access-key=${{ secrets.R2_SECRET_ACCESS_KEY }} \
+              --with r2-bucket=${{ secrets.R2_BUCKET }} \
+              --with source-dir=$file \
+              --with destination-dir=releases/v${{ env.VERSION }}/$filename
+          done
