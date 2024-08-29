@@ -100,7 +100,7 @@ jobs:
           signtool verify /v /pa "$(pwd)\\out\\make\\appx\\${{ matrix.arch }}\\*.appx"
         shell: pwsh
 
-      - name: Debug: Show certificate details
+      - name: Debug - Show certificate details
         run: |
           certutil -store my
         shell: pwsh
