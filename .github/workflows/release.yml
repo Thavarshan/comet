@@ -9,7 +9,7 @@ jobs:
   build-and-publish:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest]
         arch: [x64, arm64]
     runs-on: ${{ matrix.os }}
 
@@ -31,20 +31,12 @@ jobs:
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: ${{ matrix.os == 'macos-latest' && 'darwin' || matrix.os == 'ubuntu-latest' && 'linux' || 'win32' }}
+          npm_config_platform: ${{ matrix.os == 'macos-latest' && 'darwin' || 'linux' }}
 
       - name: Extract version from package.json on Linux/macOS
-        if: ${{ runner.os != 'Windows' }}
         run: |
           VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Extract version from package.json on Windows
-        if: ${{ runner.os == 'Windows' }}
-        run: |
-          $version = (Get-Content package.json | ConvertFrom-Json).version
-          echo "VERSION=$version" >> $env:GITHUB_ENV
-        shell: powershell
 
       - name: Upload files to Cloudflare R2
         run: |

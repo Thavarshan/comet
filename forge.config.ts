@@ -46,6 +46,7 @@ const config: ForgeConfig = {
       platforms: ['win32'],
       config: {
         packageName: 'JeromeThayananthajothy.Comet-VideoConverter',
+        packageExecutable: 'Comet.exe',
         packageDisplayName: 'Comet',
         packageDescription: 'A simple video converter',
         packageVersion: version,
