@@ -33,6 +33,17 @@ jobs:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: ${{ matrix.os }}
 
+      - name: Extract version from package.json
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: all-distributables
+
       - name: Configure AWS credentials
         run: |
           aws configure set aws_access_key_id ${{ secrets.R2_ACCESS_KEY_ID }}
