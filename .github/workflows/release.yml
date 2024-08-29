@@ -49,10 +49,10 @@ jobs:
           for file in $(find out/make/ -type f); do
             filename=$(basename $file)
             echo "Uploading $filename"
-            gh workflow run magicwallet/r2-upload@main \
+            gh workflow run randomairborne/r2-release@main \
               -f endpoint=${{ secrets.R2_ENDPOINT }} \
-              -f access_key_id=${{ secrets.R2_ACCESS_KEY_ID }} \
-              -f secret_access_key=${{ secrets.R2_ACCESS_SECRET_KEY }} \
+              -f accesskeyid=${{ secrets.R2_ACCESS_KEY_ID }} \
+              -f secretaccesskey=${{ secrets.R2_ACCESS_SECRET_KEY }} \
               -f bucket=${{ secrets.R2_BUCKET }} \
               -f file=$file \
               -f destination="/releases/v${{ env.VERSION }}/$filename"
