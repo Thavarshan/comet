@@ -40,10 +40,18 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
         shell: bash
 
-      - name: Upload each file to Cloudflare R2
+      - name: Upload files to Cloudflare R2
         run: |
           for file in $(find out/make/ -type f); do
             echo "Uploading $(basename "$file")"
-            gh api --method POST -H "Accept: application/vnd.github.v3+json" /repos/${{ github.repository }}/dispatches --input-json "{\"event_type\":\"upload_to_r2\",\"client_payload\":{\"endpoint\":\"${{ secrets.R2_ENDPOINT }}\",\"access_key_id\":\"${{ secrets.R2_ACCESS_KEY_ID }}\",\"secret_access_key\":\"${{ secrets.R2_ACCESS_SECRET_KEY }}\",\"bucket\":\"${{ secrets.R2_BUCKET }}\",\"file\":\"$file\",\"destination\":\"/releases/v${{ env.VERSION }}/$(basename "$file")\"}}"
+            gh api \
+              -X POST \
+              -F "event_type=upload_to_r2" \
+              -F "client_payload[endpoint]=${{ secrets.R2_ENDPOINT }}" \
+              -F "client_payload[access_key_id]=${{ secrets.R2_ACCESS_KEY_ID }}" \
+              -F "client_payload[secret_access_key]=${{ secrets.R2_SECRET_ACCESS_KEY }}" \
+              -F "client_payload[bucket]=${{ secrets.R2_BUCKET }}" \
+              -F "client_payload[file]=$file" \
+              -F "client_payload[destination]=/releases/v${{ env.VERSION }}/$(basename "$file")"
           done
         shell: bash
