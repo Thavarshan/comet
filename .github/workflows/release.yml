@@ -95,6 +95,16 @@ jobs:
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
           WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
 
+      - name: Verify signing tools
+        run: |
+          signtool verify /v /pa "$(pwd)\\out\\make\\appx\\${{ matrix.arch }}\\*.appx"
+        shell: pwsh
+
+      - name: Debug: Show certificate details
+        run: |
+          certutil -store my
+        shell: pwsh
+
       - name: Extract version from package.json on Windows
         run: |
           $VERSION = (Get-Content package.json | ConvertFrom-Json).version
