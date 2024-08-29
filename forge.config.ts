@@ -42,6 +42,21 @@ const config: ForgeConfig = {
       }),
     },
     {
+      name: '@electron-forge/maker-appx',
+      platforms: ['win32'],
+      config: {
+        packageName: 'JeromeThayananthajothy.Comet-VideoConverter',
+        packageDisplayName: 'Comet',
+        packageDescription: 'A simple video converter',
+        packageVersion: version,
+        publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
+        windowsKit: 'path/to/your/windows-kit',
+        devCert: 'path/to/your/dev-cert.pfx',
+        certPass: 'your-cert-password',
+        icon: path.resolve(iconDir, 'icon.ico'),
+      },
+    },
+    {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
       config: {},
