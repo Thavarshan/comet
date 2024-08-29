@@ -45,7 +45,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
       config: {
-        packageName: 'JeromeThayananthajothy.Comet-VideoConverter',
+        packageName: 'JeromeThayananthajothy.Comet',
         packageExecutable: 'Comet.exe',
         packageDisplayName: 'Comet',
         packageDescription: 'A simple video converter',
