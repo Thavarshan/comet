@@ -1,4 +1,4 @@
-name: Release
+name: Release Mac/Linux
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - release
 
 jobs:
-  build-and-publish:
+  build-and-publish-mac-linux:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -51,8 +51,50 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.R2_REGION }}
 
+  build-and-publish-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=x64
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: x64
+          npm_config_platform: win32
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+
+      - name: Extract version from package.json on Windows
+        run: |
+          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+          Write-Host "VERSION=$VERSION" >> $env:GITHUB_ENV
+
+      - name: Upload files to Cloudflare R2
+        run: |
+          Get-ChildItem -Path out\make\ -File | ForEach-Object {
+            Write-Host "Uploading $($_.Name)"
+            aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
+              --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
+          }
+        shell: pwsh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.R2_REGION }}
+
   create-release:
-    needs: build-and-publish
+    needs: [build-and-publish-mac-linux, build-and-publish-windows]
     runs-on: ubuntu-latest
 
     steps:
