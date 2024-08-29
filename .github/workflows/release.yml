@@ -50,8 +50,11 @@ jobs:
         run: |
           for file in $(find out/make/ -type f); do
             echo "Uploading $(basename "$file")"
-            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" --endpoint-url="${{ secrets.R2_ENDPOINT }}"
+            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" \
+              --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
           done
+        shell: bash
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
