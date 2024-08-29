@@ -9,8 +9,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest]
-        arch: [arm64]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, arm64]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-distributables
-          path: out/make  # Adjust the path to where your distributables are stored
+          path: out/make
 
   publish:
     runs-on: ubuntu-latest
@@ -71,6 +71,16 @@ jobs:
         with:
           path: all-distributables
 
+      - name: Create and Upload to Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
+          draft: true
+          prerelease: true
+          artifacts: "all-distributables/**/*"
+          token: ${{ secrets.GH_TOKEN }}
+
       - name: Upload artifacts to Cloudflare R2
         uses: ryand56/r2-upload-action@latest
         with:
@@ -78,6 +88,6 @@ jobs:
           r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: all-distributables
+          source-dir: all-distributables/**/*
           destination-dir: releases/v${{ env.VERSION }}/
 
