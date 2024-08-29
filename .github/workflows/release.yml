@@ -68,14 +68,24 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws configure set default.region weur
 
+      - name: List all files to be uploaded
+        run: |
+          echo "Listing all files in all-distributables directory:"
+          find all-distributables/ -type f -print
+
       - name: Upload each file to Cloudflare R2
         run: |
           echo "R2_BUCKET: ${{ secrets.R2_BUCKET }}"
           echo "R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}"
           for file in $(find all-distributables/ -type f); do
-            filename=$(basename $file)
+            filename=$(basename "$file")
+            echo "Deleting existing file $filename from R2"
+            aws s3 rm "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$filename" --endpoint-url="${{ secrets.R2_ENDPOINT }}"
             echo "Uploading $filename"
-            aws s3 cp $file s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$filename \
-              --endpoint-url=${{ secrets.R2_ENDPOINT }} \
-              --acl public-read
+            for i in {1..3}; do
+              aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$filename" \
+                --endpoint-url="${{ secrets.R2_ENDPOINT }}" \
+                --acl public-read && break || echo "Retrying upload for $filename ($i/3)"
+            done
           done
+          echo "Upload completed"
