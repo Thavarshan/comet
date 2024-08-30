@@ -21,6 +21,12 @@ jobs:
     - name: Setup Windows SDK
       uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
 
+    - name: Build new SDK
+      shell: bash
+      run: |
+        cmake -DCMAKE_SYSTEM_VERSION=10.0.20348.0
+        cmake --build .
+
     - name: Install dependencies
       run: npm install
 
