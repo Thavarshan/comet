@@ -21,6 +21,12 @@ jobs:
     - uses: ChristopheLav/windows-sdk-install@v1
       with:
         version-sdk: 22621
+        features: |
+          OptionId.SigningTools
+          OptionId.UWPManaged
+          OptionId.UWPCPP
+          OptionId.DesktopCPPx86
+          OptionId.DesktopCPPx64
 
     - name: Install dependencies
       run: npm install
