@@ -18,15 +18,9 @@ jobs:
       with:
         node-version: '20'
 
-    - uses: ChristopheLav/windows-sdk-install@v1
-      with:
-        version-sdk: 22621
-        features: |
-          OptionId.SigningTools
-          OptionId.UWPManaged
-          OptionId.UWPCPP
-          OptionId.DesktopCPPx86
-          OptionId.DesktopCPPx64
+    - name: Install Windows SDK
+      run: choco install windows-sdk-10-version-1903-all -y
+      shell: pwsh
 
     - name: Install dependencies
       run: npm install
