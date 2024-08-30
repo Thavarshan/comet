@@ -1,0 +1,45 @@
+name: Build Electron App
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Electron app
+      run: npm run make
+      continue-on-error: false
+
+    - name: Extract version from package.json
+      run: |
+        VERSION=$(node -e "console.log(require('./package.json').version);")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+      shell: pwsh
+
+    - name: Upload files to Cloudflare R2
+      run: |
+        Get-ChildItem -Path out\make\ -File | ForEach-Object {
+          Write-Host "Uploading $($_.Name)"
+          aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
+            --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
+        }
+      shell: pwsh
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.R2_REGION }}

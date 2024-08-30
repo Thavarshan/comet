@@ -29,18 +29,18 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    {
-      name: '@electron-forge/maker-squirrel',
-      platforms: ['win32'],
-      config: (arch: string) => ({
-        name: 'Comet',
-        authors: 'Jerome Thayananthajothy',
-        exe: 'Comet.exe',
-        noMsi: true,
-        setupExe: `comet-${version}-win32-${arch}-setup.exe`,
-        setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
-      }),
-    },
+    // {
+    //   name: '@electron-forge/maker-squirrel',
+    //   platforms: ['win32'],
+    //   config: (arch: string) => ({
+    //     name: 'Comet',
+    //     authors: 'Jerome Thayananthajothy',
+    //     exe: 'Comet.exe',
+    //     noMsi: true,
+    //     setupExe: `comet-${version}-win32-${arch}-setup.exe`,
+    //     setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
+    //   }),
+    // },
     {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
@@ -48,7 +48,7 @@ const config: ForgeConfig = {
         packageName: 'JeromeThayananthajothy.Comet',
         packageDisplayName: 'Comet',
         packageDescription: 'A simple video converter',
-        packageVersion: version,
+        packageVersion: `${version}.1`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
         devCert: 'tools/certs/dev-cert.pfx',
         certPass: process.env.CERT_PASS,

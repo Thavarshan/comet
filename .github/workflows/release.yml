@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-publish-mac-linux:
+    if: false
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -33,7 +34,7 @@ jobs:
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: ${{ matrix.os == 'macos-latest' && 'darwin' || 'linux' }}
 
-      - name: Extract version from package.json on Linux/macOS
+      - name: Extract version from package.json
         run: |
           VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -46,63 +47,6 @@ jobs:
               --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
           done
         shell: bash
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.R2_REGION }}
-
-  build-and-publish-windows:
-    strategy:
-      matrix:
-        arch: [x64, arm64]
-    runs-on: windows-latest
-
-    steps:
-      - name: Set PowerShell Execution Policy
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-        shell: pwsh
-
-      - name: Set up environment variables
-        run: |
-          echo "WINDOWS_KIT_PATH=C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.17763.0\\x64" >> $env:GITHUB_ENV
-        shell: pwsh
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Electron app
-        run: |
-          npm run make -- --arch=${{ matrix.arch }}
-        env:
-          ELECTRON_CACHE: ${{ runner.temp }}/electron
-          npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: win32
-          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
-          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-
-      - name: Extract version from package.json on Windows
-        run: |
-          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
-          Write-Host "VERSION=$VERSION" >> $env:GITHUB_ENV
-        shell: pwsh
-
-      - name: Upload files to Cloudflare R2
-        run: |
-          Get-ChildItem -Path out\make\ -File | ForEach-Object {
-            Write-Host "Uploading $($_.Name)"
-            aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
-              --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
-          }
-        shell: pwsh
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
