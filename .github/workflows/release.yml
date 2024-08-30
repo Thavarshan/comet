@@ -8,7 +8,6 @@ on:
 jobs:
   build-and-publish-mac-linux:
     if: false
-    if: false
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -55,7 +54,7 @@ jobs:
 
   create-release:
     if: false
-    needs: [build-and-publish-mac-linux, build-and-publish-windows]
+    needs: [build-and-publish-mac-linux]
     runs-on: ubuntu-latest
 
     steps:

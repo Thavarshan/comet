@@ -21,6 +21,10 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Install Windows SDK
+      run: choco install windows-sdk-10-version-1903-all -y
+      shell: pwsh
+
     - name: Build Electron app
       run: npm run make
       continue-on-error: false
