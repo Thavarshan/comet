@@ -18,26 +18,22 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Visual Studio Build Tools with Windows SDK
+    - name: Install Microsoft Build Tools
       run: |
-        curl -LO https://aka.ms/vs/17/release/vs_buildtools.exe
-        .\vs_buildtools.exe --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet --wait --norestart
-      shell: cmd
+        choco install microsoft-build-tools -y
+      shell: pwsh
 
-    - name: Find and Verify makeappx.exe
+    - name: Verify makeappx.exe
       run: |
-        $makeappxPath = Get-ChildItem -Path 'C:\' -Recurse -Filter 'makeappx.exe' -ErrorAction SilentlyContinue -Force | Select-Object -First 1 -ExpandProperty FullName
-        if ($makeappxPath) {
+        $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
+        if (Test-Path $makeappxPath) {
             echo "makeappx.exe found at $makeappxPath"
-            $directory = [System.IO.Path]::GetDirectoryName($makeappxPath)
-            echo "WINDOWS_KIT_PATH=$directory" >> $env:GITHUB_ENV
+            echo "WINDOWS_KIT_PATH=C:\Program Files (x86)\Windows Kits\10\App Certification Kit" >> $env:GITHUB_ENV
         } else {
             Write-Error "makeappx.exe not found."
             exit 1
         }
       shell: pwsh
-
-
 
     - name: Print Windows Kit Path
       run: |
