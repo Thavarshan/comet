@@ -24,16 +24,14 @@ jobs:
         .\vs_buildtools.exe --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet --wait --norestart
       shell: cmd
 
-    - name: Get Windows Kit Path and Verify makeappx.exe
+    - name: Verify makeappx.exe
       run: |
-        $windowsKitPath = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows Kits\Installed Roots').'KitsRoot10'
-        $makeappxPath = Join-Path -Path $windowsKitPath -ChildPath 'bin\x64\makeappx.exe'
+        $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\bin\x64\makeappx.exe'
         if (Test-Path $makeappxPath) {
-            Write-Host "Windows Kit Path: $windowsKitPath"
-            Write-Host "makeappx.exe found at $makeappxPath"
-            echo "WINDOWS_KIT_PATH=${windowsKitPath}bin\x64" >> $env:GITHUB_ENV
+            echo "makeappx.exe found at $makeappxPath"
+            echo "WINDOWS_KIT_PATH=C:\Program Files (x86)\Windows Kits\10\bin\x64" >> $env:GITHUB_ENV
         } else {
-            Write-Error "makeappx.exe not found in Windows Kit Path."
+            Write-Error "makeappx.exe not found."
             exit 1
         }
       shell: pwsh
