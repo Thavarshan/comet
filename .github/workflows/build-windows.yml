@@ -34,7 +34,8 @@ jobs:
       shell: pwsh
 
     - name: Print Windows Kit Path
-      run: echo "Windows Kit Path: $windowsKitPath"
+      run: |
+        echo "Windows Kit Path: $windowsKitPath"
       shell: pwsh
 
     - name: Install dependencies
