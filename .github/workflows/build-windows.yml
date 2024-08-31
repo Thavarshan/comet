@@ -21,8 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Find Windows Kit Path
+      run: |
+        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Directory | Where-Object { $_.Name -match "x64" }).FullName
+        echo "WINDOWS_KIT_PATH=$windowsKitPath" >> $GITHUB_ENV
+      shell: pwsh
+
     - name: Build app
       run: npm run make
+      env:
+        WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
 
     - name: Extract version from package.json
       run: |
