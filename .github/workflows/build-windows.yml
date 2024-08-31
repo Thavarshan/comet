@@ -24,9 +24,9 @@ jobs:
         .\vs_buildtools.exe --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet --wait --norestart
       shell: cmd
 
-    - name: Verify makeappx.exe
+    - name: Find and Verify makeappx.exe
       run: |
-        $makeappxPath = Get-Command -CommandType Application -Name makeappx.exe | Select-Object -First 1 -ExpandProperty Definition
+        $makeappxPath = Get-ChildItem -Path 'C:\' -Recurse -Filter 'makeappx.exe' -ErrorAction SilentlyContinue -Force | Select-Object -First 1 -ExpandProperty FullName
         if ($makeappxPath) {
             echo "makeappx.exe found at $makeappxPath"
             $directory = [System.IO.Path]::GetDirectoryName($makeappxPath)
@@ -36,6 +36,7 @@ jobs:
             exit 1
         }
       shell: pwsh
+
 
 
     - name: Print Windows Kit Path
