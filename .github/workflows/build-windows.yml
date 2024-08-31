@@ -21,9 +21,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Clean build directory
-      run: npm run clean
-
     - name: Build app
       run: npm run make
 
