@@ -50,4 +50,7 @@ jobs:
         $env:CERT_PATH=$certPath
         $env:CERT_PASSWORD=$certPassword
         npm run make
+      env:
+        CERT_PATH: ${{ env.CERT_PATH }}
+        CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
       shell: pwsh
