@@ -43,6 +43,7 @@ jobs:
         Export-PfxCertificate -Cert $cert -FilePath $certPath -Password (ConvertTo-SecureString -String $certPassword -Force -AsPlainText)
         echo "CERT_PATH=$certPath" >> $GITHUB_ENV
         echo "CERT_PASSWORD=$certPassword" >> $GITHUB_ENV
+        echo "Generated CERT_PASSWORD: $certPassword"
       shell: pwsh
 
     - name: Print Windows Kit Path
