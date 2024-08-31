@@ -18,10 +18,6 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Windows SDK
-      run: choco install windows-sdk-10-version-1903-all -y
-      shell: pwsh
-
     - name: Install electron-windows-store
       run: npm install -g electron-windows-store
 
@@ -33,7 +29,7 @@ jobs:
       run: npm install
 
     - name: Build app
-      run: npm run make -- --skip-package appx
+      run: npm run package
 
     - name: Convert to AppX
       run: |
