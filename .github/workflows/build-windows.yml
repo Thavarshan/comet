@@ -3,7 +3,7 @@ name: Build Windows
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   build:
