@@ -22,11 +22,23 @@ jobs:
       run: choco install windows-sdk-10-version-1903-all -y
       shell: pwsh
 
+    - name: Install electron-windows-store
+      run: npm install -g electron-windows-store
+
+    - name: Configure PowerShell
+      run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+      shell: pwsh
+
     - name: Install dependencies
       run: npm install
 
     - name: Build app
-      run: npm run make
+      run: npm run make -- --skip-package appx
+
+    - name: Convert to AppX
+      run: |
+        electron-windows-store --input-directory ./out/make --output-directory ./out/appx --package-version $(node -e "console.log(require('./package.json').version + '.1');") --package-name JeromeThayananthajothy.Comet --package-display-name "Comet" --package-description "A simple video converter" --publisher CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5 --dev-cert tools/certs/dev-cert.pfx --cert-pass ${{ secrets.CERT_PASS }} --windows-kit ${{ secrets.WINDOWS_KIT_PATH }} --package-icon ./path/to/icon.ico
+      shell: pwsh
 
     - name: Extract version from package.json
       run: |
@@ -36,7 +48,7 @@ jobs:
 
     - name: Upload files to Cloudflare R2
       run: |
-        Get-ChildItem -Path out\make\ -File | ForEach-Object {
+        Get-ChildItem -Path out\appx\ -File | ForEach-Object {
           Write-Host "Uploading $($_.Name)"
           aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
             --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
