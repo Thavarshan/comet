@@ -41,19 +41,19 @@ jobs:
         $certPath = "$(Get-Location)\devcert.pfx"
         $cert = New-SelfSignedCertificate -DnsName "CN=DevCert" -CertStoreLocation "Cert:\CurrentUser\My" -NotAfter (Get-Date).AddYears(1)
         Export-PfxCertificate -Cert $cert -FilePath $certPath -Password (ConvertTo-SecureString -String $certPassword -Force -AsPlainText)
-        echo "CERT_PATH=$certPath" >> $GITHUB_ENV
-        echo "CERT_PASSWORD=$certPassword" >> $GITHUB_ENV
+        echo "CERT_PATH=$certPath" >> "$GITHUB_ENV"
+        echo "CERT_PASSWORD=$certPassword" >> "$GITHUB_ENV"
         echo "Generated CERT_PATH: $certPath"
         echo "Generated CERT_PASSWORD: $certPassword"
       shell: pwsh
 
     - name: Verify CERT_PATH and CERT_PASSWORD
       run: |
-        if (-not ${{ env.CERT_PATH }}) {
+        if (-not $env:CERT_PATH) {
             Write-Error "CERT_PATH is not set."
             exit 1
         }
-        if (-not ${{ env.CERT_PASSWORD }}) {
+        if (-not $env:CERT_PASSWORD) {
             Write-Error "CERT_PASSWORD is not set."
             exit 1
         }
