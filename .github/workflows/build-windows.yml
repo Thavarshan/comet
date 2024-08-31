@@ -35,6 +35,16 @@ jobs:
         }
       shell: pwsh
 
+    - name: Generate Dev Certificate
+      run: |
+        $certPassword = [guid]::NewGuid().ToString()
+        $certPath = "$(Get-Location)\devcert.pfx"
+        $cert = New-SelfSignedCertificate -DnsName "CN=DevCert" -CertStoreLocation "Cert:\CurrentUser\My" -NotAfter (Get-Date).AddYears(1)
+        Export-PfxCertificate -Cert $cert -FilePath $certPath -Password (ConvertTo-SecureString -String $certPassword -Force -AsPlainText)
+        echo "CERT_PATH=$certPath" >> $GITHUB_ENV
+        echo "CERT_PASSWORD=$certPassword" >> $GITHUB_ENV
+      shell: pwsh
+
     - name: Print Windows Kit Path
       run: |
         echo "Windows Kit Path: $env:WINDOWS_KIT_PATH"
@@ -47,4 +57,5 @@ jobs:
       run: npm run make
       env:
         WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-        CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+        CERT_PATH: ${{ env.CERT_PATH }}
+        CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
