@@ -33,5 +33,5 @@ jobs:
 
     - name: Print Windows Kit Path
       run: |
-        echo "Windows Kit Path: $WINDOWS_KIT_PATH"
+        echo "Windows Kit Path: $windowsKitPath"
       shell: pwsh
