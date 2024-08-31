@@ -18,18 +18,11 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install electron-windows-store
-      run: npm install -g electron-windows-store
-
-    - name: Configure PowerShell
-      run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-      shell: pwsh
-
     - name: Install dependencies
       run: npm install
 
-    - name: Run npm audit fix
-      run: npm audit fix
+    - name: Clean build directory
+      run: npm run clean
 
     - name: Build app
       run: npm run make
