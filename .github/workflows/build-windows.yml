@@ -23,30 +23,11 @@ jobs:
 
     - name: Find Windows Kit Path
       run: |
-        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Directory | Where-Object { Test-Path "$($_.FullName)\makeappx.exe" }).FullName
+        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -File -Filter "makeappx.exe" | Select-Object -First 1).DirectoryName
         echo "WINDOWS_KIT_PATH=$windowsKitPath" >> $GITHUB_ENV
       shell: pwsh
 
-    - name: Build app
-      run: npm run make
-      env:
-        WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-
-    - name: Extract version from package.json
+    - name: Print Windows Kit Path
       run: |
-        VERSION=$(node -e "console.log(require('./package.json').version);")
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Windows Kit Path: $WINDOWS_KIT_PATH"
       shell: pwsh
-
-    - name: Upload files to Cloudflare R2
-      run: |
-        Get-ChildItem -Path out\appx\ -File | ForEach-Object {
-          Write-Host "Uploading $($_.Name)"
-          aws s3 cp $_.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($_.Name)" `
-            --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
-        }
-      shell: pwsh
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.R2_REGION }}
