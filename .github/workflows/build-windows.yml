@@ -49,11 +49,11 @@ jobs:
 
     - name: Verify CERT_PATH and CERT_PASSWORD
       run: |
-        if (-not $env:CERT_PATH) {
+        if (-not ${{ env.CERT_PATH }}) {
             Write-Error "CERT_PATH is not set."
             exit 1
         }
-        if (-not $env:CERT_PASSWORD) {
+        if (-not ${{ env.CERT_PASSWORD }}) {
             Write-Error "CERT_PASSWORD is not set."
             exit 1
         }
