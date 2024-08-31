@@ -22,14 +22,10 @@ jobs:
       run: choco install windows-sdk-10-version-2004-all -y
       shell: pwsh
 
-
-    - name: Find Windows Kit Path
+    - name: Get Windows Kit Path
       run: |
-        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -File -Filter "makeappx.exe" | Select-Object -First 1).DirectoryName
-        echo "WINDOWS_KIT_PATH=$windowsKitPath" >> $GITHUB_ENV
+        $windowsKitPath = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows Kits\Installed Roots').'KitsRoot10'
+        echo "Windows Kit Path: ${windowsKitPath}bin\x64"
+        echo "WINDOWS_KIT_PATH=${windowsKitPath}bin\x64" >> $GITHUB_ENV
       shell: pwsh
 
-    - name: Print Windows Kit Path
-      run: |
-        echo "Windows Kit Path: $env:WINDOWS_KIT_PATH"
-      shell: pwsh
