@@ -47,3 +47,4 @@ jobs:
       run: npm run make
       env:
         WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
+        CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
