@@ -18,6 +18,10 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Install Windows SDK
+      run: choco install windows-sdk-10-version-1903-all -y
+      shell: pwsh
+
     - name: Install electron-windows-store
       run: npm install -g electron-windows-store
 
@@ -28,12 +32,15 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Run npm audit fix
+      run: npm audit fix
+
     - name: Build app
-      run: npm run package
+      run: npm run make -- --skip-package appx
 
     - name: Convert to AppX
       run: |
-        electron-windows-store --input-directory ./out/make --output-directory ./out/appx --package-version $(node -e "console.log(require('./package.json').version + '.1');") --package-name JeromeThayananthajothy.Comet --package-display-name "Comet" --package-description "A simple video converter" --publisher CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5 --dev-cert tools/certs/dev-cert.pfx --cert-pass ${{ secrets.CERT_PASS }} --windows-kit ${{ secrets.WINDOWS_KIT_PATH }}
+        electron-windows-store --input-directory ./out/make --output-directory ./out/appx --package-version $(node -e "console.log(require('./package.json').version + '.1');") --package-name JeromeThayananthajothy.Comet --package-display-name "Comet" --package-description "A simple video converter" --publisher CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5 --dev-cert tools/certs/dev-cert.pfx --cert-pass ${{ secrets.CERT_PASSWORD }} --windows-kit ${{ secrets.WINDOWS_KIT_PATH }} --yes
       shell: pwsh
 
     - name: Extract version from package.json
