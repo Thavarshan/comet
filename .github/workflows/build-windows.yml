@@ -39,7 +39,7 @@ jobs:
       shell: pwsh
 
     - name: Print Windows Kit Path
-      run: |S
+      run: |
         echo "Windows Kit Path: $env:WINDOWS_KIT_PATH"
       shell: pwsh
 
