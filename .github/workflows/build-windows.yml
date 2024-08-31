@@ -18,9 +18,14 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Windows SDK with makeappx.exe
+    - name: Install Windows SDK
       run: |
-        choco install windows-sdk-10 -y
+        choco install visualstudio-installer -y
+        vs_installer.exe install --installPath "C:\BuildTools" --add Microsoft.VisualStudio.Component.Windows10SDK.19041 --quiet --wait
+      shell: cmd
+
+    - name: Get Windows Kit Path and Verify makeappx.exe
+      run: |
         $windowsKitPath = (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows Kits\Installed Roots').'KitsRoot10'
         $makeappxPath = Join-Path -Path $windowsKitPath -ChildPath 'bin\x64\makeappx.exe'
         if (Test-Path $makeappxPath) {
@@ -34,8 +39,7 @@ jobs:
       shell: pwsh
 
     - name: Print Windows Kit Path
-      run: |
-        echo "Windows Kit Path: $windowsKitPath"
+      run: echo "Windows Kit Path: $env:WINDOWS_KIT_PATH"
       shell: pwsh
 
     - name: Install dependencies
