@@ -23,7 +23,7 @@ jobs:
 
     - name: Find Windows Kit Path
       run: |
-        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Directory | Where-Object { $_.Name -match "x64" }).FullName
+        $windowsKitPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Directory | Where-Object { Test-Path "$($_.FullName)\makeappx.exe" }).FullName
         echo "WINDOWS_KIT_PATH=$windowsKitPath" >> $GITHUB_ENV
       shell: pwsh
 
