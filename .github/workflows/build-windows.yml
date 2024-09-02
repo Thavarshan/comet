@@ -28,11 +28,11 @@ jobs:
         # Verify makeappx.exe
         $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
         if (Test-Path $makeappxPath) {
-            echo "makeappx.exe found at $makeappxPath"
-            $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
+          echo "makeappx.exe found at $makeappxPath"
+          $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
         } else {
-            Write-Error "makeappx.exe not found."
-            exit 1
+          Write-Error "makeappx.exe not found."
+          exit 1
         }
 
         # Generate Dev Certificate
@@ -49,17 +49,34 @@ jobs:
         # Build app and Sign using signtool.exe
         $env:CERT_PATH=$certPath
         $env:CERT_PASSWORD=$certPassword
-        npm run make || exit 1
 
-        # Explicitly Sign the appx package using the generated certificate
-        $appxPath = Get-ChildItem -Path out\make\*.appx | Select-Object -First 1 -ExpandProperty FullName
-        if ($appxPath) {
-            & $env:WINDOWS_KIT_PATH\signtool.exe sign /f $env:CERT_PATH /p $env:CERT_PASSWORD /fd SHA256 /a /sm $appxPath
-        } else {
-            Write-Error "No appx package found to sign."
-            exit 1
+        try {
+          npm run make
+        } catch {
+          Write-Error "An error occurred during the build and signing process: $_"
+          exit 1
         }
       env:
         CERT_PATH: ${{ env.CERT_PATH }}
         CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
       shell: pwsh
+
+    - name: Extract version from package.json
+      run: |
+        $version = (node -e "console.log(require('./package.json').version);")
+        echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      shell: pwsh
+
+    - name: Upload files to Cloudflare R2
+      run: |
+        $files = Get-ChildItem -Path out\make\ -File
+        foreach ($file in $files) {
+          Write-Host "Uploading $($file.Name)"
+          aws s3 cp $file.FullName "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$($file.Name)" `
+            --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
+        }
+      shell: pwsh
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.R2_REGION }}
