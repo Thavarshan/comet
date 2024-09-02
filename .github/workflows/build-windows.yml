@@ -54,7 +54,7 @@ jobs:
         # Explicitly Sign the appx package using the generated certificate
         $appxPath = Get-ChildItem -Path out\make\*.appx | Select-Object -First 1 -ExpandProperty FullName
         if ($appxPath) {
-            & $env:WINDOWS_KIT_PATH\signtool.exe sign /f $env:CERT_PATH /p $env:CERT_PASSWORD /fd SHA256 /a $appxPath
+            & $env:WINDOWS_KIT_PATH\signtool.exe sign /f $env:CERT_PATH /p $env:CERT_PASSWORD /fd SHA256 /a /sm $appxPath
         } else {
             Write-Error "No appx package found to sign."
             exit 1
