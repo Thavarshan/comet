@@ -44,9 +44,8 @@ const config: ForgeConfig = {
     {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
-      config: (arch: string) => ({
-        packageName: `JeromeThayananthajothy.Comet`,
-        packageExecutable: `Comet-${version}-win32-${arch}`,
+      config: {
+        packageName: 'JeromeThayananthajothy.Comet-VideoConverter',
         packageDisplayName: 'Comet',
         packageDescription: 'A simple video converter',
         packageVersion: `${version}.1`,
@@ -55,7 +54,7 @@ const config: ForgeConfig = {
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
         icon: path.resolve(iconDir, 'icon.ico')
-      }),
+      },
     },
     {
       name: '@electron-forge/maker-zip',
