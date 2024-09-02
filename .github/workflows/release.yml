@@ -143,6 +143,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Download build artifacts (macos x64)
         uses: actions/download-artifact@v3
         with:
@@ -181,7 +186,7 @@ jobs:
 
       - name: Upload files to Cloudflare R2
         run: |
-          for file in $(find artifacts/ -type f -name 'comet*' -o -name 'Comet*'); do
+          for file in $(find artifacts/ -type f -iname '*comet*'); do
             echo "Uploading $(basename "$file")"
             aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" \
               --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
