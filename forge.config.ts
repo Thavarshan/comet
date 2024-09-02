@@ -8,9 +8,6 @@ import path from 'node:path';
 const { version } = packageJson;
 const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
 
-console.log('CERT_PATH', process.env.CERT_PATH);
-console.log('CERT_PASSWORD', process.env.CERT_PASSWORD);
-
 const commonLinuxConfig = {
   name: 'comet',
   productName: 'Comet',
