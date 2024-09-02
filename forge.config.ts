@@ -8,6 +8,9 @@ import path from 'node:path';
 const { version } = packageJson;
 const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
 
+console.log('CERT_PATH', process.env.CERT_PATH);
+console.log('CERT_PASSWORD', process.env.CERT_PASSWORD);
+
 const commonLinuxConfig = {
   name: 'comet',
   productName: 'Comet',
@@ -50,14 +53,10 @@ const config: ForgeConfig = {
         packageDescription: 'A simple video converter',
         packageVersion: `${version}.1`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
-        devCert: process.env.CERT_PATH,
-        certPass: process.env.CERT_PASSWORD,
+        devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+        certPass: 'alpha26!',
         windowsKit: process.env.WINDOWS_KIT_PATH,
-        icon: path.resolve(iconDir, 'icon.ico'),
-        makeVersionWinStoreCompatible: true,
-        signtoolParams: [
-          '/v',
-        ]
+        icon: path.resolve(iconDir, 'icon.ico')
       },
     },
     {

@@ -56,6 +56,15 @@ jobs:
         CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
       shell: pwsh
 
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build app
+      run: npm run make
+      env:
+        WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
+      shell: pwsh
+
     - name: Extract version from package.json
       run: |
         $version = (node -e "console.log(require('./package.json').version);")
