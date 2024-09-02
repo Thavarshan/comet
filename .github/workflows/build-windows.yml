@@ -35,28 +35,23 @@ jobs:
           exit 1
         }
 
-        # Generate Dev Certificate
+        # Generate Dev Certificate with correct CN
         $certPassword = [guid]::NewGuid().ToString()
         $certPath = "$(Get-Location)\devcert.pfx"
-        $cert = New-SelfSignedCertificate -DnsName "CN=DevCert" -CertStoreLocation "Cert:\CurrentUser\My" -NotAfter (Get-Date).AddYears(1)
+        $cert = New-SelfSignedCertificate -DnsName "CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5" -CertStoreLocation "Cert:\CurrentUser\My" -NotAfter (Get-Date).AddYears(1)
         Export-PfxCertificate -Cert $cert -FilePath $certPath -Password (ConvertTo-SecureString -String $certPassword -Force -AsPlainText)
-        echo "Generated CERT_PATH: $certPath"
-        echo "Generated CERT_PASSWORD: $certPassword"
 
         # Install dependencies
         npm install
 
-        # Build app and Sign using signtool.exe
+        # Provide environment variables for signing during the build
         $env:CERT_PATH=$certPath
         $env:CERT_PASSWORD=$certPassword
 
-        try {
-          npm run make
-        } catch {
-          Write-Error "An error occurred during the build and signing process: $_"
-          exit 1
-        }
+        # Build and sign the appx using Electron Forge
+        npm run make
       env:
+        WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
         CERT_PATH: ${{ env.CERT_PATH }}
         CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
       shell: pwsh
