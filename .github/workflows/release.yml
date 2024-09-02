@@ -6,12 +6,11 @@ on:
       - release
 
 jobs:
-  build-mac-linux:
+  build-macos:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
         arch: [x64, arm64]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -31,7 +30,7 @@ jobs:
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: ${{ matrix.os == 'macos-latest' && 'darwin' || 'linux' }}
+          npm_config_platform: darwin
 
       - name: Extract version from package.json
         run: |
@@ -41,18 +40,58 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+          name: build-artifacts-macos-${{ matrix.arch }}
+          path: out/make/
+
+  build-linux:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: linux
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-linux-${{ matrix.arch }}
           path: out/make/
 
   build-windows:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
@@ -81,7 +120,7 @@ jobs:
           $env:CERT_PASSWORD=$certPassword
 
           # Build and sign the appx using Electron Forge
-          npm run make
+          npm run make -- --arch=${{ matrix.arch }}
         env:
           WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
@@ -96,38 +135,43 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts-windows
+          name: build-artifacts-windows-${{ matrix.arch }}
           path: out/make/
 
   upload-artifacts:
-    needs: [build-mac-linux, build-windows]
+    needs: [build-macos, build-linux, build-windows]
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download build artifacts (macos-latest x64)
+      - name: Download build artifacts (macos x64)
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts-macos-latest-x64
+          name: build-artifacts-macos-x64
 
-      - name: Download build artifacts (macos-latest arm64)
+      - name: Download build artifacts (macos arm64)
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts-macos-latest-arm64
+          name: build-artifacts-macos-arm64
 
-      - name: Download build artifacts (ubuntu-latest x64)
+      - name: Download build artifacts (linux x64)
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts-ubuntu-latest-x64
+          name: build-artifacts-linux-x64
 
-      - name: Download build artifacts (ubuntu-latest arm64)
+      - name: Download build artifacts (linux arm64)
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts-ubuntu-latest-arm64
+          name: build-artifacts-linux-arm64
 
-      - name: Download build artifacts (windows)
+      - name: Download build artifacts (windows x64)
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts-windows
+          name: build-artifacts-windows-x64
+
+      - name: Download build artifacts (windows arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-arm64
 
       - name: Upload files to Cloudflare R2
         run: |
@@ -143,7 +187,7 @@ jobs:
         shell: bash
 
   create-release:
-    needs: [build-mac-linux, build-windows]
+    needs: [build-macos, build-linux, build-windows]
     runs-on: ubuntu-latest
 
     steps:
