@@ -23,39 +23,6 @@ jobs:
         choco install microsoft-build-tools -y
       shell: pwsh
 
-    - name: Generate Dev Certificate, Install Dependencies, and Build App
-      run: |
-        # Verify makeappx.exe
-        $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
-        if (Test-Path $makeappxPath) {
-          echo "makeappx.exe found at $makeappxPath"
-          $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
-        } else {
-          Write-Error "makeappx.exe not found."
-          exit 1
-        }
-
-        # Generate Dev Certificate with correct CN
-        $certPassword = [guid]::NewGuid().ToString()
-        $certPath = "$(Get-Location)\devcert.pfx"
-        $cert = New-SelfSignedCertificate -DnsName "CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5" -CertStoreLocation "Cert:\CurrentUser\My" -NotAfter (Get-Date).AddYears(1)
-        Export-PfxCertificate -Cert $cert -FilePath $certPath -Password (ConvertTo-SecureString -String $certPassword -Force -AsPlainText)
-
-        # Install dependencies
-        npm install
-
-        # Provide environment variables for signing during the build
-        $env:CERT_PATH=$certPath
-        $env:CERT_PASSWORD=$certPassword
-
-        # Build and sign the appx using Electron Forge
-        npm run make
-      env:
-        WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-        CERT_PATH: ${{ env.CERT_PATH }}
-        CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
-      shell: pwsh
-
     - name: Install dependencies
       run: npm install
 
