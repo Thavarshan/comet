@@ -5,21 +5,27 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 import packageJson from './package.json';
 import path from 'node:path';
 
-const { version } = packageJson;
+const {
+  version,
+  name,
+  productName,
+  description,
+  author,
+} = packageJson;
 const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
 
 const commonLinuxConfig = {
-  name: 'comet',
-  productName: 'Comet',
-  bin: 'Comet',
+  name: name,
+  productName: productName,
+  bin: productName,
   categories: ['Video', 'Utility'],
   mimeType: ['x-scheme-handler/comet'],
 };
 
 const config: ForgeConfig = {
   packagerConfig: {
-    name: 'Comet',
-    executableName: 'Comet',
+    name: productName,
+    executableName: productName,
     icon: 'src/assets/images/icons/icon',
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
@@ -33,11 +39,11 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-squirrel',
       platforms: ['win32'],
       config: (arch: string) => ({
-        name: 'Comet',
-        authors: 'Jerome Thayananthajothy',
-        exe: 'Comet.exe',
+        name: productName,
+        authors: author.name,
+        exe: `${productName}.exe`,
         noMsi: true,
-        setupExe: `comet-${version}-win32-${arch}-setup.exe`,
+        setupExe: `${name}-${version}-win32-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
         certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certificatePassword: process.env.CERT_PASSWORD,
@@ -48,8 +54,8 @@ const config: ForgeConfig = {
       platforms: ['win32'],
       config: {
         packageName: 'JeromeThayananthajothy.CometApp',
-        packageDisplayName: 'Comet',
-        packageDescription: 'A simple video converter',
+        packageDisplayName: productName,
+        packageDescription: description,
         packageVersion: `${version}.1`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
