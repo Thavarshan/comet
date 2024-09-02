@@ -54,7 +54,7 @@ const config: ForgeConfig = {
         packageVersion: `${version}.1`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
-        certPass: 'alpha26!',
+        certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
         icon: path.resolve(iconDir, 'icon.ico')
       },

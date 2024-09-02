@@ -6,7 +6,7 @@ on:
       - release
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -46,7 +46,6 @@ jobs:
         npm run make
       env:
         WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-        CERT_PATH: ${{ env.CERT_PATH }}
         CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
       shell: pwsh
 

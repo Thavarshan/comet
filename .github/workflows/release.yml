@@ -6,8 +6,7 @@ on:
       - release
 
 jobs:
-  build-and-publish-mac-linux:
-    if: false
+  build-mac-linux:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -39,6 +38,97 @@ jobs:
           VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+          path: out/make/
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Microsoft Build Tools
+        run: |
+          choco install microsoft-build-tools -y
+        shell: pwsh
+
+      - name: Verify makeappx.exe and build & sign the appx
+        run: |
+          # Verify makeappx.exe
+          $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
+          if (Test-Path $makeappxPath) {
+            echo "makeappx.exe found at $makeappxPath"
+            $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
+          } else {
+            Write-Error "makeappx.exe not found."
+            exit 1
+          }
+
+          # Install dependencies
+          npm install
+
+          # Provide environment variables for signing during the build
+          $env:CERT_PATH=$certPath
+          $env:CERT_PASSWORD=$certPassword
+
+          # Build and sign the appx using Electron Forge
+          npm run make
+        env:
+          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
+          CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
+        shell: pwsh
+
+      - name: Extract version from package.json
+        run: |
+          $version = (node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-windows
+          path: out/make/
+
+  upload-artifacts:
+    needs: [build-mac-linux, build-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifacts (macos-latest x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-latest-x64
+
+      - name: Download build artifacts (macos-latest arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-latest-arm64
+
+      - name: Download build artifacts (ubuntu-latest x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-ubuntu-latest-x64
+
+      - name: Download build artifacts (ubuntu-latest arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-ubuntu-latest-arm64
+
+      - name: Download build artifacts (windows)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows
+
       - name: Upload files to Cloudflare R2
         run: |
           for file in $(find out/make/ -type f); do
@@ -46,15 +136,14 @@ jobs:
             aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" \
               --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
           done
-        shell: bash
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.R2_REGION }}
+        shell: bash
 
   create-release:
-    if: false
-    needs: [build-and-publish-mac-linux]
+    needs: [build-mac-linux, build-windows]
     runs-on: ubuntu-latest
 
     steps:
