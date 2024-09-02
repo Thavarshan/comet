@@ -29,18 +29,20 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    // {
-    //   name: '@electron-forge/maker-squirrel',
-    //   platforms: ['win32'],
-    //   config: (arch: string) => ({
-    //     name: 'Comet',
-    //     authors: 'Jerome Thayananthajothy',
-    //     exe: 'Comet.exe',
-    //     noMsi: true,
-    //     setupExe: `comet-${version}-win32-${arch}-setup.exe`,
-    //     setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
-    //   }),
-    // },
+    {
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: (arch: string) => ({
+        name: 'Comet',
+        authors: 'Jerome Thayananthajothy',
+        exe: 'Comet.exe',
+        noMsi: true,
+        setupExe: `comet-${version}-win32-${arch}-setup.exe`,
+        setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
+        certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+        certificatePassword: process.env.CERT_PASSWORD,
+      }),
+    },
     {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
