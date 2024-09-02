@@ -84,7 +84,7 @@ jobs:
           npm run make
         env:
           WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
-          CERT_PASSWORD: ${{ env.CERT_PASSWORD }}
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
         shell: pwsh
 
       - name: Extract version from package.json
