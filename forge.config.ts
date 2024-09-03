@@ -32,6 +32,10 @@ const config: ForgeConfig = {
     asar: {
       unpack: "**/node_modules/{ffmpeg-static,ffprobe-static}/**",
     },
+    win32metadata: {
+      CompanyName: 'Jerome Thayananthajothy',
+      OriginalFilename: 'Comet',
+    },
   },
   rebuildConfig: {},
   makers: [
@@ -42,8 +46,10 @@ const config: ForgeConfig = {
         name: productName,
         authors: author.name,
         exe: `${productName}.exe`,
+        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/icons/icon.ico',
+        loadingGif: 'src/assets/images/loading.gif',
         noMsi: true,
-        setupExe: `${name}-${version}-win32-${arch}-setup.exe`,
+        setupExe: `${name}-${version}-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
         certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certificatePassword: process.env.CERT_PASSWORD,
@@ -56,8 +62,9 @@ const config: ForgeConfig = {
         packageName: 'JeromeThayananthajothy.CometApp',
         packageDisplayName: productName,
         packageDescription: description,
-        packageVersion: `${version}.1`,
+        packageVersion: `${version}.0`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
+        publisherDisplayName: 'Jerome Thayananthajothy',
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
