@@ -123,6 +123,23 @@ const config: ForgeConfig = {
       [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
+  ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        authToken: process.env.GH_TOKEN,
+        repository: {
+          owner: 'stellar-comet',
+          name: 'comet',
+        },
+        tagPrefix: 'v',
+        prerelease: false,
+        draft: true,
+        force: true,
+        generateReleaseNotes: true
+      }
+    }
   ]
 };
 
