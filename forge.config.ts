@@ -60,7 +60,7 @@ const config: ForgeConfig = {
       platforms: ['win32'],
       config: {
         packageName: 'JeromeThayananthajothy.CometApp',
-        packageDisplayName: productName,
+        packageDisplayName: `${productName}App`,
         packageDescription: description,
         packageVersion: `${version}.0`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',

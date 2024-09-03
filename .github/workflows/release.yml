@@ -210,6 +210,46 @@ jobs:
           VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Get previous release tag
+        id: prev_release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: releases } = await github.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            if (releases.length > 0) {
+              return releases[0].tag_name;
+            } else {
+              return null;
+            }
+
+      - name: Get commits since last release
+        id: commits
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const previousTag = steps.prev_release.outputs.result;
+            let commits;
+            if (previousTag) {
+              const { data } = await github.repos.compareCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                base: previousTag,
+                head: 'HEAD',
+              });
+              commits = data.commits;
+            } else {
+              const { data } = await github.repos.listCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: 'HEAD',
+              });
+              commits = data;
+            }
+            return commits.map(commit => `- ${commit.commit.message} (${commit.sha})`).join('\n');
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -219,6 +259,52 @@ jobs:
           tag_name: v${{ env.VERSION }}
           release_name: v${{ env.VERSION }}
           body: |
-            Changes in this Release
+            ${{ steps.commits.outputs.result }}
           draft: true
           prerelease: false
+
+      - name: Download build artifacts (macos x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-x64
+          path: artifacts
+
+      - name: Download build artifacts (macos arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-arm64
+          path: artifacts
+
+      - name: Download build artifacts (linux x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-x64
+          path: artifacts
+
+      - name: Download build artifacts (linux arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-arm64
+          path: artifacts
+
+      - name: Download build artifacts (windows x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-x64
+          path: artifacts
+
+      - name: Download build artifacts (windows arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-arm64
+          path: artifacts
+
+      - name: Upload release assets
+        run: |
+          for file in $(find artifacts/ -type f); do
+            echo "Uploading $(basename "$file")"
+            gh release upload ${{ steps.create_release.outputs.upload_url }} "$file" --clobber
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        shell: bash
