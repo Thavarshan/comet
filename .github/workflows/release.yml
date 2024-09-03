@@ -31,6 +31,7 @@ jobs:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: darwin
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Extract version from package.json
         run: |
@@ -68,6 +69,7 @@ jobs:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
           npm_config_platform: linux
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Extract version from package.json
         run: |
@@ -121,6 +123,7 @@ jobs:
         env:
           WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         shell: pwsh
 
       - name: Extract version from package.json
