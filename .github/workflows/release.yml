@@ -210,46 +210,6 @@ jobs:
           VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Get previous release tag
-        id: prev_release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data: releases } = await github.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            if (releases.length > 0) {
-              return releases[0].tag_name;
-            } else {
-              return null;
-            }
-
-      - name: Get commits since last release
-        id: commits
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const previousTag = steps.prev_release.outputs.result;
-            let commits;
-            if (previousTag) {
-              const { data } = await github.repos.compareCommits({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                base: previousTag,
-                head: 'HEAD',
-              });
-              commits = data.commits;
-            } else {
-              const { data } = await github.repos.listCommits({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                sha: 'HEAD',
-              });
-              commits = data;
-            }
-            return commits.map(commit => `- ${commit.commit.message} (${commit.sha})`).join('\n');
-
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -259,7 +219,7 @@ jobs:
           tag_name: v${{ env.VERSION }}
           release_name: v${{ env.VERSION }}
           body: |
-            ${{ steps.commits.outputs.result }}
+            Changes in this Release
           draft: true
           prerelease: false
 
