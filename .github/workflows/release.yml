@@ -26,7 +26,7 @@ jobs:
 
       - name: Build Electron app
         run: |
-          npm run make -- --arch=${{ matrix.arch }}
+          npm run publish -- --arch=${{ matrix.arch }}
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
@@ -63,7 +63,7 @@ jobs:
 
       - name: Build Electron app
         run: |
-          npm run make -- --arch=${{ matrix.arch }}
+          npm run publish -- --arch=${{ matrix.arch }}
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
@@ -117,7 +117,7 @@ jobs:
           npm install
 
           # Build and sign the appx using Electron Forge
-          npm run make -- --arch=${{ matrix.arch }}
+          npm run publish -- --arch=${{ matrix.arch }}
         env:
           WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
