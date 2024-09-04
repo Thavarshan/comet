@@ -10,7 +10,7 @@
 
 <p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./src/assets/images/demo.gif" width="600" alt="Comet Demo"></a></p>
 
-[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release&event=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
+[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
 
 ## Project Overview
 
