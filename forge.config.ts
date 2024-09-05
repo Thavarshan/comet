@@ -39,22 +39,22 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    // {
-    //   name: '@electron-forge/maker-squirrel',
-    //   platforms: ['win32'],
-    //   config: (arch: string) => ({
-    //     name: productName,
-    //     authors: author.name,
-    //     exe: `${productName}.exe`,
-    //     iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/icons/icon.ico',
-    //     loadingGif: 'src/assets/images/loading.gif',
-    //     noMsi: true,
-    //     setupExe: `${name}-${version}-${arch}-setup.exe`,
-    //     setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
-    //     certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
-    //     certificatePassword: process.env.CERT_PASSWORD,
-    //   }),
-    // },
+    {
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: (arch: string) => ({
+        name: productName,
+        authors: author.name,
+        exe: `${productName}.exe`,
+        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/icons/icon.ico',
+        loadingGif: 'src/assets/images/loading.gif',
+        noMsi: true,
+        setupExe: `${name}-${version}-${arch}-setup.exe`,
+        setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
+        certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+        certificatePassword: process.env.CERT_PASSWORD,
+      }),
+    },
     {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
