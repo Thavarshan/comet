@@ -28,10 +28,12 @@
   },
   "main": ".vite/build/main.js",
   "scripts": {
+    "postinstall": "node scripts/postinstall.js",
     "start": "electron-forge start",
     "dev": "npm run start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "postmake": "node scripts/postinstall.js",
     "publish": "electron-forge publish",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx ."

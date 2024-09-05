@@ -59,6 +59,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-appx',
       platforms: ['win32'],
       config: {
+        makeVersionWinStoreCompatible: true,
         packageName: 'JeromeThayananthajothy.CometApp',
         packageDisplayName: `${productName}App`,
         packageDescription: description,
@@ -68,7 +69,25 @@ const config: ForgeConfig = {
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
-        icon: path.resolve(iconDir, 'icon.ico')
+        icon: path.resolve(iconDir, 'icon.ico'),
+        assets: [
+          {
+            path: path.resolve(__dirname, 'node_modules/ffmpeg-static/ffmpeg.exe'),
+            target: 'resources/ffmpeg.exe'
+          },
+          {
+            path: path.resolve(__dirname, 'node_modules/ffprobe-static/ffprobe.exe'),
+            target: 'resources/ffprobe.exe'
+          }
+        ],
+        capabilities: [
+          'internetClient',
+          'privateNetworkClientServer',
+          'documentsLibrary',
+          'picturesLibrary',
+          'videosLibrary',
+          'broadFileSystemAccess'
+        ]
       },
     },
     {
