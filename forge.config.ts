@@ -69,9 +69,8 @@ const config: ForgeConfig = {
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
-        icon: path.resolve(iconDir, 'icon.ico'),
-        assets: path.resolve(__dirname, 'node_modules/ffmpeg-static/ffmpeg.exe')
-      },
+        icon: path.resolve(iconDir, 'icon.ico')
+      }
     },
     {
       name: '@electron-forge/maker-zip',
