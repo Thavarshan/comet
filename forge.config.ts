@@ -33,8 +33,8 @@ const config: ForgeConfig = {
       unpack: "**/node_modules/{ffmpeg-static,ffprobe-static}/**",
     },
     win32metadata: {
-      CompanyName: 'Jerome Thayananthajothy',
-      OriginalFilename: 'Comet',
+      CompanyName: author.name,
+      OriginalFilename: productName,
     },
   },
   rebuildConfig: {},
@@ -64,7 +64,7 @@ const config: ForgeConfig = {
         packageDescription: description,
         packageVersion: `${version}.0`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
-        publisherDisplayName: 'Jerome Thayananthajothy',
+        publisherDisplayName: author.name,
         devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
@@ -85,6 +85,15 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-rpm',
       platforms: ['linux'],
       config: commonLinuxConfig,
+    },
+    {
+      name: '@reforged/maker-appimage',
+      platforms: ['linux'],
+      config: {
+        options: {
+          categories: commonLinuxConfig.categories,
+        },
+      },
     },
   ],
   plugins: [
@@ -142,5 +151,30 @@ const config: ForgeConfig = {
     }
   ]
 };
+
+function notarizeMaybe() {
+  if (process.platform !== 'darwin') {
+    return;
+  }
+
+  if (!process.env.CI && !process.env.FORCE_NOTARIZATION) {
+    // Not in CI, skipping notarization
+    // console.log('Not in CI, skipping notarization');
+    return;
+  }
+
+  if (!process.env.APPLE_ID || !process.env.APPLE_ID_PASSWORD) {
+    console.warn(
+      'Should be notarizing, but environment variables APPLE_ID or APPLE_ID_PASSWORD are missing!',
+    );
+    return;
+  }
+
+  config.packagerConfig.osxNotarize = {
+    appleId: process.env.APPLE_ID,
+    appleIdPassword: process.env.APPLE_ID_PASSWORD,
+    teamId: 'UY52UFTV**',
+  };
+}
 
 export default config;
