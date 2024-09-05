@@ -70,7 +70,7 @@ const config: ForgeConfig = {
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
         icon: path.resolve(iconDir, 'icon.ico')
-      },
+      }
     },
     {
       name: '@electron-forge/maker-zip',

@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
+    "pretty": true,
     "paths": {
       "@/*": [
         "./src/*"
@@ -23,17 +24,39 @@
       "jsdom",
       "vite/client",
       "@vue/runtime-core"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "lib": [
+      "es2020",
+      "dom",
+      "WebWorker"
+    ],
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
   },
   "include": [
     "./**/*",
     "src/**/*",
-    "tests/**/*",
-    "cypress/**/*"
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.spec.ts" // Exclude test files from the main build
-  ]
+  ],
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2
+  }
 }
