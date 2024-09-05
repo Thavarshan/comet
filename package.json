@@ -32,7 +32,6 @@
     "dev": "npm run start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "postmake": "node scripts/postinstall.mjs",
     "publish": "electron-forge publish",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx ."
