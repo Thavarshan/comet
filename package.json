@@ -2,7 +2,7 @@
   "name": "comet",
   "productName": "Comet",
   "private": true,
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "A simple video converter",
   "keywords": [
     "comet",
@@ -37,7 +37,6 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
-    "@electron-forge/publisher-github": "^7.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "electron-squirrel-startup": "^1.0.1",
@@ -55,6 +54,7 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-appx": "^7.4.0",
     "@electron-forge/maker-deb": "^7.4.0",
     "@electron-forge/maker-rpm": "^7.4.0",
     "@electron-forge/maker-squirrel": "^7.4.0",
@@ -62,6 +62,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron-forge/plugin-vite": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@jest/globals": "^29.7.0",
     "@types/ffmpeg": "^1.0.7",

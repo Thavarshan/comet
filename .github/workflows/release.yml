@@ -6,77 +6,196 @@ on:
       - release
 
 jobs:
-  build:
+  build-macos:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64, arm64]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-
-      - name: Cache Node.js modules
-        id: cache-node-modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
         run: npm install
 
       - name: Build Electron app
         run: |
-          npm run make -- --arch=${{ matrix.arch }}
+          npm run publish -- --arch=${{ matrix.arch }}
         env:
           ELECTRON_CACHE: ${{ runner.temp }}/electron
           npm_config_arch: ${{ matrix.arch }}
-          npm_config_platform: ${{ matrix.os }}
+          npm_config_platform: darwin
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Upload artifacts
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}-distributables
-          path: out/make  # Adjust the path to where your distributables are stored
+          name: build-artifacts-macos-${{ matrix.arch }}
+          path: out/make/
 
-  publish:
+  build-linux:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
     runs-on: ubuntu-latest
-    needs: build
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Extract version from package.json
-        id: version
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          npm run publish -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: linux
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Download artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-linux-${{ matrix.arch }}
+          path: out/make/
+
+  build-windows:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Microsoft Build Tools
+        run: |
+          choco install microsoft-build-tools -y
+        shell: pwsh
+
+      - name: Verify makeappx.exe and build & sign the appx
+        run: |
+          # Verify makeappx.exe
+          $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
+
+          if (Test-Path $makeappxPath) {
+            echo "makeappx.exe found at $makeappxPath"
+            $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
+          } else {
+            Write-Error "makeappx.exe not found."
+            exit 1
+          }
+
+          # Install dependencies
+          npm install
+
+          # Build and sign the appx using Electron Forge
+          npm run publish -- --arch=${{ matrix.arch }}
+        env:
+          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        shell: pwsh
+
+      - name: Extract version from package.json
+        run: |
+          $version = (node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-windows-${{ matrix.arch }}
+          path: out/make/
+
+  upload-artifacts:
+    needs: [build-macos, build-linux, build-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Download build artifacts (macos x64)
         uses: actions/download-artifact@v3
         with:
-          path: all-distributables
+          name: build-artifacts-macos-x64
+          path: artifacts
 
-      - name: Create and Upload to Release
-        uses: ncipollo/release-action@v1
+      - name: Download build artifacts (macos arm64)
+        uses: actions/download-artifact@v3
         with:
-          tag: v${{ env.VERSION }}
-          name: v${{ env.VERSION }}
-          draft: true
-          prerelease: true
-          artifacts: "all-distributables/**/*"
-          token: ${{ secrets.GH_TOKEN }}
+          name: build-artifacts-macos-arm64
+          path: artifacts
+
+      - name: Download build artifacts (linux x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-x64
+          path: artifacts
+
+      - name: Download build artifacts (linux arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-arm64
+          path: artifacts
+
+      - name: Download build artifacts (windows x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-x64
+          path: artifacts
+
+      - name: Download build artifacts (windows arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-arm64
+          path: artifacts
+
+      - name: Upload files to Cloudflare R2
+        run: |
+          for file in $(find artifacts/ -type f -iname '*comet*'); do
+            echo "Uploading $(basename "$file")"
+            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" \
+              --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
+          done
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.R2_REGION }}
+        shell: bash

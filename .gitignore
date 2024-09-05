@@ -91,3 +91,5 @@ typings/
 # Electron-Forge
 out/
 note.md
+cert.pem
+key.pem

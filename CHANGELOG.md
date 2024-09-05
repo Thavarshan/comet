@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/stellar-comet/comet/compare/v0.0.3...HEAD)
+## [Unreleased](https://github.com/stellar-comet/comet/compare/v1.0.0...HEAD)
+
+## [v1.0.0](https://github.com/stellar-comet/comet/compare/v0.0.3...v1.0.0) - 2024-09-02
+
+Initial stable release.
 
 ## [v0.0.3](https://github.com/stellar-comet/comet/compare/v0.0.2...v0.0.3) - 2024-08-24
 
