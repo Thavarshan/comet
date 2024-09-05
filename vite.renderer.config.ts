@@ -2,7 +2,6 @@ import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import { pluginExposeRenderer } from './vite.base.config';
 import vue from '@vitejs/plugin-vue';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwind from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import path from 'node:path';
@@ -25,7 +24,7 @@ export default defineConfig((env) => {
         plugins: [tailwind(), autoprefixer()],
       },
     },
-    plugins: [pluginExposeRenderer(name), vue(), tsconfigPaths()],
+    plugins: [pluginExposeRenderer(name), vue()],
     resolve: {
       preserveSymlinks: true,
       alias: {
