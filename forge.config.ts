@@ -70,24 +70,7 @@ const config: ForgeConfig = {
         certPass: process.env.CERT_PASSWORD,
         windowsKit: process.env.WINDOWS_KIT_PATH,
         icon: path.resolve(iconDir, 'icon.ico'),
-        assets: [
-          {
-            path: path.resolve(__dirname, 'node_modules/ffmpeg-static/ffmpeg.exe'),
-            target: 'resources/ffmpeg.exe'
-          },
-          {
-            path: path.resolve(__dirname, 'node_modules/ffprobe-static/ffprobe.exe'),
-            target: 'resources/ffprobe.exe'
-          }
-        ],
-        capabilities: [
-          'internetClient',
-          'privateNetworkClientServer',
-          'documentsLibrary',
-          'picturesLibrary',
-          'videosLibrary',
-          'broadFileSystemAccess'
-        ]
+        assets: path.resolve(__dirname, 'node_modules/ffmpeg-static/ffmpeg.exe')
       },
     },
     {
@@ -162,7 +145,7 @@ const config: ForgeConfig = {
   ]
 };
 
-function notarizeMaybe() {
+function notarizeMaybe () {
   if (process.platform !== 'darwin') {
     return;
   }

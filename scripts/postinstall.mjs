@@ -5,8 +5,8 @@ import unzipper from 'unzipper';
 import archiver from 'archiver';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const appxFilePath = path.resolve(__dirname, '../out/make/JeromeThayananthajothy.CometApp.appx');
-const outputAppxPath = path.resolve(__dirname, '../out/make/JeromeThayananthajothy.CometApp-modified.appx');
+const appxFilePath = path.resolve(__dirname, '../out/make/appx/x64/JeromeThayananthajothy.CometApp.appx');
+const outputAppxPath = path.resolve(__dirname, '../out/make/appx/x64/JeromeThayananthajothy.CometApp-modified.appx');
 const tempDir = path.resolve(__dirname, '../temp/appx');
 const manifestFile = 'AppxManifest.xml';
 
