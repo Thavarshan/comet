@@ -1,10 +1,11 @@
-const { exec } = require('child_process');
-const os = require('os');
-const fs = require('fs').promises;
-const path = require('path');
-const unzipper = require('unzipper');
-const archiver = require('archiver');
+import { exec } from 'child_process';
+import os from 'os';
+import { promises as fs } from 'fs';
+import path from 'path';
+import unzipper from 'unzipper';
+import archiver from 'archiver';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const appxFilePath = path.resolve(__dirname, '../out/make/JeromeThayananthajothy.CometApp.appx');
 const outputAppxPath = path.resolve(__dirname, '../out/make/JeromeThayananthajothy.CometApp-modified.appx');
 const tempDir = path.resolve(__dirname, '../temp/appx');
@@ -46,11 +47,11 @@ async function modifyManifest() {
     const output = fs.createWriteStream(outputAppxPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 
-    output.on('close', function () {
+    output.on('close', () => {
       console.log(`${archive.pointer()} total bytes written`);
     });
 
-    archive.on('error', function (err) {
+    archive.on('error', (err) => {
       throw err;
     });
 

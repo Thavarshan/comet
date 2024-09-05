@@ -39,6 +39,7 @@
     "lint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
+    "archiver": "^7.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "electron-squirrel-startup": "^1.0.1",
@@ -50,6 +51,7 @@
     "radix-vue": "^1.9.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "unzipper": "^0.12.3",
     "uuid": "^10.0.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vue": "^3.4.38"
