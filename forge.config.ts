@@ -144,29 +144,4 @@ const config: ForgeConfig = {
   ]
 };
 
-function notarizeMaybe () {
-  if (process.platform !== 'darwin') {
-    return;
-  }
-
-  if (!process.env.CI && !process.env.FORCE_NOTARIZATION) {
-    // Not in CI, skipping notarization
-    // console.log('Not in CI, skipping notarization');
-    return;
-  }
-
-  if (!process.env.APPLE_ID || !process.env.APPLE_ID_PASSWORD) {
-    console.warn(
-      'Should be notarizing, but environment variables APPLE_ID or APPLE_ID_PASSWORD are missing!',
-    );
-    return;
-  }
-
-  config.packagerConfig.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: 'UY52UFTV**',
-  };
-}
-
 export default config;
