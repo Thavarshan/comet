@@ -4,6 +4,7 @@ import {
   IpcMainInvokeEvent
 } from 'electron';
 import { getDesktopPath } from './desktop-path';
+import { IpcEvent } from '../enum/ipc-event';
 import {
   handleConversion,
   handleConversionCancellation
@@ -17,11 +18,11 @@ import {
  * @returns {void}
  */
 export function configureIpcHandlers(ipcMain: IpcMain): void {
-  ipcMain.handle('get-desktop-path', () => {
+  ipcMain.handle(IpcEvent.GET_DESKTOP_PATH, () => {
     return getDesktopPath();
   });
 
-  ipcMain.handle('dialog:select-directory', async () => {
+  ipcMain.handle(IpcEvent.DIALOG_SELECT_DIRECTORY, async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
@@ -29,7 +30,7 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
     return result.canceled ? null : result.filePaths[0];
   });
 
-  ipcMain.handle('convert-video', async (
+  ipcMain.handle(IpcEvent.CONVERT_VIDEO, async (
     event: IpcMainInvokeEvent,
     { id, filePath, outputFormat, saveDirectory }: {
       id: string,
@@ -51,7 +52,7 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
     });
   });
 
-  ipcMain.handle('cancel-conversion', (
+  ipcMain.handle(IpcEvent.CANCEL_CONVERSION, (
     event: IpcMainInvokeEvent,
     id: string
   ) => {

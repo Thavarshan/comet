@@ -12,7 +12,7 @@ const {
   description,
   author,
 } = packageJson;
-const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
+const iconDir = path.resolve(__dirname, 'assets', 'icons');
 
 const commonLinuxConfig = {
   name: name,
@@ -26,7 +26,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     name: productName,
     executableName: productName,
-    icon: 'src/assets/images/icons/icon',
+    icon: iconDir,
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
     asar: {

@@ -26,7 +26,7 @@
  * ```
  */
 
-import './assets/css/index.css';
+import './ui/css/index.css';
 
 import { createApp } from 'vue';
 import App from './ui/app.vue';

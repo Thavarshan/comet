@@ -6,30 +6,48 @@ import {
   IpcRendererEvent,
   webUtils
 } from 'electron';
+import { IpcEvent } from './enum/ipc-event';
 
-contextBridge.exposeInMainWorld('electron', {
-  selectDirectory: () => ipcRenderer.invoke('dialog:select-directory'),
-  getDesktopPath: () => ipcRenderer.invoke('get-desktop-path'),
-  getFilePath: (file: File) => webUtils.getPathForFile(file),
-  cancelConversion: (id: number) => ipcRenderer.invoke('cancel-conversion', id),
-  convertVideo: (
-    id: string,
-    filePath: string,
-    outputFormat: string,
-    saveDirectory: string
-  ) => {
-    return ipcRenderer.invoke(
-      'convert-video',
-      { id, filePath, outputFormat, saveDirectory }
-    );
-  },
-  on: (
-    channel: string,
-    callback: (event: IpcRendererEvent, ...args: unknown[]) => void
-  ) => {
-    ipcRenderer.on(channel, callback);
-  },
-  removeAllListeners: (channel: string) => {
-    ipcRenderer.removeAllListeners(channel);
-  }
-});
+async function preload() {
+  await setupGlobals();
+}
+
+export async function setupGlobals() {
+  contextBridge.exposeInMainWorld('electron', {
+    arch: process.arch,
+    selectDirectory() {
+      return ipcRenderer.invoke(IpcEvent.DIALOG_SELECT_DIRECTORY);
+    },
+    getDesktopPath() {
+      return ipcRenderer.invoke(IpcEvent.GET_DESKTOP_PATH);
+    },
+    getFilePath() {
+      return webUtils.getPathForFile;
+    },
+    cancelConversion(id: number) {
+      return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION, id);
+    },
+    convertVideo(
+      id: string,
+      filePath: string,
+      outputFormat: string,
+      saveDirectory: string
+    ) {
+      return ipcRenderer.invoke(
+        IpcEvent.CONVERT_VIDEO,
+        { id, filePath, outputFormat, saveDirectory }
+      );
+    },
+    on(channel: string, callback: (
+      event: IpcRendererEvent,
+      ...args: unknown[]) => void
+    ) {
+      ipcRenderer.on(channel, callback);
+    },
+    removeAllListeners(channel: string) {
+      ipcRenderer.removeAllListeners(channel);
+    }
+  });
+}
+
+preload();

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { toJS } from 'mobx';
+
 const platform = process.platform;
 
 export function overridePlatform(value: NodeJS.Platform) {
@@ -23,6 +26,8 @@ export class FetchMock {
     window.fetch = jest.fn().mockImplementation(async (url: string) => {
       const content = this.urls.get(url);
       if (!content) {
+        // eslint-disable-next-line no-console
+        console.trace('Unhandled mock URL:', url);
         return {
           ok: false,
         };
@@ -36,29 +41,44 @@ export class FetchMock {
   }
 }
 
+// return an object containing props in 'a' that are different from in 'b'
+export function objectDifference(a: any, b: any): Record<string, unknown> {
+  const serialize = (input: any) => JSON.stringify(toJS(input));
+
+  const o: Record<string, unknown> = {};
+  for (const entry of Object.entries(a)) {
+    const key = entry[0];
+    const val = toJS(entry[1]);
+    if (serialize(val) == serialize(b[key])) continue;
+
+    o[key] = key === 'editorMosaic' ? objectDifference(val, b[key]) : toJS(val);
+  }
+  return o;
+}
+
 /**
  * Waits up to `timeout` msec for a test to pass.
  *
  * @return a promise that returns the test result on success, or rejects on timeout
- * @param {() => unknown} test - function to test
+ * @param {() => any} test - function to test
  * @param {Object} options
  * @param {Number} [options.interval=100] - polling frequency, in msec
  * @param {Number} [options.timeout=2000] - timeout interval, in msec
  */
 export async function waitFor(
-  test: () => unknown,
+  test: () => any,
   options = {
     interval: 100,
     timeout: 2000,
   },
-): Promise<unknown> {
+): Promise<any> {
   const { interval, timeout } = options;
   let elapsed = 0;
   return new Promise<void>((resolve, reject) => {
     (function check() {
       const result = test();
       if (result) {
-        return resolve(result as PromiseLike<void>);
+        return resolve(result);
       }
       elapsed += interval;
       if (elapsed >= timeout) {

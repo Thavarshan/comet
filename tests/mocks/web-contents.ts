@@ -96,7 +96,7 @@ export class WebContentsMock extends EventEmitter {
   public devToolsWebContents = null;
   public debugger = null;
 
-  constructor() {
+  constructor () {
     super();
   }
 

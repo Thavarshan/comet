@@ -10,7 +10,7 @@ import {
 import {
   Dot
 } from 'lucide-vue-next';
-import { cn } from '@/lib/utils';
+import { cn } from '@/ui/utils';
 
 const props = defineProps<MenubarRadioItemProps & { class?: HTMLAttributes['class']; }>();
 const emits = defineEmits<MenubarRadioItemEmits>();

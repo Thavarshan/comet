@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter } from 'node:events';
 
 import { BrowserWindowMock } from './browser-window';
@@ -8,7 +9,7 @@ const createdNotifications: Array<NotificationMock> = [];
 class NotificationMock extends EventEmitter {
   public readonly show = jest.fn();
 
-  constructor(public readonly options: any) {
+  constructor (public readonly options: any) {
     super();
     createdNotifications.push(this);
   }
@@ -45,7 +46,7 @@ export class MessageChannelMainMock {
   public port1: MessagePortMainMock;
   public port2: MessagePortMainMock;
 
-  constructor() {
+  constructor () {
     this.port1 = new MessagePortMainMock();
     this.port2 = new MessagePortMainMock();
   }
@@ -59,7 +60,7 @@ export class MessagePortMainMock {
 
 export class NativeImageMock {
   public readonly args: Array<any>;
-  constructor(...args: Array<any>) {
+  constructor (...args: Array<any>) {
     this.args = args;
   }
 }
@@ -75,7 +76,7 @@ export class MenuItemMock {
     event: KeyboardEvent,
   ) => void;
 
-  constructor(options: Electron.MenuItemConstructorOptions) {
+  constructor (options: Electron.MenuItemConstructorOptions) {
     this.enabled = !!options.enabled;
     this.label = options.label!;
     this.click = options.click!;

@@ -4,11 +4,37 @@ import ffprobe from 'ffprobe-static';
 import path from 'node:path';
 
 const ffmpegProcesses = new Map<string, ffmpeg.FfmpegCommand>();
-const ffmpegPath = ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
-const ffprobePath = ffprobe.path.replace('app.asar', 'app.asar.unpacked');
 
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobePath);
+/**
+ * Set the ffmpeg process for the given ID.
+ *
+ * @param {string} id
+ * @param {ffmpeg.FfmpegCommand} ffmpegCommand
+ * 
+ * @returns {void}
+ */
+export function setFfmpegProcess(id: string, ffmpegCommand: ffmpeg.FfmpegCommand): void {
+  ffmpegProcesses.set(id, ffmpegCommand);
+}
+
+let ffmpegPath: string;
+let ffprobePath: string;
+
+try {
+  if (!ffmpegStatic) {
+    throw new Error('ffmpegStatic not found');
+  }
+  ffmpegPath = ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
+  ffprobePath = ffprobe.path.replace('app.asar', 'app.asar.unpacked');
+
+  ffmpeg.setFfmpegPath(ffmpegPath);
+  ffmpeg.setFfprobePath(ffprobePath);
+} catch (error) {
+  console.error('Failed to find ffmpegStatic:', error.message);
+  // Handle the failure gracefully, e.g., by setting default paths or exiting the application
+  ffmpegPath = ''; // or any other default value or action
+  ffprobePath = ''; // or any other default value or action
+}
 
 /**
  * Parse a timemark string into seconds
@@ -67,7 +93,7 @@ export function handleConversion(
       .output(outputPath)
       .on('progress', (progress) => {
         const processedSeconds = parseTimemark(progress.timemark);
-        const calculatedProgress = (processedSeconds / duration) * 100;
+        const calculatedProgress = duration ? (processedSeconds / duration) * 100 : 0;
 
         event.sender.send('conversion-progress', {
           id,
@@ -88,7 +114,7 @@ export function handleConversion(
       })
       .save(outputPath);
 
-    ffmpegProcesses.set(id, ffmpegCommand);
+    setFfmpegProcess(id, ffmpegCommand);
   });
 }
 
@@ -101,7 +127,7 @@ export function handleConversion(
  * @returns {boolean}
  */
 export function handleConversionCancellation(
-  event: Electron.IpcMainInvokeEvent,
+  _event: Electron.IpcMainInvokeEvent,
   id: string
 ): boolean {
   const ffmpegCommand = ffmpegProcesses.get(id);

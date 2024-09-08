@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from 'vue';
 import { DialogTitle, type DialogTitleProps, useForwardProps } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { cn } from '@/ui/utils';
 
 const props = defineProps<DialogTitleProps & { class?: HTMLAttributes['class']; }>();
 
