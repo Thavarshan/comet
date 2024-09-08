@@ -12,7 +12,7 @@ const {
   description,
   author,
 } = packageJson;
-const iconDir = path.resolve(__dirname, 'assets', 'icons');
+const iconDir = path.resolve(__dirname, 'assets/icons');
 
 const commonLinuxConfig = {
   name: name,
@@ -46,8 +46,8 @@ const config: ForgeConfig = {
         name: productName,
         authors: author.name,
         exe: `${productName}.exe`,
-        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/icons/icon.ico',
-        loadingGif: 'src/assets/images/loading.gif',
+        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/assets/icons/icon.ico',
+        loadingGif: 'assets/loading.gif',
         noMsi: true,
         setupExe: `${name}-${version}-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
@@ -60,8 +60,8 @@ const config: ForgeConfig = {
       platforms: ['win32'],
       config: {
         makeVersionWinStoreCompatible: true,
-        packageName: 'JeromeThayananthajothy.CometApp',
-        packageDisplayName: `${productName}App`,
+        packageName: 'JeromeThayananthajothy.Comet',
+        packageDisplayName: `${productName}`,
         packageDescription: description,
         packageVersion: `${version}.0`,
         publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',

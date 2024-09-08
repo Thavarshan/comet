@@ -4,33 +4,18 @@ import {
   onMounted,
   onBeforeUnmount
 } from 'vue';
+import Layout from '@/ui/layouts/DefaultLayout.vue';
 import {
   Dropfile,
   SaveDirectory,
+  Controls,
+  Options,
+  FileList,
+  FileItem
 } from '@/ui/blocks';
 import { useToast } from '@/ui/components/toast/use-toast';
-import { Toaster } from '@/ui/components/toast';
 import { Button } from '@/ui/components/button';
-import { ScrollArea } from '@/ui/components/scroll-area';
-import { Badge } from '@/ui/components/badge';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/ui/components/dialog';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/ui/components/tooltip';
-import { Progress } from '@/ui/components/progress';
-import { Titlebar } from '@/ui/components/titlebar';
+import { Combobox } from '@/ui/components/combobox';
 import {
   RefreshCw,
   X,
@@ -41,7 +26,10 @@ import {
   Combine
 } from 'lucide-vue-next';
 import { v4 as uuidv4 } from 'uuid';
-import { CONVERSION_FORMATS } from '@/consts/formats';
+import {
+  VIDEO_CONVERSION_FORMATS as videoFormats,
+  AUDIO_CONVERSION_FORMATS as audioFormats
+} from '@/consts/formats';
 import type { Item } from '@/types/item';
 import { filesize } from 'filesize';
 
@@ -55,7 +43,7 @@ const conversionInProgress = ref(false);
 onMounted(async () => {
   saveDirectory.value = await window.electron.getDesktopPath();
 
-  window.electron.on('conversion-progress', (event, { id, progress }) => {
+  window.electron.on('conversion-progress', (_event, { id, progress }) => {
     console.log('conversion-progress', progress);
 
     const item = items.value.find((item: Item) => item.id === id);
@@ -108,16 +96,16 @@ function setFormat(format: string) {
 function removeItem(index: number) {
   const item = items.value[index];
   if (item.converting) {
-    cancelConversion(index);
+    cancelItem(index);
   }
   items.value = items.value.filter((_, i) => i !== index);
 }
 
-function clearAllItems() {
+function clearItems() {
   items.value = [];
 }
 
-async function convertItems() {
+async function performConversion() {
   if (!items.value || !convertTo.value || !saveDirectory.value) {
     toast({
       title: 'Error',
@@ -172,7 +160,7 @@ async function convertItems() {
   conversionInProgress.value = false;
 }
 
-function cancelConversion(index: number) {
+function cancelItem(index: number) {
   const item = items.value[index];
 
   if (!item.converting) {
@@ -197,11 +185,91 @@ function cancelConversion(index: number) {
       });
     });
 }
+
+function cancelConversion() {
+  //
+}
 </script>
 
 <template>
-  <Toaster :duration="3000" />
-  <div>
-    <Titlebar title="Comet" />
-  </div>
+  <Layout title="Comet" v-cloak>
+    <template #video>
+      <Dropfile text="Drag and drop your video files here" :supported-formats="videoFormats" />
+      <Options>
+        <template #left>
+          <SaveDirectory
+            :defaultSaveDirectory="saveDirectory"
+            @directory-selected="handleSaveDirectoryUpdate"
+          />
+        </template>
+        <template #right>
+          <Combobox
+            :options="videoFormats"
+            @change="setFormat"
+            placeholder="Select format"
+          />
+        </template>
+      </Options>
+      <FileList>
+        <FileItem
+          v-for="(item, index) in items"
+          :key="item.id"
+          :item="item"
+          :index="index"
+          @remove="removeItem"
+          @cancel="cancelItem"
+        />
+      </FileList>
+    </template>
+    <template #audio>
+      <Dropfile text="Drag and drop your audio files here" :supported-formats="audioFormats" />
+      <Options>
+        <template #left>
+          <SaveDirectory
+            :defaultSaveDirectory="saveDirectory"
+            @directory-selected="handleSaveDirectoryUpdate"
+          />
+        </template>
+        <template #right>
+          <Combobox
+            :options="audioFormats"
+            @change="setFormat"
+            placeholder="Select format"
+          />
+        </template>
+      </Options>
+      <FileList>
+        <FileItem
+          v-for="(item, index) in items"
+          :key="item.id"
+          :item="item"
+          :index="index"
+          @remove="removeItem"
+          @cancel="cancelItem"
+        />
+      </FileList>
+    </template>
+    <template #controls>
+      <Controls>
+        <template #left>
+          <Button variant="outline" @click="clearItems">
+            <Trash2 class="size-4 text-destructive mr-2" />
+            Clear
+          </Button>
+        </template>
+        <template #right>
+          <div class="flex items-center justify-end gap-x-2">
+            <Button variant="outline" @click="cancelConversion">
+              <Ban class="size-4 mr-2" />
+              Cancel
+            </Button>
+            <Button @click="performConversion">
+              <RefreshCw class="size-4 mr-2" />
+              Convert
+            </Button>
+          </div>
+        </template>
+      </Controls>
+    </template>
+  </Layout>
 </template>

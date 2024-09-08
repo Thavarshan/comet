@@ -1,14 +1,14 @@
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/logo.png" width="400" height="400" alt="Comet"></a></p>
 
 ## About Comet
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
 
-![Comet UI 1](./assets/images/screenshot_1.png)
-![Comet UI 2](./assets/images/screenshot_2.png)
-![Comet UI 3](./assets/images/screenshot_3.png)
+![Comet UI 1](./assets/screenshot_1.png)
+![Comet UI 2](./assets/screenshot_2.png)
+![Comet UI 3](./assets/screenshot_3.png)
 
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/images/demo.gif" width="600" alt="Comet Demo"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/demo.gif" width="600" alt="Comet Demo"></a></p>
 
 [![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
 

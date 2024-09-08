@@ -1,34 +1,42 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { Button } from '@/ui/components/button';
 import {
-  CloudUpload,
+  Upload,
 } from 'lucide-vue-next';
-import { CONVERSION_FORMATS } from '@/consts/formats';
 
 const emit = defineEmits(['file-uploaded']);
+
+const props = defineProps<{
+  text: string;
+  supportedFormats: string[];
+}>();
+
+const fileInput = ref<HTMLInputElement | null>(null);
+
 const isDragging = ref(false);
 
-const acceptFormats = computed(() => {
-  return CONVERSION_FORMATS.map((format) => `.${format}`).join(',');
+const acceptableFormats = computed(() => {
+  return props.supportedFormats.map((format) => `.${format}`).join(',');
 });
 
-const handleUpload = (event: Event) => {
+function handleUpload(event: Event) {
   const files = (event.target as HTMLInputElement).files;
   if (!files) return;
 
   emit('file-uploaded', files);
 };
 
-const handleDragOver = (event: DragEvent) => {
+function handleDragOver(event: DragEvent) {
   event.preventDefault();
   isDragging.value = true;
 };
 
-const handleDragLeave = () => {
+function handleDragLeave() {
   isDragging.value = false;
 };
 
-const handleDrop = (event: DragEvent) => {
+function handleDrop(event: DragEvent) {
   event.preventDefault();
   isDragging.value = false;
 
@@ -37,19 +45,29 @@ const handleDrop = (event: DragEvent) => {
 
   emit('file-uploaded', files);
 };
+
+function triggerFileInput() {
+  fileInput?.value?.click();
+};
 </script>
 
 <template>
-  <label
-    for="file-uploader"
-    class="bg-slate-50 font-semibold text-base rounded-lg h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-slate-400 border-dashed mx-auto"
-    :class="{ 'bg-slate-100': isDragging }"
-    @dragover="handleDragOver"
-    @dragleave="handleDragLeave"
-    @drop="handleDrop"
-  >
-    <CloudUpload class="size-12 mb-2 text-slate-400" />
-    <input type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptFormats">
-    <p class="text-sm font-medium text-slate-400 mt-2 max-w-xs text-center">Drag and drop your files here</p>
-  </label>
+  <div class="py-1">
+    <label
+      for="file-uploader"
+      class="group bg-muted/10 rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed mx-auto"
+      :class="{ 'border-primary': isDragging }"
+      @dragover="handleDragOver"
+      @dragleave="handleDragLeave"
+      @drop="handleDrop"
+    >
+      <Upload class="size-12 text-muted-foreground/50" />
+      <input ref="fileInput" type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptableFormats">
+      <div class="font-semibold text-sm text-foreground mt-2 max-w-xs text-center">{{ text }}</div>
+      <div class="mt-1 text-xs text-muted-foreground">or click here to select files for upload</div>
+      <div class="mt-4">
+        <Button @click="triggerFileInput" variant="secondary" class="group-hover:bg-secondary/80">Select files</Button>
+      </div>
+    </label>
+  </div>
 </template>
