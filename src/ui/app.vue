@@ -10,12 +10,12 @@ import {
   SaveDirectory,
   Controls,
   Options,
-  FileList,
   FileItem
 } from '@/ui/blocks';
 import { useToast } from '@/ui/components/toast/use-toast';
 import { Button } from '@/ui/components/button';
 import { Combobox } from '@/ui/components/combobox';
+import { ScrollArea } from '@/ui/components/scroll-area';
 import {
   RefreshCw,
   X,
@@ -198,6 +198,7 @@ function cancelConversion() {
       <Options>
         <template #left>
           <SaveDirectory
+          v-if="saveDirectory"
             :defaultSaveDirectory="saveDirectory"
             @directory-selected="handleSaveDirectoryUpdate"
           />
@@ -210,7 +211,7 @@ function cancelConversion() {
           />
         </template>
       </Options>
-      <FileList>
+      <ScrollArea class="h-[295px] w-full">
         <FileItem
           v-for="(item, index) in items"
           :key="item.id"
@@ -219,13 +220,14 @@ function cancelConversion() {
           @remove="removeItem"
           @cancel="cancelItem"
         />
-      </FileList>
+      </ScrollArea>
     </template>
     <template #audio>
       <Dropfile text="Drag and drop your audio files here" :supported-formats="audioFormats" />
       <Options>
         <template #left>
           <SaveDirectory
+            v-if="saveDirectory"
             :defaultSaveDirectory="saveDirectory"
             @directory-selected="handleSaveDirectoryUpdate"
           />
@@ -238,7 +240,7 @@ function cancelConversion() {
           />
         </template>
       </Options>
-      <FileList>
+      <ScrollArea class="h-[295px] w-full">
         <FileItem
           v-for="(item, index) in items"
           :key="item.id"
@@ -247,7 +249,7 @@ function cancelConversion() {
           @remove="removeItem"
           @cancel="cancelItem"
         />
-      </FileList>
+      </ScrollArea>
     </template>
     <template #controls>
       <Controls>

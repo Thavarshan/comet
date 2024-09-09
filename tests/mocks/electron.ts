@@ -78,8 +78,8 @@ export class MenuItemMock {
 
   constructor (options: Electron.MenuItemConstructorOptions) {
     this.enabled = !!options.enabled;
-    this.label = options.label!;
-    this.click = options.click!;
+    this.label = options.label ?? '';
+    this.click = options.click ?? (() => { /* do nothing */ });
     this.visible = !!options.visible;
     this.type = options.type as string;
   }

@@ -45,15 +45,15 @@ function setOption(option: string) {
         role="combobox"
         :aria-expanded="open"
         class="w-62 justify-between">
-        <span v-if="value" class="mr-2 text-foreground text-sm">Converting to: </span>
+        <span v-if="value" class="mr-2 text-foreground text-xs">Converting to: </span>
         <Badge v-if="value">
           {{ options.find((option: string) => option === value) }}
         </Badge>
-        <span v-else class="text-foreground">{{ placeholder }}</span>
+        <span v-else class="text-foreground text-xs">{{ placeholder }}</span>
         <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
-    <PopoverContent class="w-[200px] p-0" align="end">
+    <PopoverContent class="w-40 p-0" align="end">
       <Command v-model="value">
         <CommandInput placeholder="Search option..." />
         <CommandEmpty>No option found.</CommandEmpty>

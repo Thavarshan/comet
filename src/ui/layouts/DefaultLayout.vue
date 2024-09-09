@@ -16,9 +16,9 @@ defineProps<{
 
 <template>
   <Toaster :duration="3000" />
-  <div class="relative px-6 space-y-3 h-full flex flex-col">
+  <div class="relative px-3 space-y-3 h-full flex flex-col">
     <Titlebar :title="title" />
-    <ThemeSwitcher class="absolute top-10 right-6" />
+    <ThemeSwitcher class="absolute top-10 right-3" />
     <div class="flex flex-col justify-between flex-1">
       <div class="space-y-3 flex-1">
         <Tabs default-value="video">

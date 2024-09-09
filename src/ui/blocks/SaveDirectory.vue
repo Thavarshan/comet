@@ -1,34 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Button } from '@/ui/components/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/ui/components/dialog';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/ui/components/tooltip';
 import {
   FolderInput,
   FolderOpenDot
 } from 'lucide-vue-next';
+
+const emit = defineEmits(['directory-selected']);
 
 const props = defineProps<{
   defaultSaveDirectory?: string;
 }>();
 
 const selectedDirectory = ref<string | undefined>(props.defaultSaveDirectory);
-
-const emit = defineEmits(['directory-selected']);
 
 async function handleDirectorySelection(event: Event) {
   const directory = await window.electron.selectDirectory();
@@ -40,50 +24,28 @@ async function handleDirectorySelection(event: Event) {
   // Emit the value of selectedDirectory, not the ref object itself
   emit('directory-selected', selectedDirectory.value);
 }
+
+function formatPath(path: string) {
+  // Trim the first "/" character
+  // Replace "/" with ">" to show a breadcrumb-like path
+  let formatted = path?.replace(/^\//, '').replace(/\//g, ' → ');
+
+  // If $formatted exceeds 40 characters, truncate it and only show the last word after the last ">"
+  if (formatted.length > 40) {
+    formatted = formatted.slice(formatted.lastIndexOf('→') + 2);
+  }
+
+  return formatted;
+}
 </script>
 
 <template>
-  <div class="flex items-center gap-x-4 code">
-    <Dialog>
-      <DialogTrigger>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button variant="outline" type="button">
-                <FolderInput class="size-4 mr-2" /> Save to
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent align="start">
-              {{ selectedDirectory }}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            Save to directory
-          </DialogTitle>
-          <DialogDescription>
-            <div>
-              <p class="text-slate-500 text-sm">
-                Choose the directory where the converted files will be saved.
-              </p>
-              <div v-if="selectedDirectory" class="mt-4 flex items-center gap-x-4 border border-slate-300 rounded-lg bg-slate-100 p-1">
-                <Button type="button" variant="outline" @click="handleDirectorySelection">
-                  <FolderOpenDot class="size-4" />
-                </Button>
-                <div class="flex-1 font-mono font-medium text-slate-800 text-xs truncate">:{{ selectedDirectory }}</div>
-              </div>
-            </div>
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <DialogClose as-child>
-            <Button variant="outline">Close</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+  <div class="flex items-center rounded-lg bg-muted gap-x-3 pr-3">
+    <Button type="button" variant="outline" @click="handleDirectorySelection" size="icon">
+      <FolderOpenDot class="size-4" />
+    </Button>
+    <div class="text-xs font-medium text-foreground max-w-64 truncate">
+      {{ formatPath(selectedDirectory) }}
+    </div>
   </div>
 </template>
