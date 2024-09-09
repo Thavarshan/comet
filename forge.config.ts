@@ -12,7 +12,7 @@ const {
   description,
   author,
 } = packageJson;
-const iconDir = path.resolve(__dirname, 'assets/icons');
+const iconDir = path.resolve(__dirname, 'assets', 'icons');
 
 const commonLinuxConfig = {
   name: name,
@@ -20,13 +20,16 @@ const commonLinuxConfig = {
   bin: productName,
   categories: ['Video', 'Utility'],
   mimeType: ['x-scheme-handler/comet'],
+  icon: {
+    '1024x1024': path.resolve(iconDir, 'icon.png'),
+  },
 };
 
 const config: ForgeConfig = {
   packagerConfig: {
     name: productName,
     executableName: productName,
-    icon: iconDir,
+    icon: path.resolve(iconDir, 'icon'),
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
     asar: {
@@ -46,8 +49,8 @@ const config: ForgeConfig = {
         name: productName,
         authors: author.name,
         exe: `${productName}.exe`,
-        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/assets/icons/icon.ico',
-        loadingGif: 'assets/loading.gif',
+        iconUrl: 'https://github.com/stellar-comet/comet/blob/main/assets/icons/icon.ico',
+        loadingGif: path.resolve(__dirname, 'assets/loading.gif'),
         noMsi: true,
         setupExe: `${name}-${version}-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
@@ -75,7 +78,9 @@ const config: ForgeConfig = {
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
-      config: {},
+      config: {
+        icon: path.resolve(iconDir, 'icon.icns'),
+      },
     },
     {
       name: '@electron-forge/maker-deb',
