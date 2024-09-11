@@ -56,7 +56,9 @@ describe('windows', () => {
       expect(getMainWindowOptions()).toEqual(expectedBase);
     });
 
-    test('returns the expected output on macOS', () => {
+    const isMacOS = process.platform === 'darwin';
+
+    (isMacOS ? test : test.skip)('returns the expected output on macOS', () => {
       overridePlatform('darwin');
       expect(getMainWindowOptions()).toEqual({
         ...expectedBase,

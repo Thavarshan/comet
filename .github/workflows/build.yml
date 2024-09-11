@@ -17,6 +17,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: ['20.x']
         architecture: [x64, arm64]
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -31,22 +32,26 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables for architecture
-        run: echo "ARCHITECTURE=${{ matrix.architecture }}" >> $GITHUB_ENV
+      - name: Set environment variables for platform and architecture
+        run: |
+          echo "ARCHITECTURE=${{ matrix.architecture }}" >> $GITHUB_ENV
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            echo "PLATFORM=linux" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            echo "PLATFORM=darwin" >> $GITHUB_ENV
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            echo "PLATFORM=win32" >> $GITHUB_ENV
+        shell: bash
 
-      - name: Set environment variables for platform
-        run: echo "PLATFORM=${{ matrix.os }}" >> $GITHUB_ENV
+      - name: Set environment variables for Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          echo "ARCHITECTURE=${{ matrix.architecture }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "PLATFORM=win32" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        shell: powershell
 
       - name: Build app with platform and architecture
-        run: |
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            PLATFORM="linux"
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-            PLATFORM="darwin"
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            PLATFORM="win32"
-          fi
-          npm run make -- --platform=$PLATFORM --arch=${{ matrix.architecture }}
+        run: npm run make -- --platform=$PLATFORM --arch=$ARCHITECTURE
 
       - name: Verify build output
         run: ls out/make
