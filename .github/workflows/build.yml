@@ -1,4 +1,4 @@
-name: Build and Test Electron App
+name: Build
 
 on:
   push:
@@ -11,29 +11,92 @@ on:
       - feature/*
 
 jobs:
-  build:
+  build-macos:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64, arm64]
-        node-version: ['20.x']
-
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build app with platform and architecture
-        run: npm run make -- --arch=${{ matrix.arch }}
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: darwin
 
       - name: Verify build output
         run: ls out/make
+
+  build-linux:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: linux
+
+      - name: Verify build output
+        run: ls out/make
+
+  build-windows:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        shell: pwsh
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: win32
+        shell: pwsh
+
+      - name: Verify build output
+        run: dir out\make
+        shell: pwsh

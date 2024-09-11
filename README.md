@@ -1,5 +1,9 @@
 <p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/logo.png" width="400" height="400" alt="Comet"></a></p>
 
+[![Test](https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/test.yml)
+[![Build](https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/build.yml)
+[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
+
 > [!WARNING]
 > We don't have Apple Developer account yet. The applications will show a popup on first start. Click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once.
 
@@ -12,8 +16,6 @@
 ![Comet UI 3](./assets/screenshot_3.png)
 
 <p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/demo.gif" width="600" alt="Comet Demo"></a></p>
-
-[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
 
 ## Project Overview
 
