@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['20.x']
+        architecture: [x64, arm64]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set environment variables for architecture
+        run: echo "ARCHITECTURE=${{ matrix.architecture }}" >> $GITHUB_ENV
+
+      - name: Set environment variables for platform
+        run: echo "PLATFORM=${{ matrix.os }}" >> $GITHUB_ENV
+
+      - name: Build app with platform and architecture
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            PLATFORM="linux"
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            PLATFORM="darwin"
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            PLATFORM="win32"
+          fi
+          npm run make -- --platform=$PLATFORM --arch=${{ matrix.architecture }}
+
+      - name: Verify build output
+        run: ls out/make

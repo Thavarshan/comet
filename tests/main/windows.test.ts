@@ -11,7 +11,17 @@ jest.mock('node:path');
 describe('windows', () => {
   beforeAll(() => {
     mainIsReady();
-    overridePlatform('win32');
+  });
+
+  beforeEach(() => {
+    mocked(path.join).mockReturnValue('/fake/path');
+    overridePlatform('win32'); // Ensure a default platform for each test
+  });
+
+  afterEach(() => {
+    resetPlatform();
+    jest.resetAllMocks(); // Ensure that mocks are reset after each test
+    browserWindows.length = 0; // Reset window array to avoid state leakage
   });
 
   afterAll(() => {
@@ -35,14 +45,6 @@ describe('windows', () => {
         preload: undefined,
       },
     };
-
-    beforeEach(() => {
-      mocked(path.join).mockReturnValue('/fake/path');
-    });
-
-    afterEach(() => {
-      resetPlatform();
-    });
 
     test('returns the expected output on Windows', () => {
       overridePlatform('win32');
