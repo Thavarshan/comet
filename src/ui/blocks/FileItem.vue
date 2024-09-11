@@ -38,9 +38,8 @@ function formatNumber(number: number): number {
   return Math.abs(Math.round(number));
 }
 
-function formatFilename(filename: string): string {
-  const dotIndex = filename.indexOf('.');
-  return dotIndex !== -1 ? filename.substring(0, dotIndex) : filename;
+function extractFileName(filename: string): string {
+  return filename.split('.').slice(0, -1).join('.');
 }
 </script>
 
@@ -53,16 +52,16 @@ function formatFilename(filename: string): string {
       <div class="min-w-0 flex-auto">
         <div class="flex items-center gap-x-1">
           <CircleCheck class="size-4 text-emerald-500" v-if="item.converted" />
-          <p class="text-sm font-semibold leading-4 text-foreground truncate">{{ formatFilename(item.name) }}</p>
+          <p class="text-sm font-semibold leading-4 text-foreground truncate">{{ extractFileName(item.name) }}</p>
         </div>
-        <div class="flex items-center gap-x-2">
+        <div class="mt-0.5 flex items-center gap-x-2">
           <p class="text-xs text-muted-foreground font-medium">{{ item.size }}</p>
           <span>&middot;</span>
           <p class="text-xs text-muted-foreground">
             Converting from
-            <span class="text-foreground mx-1 p-1 rounded font-medium bg-muted">{{ item.name.split('.').pop() }}</span>
+            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.name.split('.').pop() }}</span>
             to
-            <span class="text-foreground mx-1 p-1 rounded font-medium bg-muted">{{ convertTo }}</span>
+            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.converted ? item.convertTo : convertTo }}</span>
           </p>
         </div>
         <div class="mt-1.5 flex items-center gap-x-2">

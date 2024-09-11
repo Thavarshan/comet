@@ -27,8 +27,8 @@ describe('windows', () => {
       autoHideMenuBar: true,
       acceptFirstMouse: true,
       backgroundColor: '#ffffff',
-      titleBarOverlay: true,
-      titleBarStyle: 'hiddenInset',
+      titleBarOverlay: false,
+      titleBarStyle: undefined,
       icon: undefined,
       resizable: false,
       webPreferences: {

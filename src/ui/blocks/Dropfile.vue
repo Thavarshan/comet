@@ -55,13 +55,13 @@ function triggerFileInput() {
   <div class="py-1">
     <label
       for="file-uploader"
-      class="group bg-muted/10 rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed mx-auto"
+      class="group bg-muted/10 rounded-lg h-52 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed mx-auto"
       :class="{ 'border-primary': isDragging }"
       @dragover="handleDragOver"
       @dragleave="handleDragLeave"
       @drop="handleDrop"
     >
-      <Upload class="size-12 text-muted-foreground/50" />
+      <Upload class="size-12 text-slate-300" />
       <input ref="fileInput" type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptableFormats">
       <div class="font-semibold text-sm text-foreground mt-2 max-w-xs text-center">{{ text }}</div>
       <div class="mt-1 text-xs text-muted-foreground">or click here to select files for upload</div>

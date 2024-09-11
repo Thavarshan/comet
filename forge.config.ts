@@ -39,6 +39,9 @@ const config: ForgeConfig = {
       CompanyName: author.name,
       OriginalFilename: productName,
     },
+    osxSign: {
+      identity: `Developer ID Application: ${author.name}`,
+    }
   },
   rebuildConfig: {},
   makers: [
@@ -137,7 +140,7 @@ const config: ForgeConfig = {
         authToken: process.env.GH_TOKEN,
         repository: {
           owner: 'stellar-comet',
-          name: 'comet',
+          name: name,
         },
         tagPrefix: 'v',
         prerelease: false,

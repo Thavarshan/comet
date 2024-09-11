@@ -34,7 +34,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-3 relative h-full">
     <Dropfile
       text="Drag and drop your video files here"
       @file-uploaded="store.handleUpload"
@@ -53,11 +53,11 @@ onMounted(async () => {
           :options="videoFormats"
           @change="store.setFormat"
           placeholder="Select format"
-          :convertTo="defaultFormat"
+          :convertTo="store.convertTo || defaultFormat"
         />
       </template>
     </Options>
-    <ScrollArea class="h-[295px] w-full py-px">
+    <ScrollArea class="h-[350px] w-full">
       <div class="divide-y -my-3">
         <FileItem
           v-for="(item, index) in store.items"
@@ -69,8 +69,9 @@ onMounted(async () => {
           :convertTo="store.convertTo"
         />
       </div>
+      <div class="h-14">&nbsp;</div>
     </ScrollArea>
-    <Controls>
+    <Controls class="absolute bottom-0 w-full">
       <template #left>
         <Button variant="outline" @click="store.clearItems">
           <Trash2 class="size-4 text-destructive mr-2" />

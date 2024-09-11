@@ -4,6 +4,7 @@ import { useToast } from '../components/toast/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import { filesize } from 'filesize';
 import type { Item } from '@/types/item';
+import { FFProbe } from '../../enum/ffprobe';
 
 export const createConverterStore = () => {
   const uniqueStoreKey = `converter-${uuidv4()}`; // Generate a unique key for each store instance
@@ -33,7 +34,7 @@ export const createConverterStore = () => {
         const item = items.find((item) => item.id === id);
         if (item) {
           item.converting = false;
-          item.progress = 0; // Reset progress after cancellation
+          item.progress = FFProbe.INITIAL_PROGRESS; // Reset progress after cancellation
           conversionInProgress.value = false;
           toast({
             title: 'Conversion canceled',
@@ -103,7 +104,7 @@ export const createConverterStore = () => {
 
         try {
           item.converting = true;
-          item.progress = 0;
+          item.progress = FFProbe.INITIAL_PROGRESS;
 
           const outputFilePath = await window.electron.convertVideo(
             item.id as string,
@@ -114,6 +115,7 @@ export const createConverterStore = () => {
 
           item.converting = false;
           item.converted = true;
+          item.convertTo = convertTo.value;
           item.progress = 100;
 
           toast({
@@ -122,7 +124,7 @@ export const createConverterStore = () => {
           });
         } catch (error) {
           item.converting = false;
-          item.progress = 0;
+          item.progress = FFProbe.INITIAL_PROGRESS;
 
           if (!error.message?.includes('Conversion canceled by user')) {
             toast({
@@ -137,7 +139,7 @@ export const createConverterStore = () => {
       await Promise.all(conversionPromises);
 
       conversionInProgress.value = false;
-      await nextTick(); // Ensure UI updates right away
+      await nextTick();
     }
 
     function cancelItem(index: number) {
@@ -184,8 +186,8 @@ export const createConverterStore = () => {
     };
   }, {
     persist: {
-      key: uniqueStoreKey,  // Persist state with the unique key
-      storage: localStorage, // You can change this to sessionStorage or custom storage if needed
+      key: uniqueStoreKey,
+      storage: localStorage,
     }
   });
 };
