@@ -8,7 +8,7 @@ const { toasts } = useToast();
 
 <template>
   <ToastProvider>
-    <Toast v-for="toast in toasts" :key="toast.id" v-bind="toast">
+    <Toast v-for="toast in toasts" :key="toast.id" v-bind="toast" class="max-w-sm">
       <div class="grid gap-1">
         <ToastTitle v-if="toast.title">
           {{ toast.title }}

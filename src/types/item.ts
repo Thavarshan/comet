@@ -6,4 +6,5 @@ export interface Item extends File {
   saveDirectory?: string;
   progress: number;
   converting: boolean;
+  convertTo?: string;
 }

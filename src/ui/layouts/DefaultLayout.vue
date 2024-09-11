@@ -38,7 +38,6 @@ defineProps<{
           </TabsContent>
         </Tabs>
       </div>
-      <slot name="controls" />
     </div>
   </div>
 </template>

@@ -29,11 +29,11 @@ const props = defineProps<{
 
 const value = ref(props.convertTo);
 
-function setOption(option: string) {
-  value.value = option;
+function setOption(event: CustomEvent) {
+  value.value = event.detail.value;
   open.value = false;
 
-  emit('change', option);
+  emit('change', value.value);
 }
 </script>
 
@@ -53,7 +53,7 @@ function setOption(option: string) {
         <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </PopoverTrigger>
-    <PopoverContent class="w-40 p-0" align="end">
+    <PopoverContent class="w-48 p-0" align="end">
       <Command v-model="value">
         <CommandInput placeholder="Search option..." />
         <CommandEmpty>No option found.</CommandEmpty>

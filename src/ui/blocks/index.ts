@@ -4,6 +4,8 @@ import SaveDirectory from './SaveDirectory.vue';
 import Controls from './Controls.vue';
 import Options from './Options.vue';
 import FileItem from './FileItem.vue';
+import VideoConverter from './VideoConverter.vue';
+import AudioConverter from './AudioConverter.vue';
 
 export {
   ThemeSwitcher,
@@ -12,4 +14,6 @@ export {
   Controls,
   Options,
   FileItem,
+  VideoConverter,
+  AudioConverter,
 };

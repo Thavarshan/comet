@@ -48,6 +48,8 @@
     "lucide-vue-next": "^0.435.0",
     "mobx": "^6.13.2",
     "namor": "^2.0.2",
+    "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.0.1",
     "radix-vue": "^1.9.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",

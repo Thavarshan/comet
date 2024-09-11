@@ -21,8 +21,8 @@ export async function setupGlobals() {
     getDesktopPath() {
       return ipcRenderer.invoke(IpcEvent.GET_DESKTOP_PATH);
     },
-    getFilePath() {
-      return webUtils.getPathForFile;
+    getFilePath: (file: File) => {
+      return webUtils.getPathForFile(file);
     },
     cancelConversion(id: number) {
       return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION, id);

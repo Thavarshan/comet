@@ -12,7 +12,7 @@ jest.mock('electron', () => ({
     removeAllListeners: jest.fn(),
   },
   webUtils: {
-    getPathForFile: jest.fn(),
+    getPathForFile: jest.fn(), // Ensure this is mocked
   },
 }));
 
@@ -58,9 +58,10 @@ describe('setupGlobals', () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
-    const result = electron.getFilePath();
+    const mockFile = {} as File;
+    electron.getFilePath(mockFile);
 
-    expect(result).toBe(webUtils.getPathForFile);
+    expect(webUtils.getPathForFile).toHaveBeenCalledWith(mockFile);
   });
 
   it('should invoke CANCEL_CONVERSION event with id', async () => {

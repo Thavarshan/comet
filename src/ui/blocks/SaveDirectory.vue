@@ -14,23 +14,25 @@ const props = defineProps<{
 
 const selectedDirectory = ref<string | undefined>(props.defaultSaveDirectory);
 
-async function handleDirectorySelection(event: Event) {
+onMounted(() => {
+  if (selectedDirectory.value) {
+    emit('directory-selected', selectedDirectory.value);
+  }
+});
+
+async function handleDirectorySelection(_event: Event) {
   const directory = await window.electron.selectDirectory();
 
   if (directory) {
     selectedDirectory.value = directory;
   }
 
-  // Emit the value of selectedDirectory, not the ref object itself
   emit('directory-selected', selectedDirectory.value);
 }
 
 function formatPath(path: string) {
-  // Trim the first "/" character
-  // Replace "/" with ">" to show a breadcrumb-like path
   let formatted = path?.replace(/^\//, '').replace(/\//g, ' → ');
 
-  // If $formatted exceeds 40 characters, truncate it and only show the last word after the last ">"
   if (formatted.length > 40) {
     formatted = formatted.slice(formatted.lastIndexOf('→') + 2);
   }
