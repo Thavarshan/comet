@@ -7,6 +7,9 @@
 > [!WARNING]
 > We don't have Apple Developer account yet. The applications will show a popup on first start. Click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once.
 
+> [!WARNING]
+> We don't have Apple Developer account yet. The applications will show a popup on first start. Click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once.
+
 ## About Comet
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
