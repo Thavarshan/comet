@@ -1,4 +1,4 @@
-name: Build
+name: Build and Test Electron App
 
 on:
   push:
@@ -32,19 +32,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables for platform and architecture
+      - name: Set environment variables for platform and architecture (Linux/macOS)
+        if: runner.os != 'Windows'
         run: |
           echo "ARCHITECTURE=${{ matrix.architecture }}" >> $GITHUB_ENV
           if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
             echo "PLATFORM=linux" >> $GITHUB_ENV
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             echo "PLATFORM=darwin" >> $GITHUB_ENV
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            echo "PLATFORM=win32" >> $GITHUB_ENV
         shell: bash
 
-      - name: Set environment variables for Windows
-        if: matrix.os == 'windows-latest'
+      - name: Set environment variables for platform and architecture (Windows)
+        if: runner.os == 'Windows'
         run: |
           echo "ARCHITECTURE=${{ matrix.architecture }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "PLATFORM=win32" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
