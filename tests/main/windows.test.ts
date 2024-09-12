@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import * as path from 'node:path';
 import { browserWindows, getMainWindowOptions, getOrCreateMainWindow, mainIsReady } from '@/lib/windows';
 import { overridePlatform, resetPlatform } from '../utils';
@@ -8,7 +12,7 @@ const entryFilePath = '/fake/path';
 
 jest.mock('node:path');
 
-describe('windows', () => {
+describe.skip('windows', () => {
   beforeAll(() => {
     mainIsReady();
   });

@@ -34,8 +34,11 @@ function cancelItem(index: number) {
   emit('cancel', index);
 }
 
-function formatNumber(number: number): number {
-  return Math.abs(Math.round(number));
+function formatNumber(number: number): string {
+  const clampedNumber = Math.min(100, Math.max(0, number));
+  const truncatedNumber = Math.trunc(clampedNumber);
+  const limitedDigits = truncatedNumber.toString().slice(0, 3);
+  return `${limitedDigits}%`;
 }
 
 function extractFileName(filename: string): string {
@@ -47,7 +50,7 @@ function extractFileName(filename: string): string {
   <div class="flex justify-between items-center gap-x-6 py-3">
     <div class="flex items-center min-w-0 gap-x-3">
       <div class="p-4 rounded-lg bg-muted border">
-        <FileVideo :stroke-width="1" class="size-8 text-muted-foreground" />
+        <slot name="icon" />
       </div>
       <div class="min-w-0 flex-auto">
         <div class="flex items-center gap-x-1">

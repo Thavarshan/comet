@@ -12,16 +12,18 @@ import { ScrollArea } from '@/ui/components/scroll-area';
 import {
   Trash2,
   Ban,
-  RefreshCw
+  RefreshCw,
+  FileAudio
 } from 'lucide-vue-next';
 import {
   AUDIO_CONVERSION_FORMATS as audioFormats,
 } from '@/consts/formats';
 import { ref, onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
+import { AudioFormat } from '@/enum/audio-format';
 
 const defaultSaveDirectory = ref<string | undefined>(undefined);
-const defaultFormat = 'mp3';
+const defaultFormat = AudioFormat.MP3;
 
 const props = defineProps<{
   store: ReturnType<StoreDefinition>;
@@ -67,7 +69,11 @@ onMounted(async () => {
           @remove="store.removeItem"
           @cancel="store.cancelItem"
           :convertTo="store.convertTo"
-        />
+        >
+          <template #icon>
+            <FileAudio class="size-6 text-slate-300" />
+          </template>
+        </FileItem>
       </div>
       <div class="h-14">&nbsp;</div>
     </ScrollArea>

@@ -30,12 +30,16 @@ defineProps<{
               Audio
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="video" class="space-y-3">
-            <slot name="video" />
-          </TabsContent>
-          <TabsContent value="audio" class="space-y-3">
-            <slot name="audio" />
-          </TabsContent>
+          <KeepAlive>
+            <div>
+              <TabsContent value="video">
+                <slot name="video" />
+              </TabsContent>
+              <TabsContent value="audio">
+                <slot name="audio" />
+              </TabsContent>
+            </div>
+          </KeepAlive>
         </Tabs>
       </div>
     </div>

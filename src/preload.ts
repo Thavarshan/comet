@@ -12,6 +12,11 @@ async function preload() {
   await setupGlobals();
 }
 
+/**
+ * Expose Electron API in the main world
+ *
+ * @returns {Promise<void>}
+ */
 export async function setupGlobals() {
   contextBridge.exposeInMainWorld('electron', {
     arch: process.arch,
@@ -24,8 +29,11 @@ export async function setupGlobals() {
     getFilePath: (file: File) => {
       return webUtils.getPathForFile(file);
     },
-    cancelConversion(id: number) {
-      return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION, id);
+    cancelItemConversion(id: number) {
+      return ipcRenderer.invoke(IpcEvent.CANCEL_ITEM_CONVERSION, id);
+    },
+    cancelConversion() {
+      return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION);
     },
     convertVideo(
       id: string,

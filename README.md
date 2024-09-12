@@ -14,6 +14,10 @@
 ![Comet UI 1](./assets/screenshot_1.png)
 ![Comet UI 2](./assets/screenshot_2.png)
 ![Comet UI 3](./assets/screenshot_3.png)
+![Comet UI 4](./assets/screenshot_4.png)
+![Comet UI 4](./assets/screenshot_4.png)
+![Comet UI 5](./assets/screenshot_5.png)
+![Comet UI 6](./assets/screenshot_6.png)
 
 <p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/demo.gif" width="600" alt="Comet Demo"></a></p>
 

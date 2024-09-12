@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { setupGlobals } from '../../src/preload';
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import { IpcEvent } from '../../src/enum/ipc-event';
@@ -21,7 +25,7 @@ describe('setupGlobals', () => {
     jest.resetAllMocks();
   });
 
-  it('should expose electron API in main world', async () => {
+  test('should expose electron API in main world', async () => {
     await setupGlobals();
 
     expect(contextBridge.exposeInMainWorld).toHaveBeenCalledWith('electron', {
@@ -29,6 +33,7 @@ describe('setupGlobals', () => {
       selectDirectory: expect.any(Function),
       getDesktopPath: expect.any(Function),
       getFilePath: expect.any(Function),
+      cancelItemConversion: expect.any(Function),
       cancelConversion: expect.any(Function),
       convertVideo: expect.any(Function),
       on: expect.any(Function),
@@ -36,7 +41,7 @@ describe('setupGlobals', () => {
     });
   });
 
-  it('should invoke DIALOG_SELECT_DIRECTORY event', async () => {
+  test('should invoke DIALOG_SELECT_DIRECTORY event', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
@@ -45,7 +50,7 @@ describe('setupGlobals', () => {
     expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.DIALOG_SELECT_DIRECTORY);
   });
 
-  it('should invoke GET_DESKTOP_PATH event', async () => {
+  test('should invoke GET_DESKTOP_PATH event', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
@@ -54,7 +59,7 @@ describe('setupGlobals', () => {
     expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.GET_DESKTOP_PATH);
   });
 
-  it('should return getPathForFile from webUtils', async () => {
+  test('should return getPathForFile from webUtils', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
@@ -64,16 +69,25 @@ describe('setupGlobals', () => {
     expect(webUtils.getPathForFile).toHaveBeenCalledWith(mockFile);
   });
 
-  it('should invoke CANCEL_CONVERSION event with id', async () => {
+  test('should invoke CANCEL_CONVERSION event', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
-    await electron.cancelConversion(1);
+    await electron.cancelConversion();
 
-    expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CANCEL_CONVERSION, 1);
+    expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CANCEL_CONVERSION);
   });
 
-  it('should invoke CONVERT_VIDEO event with correct arguments', async () => {
+  test('should invoke CANCEL_ITEM_CONVERSION event with id', async () => {
+    await setupGlobals();
+    const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
+
+    await electron.cancelItemConversion(1);
+
+    expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CANCEL_ITEM_CONVERSION, 1);
+  });
+
+  test('should invoke CONVERT_VIDEO event with correct arguments', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
@@ -87,7 +101,7 @@ describe('setupGlobals', () => {
     });
   });
 
-  it('should add an event listener for a channel', () => {
+  test('should add an event listener for a channel', () => {
     setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
     const callback = jest.fn();
@@ -97,7 +111,7 @@ describe('setupGlobals', () => {
     expect(ipcRenderer.on).toHaveBeenCalledWith('channel', callback);
   });
 
-  it('should remove all listeners for a channel', () => {
+  test('should remove all listeners for a channel', () => {
     setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 

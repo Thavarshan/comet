@@ -7,7 +7,9 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  bail: true,
+  verbose: true,
+  silent: false,
+  bail: false,
   clearMocks: true,
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!**/*.d.ts', '!**/*constants.ts'],
   coveragePathIgnorePatterns: ['/node_modules/', '/tests/.*\\.(ts|js)$'],
@@ -28,8 +30,10 @@ const config: Config = {
     "^@vue/test-utils": "<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.cjs.js",
     "radix-vue": "<rootDir>/node_modules/radix-vue/dist/radix-vue.cjs.js",
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    "^.+\\.(svg|png|jpg|jpeg|gif)$": "jest-transform-stub",
+
   },
-  resetMocks: true,
+  resetMocks: false,
   resetModules: true,
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   testEnvironment: "jsdom",

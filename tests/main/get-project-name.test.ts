@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { getProjectName } from '../../src/lib/get-project-name';
 
 describe('get-project-name', () => {

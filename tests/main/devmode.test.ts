@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { isDevMode } from '../../src/lib/devmode';
 
 describe('devMode', () => {

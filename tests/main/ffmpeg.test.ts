@@ -1,7 +1,12 @@
+/**
+ * @jest-environment node
+ */
+
 import {
   parseTimemark,
   handleConversion,
   handleConversionCancellation,
+  handleItemConversionCancellation,
   setFfmpegProcess
 } from '../../src/lib/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
@@ -98,7 +103,7 @@ describe('ffmpeg utilities', () => {
     });
   });
 
-  describe('handleConversionCancellation', () => {
+  describe('handleItemConversionCancellation', () => {
     const mockEvent = {} as unknown as Electron.IpcMainInvokeEvent;
 
     beforeEach(() => {
@@ -112,16 +117,37 @@ describe('ffmpeg utilities', () => {
 
       setFfmpegProcess('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);
 
-      const result = handleConversionCancellation(mockEvent, '1');
+      const result = handleItemConversionCancellation(mockEvent, '1');
 
       expect(result).toBe(true);
       expect(mockFfmpegCommand.kill).toHaveBeenCalledWith('SIGKILL');
     });
 
     test('should return false if no conversion process is found', () => {
-      const result = handleConversionCancellation(mockEvent, '1');
+      const result = handleItemConversionCancellation(mockEvent, '1');
 
       expect(result).toBe(false);
+    });
+  });
+
+  describe('handleConversionCancellation', () => {
+    const mockEvent = {} as unknown as Electron.IpcMainInvokeEvent;
+
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+
+    test('should cancel the entire conversion process', () => {
+      const mockFfmpegCommand = {
+        kill: jest.fn()
+      };
+
+      setFfmpegProcess('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);
+
+      const result = handleConversionCancellation(mockEvent);
+
+      expect(result).toBe(true);
+      expect(mockFfmpegCommand.kill).toHaveBeenCalledWith('SIGKILL');
     });
   });
 });

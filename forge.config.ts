@@ -38,9 +38,6 @@ const config: ForgeConfig = {
     win32metadata: {
       CompanyName: author.name,
       OriginalFilename: productName,
-    },
-    osxSign: {
-      identity: `Developer ID Application: ${author.name}`,
     }
   },
   rebuildConfig: {},

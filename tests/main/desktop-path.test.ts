@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { getDesktopPath } from '../../src/lib/desktop-path';
 import { existsSync } from 'fs';
 import os from 'os';

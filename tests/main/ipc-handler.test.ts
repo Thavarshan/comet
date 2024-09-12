@@ -1,8 +1,16 @@
+/**
+ * @jest-environment node
+ */
+
 import { configureIpcHandlers } from '../../src/lib/ipc-handlers';
 import { IpcEvent } from '../../src/enum/ipc-event';
 import { dialog, ipcMain, IpcMainInvokeEvent } from 'electron';
 import { getDesktopPath } from '../../src/lib/desktop-path';
-import { handleConversion, handleConversionCancellation } from '../../src/lib/ffmpeg';
+import {
+  handleConversion,
+  handleConversionCancellation,
+  handleItemConversionCancellation
+} from '../../src/lib/ffmpeg';
 
 jest.mock('../../src/lib/desktop-path');
 jest.mock('../../src/lib/ffmpeg');
@@ -104,6 +112,22 @@ describe('configureIpcHandlers', () => {
     );
   });
 
+  test('should handle CANCEL_ITEM_CONVERSION', () => {
+    const mockHandleItemConversionCancellation = jest.mocked(handleItemConversionCancellation);
+    mockHandleItemConversionCancellation.mockReturnValue(true);
+
+    configureIpcHandlers(ipcMain);
+
+    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
+      ([event]) => event === IpcEvent.CANCEL_ITEM_CONVERSION
+    )[1];
+
+    const result = handler({} as IpcMainInvokeEvent, '1');
+
+    expect(result).toBe(true);
+    expect(mockHandleItemConversionCancellation).toHaveBeenCalledWith(expect.any(Object), '1');
+  });
+
   test('should handle CANCEL_CONVERSION', () => {
     const mockHandleConversionCancellation = jest.mocked(handleConversionCancellation);
     mockHandleConversionCancellation.mockReturnValue(true);
@@ -114,9 +138,9 @@ describe('configureIpcHandlers', () => {
       ([event]) => event === IpcEvent.CANCEL_CONVERSION
     )[1];
 
-    const result = handler({} as IpcMainInvokeEvent, '1');
+    const result = handler({} as IpcMainInvokeEvent);
 
     expect(result).toBe(true);
-    expect(mockHandleConversionCancellation).toHaveBeenCalledWith(expect.any(Object), '1');
+    expect(mockHandleConversionCancellation).toHaveBeenCalledWith(expect.any(Object));
   });
 });

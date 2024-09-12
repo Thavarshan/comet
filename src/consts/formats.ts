@@ -1,13 +1,47 @@
+import { AudioFormat } from '@/enum/audio-format';
+import { VideoFormat } from '@/enum/video-format';
+
 export const VIDEO_CONVERSION_FORMATS = [
-  'mp4', 'webm', 'ogg', 'flv', 'avi',
-  'mov', 'wmv', '3gp', 'mkv', 'm4v',
-  'mpg', 'mpeg', 'vob', 'ts', 'asf',
-  'f4v', 'h264', 'hevc', 'm2ts', 'm2v',
-  'mts', 'ogv', 'rm', 'swf', 'xvid',
+  VideoFormat.MP4,
+  VideoFormat.WEBM,
+  VideoFormat.OGG,
+  VideoFormat.FLV,
+  VideoFormat.AVI,
+  VideoFormat.MOV,
+  VideoFormat.WMV,
+  VideoFormat.GP3,
+  VideoFormat.MKV,
+  VideoFormat.M4V,
+  VideoFormat.MPG,
+  VideoFormat.MPEG,
+  VideoFormat.VOB,
+  VideoFormat.TS,
+  VideoFormat.ASF,
+  VideoFormat.F4V,
+  VideoFormat.H264,
+  VideoFormat.HEVC,
+  VideoFormat.M2TS,
+  VideoFormat.M2V,
+  VideoFormat.MTS,
+  VideoFormat.OGV,
+  VideoFormat.RM,
+  VideoFormat.SWF
 ];
 
 export const AUDIO_CONVERSION_FORMATS = [
-  'mp3', 'wav', 'ogg', 'm4a', 'flac',
-  'wma', 'aac', 'amr', 'aiff', 'au',
-  'mka', 'ac3', 'ape', 'mpc', 'opus',
+  AudioFormat.MP3,
+  AudioFormat.WAV,
+  AudioFormat.OGG,
+  AudioFormat.M4A,
+  AudioFormat.FLAC,
+  AudioFormat.WMA,
+  AudioFormat.AAC,
+  AudioFormat.AMR,
+  AudioFormat.AIFF,
+  AudioFormat.AU,
+  AudioFormat.MKA,
+  AudioFormat.AC3,
+  AudioFormat.APE,
+  AudioFormat.MPC,
+  AudioFormat.OPUS
 ];
