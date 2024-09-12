@@ -5,7 +5,7 @@
 [![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
 
 > [!WARNING]
-> We don't have Apple Developer account yet. The applications will show a popup on first start. Click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once.
+> We don't have an Apple Developer account yet, and the application is not code-signed for both Mac and Windows. Therefore, the applications will show a warning popup on the first start. On Mac, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once. On Windows, you may see a warning message indicating that the app is from an unknown publisher. Click **More info** and then **Run anyway** to proceed.
 
 ## About Comet
 
@@ -132,7 +132,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you find this project helpful or interesting, please consider giving it a ⭐ on GitHub. Your support and feedback are greatly appreciated!
+If you find this project helpful or interesting, please consider giving it a ⭐. Your support and feedback are greatly appreciated!
 
 ---
 
