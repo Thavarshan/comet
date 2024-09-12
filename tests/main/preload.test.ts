@@ -30,6 +30,7 @@ describe('setupGlobals', () => {
 
     expect(contextBridge.exposeInMainWorld).toHaveBeenCalledWith('electron', {
       arch: process.arch,
+      platform: process.platform,
       selectDirectory: expect.any(Function),
       getDesktopPath: expect.any(Function),
       getFilePath: expect.any(Function),

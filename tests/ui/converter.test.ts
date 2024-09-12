@@ -16,6 +16,8 @@ describe('Converter Store', () => {
   let store: ReturnType<ReturnType<typeof createConverterStore>>;
   const mockToast = jest.fn();
   const mockElectron = {
+    arch: process.arch,
+    platform: process.platform as NodeJS.Platform,
     on: jest.fn(),
     removeAllListeners: jest.fn(),
     getDesktopPath: jest.fn().mockResolvedValue('/mock/desktop/path'),
