@@ -19,8 +19,6 @@
 ![Comet UI 5](./assets/screenshot_5.png)
 ![Comet UI 6](./assets/screenshot_6.png)
 
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/demo.gif" width="600" alt="Comet Demo"></a></p>
-
 ## Project Overview
 
 Comet's goal is to provide a free, user-friendly, and visually appealing application for converting video files. Whether you need to convert a single video or multiple files at once, Comet is here to help.
