@@ -20,6 +20,7 @@ async function preload() {
 export async function setupGlobals() {
   contextBridge.exposeInMainWorld('electron', {
     arch: process.arch,
+    platform: process.platform,
     selectDirectory() {
       return ipcRenderer.invoke(IpcEvent.DIALOG_SELECT_DIRECTORY);
     },

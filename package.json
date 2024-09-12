@@ -31,7 +31,7 @@
     "start": "electron-forge start",
     "dev": "npm run start",
     "package": "electron-forge package",
-    "make": "electron-forge make --disable-warning",
+    "make": "electron-forge make --verbose",
     "publish": "electron-forge publish",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx ."

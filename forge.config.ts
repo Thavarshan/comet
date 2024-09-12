@@ -9,7 +9,7 @@ const {
   version,
   name,
   productName,
-  description,
+  // description,
   author,
 } = packageJson;
 const iconDir = path.resolve(__dirname, 'assets', 'icons');
@@ -58,23 +58,23 @@ const config: ForgeConfig = {
         certificatePassword: process.env.CERT_PASSWORD,
       }),
     },
-    {
-      name: '@electron-forge/maker-appx',
-      platforms: ['win32'],
-      config: {
-        makeVersionWinStoreCompatible: true,
-        packageName: 'JeromeThayananthajothy.Comet',
-        packageDisplayName: `${productName}`,
-        packageDescription: description,
-        packageVersion: `${version}.0`,
-        publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
-        publisherDisplayName: author.name,
-        devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
-        certPass: process.env.CERT_PASSWORD,
-        windowsKit: process.env.WINDOWS_KIT_PATH,
-        icon: path.resolve(iconDir, 'icon.ico')
-      }
-    },
+    // {
+    //   name: '@electron-forge/maker-appx',
+    //   platforms: ['win32'],
+    //   config: {
+    //     makeVersionWinStoreCompatible: true,
+    //     packageName: 'JeromeThayananthajothy.Comet',
+    //     packageDisplayName: `${productName}`,
+    //     packageDescription: description,
+    //     packageVersion: `${version}.0`,
+    //     publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
+    //     publisherDisplayName: author.name,
+    //     devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+    //     certPass: process.env.CERT_PASSWORD,
+    //     windowsKit: process.env.WINDOWS_KIT_PATH,
+    //     icon: path.resolve(iconDir, 'icon.ico')
+    //   }
+    // },
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],

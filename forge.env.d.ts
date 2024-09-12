@@ -23,6 +23,8 @@ declare global {
 
   interface Window {
     electron: {
+      arch: string;
+      platform: NodeJS.Platform;
       selectDirectory: () => Promise<string | undefined>;
       getDesktopPath: () => string;
       getFilePath: (file: File) => string;
