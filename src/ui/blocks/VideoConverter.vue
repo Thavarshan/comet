@@ -111,7 +111,7 @@ onMounted(async () => {
           </Button>
           <Button v-else disabled>
             <RefreshCw class="size-4 mr-2 animate-spin" />
-            {{ `${t('buttons.converting')}...` }}
+            {{ t('buttons.converting') }}
           </Button>
         </div>
       </template>

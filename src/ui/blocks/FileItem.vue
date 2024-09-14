@@ -10,8 +10,7 @@ import { Button } from '@/ui/components/button';
 import {
   X,
   Ban,
-  FileVideo,
-  CircleCheck
+  BadgeCheck
 } from 'lucide-vue-next';
 import { Item } from '@/types/item';
 import { computed } from 'vue';
@@ -37,11 +36,22 @@ function cancelItem(index: number) {
   emit('cancel', index);
 }
 
-function formatNumber(number: number): number | undefined {
-  const clampedNumber = Math.min(100, Math.max(0, number));
-  const truncatedNumber = Math.trunc(clampedNumber);
-  const limitedDigits = truncatedNumber.toString().slice(0, 3);
-  return limitedDigits === '0' ? undefined : parseInt(limitedDigits);
+function formatNumber(number: number): number {
+  // Check if progress is a valid number, otherwise default to 0
+  if (isNaN(number) || number === null || number === undefined) {
+    return 0;
+  }
+
+  // Ensure number is a positive value
+  const positiveProgress = Math.max(0, number);
+
+  // Round to the nearest whole number
+  const roundedProgress = Math.round(positiveProgress);
+
+  // Cap the value at 100
+  const percentage = Math.min(roundedProgress, 100);
+
+  return percentage;
 }
 
 function extractFileName(filename: string): string {
@@ -52,12 +62,12 @@ function extractFileName(filename: string): string {
 <template>
   <div class="flex justify-between items-center gap-x-6 py-3">
     <div class="flex items-center min-w-0 gap-x-3">
-      <div class="p-4 rounded-lg bg-muted border">
+      <div class="p-4 rounded-lg bg-muted border relative">
+        <BadgeCheck class="size-4 text-primary absolute top-0 right-0 m-0.5" v-if="item.converted" />
         <slot name="icon" />
       </div>
       <div class="min-w-0 flex-auto">
         <div class="flex items-center gap-x-1">
-          <CircleCheck class="size-4 text-emerald-500" v-if="item.converted" />
           <p class="text-sm font-semibold leading-4 text-foreground truncate">{{ extractFileName(item.name) }}</p>
         </div>
         <div class="mt-0.5 flex items-center gap-x-2">

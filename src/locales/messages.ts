@@ -9,7 +9,7 @@ export const messages = {
     upload: {
       title: 'Drag and drop your {type} files here',
       message: 'or click here to select files for upload',
-      select: 'Select file',
+      select: 'Select file(s)',
     },
     item: {
       from: 'Converting from',
@@ -37,7 +37,7 @@ export const messages = {
     upload: {
       title: 'Glissez-déposez vos fichiers {type} ici',
       message: 'ou cliquez ici pour sélectionner des fichiers à télécharger',
-      select: 'Sélectionner un fichier',
+      select: 'Sélectionner des fichiers',
     },
     item: {
       from: 'Conversion de',
@@ -65,7 +65,7 @@ export const messages = {
     upload: {
       title: 'Arrastra y suelta tus archivos {type} aquí',
       message: 'o haz clic aquí para seleccionar archivos para subir',
-      select: 'Seleccionar archivo',
+      select: 'Seleccionar archivos',
     },
     item: {
       from: 'Convirtiendo de',
@@ -93,7 +93,7 @@ export const messages = {
     upload: {
       title: 'Ziehen Sie Ihre {type}-Dateien hierher',
       message: 'oder klicken Sie hier, um Dateien zum Hochladen auszuwählen',
-      select: 'Datei auswählen',
+      select: 'Dateien auswählen',
     },
     item: {
       from: 'Konvertierung von',
@@ -121,7 +121,7 @@ export const messages = {
     upload: {
       title: 'Перетащите ваши файлы {type} сюда',
       message: 'или нажмите здесь, чтобы выбрать файлы для загрузки',
-      select: 'Выбрать файл',
+      select: 'Выбрать файлы',
     },
     item: {
       from: 'Конвертация из',
