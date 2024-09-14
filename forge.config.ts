@@ -9,10 +9,10 @@ const {
   version,
   name,
   productName,
-  description,
+  // description,
   author,
 } = packageJson;
-const iconDir = path.resolve(__dirname, 'src', 'assets', 'images', 'icons');
+const iconDir = path.resolve(__dirname, 'assets', 'icons');
 
 const commonLinuxConfig = {
   name: name,
@@ -20,13 +20,16 @@ const commonLinuxConfig = {
   bin: productName,
   categories: ['Video', 'Utility'],
   mimeType: ['x-scheme-handler/comet'],
+  icon: {
+    '1024x1024': path.resolve(iconDir, 'icon.png'),
+  },
 };
 
 const config: ForgeConfig = {
   packagerConfig: {
     name: productName,
     executableName: productName,
-    icon: 'src/assets/images/icons/icon',
+    icon: path.resolve(iconDir, 'icon'),
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
     asar: {
@@ -35,7 +38,7 @@ const config: ForgeConfig = {
     win32metadata: {
       CompanyName: author.name,
       OriginalFilename: productName,
-    },
+    }
   },
   rebuildConfig: {},
   makers: [
@@ -46,8 +49,8 @@ const config: ForgeConfig = {
         name: productName,
         authors: author.name,
         exe: `${productName}.exe`,
-        iconUrl: 'https://raw.githubusercontent.com/stellar-comet/comet/main/src/assets/images/icons/icon.ico',
-        loadingGif: 'src/assets/images/loading.gif',
+        iconUrl: 'https://github.com/stellar-comet/comet/blob/main/assets/icons/icon.ico',
+        loadingGif: path.resolve(__dirname, 'assets/loading.gif'),
         noMsi: true,
         setupExe: `${name}-${version}-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
@@ -55,27 +58,29 @@ const config: ForgeConfig = {
         certificatePassword: process.env.CERT_PASSWORD,
       }),
     },
-    {
-      name: '@electron-forge/maker-appx',
-      platforms: ['win32'],
-      config: {
-        makeVersionWinStoreCompatible: true,
-        packageName: 'JeromeThayananthajothy.CometApp',
-        packageDisplayName: `${productName}App`,
-        packageDescription: description,
-        packageVersion: `${version}.0`,
-        publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
-        publisherDisplayName: author.name,
-        devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
-        certPass: process.env.CERT_PASSWORD,
-        windowsKit: process.env.WINDOWS_KIT_PATH,
-        icon: path.resolve(iconDir, 'icon.ico')
-      },
-    },
+    // {
+    //   name: '@electron-forge/maker-appx',
+    //   platforms: ['win32'],
+    //   config: {
+    //     makeVersionWinStoreCompatible: true,
+    //     packageName: 'JeromeThayananthajothy.Comet',
+    //     packageDisplayName: `${productName}`,
+    //     packageDescription: description,
+    //     packageVersion: `${version}.0`,
+    //     publisher: 'CN=E0D72A6F-3D67-49D6-9EA4-99FAFB4620E5',
+    //     publisherDisplayName: author.name,
+    //     devCert: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+    //     certPass: process.env.CERT_PASSWORD,
+    //     windowsKit: process.env.WINDOWS_KIT_PATH,
+    //     icon: path.resolve(iconDir, 'icon.ico')
+    //   }
+    // },
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
-      config: {},
+      config: {
+        icon: path.resolve(iconDir, 'icon.icns'),
+      },
     },
     {
       name: '@electron-forge/maker-deb',
@@ -132,7 +137,7 @@ const config: ForgeConfig = {
         authToken: process.env.GH_TOKEN,
         repository: {
           owner: 'stellar-comet',
-          name: 'comet',
+          name: name,
         },
         tagPrefix: 'v',
         prerelease: false,
@@ -143,30 +148,5 @@ const config: ForgeConfig = {
     }
   ]
 };
-
-function notarizeMaybe () {
-  if (process.platform !== 'darwin') {
-    return;
-  }
-
-  if (!process.env.CI && !process.env.FORCE_NOTARIZATION) {
-    // Not in CI, skipping notarization
-    // console.log('Not in CI, skipping notarization');
-    return;
-  }
-
-  if (!process.env.APPLE_ID || !process.env.APPLE_ID_PASSWORD) {
-    console.warn(
-      'Should be notarizing, but environment variables APPLE_ID or APPLE_ID_PASSWORD are missing!',
-    );
-    return;
-  }
-
-  config.packagerConfig.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: 'UY52UFTV**',
-  };
-}
 
 export default config;

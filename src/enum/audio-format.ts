@@ -1,0 +1,17 @@
+export enum AudioFormat {
+  MP3 = 'mp3',
+  WAV = 'wav',
+  OGG = 'ogg',
+  M4A = 'm4a',
+  FLAC = 'flac',
+  WMA = 'wma',
+  AAC = 'aac',
+  AMR = 'amr',
+  AIFF = 'aiff',
+  AU = 'au',
+  MKA = 'mka',
+  AC3 = 'ac3',
+  APE = 'ape',
+  MPC = 'mpc',
+  OPUS = 'opus',
+}

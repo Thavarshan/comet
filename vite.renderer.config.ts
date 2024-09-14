@@ -24,7 +24,10 @@ export default defineConfig((env) => {
         plugins: [tailwind(), autoprefixer()],
       },
     },
-    plugins: [pluginExposeRenderer(name), vue()],
+    plugins: [
+      pluginExposeRenderer(name),
+      vue(),
+    ],
     resolve: {
       preserveSymlinks: true,
       alias: {
