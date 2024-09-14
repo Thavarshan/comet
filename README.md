@@ -1,19 +1,23 @@
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/src/assets/images/logo.png" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/logo.png" width="400" height="400" alt="Comet"></a></p>
+
+[![Test](https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/test.yml)
+[![Build](https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/build.yml)
+[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
 
 > [!WARNING]
-> We don't have Apple Developer account yet. The applications will show a popup on first start. Click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once.
+> We don't have an Apple Developer account yet, and the application is not code-signed for both Mac and Windows. Therefore, the applications will show a warning popup on the first start. On Mac, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once. On Windows, you may see a warning message indicating that the app is from an unknown publisher. Click **More info** and then **Run anyway** to proceed.
 
 ## About Comet
 
 **Comet** is a cross-platform video converter application designed to make video conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video files into a variety of formats, all within a simple, intuitive interface.
 
-![Comet UI 1](./src/assets/images/screenshot_1.png)
-![Comet UI 2](./src/assets/images/screenshot_2.png)
-![Comet UI 3](./src/assets/images/screenshot_3.png)
-
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./src/assets/images/demo.gif" width="600" alt="Comet Demo"></a></p>
-
-[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
+![Comet UI 1](./assets/screenshot_1.png)
+![Comet UI 2](./assets/screenshot_2.png)
+![Comet UI 3](./assets/screenshot_3.png)
+![Comet UI 4](./assets/screenshot_4.png)
+![Comet UI 4](./assets/screenshot_4.png)
+![Comet UI 5](./assets/screenshot_5.png)
+![Comet UI 6](./assets/screenshot_6.png)
 
 ## Project Overview
 
@@ -44,57 +48,8 @@ The project has made significant progress:
 - **Node.js:** Backend services and script automation.
 - **Vite:** For fast and modern build tooling.
 - **Tailwind CSS:** For styling and responsive design.
-
-## Project Structure
-
-```bash
-comet/
-│
-├── .github/                        # GitHub-specific files, including workflows
-├── .vite/                          # Vite cache directory
-├── .vscode/                        # VSCode settings directory
-├── bin/                            # Custom scripts and binaries
-│   └── converter.sh                # Shell script for video conversion
-├── node_modules/                   # Node.js dependencies
-├── out/                            # Build output directory
-├── scripts/                        # Custom scripts
-│   └── postinstall.js              # Script to run after installation
-├── src/
-│   ├── assets/
-│   │   ├── css/                    # Global CSS file
-│   │   └── images/                 # Image assets for the application
-│   ├── lib/
-│   │   └── utils.ts                # Utility functions
-│   ├── ui/
-│   │   ├── blocks/                 # Main components for the app
-│   │   └── components/             # UI-related components
-│   ├── main.ts                     # Main process file
-│   ├── preload.ts                  # Preload script
-│   ├── renderer.ts                 # Renderer process entry point
-│   └── app.vue                     # Main Vue component
-│
-├── .editorconfig                   # Editor configuration
-├── .eslintrc.json                  # ESLint configuration
-├── .gitattributes                  # Git attributes configuration
-├── .gitignore                      # Git ignore file
-├── .prettierrc                     # Prettier configuration
-├── LICENSE                         # License file
-├── index.html                      # Entry HTML file
-├── postcss.config.js               # PostCSS configuration
-├── tailwind.config.js              # Tailwind CSS configuration
-├── components.json                 # Component configuration
-├── package-lock.json               # Lockfile for npm dependencies
-├── package.json                    # Node.js project configuration
-├── tsconfig.json                   # TypeScript configuration
-├── README.md                       # Project README file
-├── forge.config.ts                 # Electron Forge configuration
-├── forge.env.d.ts                  # Environment type declarations
-├── shims-vue.d.ts                  # TypeScript shims for Vue
-├── vite.base.config.ts             # Vite base configuration
-├── vite.main.config.ts             # Vite main process configuration
-├── vite.preload.config.ts          # Vite preload script configuration
-└── vite.renderer.config.ts         # Vite renderer process configuration
-```
+- **Jest:** For unit testing.
+- **GitHub Actions:** For CI/CD and release automation.
 
 ## How to Contribute
 
@@ -177,7 +132,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-If you find this project helpful or interesting, please consider giving it a ⭐ on GitHub. Your support and feedback are greatly appreciated!
+If you find this project helpful or interesting, please consider giving it a ⭐. Your support and feedback are greatly appreciated!
 
 ---
 

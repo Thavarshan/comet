@@ -5,7 +5,7 @@ import {
   ProgressRoot,
   type ProgressRootProps,
 } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { cn } from '@/ui/utils';
 
 const props = withDefaults(
   defineProps<ProgressRootProps & { class?: HTMLAttributes['class']; }>(),

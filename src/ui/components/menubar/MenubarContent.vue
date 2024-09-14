@@ -6,7 +6,7 @@ import {
   MenubarPortal,
   useForwardProps,
 } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { cn } from '@/ui/utils';
 
 const props = withDefaults(
   defineProps<MenubarContentProps & { class?: HTMLAttributes['class']; }>(),

@@ -1,0 +1,118 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  build-macos:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: darwin
+
+      - name: Verify build output
+        run: ls out/make
+
+  build-linux:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: |
+          npm run make -- --arch=${{ matrix.arch }}
+        env:
+          ELECTRON_CACHE: ${{ runner.temp }}/electron
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_platform: linux
+
+      - name: Verify build output
+        run: ls out/make
+
+  build-windows:
+    strategy:
+      matrix:
+        arch: [x64, arm64]
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Microsoft Build Tools
+        run: |
+          choco install microsoft-build-tools -y
+        shell: pwsh
+
+      - name: Verify makeappx.exe and build & sign the appx
+        run: |
+          # Verify makeappx.exe
+          $makeappxPath = 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe'
+
+          if (Test-Path $makeappxPath) {
+            echo "makeappx.exe found at $makeappxPath"
+            $env:WINDOWS_KIT_PATH="C:\Program Files (x86)\Windows Kits\10\App Certification Kit"
+          } else {
+            Write-Error "makeappx.exe not found."
+            exit 1
+          }
+
+          # Install dependencies
+          npm install
+
+          # Build and sign the appx using Electron Forge
+          npm run publish -- --arch=${{ matrix.arch }}
+        env:
+          WINDOWS_KIT_PATH: ${{ env.WINDOWS_KIT_PATH }}
+          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        shell: pwsh
+
+      - name: Verify build output
+        run: dir out\make
+        shell: pwsh

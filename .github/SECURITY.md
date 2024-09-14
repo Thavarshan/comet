@@ -7,6 +7,7 @@
 | Version | Security Fixes Until |
 | ------- | -------------------- |
 | 1.0.0   | August 17th, 2024    |
+| 2.0.1   | September 17th, 2024 |
 
 ## Reporting a Vulnerability
 

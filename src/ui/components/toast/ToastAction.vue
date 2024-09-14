@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from 'vue';
 import { ToastAction, type ToastActionProps } from 'radix-vue';
-import { cn } from '@/lib/utils';
+import { cn } from '@/ui/utils';
 
 const props = defineProps<ToastActionProps & { class?: HTMLAttributes['class']; }>();
 
