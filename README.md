@@ -15,9 +15,6 @@
 ![Comet UI 2](./assets/screenshot_2.png)
 ![Comet UI 3](./assets/screenshot_3.png)
 ![Comet UI 4](./assets/screenshot_4.png)
-![Comet UI 4](./assets/screenshot_4.png)
-![Comet UI 5](./assets/screenshot_5.png)
-![Comet UI 6](./assets/screenshot_6.png)
 
 ## Project Overview
 
