@@ -28,15 +28,24 @@
 
 import './ui/css/index.css';
 
+import { messages } from './locales/messages';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createPinia } from 'pinia';
+import { createI18n } from 'vue-i18n';
 import { createApp } from 'vue';
 import App from './ui/app.vue';
+import { Locale } from '@/enum/locale';
 
 const pinia = createPinia();
+const i18n = createI18n({
+  legacy: false,
+  locale: Locale.EN,
+  messages,
+});
 const app = createApp(App);
 
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
+app.use(i18n);
 
 app.mount('#app');

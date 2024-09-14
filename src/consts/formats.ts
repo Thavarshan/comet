@@ -4,7 +4,6 @@ import { VideoFormat } from '@/enum/video-format';
 export const VIDEO_CONVERSION_FORMATS = [
   VideoFormat.MP4,
   VideoFormat.WEBM,
-  VideoFormat.OGG,
   VideoFormat.FLV,
   VideoFormat.AVI,
   VideoFormat.MOV,

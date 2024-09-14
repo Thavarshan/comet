@@ -4,8 +4,11 @@ import { Button } from '@/ui/components/button';
 import {
   Upload,
 } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['file-uploaded']);
+
+const { t } = useI18n();
 
 const props = defineProps<{
   text: string;
@@ -49,6 +52,10 @@ function handleDrop(event: DragEvent) {
 function triggerFileInput() {
   fileInput?.value?.click();
 };
+
+function sentenceCase(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 </script>
 
 <template>
@@ -63,10 +70,10 @@ function triggerFileInput() {
     >
       <Upload class="size-12 text-slate-300" />
       <input ref="fileInput" type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptableFormats">
-      <div class="font-semibold text-sm text-foreground mt-2 max-w-xs text-center">{{ text }}</div>
-      <div class="mt-1 text-xs text-muted-foreground">or click here to select files for upload</div>
+      <div class="font-semibold text-sm text-foreground mt-2 max-w-xs">{{ text }}</div>
+      <div class="mt-1 text-xs text-muted-foreground">{{ t('upload.message') }}</div>
       <div class="mt-4">
-        <Button @click="triggerFileInput" variant="secondary" class="group-hover:bg-secondary/80">Select files</Button>
+        <Button @click="triggerFileInput" variant="secondary" class="group-hover:bg-secondary/80">{{ t('upload.select') }}</Button>
       </div>
     </label>
   </div>

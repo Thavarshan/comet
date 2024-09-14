@@ -21,9 +21,12 @@ import {
 import { ref, onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { VideoFormat } from '@/enum/video-format';
+import { useI18n } from 'vue-i18n';
 
 const defaultSaveDirectory = ref<string | undefined>(undefined);
 const defaultFormat = VideoFormat.MP4;
+
+const { t } = useI18n();
 
 const props = defineProps<{
   store: ReturnType<StoreDefinition>;
@@ -38,7 +41,7 @@ onMounted(async () => {
 <template>
   <div class="space-y-3 relative h-full">
     <Dropfile
-      text="Drag and drop your video files here"
+      :text="t('upload.title', { type: t('media.video').toLowerCase() })"
       @file-uploaded="store.handleUpload"
       :supported-formats="videoFormats"
     />
@@ -54,13 +57,13 @@ onMounted(async () => {
         <Combobox
           :options="videoFormats"
           @change="store.setFormat"
-          placeholder="Select format"
+          :placeholder="t('formats.select')"
           :convertTo="store.convertTo || defaultFormat"
         />
       </template>
     </Options>
     <ScrollArea class="h-[350px] w-full">
-      <div class="divide-y -my-3">
+      <div class="divide-y divide-muted -my-3">
         <FileItem
           v-for="(item, index) in store.items"
           :key="item.id"
@@ -85,7 +88,7 @@ onMounted(async () => {
           :disabled="store.conversionInProgress"
         >
           <Trash2 class="size-4 text-destructive mr-2" />
-          Clear
+          {{ t('buttons.clear') }}
         </Button>
       </template>
       <template #right>
@@ -96,7 +99,7 @@ onMounted(async () => {
             :disabled="!store.conversionInProgress"
           >
             <Ban class="size-4 mr-2" />
-            Cancel
+            {{ t('buttons.cancel') }}
           </Button>
           <Button
             v-if="!store.conversionInProgress"
@@ -104,11 +107,11 @@ onMounted(async () => {
             :disabled="!store.items?.length || !store.saveDirectory"
           >
             <RefreshCw class="size-4 mr-2" />
-            Convert
+            {{ t('buttons.convert') }}
           </Button>
           <Button v-else disabled>
             <RefreshCw class="size-4 mr-2 animate-spin" />
-            Converting...
+            {{ `${t('buttons.converting')}...` }}
           </Button>
         </div>
       </template>

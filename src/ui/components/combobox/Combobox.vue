@@ -17,9 +17,12 @@ import {
   PopoverTrigger,
 } from '@/ui/components/popover';
 import { Badge } from '@/ui/components/badge';
+import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['change']);
 const open = ref(false);
+
+const { t } = useI18n();
 
 const props = defineProps<{
   placeholder: string;
@@ -40,23 +43,25 @@ function setOption(event: CustomEvent) {
 <template>
   <Popover v-model:open="open">
     <PopoverTrigger as-child>
-      <Button
-        variant="secondary"
-        role="combobox"
-        :aria-expanded="open"
-        class="w-62 justify-between">
-        <span v-if="value" class="mr-2 text-foreground text-xs">Converting to: </span>
-        <Badge v-if="value">
-          {{ options.find((option: string) => option === value) }}
-        </Badge>
-        <span v-else class="text-foreground text-xs">{{ placeholder }}</span>
-        <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-      </Button>
+      <div class="p-1 rounded-lg bg-muted">
+        <Button
+          variant="secondary"
+          role="combobox"
+          :aria-expanded="open"
+          class="justify-between shadow-none">
+          <span v-if="value" class="mr-2 text-foreground text-xs">{{ t('formats.convertsTo') }}: </span>
+          <Badge v-if="value" class="rounded-sm">
+            {{ options.find((option: string) => option === value) }}
+          </Badge>
+          <span v-else class="text-foreground text-xs">{{ placeholder }}</span>
+          <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </div>
     </PopoverTrigger>
     <PopoverContent class="w-48 p-0" align="end">
       <Command v-model="value">
-        <CommandInput placeholder="Search option..." />
-        <CommandEmpty>No option found.</CommandEmpty>
+        <CommandInput :placeholder="`${t('formats.search')}...`" />
+        <CommandEmpty>{{ t('formats.empty') }}</CommandEmpty>
         <CommandList>
           <CommandGroup>
             <CommandItem

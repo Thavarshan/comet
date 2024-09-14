@@ -15,6 +15,9 @@ import {
 } from 'lucide-vue-next';
 import { Item } from '@/types/item';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const emit = defineEmits(['remove', 'cancel']);
 
@@ -34,11 +37,11 @@ function cancelItem(index: number) {
   emit('cancel', index);
 }
 
-function formatNumber(number: number): string {
+function formatNumber(number: number): number | undefined {
   const clampedNumber = Math.min(100, Math.max(0, number));
   const truncatedNumber = Math.trunc(clampedNumber);
   const limitedDigits = truncatedNumber.toString().slice(0, 3);
-  return `${limitedDigits}%`;
+  return limitedDigits === '0' ? undefined : parseInt(limitedDigits);
 }
 
 function extractFileName(filename: string): string {
@@ -61,15 +64,15 @@ function extractFileName(filename: string): string {
           <p class="text-xs text-muted-foreground font-medium">{{ item.size }}</p>
           <span>&middot;</span>
           <p class="text-xs text-muted-foreground">
-            Converting from
+            {{ t('item.from') }}
             <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.name.split('.').pop() }}</span>
-            to
+            {{ t('item.to') }}
             <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.converted ? item.convertTo : convertTo }}</span>
           </p>
         </div>
         <div class="mt-1.5 flex items-center gap-x-2">
           <Progress v-model="progress" class="w-60" />
-          <span class="text-xs">{{ `${progress}%` }}</span>
+          <span class="text-xs">{{ `${progress === undefined ? 0 : progress}%` }}</span>
         </div>
       </div>
     </div>
@@ -82,7 +85,7 @@ function extractFileName(filename: string): string {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            Cancel
+            {{ t('buttons.cancel') }}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -94,7 +97,7 @@ function extractFileName(filename: string): string {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            Remove
+            {{ t('buttons.remove') }}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

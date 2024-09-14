@@ -42,11 +42,11 @@ function formatPath(path: string) {
 </script>
 
 <template>
-  <div class="flex items-center rounded-lg bg-muted gap-x-3 pr-3">
-    <Button type="button" variant="outline" @click="handleDirectorySelection" size="icon">
+  <div class="flex items-center rounded-lg bg-muted gap-x-3 p-1 pr-3">
+    <Button type="button" variant="outline" @click="handleDirectorySelection" size=icon>
       <FolderOpenDot class="size-4" />
     </Button>
-    <div class="text-xs font-medium text-foreground max-w-64 truncate">
+    <div class="text-xs font-medium text-foreground max-w-64 truncate mr-px">
       {{ formatPath(selectedDirectory) }}
     </div>
   </div>

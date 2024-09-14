@@ -21,9 +21,12 @@ import {
 import { ref, onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { AudioFormat } from '@/enum/audio-format';
+import { useI18n } from 'vue-i18n';
 
 const defaultSaveDirectory = ref<string | undefined>(undefined);
 const defaultFormat = AudioFormat.MP3;
+
+const { t } = useI18n();
 
 const props = defineProps<{
   store: ReturnType<StoreDefinition>;
@@ -38,7 +41,7 @@ onMounted(async () => {
 <template>
   <div class="space-y-3 relative h-full">
     <Dropfile
-      text="Drag and drop your audio files here"
+      :text="t('upload.title', { type: t('media.audio').toLowerCase() })"
       @file-uploaded="store.handleUpload"
       :supported-formats="audioFormats"
     />
@@ -54,13 +57,13 @@ onMounted(async () => {
         <Combobox
           :options="audioFormats"
           @change="store.setFormat"
-          placeholder="Select format"
+          :placeholder="t('formats.select')"
           :convertTo="store.convertTo || defaultFormat"
         />
       </template>
     </Options>
     <ScrollArea class="h-[350px] w-full">
-      <div class="divide-y -my-3">
+      <div class="divide-y divide-muted -my-3">
         <FileItem
           v-for="(item, index) in store.items"
           :key="item.id"
@@ -79,20 +82,36 @@ onMounted(async () => {
     </ScrollArea>
     <Controls class="absolute bottom-0 w-full">
       <template #left>
-        <Button variant="outline" @click="store.clearItems">
+        <Button
+          variant="outline"
+          @click="store.clearItems"
+          :disabled="store.conversionInProgress"
+        >
           <Trash2 class="size-4 text-destructive mr-2" />
-          Clear
+          {{ t('buttons.clear') }}
         </Button>
       </template>
       <template #right>
         <div class="flex items-center justify-end gap-x-2">
-          <Button variant="outline" @click="store.cancelConversion">
+          <Button
+            variant="outline"
+            @click="store.cancelConversion"
+            :disabled="!store.conversionInProgress"
+          >
             <Ban class="size-4 mr-2" />
-            Cancel
+            {{ t('buttons.cancel') }}
           </Button>
-          <Button @click="store.performConversion">
+          <Button
+            v-if="!store.conversionInProgress"
+            @click="store.performConversion"
+            :disabled="!store.items?.length || !store.saveDirectory"
+          >
             <RefreshCw class="size-4 mr-2" />
-            Convert
+            {{ t('buttons.convert') }}
+          </Button>
+          <Button v-else disabled>
+            <RefreshCw class="size-4 mr-2 animate-spin" />
+            {{ `${t('buttons.converting')}...` }}
           </Button>
         </div>
       </template>
