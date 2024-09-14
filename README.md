@@ -1,8 +1,11 @@
 <p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/logo.png" width="400" height="400" alt="Comet"></a></p>
 
-[![Test](https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/test.yml)
-[![Build](https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg)](https://github.com/stellar-comet/comet/actions/workflows/build.yml)
-[![Release](https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release)](https://github.com/stellar-comet/comet/actions/workflows/release.yml)
+<p align="center">
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg" alt="Test Status"></a>
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release" alt="Release Status"></a>
+<a href="https://packagist.org/packages/jerome/filterable"><img src="https://img.shields.io/packagist/l/jerome/filterable" alt="License"></a>
+</p>
 
 > [!WARNING]
 > We don't have an Apple Developer account yet, and the application is not code-signed for both Mac and Windows. Therefore, the applications will show a warning popup on the first start. On Mac, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**. You'll have to do this once. On Windows, you may see a warning message indicating that the app is from an unknown publisher. Click **More info** and then **Run anyway** to proceed.
