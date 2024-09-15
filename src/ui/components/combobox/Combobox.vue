@@ -33,7 +33,13 @@ function setOption(event: CustomEvent) {
   <Popover v-model:open="open">
     <PopoverTrigger as-child>
       <div class="p-1 rounded-lg bg-muted">
-        <Button variant="secondary" role="combobox" :aria-expanded="open" class="justify-between shadow-none">
+        <Button
+          variant="secondary"
+          role="combobox"
+          :aria-expanded="open"
+          :aria-controls="listId"
+          class="justify-between shadow-none"
+        >
           <span v-if="value" class="mr-2 text-foreground text-xs">{{ t('formats.convertsTo') }}: </span>
           <Badge v-if="value" class="rounded-sm">
             {{ options.find((option: string) => option === value) }}
@@ -47,7 +53,7 @@ function setOption(event: CustomEvent) {
       <Command v-model="value">
         <CommandInput :placeholder="`${t('formats.search')}...`" />
         <CommandEmpty>{{ t('formats.empty') }}</CommandEmpty>
-        <CommandList>
+        <CommandList :id="listId">
           <CommandGroup>
             <CommandItem v-for="(option, index) in options" :key="index" :value="option" @select="setOption">
               <Check :class="cn('mr-2 h-4 w-4', value === option ? 'opacity-100' : 'opacity-0')" />

@@ -28,18 +28,12 @@ function cancelItem(index: number) {
 }
 
 function formatNumber(number: number): number {
-  // Check if progress is a valid number, otherwise default to 0
   if (isNaN(number) || number === null || number === undefined) {
     return 0;
   }
 
-  // Ensure number is a positive value
   const positiveProgress = Math.max(0, number);
-
-  // Round to the nearest whole number
   const roundedProgress = Math.round(positiveProgress);
-
-  // Cap the value at 100
   const percentage = Math.min(roundedProgress, 100);
 
   return percentage;
@@ -76,7 +70,7 @@ function extractFileName(filename: string): string {
           </p>
         </div>
         <div class="mt-1.5 flex items-center gap-x-2">
-          <Progress v-model="progress" class="w-60" />
+          <Progress v-model="progress" class="w-60" aria-label="Conversion progress" />
           <span class="text-xs">{{ `${progress === undefined ? 0 : progress}%` }}</span>
         </div>
       </div>

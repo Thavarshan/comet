@@ -70,6 +70,10 @@ function triggerFileInput() {
       @dragover="handleDragOver"
       @dragleave="handleDragLeave"
       @drop="handleDrop"
+      role="button"
+      aria-label="Upload files"
+      tabindex="0"
+      @keydown.enter="triggerFileInput"
     >
       <Upload class="size-12 text-slate-300" />
       <input

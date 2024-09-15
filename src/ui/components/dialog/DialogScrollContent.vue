@@ -44,7 +44,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
             if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
               event.preventDefault();
             }
-          }"
+          }
         "
       >
         <slot />
