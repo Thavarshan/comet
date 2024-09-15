@@ -10,6 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['change']);
 const open = ref(false);
+const listId = `combobox-list-${Math.random().toString(36).substr(2, 9)}`;
 
 const { t } = useI18n();
 
@@ -53,7 +54,7 @@ function setOption(event: CustomEvent) {
       <Command v-model="value">
         <CommandInput :placeholder="`${t('formats.search')}...`" />
         <CommandEmpty>{{ t('formats.empty') }}</CommandEmpty>
-        <CommandList :id="listId">
+        <CommandList :id="listId"> <!-- Use the generated ID here -->
           <CommandGroup>
             <CommandItem v-for="(option, index) in options" :key="index" :value="option" @select="setOption">
               <Check :class="cn('mr-2 h-4 w-4', value === option ? 'opacity-100' : 'opacity-0')" />
