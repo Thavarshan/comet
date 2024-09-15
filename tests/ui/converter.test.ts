@@ -20,12 +20,15 @@ describe('Converter Store', () => {
     platform: process.platform as NodeJS.Platform,
     on: jest.fn(),
     removeAllListeners: jest.fn(),
+    setupGetSystemTheme: jest.fn().mockReturnValue('light'),
     getDesktopPath: jest.fn().mockResolvedValue('/mock/desktop/path'),
     getFilePath: jest.fn().mockReturnValue('/mock/file/path'),
     convertVideo: jest.fn().mockResolvedValue('/mock/output/path'),
     cancelItemConversion: jest.fn().mockResolvedValue(true),
     cancelConversion: jest.fn().mockResolvedValue(true),
     selectDirectory: jest.fn().mockResolvedValue('/mock/save'),
+    send: jest.fn(),
+    getSystemTheme: jest.fn().mockReturnValue('light'),
   };
 
   beforeAll(() => {

@@ -72,6 +72,7 @@ export function handleConversion(
         event.sender.send('conversion-progress', { id, progress: calculatedProgress });
       })
       .on('end', () => {
+        event.sender.send('conversion-progress', { id, progress: 100 });
         ffmpegProcesses.delete(id);
         resolve(outputPath);
       })

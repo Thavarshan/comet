@@ -7,6 +7,7 @@ import {
   webUtils
 } from 'electron';
 import { IpcEvent } from './enum/ipc-event';
+import { ColorMode } from './types/theme';
 
 async function preload() {
   await setupGlobals();
@@ -23,6 +24,9 @@ export async function setupGlobals() {
     platform: process.platform,
     selectDirectory() {
       return ipcRenderer.invoke(IpcEvent.DIALOG_SELECT_DIRECTORY);
+    },
+    getSystemTheme() {
+      return ipcRenderer.sendSync(IpcEvent.GET_SYSTEM_THEME) as ColorMode;
     },
     getDesktopPath() {
       return ipcRenderer.invoke(IpcEvent.GET_DESKTOP_PATH);
@@ -46,6 +50,9 @@ export async function setupGlobals() {
         IpcEvent.CONVERT_VIDEO,
         { id, filePath, outputFormat, saveDirectory }
       );
+    },
+    send(channel: string, ...args: unknown[]) {
+      ipcRenderer.send(channel, ...args);
     },
     on(channel: string, callback: (
       event: IpcRendererEvent,

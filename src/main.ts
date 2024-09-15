@@ -18,7 +18,7 @@ import path from 'node:path';
 import { IpcEvent } from './enum/ipc-event';
 
 // Path to the entry HTML file for the main window
-const entryFilePath = path.join(
+const entryFilePath = !process.env.JEST ? '/fake/path' : path.join(
   __dirname,
   `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`
 );
@@ -36,6 +36,7 @@ export async function onReady() {
   setupDevTools();
   setupTitleBarClickMac();
   setupNativeTheme();
+  setupGetSystemTheme();
   setupIsDevMode();
 
   // Do this after setting everything up to ensure that
@@ -93,9 +94,7 @@ export function setupTitleBarClickMac() {
  *
  * @returns Whether the value is a valid native theme source
  */
-function isNativeThemeSource(
-  val: unknown,
-): val is typeof nativeTheme.themeSource {
+function isNativeThemeSource(val: unknown): val is typeof nativeTheme.themeSource {
   return typeof val === 'string' && ['dark', 'light', 'system'].includes(val);
 }
 
@@ -103,10 +102,30 @@ function isNativeThemeSource(
  * Handle theme changes.
  */
 export function setupNativeTheme() {
-  ipcMain.on(IpcEvent.SET_NATIVE_THEME, async (_, source: string) => {
+  ipcMain.on(IpcEvent.SET_NATIVE_THEME, (_event, source: string) => {
     if (isNativeThemeSource(source)) {
       nativeTheme.themeSource = source;
     }
+  });
+
+  // Only notify renderer if the theme source is 'system'
+  if (nativeTheme) {
+    nativeTheme.on('updated', () => {
+      const currentTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+      BrowserWindow.getAllWindows().forEach(win => {
+        win.webContents.send(IpcEvent.NATIVE_THEME_UPDATED, currentTheme);
+      });
+    });
+  }
+}
+
+/**
+ * Handle getting the system theme.
+ */
+export function setupGetSystemTheme() {
+  ipcMain.on(IpcEvent.GET_SYSTEM_THEME, (event) => {
+    const currentTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+    event.returnValue = currentTheme;
   });
 }
 

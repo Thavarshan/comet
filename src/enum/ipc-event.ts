@@ -12,6 +12,8 @@ export enum IpcEvent {
   GET_PROJECT_NAME = 'get-project-name',
   LOAD_GIST_REQUEST = 'load-gist-request',
   LOAD_ELECTRON_EXAMPLE_REQUEST = 'load-electron-example-request',
+  NATIVE_THEME_UPDATED = 'native-theme-updated',
+  GET_SYSTEM_THEME = 'get-system-theme',
 }
 
 export const ipcMainEvents = [
@@ -28,5 +30,7 @@ export const ipcMainEvents = [
   IpcEvent.GET_PROJECT_NAME,
   IpcEvent.LOAD_GIST_REQUEST,
   IpcEvent.LOAD_ELECTRON_EXAMPLE_REQUEST,
+  IpcEvent.NATIVE_THEME_UPDATED,
+  IpcEvent.GET_SYSTEM_THEME,
 ];
 

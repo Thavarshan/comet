@@ -12,11 +12,13 @@ jest.mock('electron', () => ({
   },
   ipcRenderer: {
     invoke: jest.fn(),
+    sendSync: jest.fn(),
+    send: jest.fn(),
     on: jest.fn(),
     removeAllListeners: jest.fn(),
   },
   webUtils: {
-    getPathForFile: jest.fn(), // Ensure this is mocked
+    getPathForFile: jest.fn(),
   },
 }));
 
@@ -32,11 +34,13 @@ describe('setupGlobals', () => {
       arch: process.arch,
       platform: process.platform,
       selectDirectory: expect.any(Function),
+      getSystemTheme: expect.any(Function),
       getDesktopPath: expect.any(Function),
       getFilePath: expect.any(Function),
       cancelItemConversion: expect.any(Function),
       cancelConversion: expect.any(Function),
       convertVideo: expect.any(Function),
+      send: expect.any(Function),
       on: expect.any(Function),
       removeAllListeners: expect.any(Function),
     });
@@ -49,6 +53,15 @@ describe('setupGlobals', () => {
     await electron.selectDirectory();
 
     expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.DIALOG_SELECT_DIRECTORY);
+  });
+
+  test('should sendSync GET_SYSTEM_THEME event', async () => {
+    await setupGlobals();
+    const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
+
+    electron.getSystemTheme();
+
+    expect(ipcRenderer.sendSync).toHaveBeenCalledWith(IpcEvent.GET_SYSTEM_THEME);
   });
 
   test('should invoke GET_DESKTOP_PATH event', async () => {
@@ -100,6 +113,16 @@ describe('setupGlobals', () => {
       outputFormat: 'mp4',
       saveDirectory: '/mock/save',
     });
+  });
+
+  test('should send a message to a channel', () => {
+    setupGlobals();
+    const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
+    const args = ['arg1', 'arg2'];
+
+    electron.send('channel', ...args);
+
+    expect(ipcRenderer.send).toHaveBeenCalledWith('channel', ...args);
   });
 
   test('should add an event listener for a channel', () => {

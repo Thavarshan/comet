@@ -12,7 +12,7 @@ const entryFilePath = '/fake/path';
 
 jest.mock('node:path');
 
-describe.skip('windows', () => {
+describe('windows', () => {
   beforeAll(() => {
     mainIsReady();
   });

@@ -46,15 +46,20 @@ function handleDrop(event: DragEvent) {
   const files = event.dataTransfer?.files;
   if (!files) return;
 
-  emit('file-uploaded', files);
+  // Filter files based on supported formats
+  const acceptedFiles = Array.from(files).filter(file => {
+    const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
+    return props.supportedFormats.some(format => fileExtension === `.${format}`);
+  });
+
+  if (acceptedFiles.length > 0) {
+    emit('file-uploaded', acceptedFiles);
+    return;
+  }
 };
 
 function triggerFileInput() {
   fileInput?.value?.click();
-};
-
-function sentenceCase(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 };
 </script>
 

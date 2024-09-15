@@ -1,3 +1,5 @@
+import { ColorMode } from '@/types/theme';
+
 export { }; // Make this a module
 
 declare global {
@@ -26,11 +28,13 @@ declare global {
       arch: string;
       platform: NodeJS.Platform;
       selectDirectory: () => Promise<string | undefined>;
+      getSystemTheme: () => ColorMode;
       getDesktopPath: () => string;
       getFilePath: (file: File) => string;
       cancelConversion: () => Promise<unknown>;
       cancelItemConversion: (id: number | string) => Promise<unknown>;
       convertVideo: (id: string, filePath: string, outputFormat: string, saveDirectory: string) => Promise<string>;
+      send: (channel: string, ...args: unknown[]) => void;
       on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => void;
       removeAllListeners: (channel: string) => void;
     };

@@ -53,11 +53,6 @@ export const IMAGE_CONVERSION_FORMATS = [
   ImageFormat.GIF,
   ImageFormat.TIFF,
   ImageFormat.WEBP,
-  ImageFormat.SVG,
   ImageFormat.ICO,
-  ImageFormat.HEIC,
-  ImageFormat.AVIF,
-  ImageFormat.ICNS,
-  ImageFormat.JP2,
   ImageFormat.JPEG
 ];
