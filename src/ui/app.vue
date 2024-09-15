@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Layout from '@/ui/layouts/DefaultLayout.vue';
-import { VideoConverter, AudioConverter } from '@/ui/blocks';
+import { VideoConverter, AudioConverter, ImageConverter } from '@/ui/blocks';
 import { createConverterStore } from '@/ui/stores';
 import { onMounted, onBeforeUnmount } from 'vue';
 import { useLanguagePreferences } from '@/ui/composables/language-mode';
@@ -11,6 +11,9 @@ const videoStore = useVideoConverterStore();
 const useAudioConverterStore = createConverterStore();
 const audioStore = useAudioConverterStore();
 
+const useImageConverterStore = createConverterStore();
+const imageStore = useImageConverterStore();
+
 const {
   currentLocale,
   setLocale,
@@ -19,6 +22,7 @@ const {
 onMounted(async () => {
   await videoStore.init();
   await audioStore.init();
+  await imageStore.init();
 
   setLocale(currentLocale.value);
 });
@@ -26,6 +30,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   videoStore.clearListeners();
   audioStore.clearListeners();
+  imageStore.clearListeners();
 });
 </script>
 
@@ -36,6 +41,9 @@ onBeforeUnmount(() => {
     </template>
     <template #audio>
       <AudioConverter :store="audioStore" />
+    </template>
+    <template #image>
+      <ImageConverter :store="imageStore" />
     </template>
   </Layout>
 </template>

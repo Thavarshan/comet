@@ -42,6 +42,9 @@ const showTitleBar = computed(() => {
             <TabsTrigger value="audio">
               {{ t('media.audio') }}
             </TabsTrigger>
+            <TabsTrigger value="image">
+              {{ t('media.image') }}
+            </TabsTrigger>
           </TabsList>
           <KeepAlive>
             <div>
@@ -50,6 +53,9 @@ const showTitleBar = computed(() => {
               </TabsContent>
               <TabsContent value="audio">
                 <slot name="audio" />
+              </TabsContent>
+              <TabsContent value="image">
+                <slot name="image" />
               </TabsContent>
             </div>
           </KeepAlive>

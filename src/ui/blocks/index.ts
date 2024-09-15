@@ -6,6 +6,7 @@ import Options from './Options.vue';
 import FileItem from './FileItem.vue';
 import VideoConverter from './VideoConverter.vue';
 import AudioConverter from './AudioConverter.vue';
+import ImageConverter from './ImageConverter.vue';
 
 export {
   ThemeSwitcher,
@@ -16,4 +17,5 @@ export {
   FileItem,
   VideoConverter,
   AudioConverter,
+  ImageConverter,
 };

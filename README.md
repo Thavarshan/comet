@@ -12,7 +12,7 @@
 
 ## About Comet
 
-**Comet** is a cross-platform video and audio converter application designed to make media conversion as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert video and audio files into a variety of formats, all within a simple, intuitive interface.
+**Comet** is a cross-platform media converter application designed to make the conversion of video, audio, and image files as easy and accessible as possible. Leveraging the power of [FFmpeg](https://ffmpeg.org/), Comet allows users to convert various media formats all within a simple, intuitive interface.
 
 ![Comet UI 1](./assets/screenshot_1.png)
 ![Comet UI 2](./assets/screenshot_2.png)
@@ -21,12 +21,12 @@
 
 ## Project Overview
 
-Comet's goal is to provide a free, user-friendly, and visually appealing application for converting video and audio files. Whether you need to convert a single file or multiple files at once, Comet is here to help.
+Comet's goal is to provide a free, user-friendly, and visually appealing application for converting media files. Whether you need to convert a single file or multiple files at once, Comet is here to help.
 
 ### Key Features
 
 - **Cross-Platform Compatibility:** Runs on macOS, Windows, and Linux.
-- **Video and Audio Conversion:** Supports conversion to a wide range of video formats (MP4, MKV, AVI, MOV, etc.) and audio formats (MP3, WAV, AAC, FLAC, etc.).
+- **Video, Audio, and Image Conversion:** Supports conversion to a wide range of video formats (MP4, MKV, AVI, MOV, etc.), audio formats (MP3, WAV, AAC, FLAC, etc.), and image formats (JPEG, PNG, BMP, etc.).
 - **Bulk File Conversion:** Easily upload and convert multiple files in one go.
 - **User-Friendly Interface:** A clean and intuitive UI that simplifies the conversion process.
 - **Real-Time Conversion Feedback:** Conversion progress is tracked and displayed to the user, with real-time updates and error handling.
@@ -39,17 +39,18 @@ Comet's goal is to provide a free, user-friendly, and visually appealing applica
 The project has made significant progress:
 
 - **Basic UI and Core Functionality:** The user interface is fully implemented, supporting bulk file uploads, conversion status tracking, and real-time feedback.
-- **FFmpeg Integration:** The core video and audio conversion functionality is complete, making the app fully functional.
+- **FFmpeg Integration:** The core video, audio, and image conversion functionality is complete, making the app fully functional.
 - **Cross-Platform Distributables:** Distributables for macOS, Windows, and Linux have been successfully created. However, due to the high cost of an Apple Developer membership, the app is currently not code-signed or notarized for macOS, which may present challenges when running it on Mac devices.
 
 ## Technologies Used
 
 - **Electron:** For building the cross-platform desktop application.
 - **Vue.js (with Composition API and TypeScript):** For the frontend UI.
-- **FFmpeg:** The core engine for video and audio format conversion.
+- **FFmpeg:** The core engine for media format conversion.
 - **Node.js:** Backend services and script automation.
 - **Vite:** For fast and modern build tooling.
 - **Tailwind CSS:** For styling and responsive design.
+- **i18n:** For handling internationalization and multiple language support.
 - **Jest:** For unit testing.
 - **GitHub Actions:** For CI/CD and release automation.
 
@@ -135,7 +136,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [FFmpeg](https://ffmpeg.org/) - The powerful multimedia framework that makes this project possible.
 - The Electron and Vue.js communities for their fantastic tools and support.
-
----
-
-Thank you for visiting our project! We’re excited to bring this tool to life and make media conversion easy and accessible for everyone. Any help, be it in coding, testing, or simply providing feedback, is invaluable. Let's create something great together!

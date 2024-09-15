@@ -1,5 +1,6 @@
-import { AudioFormat } from '@/enum/audio-format';
 import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
+import { ImageFormat } from '@/enum/image-format';
 
 export const VIDEO_CONVERSION_FORMATS = [
   VideoFormat.MP4,
@@ -43,4 +44,20 @@ export const AUDIO_CONVERSION_FORMATS = [
   AudioFormat.APE,
   AudioFormat.MPC,
   AudioFormat.OPUS
+];
+
+export const IMAGE_CONVERSION_FORMATS = [
+  ImageFormat.JPG,
+  ImageFormat.PNG,
+  ImageFormat.BMP,
+  ImageFormat.GIF,
+  ImageFormat.TIFF,
+  ImageFormat.WEBP,
+  ImageFormat.SVG,
+  ImageFormat.ICO,
+  ImageFormat.HEIC,
+  ImageFormat.AVIF,
+  ImageFormat.ICNS,
+  ImageFormat.JP2,
+  ImageFormat.JPEG
 ];

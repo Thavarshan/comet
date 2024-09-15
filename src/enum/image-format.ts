@@ -1,0 +1,15 @@
+export enum ImageFormat {
+  JPG = 'jpg',
+  PNG = 'png',
+  BMP = 'bmp',
+  GIF = 'gif',
+  TIFF = 'tiff',
+  WEBP = 'webp',
+  SVG = 'svg',
+  ICO = 'ico',
+  HEIC = 'heic',
+  AVIF = 'avif',
+  ICNS = 'icns',
+  JP2 = 'jp2',
+  JPEG = 'jpeg',
+}
