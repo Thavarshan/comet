@@ -54,7 +54,7 @@ function setOption(event: CustomEvent) {
       <Command v-model="value">
         <CommandInput :placeholder="`${t('formats.search')}...`" />
         <CommandEmpty>{{ t('formats.empty') }}</CommandEmpty>
-        <CommandList :id="listId"> <!-- Use the generated ID here -->
+        <CommandList :id="listId">
           <CommandGroup>
             <CommandItem v-for="(option, index) in options" :key="index" :value="option" @select="setOption">
               <Check :class="cn('mr-2 h-4 w-4', value === option ? 'opacity-100' : 'opacity-0')" />
