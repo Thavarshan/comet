@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { Button } from '@/ui/components/button';
-import {
-  FolderInput,
-  FolderOpenDot
-} from 'lucide-vue-next';
+import { FolderOpenDot } from 'lucide-vue-next';
 
 const emit = defineEmits(['directory-selected']);
 
@@ -20,7 +17,7 @@ onMounted(() => {
   }
 });
 
-async function handleDirectorySelection(_event: Event) {
+async function handleDirectorySelection() {
   const directory = await window.electron.selectDirectory();
 
   if (directory) {
@@ -43,7 +40,7 @@ function formatPath(path: string) {
 
 <template>
   <div class="flex items-center rounded-lg bg-muted gap-x-3 p-1 pr-3">
-    <Button type="button" variant="outline" @click="handleDirectorySelection" size=icon>
+    <Button type="button" variant="outline" @click="handleDirectorySelection" size="icon">
       <FolderOpenDot class="size-4" />
     </Button>
     <div class="text-xs font-medium text-foreground max-w-64 truncate mr-px">

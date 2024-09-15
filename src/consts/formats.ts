@@ -25,7 +25,7 @@ export const VIDEO_CONVERSION_FORMATS = [
   VideoFormat.MTS,
   VideoFormat.OGV,
   VideoFormat.RM,
-  VideoFormat.SWF
+  VideoFormat.SWF,
 ];
 
 export const AUDIO_CONVERSION_FORMATS = [
@@ -43,7 +43,7 @@ export const AUDIO_CONVERSION_FORMATS = [
   AudioFormat.AC3,
   AudioFormat.APE,
   AudioFormat.MPC,
-  AudioFormat.OPUS
+  AudioFormat.OPUS,
 ];
 
 export const IMAGE_CONVERSION_FORMATS = [
@@ -54,5 +54,5 @@ export const IMAGE_CONVERSION_FORMATS = [
   ImageFormat.TIFF,
   ImageFormat.WEBP,
   ImageFormat.ICO,
-  ImageFormat.JPEG
+  ImageFormat.JPEG,
 ];

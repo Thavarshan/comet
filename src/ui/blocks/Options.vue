@@ -13,4 +13,3 @@ const props = defineProps<{
     <slot name="right" />
   </div>
 </template>
-

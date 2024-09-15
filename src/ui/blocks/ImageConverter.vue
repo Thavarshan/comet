@@ -1,23 +1,10 @@
 <script setup lang="ts">
-import {
-  Controls,
-  Dropfile,
-  SaveDirectory,
-  Options,
-  FileItem
-} from '@/ui/blocks';
+import { Controls, Dropfile, SaveDirectory, Options, FileItem } from '@/ui/blocks';
 import { Button } from '@/ui/components/button';
 import { Combobox } from '@/ui/components/combobox';
 import { ScrollArea } from '@/ui/components/scroll-area';
-import {
-  Trash2,
-  Ban,
-  RefreshCw,
-  FileImage
-} from 'lucide-vue-next';
-import {
-  IMAGE_CONVERSION_FORMATS as imageFormats,
-} from '@/consts/formats';
+import { Trash2, Ban, RefreshCw, FileImage } from 'lucide-vue-next';
+import { IMAGE_CONVERSION_FORMATS as imageFormats } from '@/consts/formats';
 import { ref, onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { ImageFormat } from '@/enum/image-format';
@@ -82,22 +69,14 @@ onMounted(async () => {
     </ScrollArea>
     <Controls class="absolute bottom-0 w-full">
       <template #left>
-        <Button
-          variant="outline"
-          @click="store.clearItems"
-          :disabled="store.conversionInProgress"
-        >
+        <Button variant="outline" @click="store.clearItems" :disabled="store.conversionInProgress">
           <Trash2 class="size-4 text-destructive mr-2" />
           {{ t('buttons.clear') }}
         </Button>
       </template>
       <template #right>
         <div class="flex items-center justify-end gap-x-2">
-          <Button
-            variant="outline"
-            @click="store.cancelConversion"
-            :disabled="!store.conversionInProgress"
-          >
+          <Button variant="outline" @click="store.cancelConversion" :disabled="!store.conversionInProgress">
             <Ban class="size-4 mr-2" />
             {{ t('buttons.cancel') }}
           </Button>

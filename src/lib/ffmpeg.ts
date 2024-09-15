@@ -1,6 +1,6 @@
-import ffmpeg from 'fluent-ffmpeg';
+import ffmpeg, { setFfmpegPath, setFfprobePath, ffprobe as ffmpegFfprobe } from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
-import ffprobe from 'ffprobe-static';
+import { path as ffprobePath } from 'ffprobe-static';
 import path from 'node:path';
 
 const ffmpegProcesses = new Map<string, ffmpeg.FfmpegCommand>();
@@ -16,15 +16,14 @@ export function setFfmpegProcess(id: string, ffmpegCommand: ffmpeg.FfmpegCommand
 }
 
 let ffmpegPath: string;
-let ffprobePath: string;
 
 try {
   if (!ffmpegStatic) throw new Error('ffmpegStatic not found');
   ffmpegPath = ffmpegStatic.replace('app.asar', 'app.asar.unpacked');
-  ffprobePath = ffprobe.path.replace('app.asar', 'app.asar.unpacked');
+  const ffprobeResolvedPath = ffprobePath.replace('app.asar', 'app.asar.unpacked');
 
-  ffmpeg.setFfmpegPath(ffmpegPath);
-  ffmpeg.setFfprobePath(ffprobePath);
+  setFfmpegPath(ffmpegPath);
+  setFfprobePath(ffprobeResolvedPath);
 } catch (error) {
   console.error('Failed to find ffmpegStatic:', error.message);
 }
@@ -51,12 +50,12 @@ export function handleConversion(
   outputFormat: string,
   saveDirectory: string,
   resolve: (value: string) => void,
-  reject: (reason: unknown) => void
+  reject: (reason: unknown) => void,
 ): void {
   const outputFileName = `${path.basename(filePath, path.extname(filePath))}.${outputFormat}`;
   const outputPath = path.join(saveDirectory, outputFileName);
 
-  ffmpeg.ffprobe(filePath, (err, metadata) => {
+  ffmpegFfprobe(filePath, (err, metadata) => {
     if (err) {
       reject(err);
       return;
@@ -93,10 +92,7 @@ export function handleConversion(
 /**
  * Cancel a single FFmpeg process.
  */
-export function handleItemConversionCancellation(
-  _event: Electron.IpcMainInvokeEvent,
-  id: string
-): boolean {
+export function handleItemConversionCancellation(_event: Electron.IpcMainInvokeEvent, id: string): boolean {
   const ffmpegCommand = ffmpegProcesses.get(id);
 
   if (!ffmpegCommand) {
@@ -118,6 +114,7 @@ export function handleItemConversionCancellation(
 /**
  * Cancel all FFmpeg processes.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function handleConversionCancellation(_event: Electron.IpcMainInvokeEvent): boolean {
   for (const [id, ffmpegCommand] of ffmpegProcesses.entries()) {
     try {

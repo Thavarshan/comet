@@ -7,9 +7,7 @@ import { isDevMode } from './devmode';
 export let browserWindows: Array<BrowserWindow | null> = [];
 
 let mainIsReadyResolver: () => void;
-const mainIsReadyPromise = new Promise<void>(
-  (resolve) => (mainIsReadyResolver = resolve),
-);
+const mainIsReadyPromise = new Promise<void>((resolve) => (mainIsReadyResolver = resolve));
 
 /**
  * Resolve the mainIsReadyPromise to indicate that the main window is ready.
@@ -24,7 +22,7 @@ export function mainIsReady() {
  * @returns {BrowserWindowConstructorOptions}
  */
 export function getMainWindowOptions(
-  overrides?: Partial<BrowserWindowConstructorOptions>
+  overrides?: Partial<BrowserWindowConstructorOptions>,
 ): BrowserWindowConstructorOptions {
   return {
     ...browserWindowOptions,
@@ -40,10 +38,7 @@ export function getMainWindowOptions(
  *
  * @returns {BrowserWindow}
  */
-export function createWindow(
-  options: BrowserWindowConstructorOptions,
-  entryFilePath: string
-): BrowserWindow {
+export function createWindow(options: BrowserWindowConstructorOptions, entryFilePath: string): BrowserWindow {
   let mainWindow: BrowserWindow | null;
   mainWindow = new BrowserWindow(options);
 
@@ -97,15 +92,10 @@ function loadEntryPoint(window: BrowserWindow, entryFilePath: string) {
  */
 export async function getOrCreateMainWindow(
   entryFilePath: string,
-  options: BrowserWindowConstructorOptions = getMainWindowOptions()
+  options: BrowserWindowConstructorOptions = getMainWindowOptions(),
 ): Promise<Electron.BrowserWindow> {
   await mainIsReadyPromise;
   return (
-    BrowserWindow.getFocusedWindow()
-    || browserWindows[0]
-    || createWindow(
-      getMainWindowOptions(options),
-      entryFilePath
-    )
+    BrowserWindow.getFocusedWindow() || browserWindows[0] || createWindow(getMainWindowOptions(options), entryFilePath)
   );
 }

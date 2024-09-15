@@ -1,11 +1,6 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
-import {
-  contextBridge,
-  ipcRenderer,
-  IpcRendererEvent,
-  webUtils
-} from 'electron';
+import { contextBridge, ipcRenderer, IpcRendererEvent, webUtils } from 'electron';
 import { IpcEvent } from './enum/ipc-event';
 import { ColorMode } from './types/theme';
 
@@ -40,29 +35,18 @@ export async function setupGlobals() {
     cancelConversion() {
       return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION);
     },
-    convertVideo(
-      id: string,
-      filePath: string,
-      outputFormat: string,
-      saveDirectory: string
-    ) {
-      return ipcRenderer.invoke(
-        IpcEvent.CONVERT_VIDEO,
-        { id, filePath, outputFormat, saveDirectory }
-      );
+    convertVideo(id: string, filePath: string, outputFormat: string, saveDirectory: string) {
+      return ipcRenderer.invoke(IpcEvent.CONVERT_VIDEO, { id, filePath, outputFormat, saveDirectory });
     },
     send(channel: string, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);
     },
-    on(channel: string, callback: (
-      event: IpcRendererEvent,
-      ...args: unknown[]) => void
-    ) {
+    on(channel: string, callback: (event: IpcRendererEvent, ...args: unknown[]) => void) {
       ipcRenderer.on(channel, callback);
     },
     removeAllListeners(channel: string) {
       ipcRenderer.removeAllListeners(channel);
-    }
+    },
   });
 }
 

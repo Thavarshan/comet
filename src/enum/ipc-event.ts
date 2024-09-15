@@ -33,4 +33,3 @@ export const ipcMainEvents = [
   IpcEvent.NATIVE_THEME_UPDATED,
   IpcEvent.GET_SYSTEM_THEME,
 ];
-

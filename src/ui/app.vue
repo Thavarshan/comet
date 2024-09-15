@@ -14,10 +14,7 @@ const audioStore = useAudioConverterStore();
 const useImageConverterStore = createConverterStore();
 const imageStore = useImageConverterStore();
 
-const {
-  currentLocale,
-  setLocale,
-} = useLanguagePreferences();
+const { currentLocale, setLocale } = useLanguagePreferences();
 
 onMounted(async () => {
   await videoStore.init();

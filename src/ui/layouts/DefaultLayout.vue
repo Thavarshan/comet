@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/ui/components/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/tabs';
 import { Toaster } from '@/ui/components/toast';
 import { Titlebar } from '@/ui/components/titlebar';
 import LanguageSwitcher from '@/ui/blocks/LanguageSwitcher.vue';

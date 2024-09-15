@@ -4,7 +4,7 @@ import { mocked } from 'jest-mock';
 
 global.confirm = jest.fn();
 
-if (!process.env.FIDDLE_VERBOSE_TESTS) {
+if (!process.env.COMET_VERBOSE_TESTS) {
   jest.spyOn(global.console, 'error').mockImplementation(() => jest.fn());
   jest.spyOn(global.console, 'info').mockImplementation(() => jest.fn());
   jest.spyOn(global.console, 'log').mockImplementation(() => jest.fn());

@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { app, ipcMain, nativeTheme } from 'electron';
 import {
   onReady,
@@ -12,6 +16,10 @@ import {
 import { IpcEvent } from '../../src/enum/ipc-event';
 import { isDevMode, getOrCreateMainWindow, configureIpcHandlers, mainIsReady, shouldQuit } from '../../src/lib';
 import { overridePlatform } from '../utils';
+import { mocked } from 'jest-mock';
+import * as path from 'node:path';
+
+jest.mock('node:path');
 
 jest.mock('electron', () => ({
   app: {
@@ -48,6 +56,7 @@ jest.mock('../../src/lib', () => ({
 
 describe('main.ts', () => {
   beforeEach(() => {
+    mocked(path.join).mockReturnValue('/fake/path');
     jest.clearAllMocks();
   });
 

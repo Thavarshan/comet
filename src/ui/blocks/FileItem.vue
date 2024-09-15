@@ -1,17 +1,8 @@
 <script setup lang="ts">
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/ui/components/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/ui/components/tooltip';
 import { Progress } from '@/ui/components/progress';
 import { Button } from '@/ui/components/button';
-import {
-  X,
-  Ban,
-  BadgeCheck
-} from 'lucide-vue-next';
+import { X, Ban, BadgeCheck } from 'lucide-vue-next';
 import { Item } from '@/types/item';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -75,9 +66,13 @@ function extractFileName(filename: string): string {
           <span>&middot;</span>
           <p class="text-xs text-muted-foreground">
             {{ t('item.from') }}
-            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.name.split('.').pop() }}</span>
+            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{
+              item.name.split('.').pop()
+            }}</span>
             {{ t('item.to') }}
-            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{ item.converted ? item.convertTo : convertTo }}</span>
+            <span class="text-foreground mx-1 px-1 py-px rounded font-medium bg-muted">{{
+              item.converted ? item.convertTo : convertTo
+            }}</span>
           </p>
         </div>
         <div class="mt-1.5 flex items-center gap-x-2">
@@ -90,7 +85,14 @@ function extractFileName(filename: string): string {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Button type="button" variant="secondary" size="icon" class="text-foreground" @click="cancelItem(index)" :disabled="!item.converting">
+            <Button
+              type="button"
+              variant="secondary"
+              size="icon"
+              class="text-foreground"
+              @click="cancelItem(index)"
+              :disabled="!item.converting"
+            >
               <Ban class="size-4" />
             </Button>
           </TooltipTrigger>
@@ -102,7 +104,14 @@ function extractFileName(filename: string): string {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Button type="button" variant="secondary" size="icon" class="text-destructive" @click="removeItem(index)" :disabled="item.converting">
+            <Button
+              type="button"
+              variant="secondary"
+              size="icon"
+              class="text-destructive"
+              @click="removeItem(index)"
+              :disabled="item.converting"
+            >
               <X class="size-4" />
             </Button>
           </TooltipTrigger>

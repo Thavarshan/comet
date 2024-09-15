@@ -1,27 +1,25 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  IpcMainEvent,
-  nativeTheme,
-  systemPreferences,
-} from 'electron';
-import {
-  shouldQuit,
-  isDevMode,
-  setupDevTools,
-  getOrCreateMainWindow,
-  configureIpcHandlers,
-  mainIsReady,
-} from './lib';
+import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme, systemPreferences } from 'electron';
+import { shouldQuit, isDevMode, setupDevTools, getOrCreateMainWindow, configureIpcHandlers, mainIsReady } from './lib';
 import path from 'node:path';
 import { IpcEvent } from './enum/ipc-event';
 
+/**
+ * Get the entry file path for the main window.
+ */
+function getEntryFilePath() {
+  const fakePath = '/fake/path';
+  const isJest = !!process.env.JEST;
+  const mainWindowViteNameExists = typeof MAIN_WINDOW_VITE_NAME !== 'undefined';
+
+  if (!mainWindowViteNameExists) {
+    return fakePath as string;
+  }
+
+  return isJest ? fakePath : (path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`) as string);
+}
+
 // Path to the entry HTML file for the main window
-const entryFilePath = !process.env.JEST ? '/fake/path' : path.join(
-  __dirname,
-  `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`
-);
+const entryFilePath = getEntryFilePath();
 
 /**
  * Handle the app's "ready" event. This is essentially
@@ -68,10 +66,7 @@ export function setupTitleBarClickMac() {
   }
 
   ipcMain.on(IpcEvent.CLICK_TITLEBAR_MAC, (event: IpcMainEvent) => {
-    const doubleClickAction = systemPreferences.getUserDefault(
-      'AppleActionOnDoubleClick',
-      'string',
-    );
+    const doubleClickAction = systemPreferences.getUserDefault('AppleActionOnDoubleClick', 'string');
     const win = BrowserWindow.fromWebContents(event.sender);
     if (win) {
       if (doubleClickAction === 'Minimize') {
@@ -112,7 +107,7 @@ export function setupNativeTheme() {
   if (nativeTheme) {
     nativeTheme.on('updated', () => {
       const currentTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
-      BrowserWindow.getAllWindows().forEach(win => {
+      BrowserWindow.getAllWindows().forEach((win) => {
         win.webContents.send(IpcEvent.NATIVE_THEME_UPDATED, currentTheme);
       });
     });
@@ -174,7 +169,6 @@ export function main() {
       await getOrCreateMainWindow(entryFilePath); // Create the main window if there are no open windows
     });
   });
-
 }
 
 // Run the main method

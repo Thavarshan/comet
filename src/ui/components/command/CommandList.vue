@@ -5,7 +5,7 @@ import { ComboboxContent, useForwardPropsEmits } from 'radix-vue';
 import { cn } from '@/ui/utils';
 import { ScrollArea } from '@/ui/components/scroll-area';
 
-const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class']; }>(), {
+const props = withDefaults(defineProps<ComboboxContentProps & { class?: HTMLAttributes['class'] }>(), {
   dismissable: false,
 });
 const emits = defineEmits<ComboboxContentEmits>();
