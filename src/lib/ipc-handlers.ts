@@ -24,7 +24,7 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
   });
 
   ipcMain.handle(
-    IpcEvent.CONVERT_VIDEO,
+    IpcEvent.CONVERT_MEDIA,
     async (
       event: IpcMainInvokeEvent,
       {

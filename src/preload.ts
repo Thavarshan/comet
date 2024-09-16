@@ -36,7 +36,7 @@ export async function setupGlobals() {
       return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION);
     },
     convertVideo(id: string, filePath: string, outputFormat: string, saveDirectory: string) {
-      return ipcRenderer.invoke(IpcEvent.CONVERT_VIDEO, { id, filePath, outputFormat, saveDirectory });
+      return ipcRenderer.invoke(IpcEvent.CONVERT_MEDIA, { id, filePath, outputFormat, saveDirectory });
     },
     send(channel: string, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);

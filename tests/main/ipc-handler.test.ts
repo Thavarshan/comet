@@ -76,7 +76,7 @@ describe('configureIpcHandlers', () => {
     });
   });
 
-  test('should handle CONVERT_VIDEO', async () => {
+  test('should handle CONVERT_MEDIA', async () => {
     const mockHandleConversion = jest.mocked(handleConversion);
     mockHandleConversion.mockImplementation(
       (_event, _id, _filePath, _outputFormat, _saveDirectory, resolve) => {
@@ -87,7 +87,7 @@ describe('configureIpcHandlers', () => {
     configureIpcHandlers(ipcMain);
 
     const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.CONVERT_VIDEO
+      ([event]) => event === IpcEvent.CONVERT_MEDIA
     )[1];
 
     const result = await handler(

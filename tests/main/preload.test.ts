@@ -101,13 +101,13 @@ describe('setupGlobals', () => {
     expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CANCEL_ITEM_CONVERSION, 1);
   });
 
-  test('should invoke CONVERT_VIDEO event with correct arguments', async () => {
+  test('should invoke CONVERT_MEDIA event with correct arguments', async () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
     await electron.convertVideo('1', '/mock/path/video.mp4', 'mp4', '/mock/save');
 
-    expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CONVERT_VIDEO, {
+    expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CONVERT_MEDIA, {
       id: '1',
       filePath: '/mock/path/video.mp4',
       outputFormat: 'mp4',

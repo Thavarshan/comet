@@ -1,7 +1,7 @@
 export enum IpcEvent {
   CANCEL_CONVERSION = 'cancel-conversion',
   CANCEL_ITEM_CONVERSION = 'cancel-item-conversion',
-  CONVERT_VIDEO = 'convert-video',
+  CONVERT_MEDIA = 'convert-media',
   DIALOG_SELECT_DIRECTORY = 'dialog:select-directory',
   GET_DESKTOP_PATH = 'get-desktop-path',
   SHOW_WINDOW = 'show-window',
@@ -19,7 +19,7 @@ export enum IpcEvent {
 export const ipcMainEvents = [
   IpcEvent.CANCEL_CONVERSION,
   IpcEvent.CANCEL_ITEM_CONVERSION,
-  IpcEvent.CONVERT_VIDEO,
+  IpcEvent.CONVERT_MEDIA,
   IpcEvent.DIALOG_SELECT_DIRECTORY,
   IpcEvent.GET_DESKTOP_PATH,
   IpcEvent.SHOW_WINDOW,
