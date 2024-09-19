@@ -5,12 +5,11 @@ import { Combobox } from '@/ui/components/combobox';
 import { ScrollArea } from '@/ui/components/scroll-area';
 import { Trash2, Ban, RefreshCw, FileAudio } from 'lucide-vue-next';
 import { AUDIO_CONVERSION_FORMATS as audioFormats } from '@/consts/formats';
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { AudioFormat } from '@/enum/audio-format';
 import { useI18n } from 'vue-i18n';
 
-const defaultSaveDirectory = ref<string | undefined>(undefined);
 const defaultFormat = AudioFormat.MP3;
 
 const { t } = useI18n();
@@ -20,8 +19,9 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
-  props.store.setFormat(defaultFormat);
-  defaultSaveDirectory.value = await props.store.getInitialSaveDirectory();
+  if (!props.store.convertTo) {
+    props.store.setFormat(defaultFormat);
+  }
 });
 </script>
 
@@ -35,8 +35,8 @@ onMounted(async () => {
     <Options>
       <template #left>
         <SaveDirectory
-          v-if="defaultSaveDirectory"
-          :defaultSaveDirectory="defaultSaveDirectory"
+          v-if="store.saveDirectory"
+          :saveDirectory="store.saveDirectory"
           @directory-selected="store.handleSaveDirectoryUpdate"
         />
       </template>

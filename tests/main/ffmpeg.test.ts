@@ -8,9 +8,10 @@ import {
   handleConversionCancellation,
   handleItemConversionCancellation,
   setFfmpegProcess
-} from '../../src/lib/ffmpeg';
+} from '../../src/lib/conversion/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
 import path from 'node:path';
+import { VideoFormat } from '@/enum/video-format';
 
 jest.mock('fluent-ffmpeg');
 jest.mock('node:path');
@@ -63,7 +64,7 @@ describe('ffmpeg utilities', () => {
         mockEvent,
         '1',
         '/mock/path/video.mp4',
-        'mp4',
+        VideoFormat.MP4,
         '/mock/save',
         (outputPath) => {
           expect(outputPath).toBe('/mock/save/video.mp4');
@@ -88,7 +89,7 @@ describe('ffmpeg utilities', () => {
         mockEvent,
         '1',
         '/mock/path/video.mp4',
-        'mp4',
+        VideoFormat.MP4,
         '/mock/save',
         () => {
           done(new Error('Expected to fail'));

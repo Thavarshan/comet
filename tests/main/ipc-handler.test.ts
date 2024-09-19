@@ -2,15 +2,15 @@
  * @jest-environment node
  */
 
-import { configureIpcHandlers } from '../../src/lib/ipc-handlers';
+import { configureIpcHandlers } from '../../src/lib/system/ipc-handlers';
 import { IpcEvent } from '../../src/enum/ipc-event';
 import { dialog, ipcMain, IpcMainInvokeEvent } from 'electron';
-import { getDesktopPath } from '../../src/lib/desktop-path';
+import { getDesktopPath } from '../../src/lib/utils/desktop-path';
 import {
   handleConversion,
   handleConversionCancellation,
   handleItemConversionCancellation
-} from '../../src/lib/ffmpeg';
+} from '../../src/lib/conversion/ffmpeg';
 
 jest.mock('../../src/lib/desktop-path');
 jest.mock('../../src/lib/ffmpeg');

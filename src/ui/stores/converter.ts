@@ -17,9 +17,10 @@ export const createConverterStore = () => {
   return defineStore(
     uniqueStoreKey,
     () => {
+      const isInitialised = ref(false);
       const { toast } = useToast();
       const items = reactive<Item[]>([]);
-      const saveDirectory = ref<string | undefined>();
+      const saveDirectory = ref<string | undefined>(undefined);
       const convertTo = ref<string | undefined>(undefined);
       const conversionCancelled = ref(false);
       const conversionInProgress = ref(false);
@@ -29,6 +30,8 @@ export const createConverterStore = () => {
        */
       async function init() {
         let timeout: NodeJS.Timeout;
+
+        saveDirectory.value = await getInitialSaveDirectory();
 
         // Listen for conversion progress events
         window.electron.on('conversion-progress', (_event, { id, progress }) => {
@@ -54,6 +57,8 @@ export const createConverterStore = () => {
             });
           }
         });
+
+        isInitialised.value = true;
       }
 
       /**
@@ -66,10 +71,8 @@ export const createConverterStore = () => {
 
       /**
        * Gets the initial save directory.
-       *
-       * @returns {Promise<string>} The initial save directory.
        */
-      async function getInitialSaveDirectory() {
+      async function getInitialSaveDirectory(): Promise<string> {
         return await window.electron.getDesktopPath();
       }
 
@@ -258,6 +261,7 @@ export const createConverterStore = () => {
 
       return {
         items,
+        isInitialised,
         saveDirectory,
         convertTo,
         conversionInProgress,

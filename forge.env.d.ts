@@ -29,7 +29,7 @@ declare global {
       platform: NodeJS.Platform;
       selectDirectory: () => Promise<string | undefined>;
       getSystemTheme: () => ColorMode;
-      getDesktopPath: () => string;
+      getDesktopPath: () => Promise<string>;
       getFilePath: (file: File) => string;
       cancelConversion: () => Promise<unknown>;
       cancelItemConversion: (id: number | string) => Promise<unknown>;

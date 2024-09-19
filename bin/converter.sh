@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This is a legacy script that converts all .m4v files in a directory to .mp4 files using ffmpeg.
+
 # Directory containing the .m4v files
 DIRECTORY="./input"
 

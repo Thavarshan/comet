@@ -1,7 +1,8 @@
 import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme, systemPreferences } from 'electron';
 import { shouldQuit, isDevMode, setupDevTools, getOrCreateMainWindow, configureIpcHandlers, mainIsReady } from './lib';
 import path from 'node:path';
-import { IpcEvent } from './enum/ipc-event';
+import { IpcEvent } from '@/enum/ipc-event';
+import { APP_NAME } from '@/consts/app';
 
 /**
  * Get the entry file path for the main window.
@@ -159,7 +160,7 @@ export function main() {
   }
 
   // Set the app's name
-  app.name = 'Comet';
+  app.name = APP_NAME;
 
   // Launch
   app.whenReady().then(onReady);

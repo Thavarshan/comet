@@ -3,8 +3,8 @@
  */
 
 import { mocked } from 'jest-mock';
-import { setupDevTools } from '../../src/lib/devtools';
-import { isDevMode } from '../../src/lib/devmode';
+import { setupDevTools } from '../../src/lib/utils/devtools';
+import { isDevMode } from '../../src/lib/utils/devmode';
 
 jest.mock('../../src/lib/devmode');
 

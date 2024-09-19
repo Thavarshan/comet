@@ -2,6 +2,9 @@ import { ref, computed, watch } from 'vue';
 import { IpcEvent } from '@/enum/ipc-event';
 import { ColorMode } from '@/types/theme';
 
+/**
+ * Colour mode composable to handle the colour mode of the application.
+ */
 export function useColourMode() {
   const storedMode = localStorage.getItem('color-mode') as ColorMode | null;
   const mode = ref<ColorMode>(storedMode || 'system');
@@ -18,7 +21,6 @@ export function useColourMode() {
   };
 
   const toggleMode = () => {
-    // Toggle between light and dark if in 'system' mode
     if (mode.value === 'system') {
       mode.value = getSystemTheme() === 'dark' ? 'light' : 'dark';
     } else {
@@ -31,7 +33,6 @@ export function useColourMode() {
 
   const handleColorModeChange = () => {
     if (mode.value === 'system') {
-      // Listen for system theme changes and apply the correct theme
       window.electron.on(IpcEvent.NATIVE_THEME_UPDATED, (_event, newTheme: ColorMode) => {
         updateHtmlAttributes(newTheme);
       });

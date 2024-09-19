@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import { shouldQuit } from '../../src/lib/squirrel';
+import { shouldQuit } from '../../src/lib/system/squirrel';
 
 jest.mock('electron-squirrel-startup', () => ({ mock: true }));
 

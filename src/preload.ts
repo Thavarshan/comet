@@ -4,16 +4,14 @@ import { contextBridge, ipcRenderer, IpcRendererEvent, webUtils } from 'electron
 import { IpcEvent } from './enum/ipc-event';
 import { ColorMode } from './types/theme';
 
-async function preload() {
+async function preload(): Promise<void> {
   await setupGlobals();
 }
 
 /**
  * Expose Electron API in the main world
- *
- * @returns {Promise<void>}
  */
-export async function setupGlobals() {
+export async function setupGlobals(): Promise<void> {
   contextBridge.exposeInMainWorld('electron', {
     arch: process.arch,
     platform: process.platform,

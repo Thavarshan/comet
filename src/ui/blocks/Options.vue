@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div :class="cn('flex h-12 items-center justify-between space-x-1', props.class)">
+  <div :class="cn('flex items-center justify-between bg-muted rounded-lg', props.class)">
     <slot name="left" />
     <slot name="right" />
   </div>

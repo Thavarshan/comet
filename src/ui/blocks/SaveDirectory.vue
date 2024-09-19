@@ -6,14 +6,14 @@ import { FolderOpenDot } from 'lucide-vue-next';
 const emit = defineEmits(['directory-selected']);
 
 const props = defineProps<{
-  defaultSaveDirectory?: string;
+  saveDirectory?: string;
 }>();
 
-const selectedDirectory = ref<string | undefined>(props.defaultSaveDirectory);
+const selectedDirectory = ref<string | undefined>(undefined);
 
 onMounted(() => {
-  if (selectedDirectory.value) {
-    emit('directory-selected', selectedDirectory.value);
+  if (!selectedDirectory.value) {
+    selectedDirectory.value = props.saveDirectory;
   }
 });
 
@@ -27,7 +27,11 @@ async function handleDirectorySelection() {
   emit('directory-selected', selectedDirectory.value);
 }
 
-function formatPath(path: string) {
+function formatPath(path?: string) {
+  if (!path) {
+    return;
+  }
+
   let formatted = path?.replace(/^\//, '').replace(/\//g, ' → ');
 
   if (formatted.length > 40) {
@@ -39,7 +43,7 @@ function formatPath(path: string) {
 </script>
 
 <template>
-  <div class="flex items-center rounded-lg bg-muted gap-x-3 p-1 pr-3">
+  <div class="flex items-center rounded-lg bg-muted gap-x-3 pl-1 pr-3">
     <Button type="button" variant="outline" @click="handleDirectorySelection" size="icon">
       <FolderOpenDot class="size-4" />
     </Button>

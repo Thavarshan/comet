@@ -1,19 +1,15 @@
 import { dialog, IpcMain, IpcMainInvokeEvent } from 'electron';
-import { getDesktopPath } from './desktop-path';
-import { IpcEvent } from '../enum/ipc-event';
-import { handleConversion, handleConversionCancellation, handleItemConversionCancellation } from './ffmpeg';
+import { getDesktopPath } from '../utils/desktop-path';
+import { IpcEvent } from '../../enum/ipc-event';
+import { handleConversion, handleConversionCancellation, handleItemConversionCancellation } from '../conversion/ffmpeg';
+import { VideoFormat } from '../../enum/video-format';
+import { AudioFormat } from '../../enum/audio-format';
 
 /**
  * Configure the IPC handlers
- *
- * @param {IpcMain} ipcMain
- *
- * @returns {void}
  */
 export function configureIpcHandlers(ipcMain: IpcMain): void {
-  ipcMain.handle(IpcEvent.GET_DESKTOP_PATH, () => {
-    return getDesktopPath();
-  });
+  ipcMain.handle(IpcEvent.GET_DESKTOP_PATH, () => getDesktopPath());
 
   ipcMain.handle(IpcEvent.DIALOG_SELECT_DIRECTORY, async () => {
     const result = await dialog.showOpenDialog({
@@ -35,7 +31,7 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
       }: {
         id: string;
         filePath: string;
-        outputFormat: string;
+        outputFormat: VideoFormat | AudioFormat;
         saveDirectory: string;
       },
     ) => {

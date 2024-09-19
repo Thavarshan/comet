@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import { isDevMode } from '../../src/lib/devmode';
+import { isDevMode } from '../../src/lib/utils/devmode';
 
 describe('devMode', () => {
   const old = (process as any).defaultApp; // for tsconfig error

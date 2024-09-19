@@ -2,8 +2,11 @@
 import Layout from '@/ui/layouts/DefaultLayout.vue';
 import { VideoConverter, AudioConverter, ImageConverter } from '@/ui/blocks';
 import { createConverterStore } from '@/ui/stores';
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import { useLanguagePreferences } from '@/ui/composables/language-mode';
+import { APP_NAME } from '@/consts/app';
+
+const isInitialised = ref(false);
 
 const useVideoConverterStore = createConverterStore();
 const videoStore = useVideoConverterStore();
@@ -22,6 +25,8 @@ onMounted(async () => {
   await imageStore.init();
 
   setLocale(currentLocale.value);
+
+  isInitialised.value = true;
 });
 
 onBeforeUnmount(() => {
@@ -32,15 +37,15 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Layout title="Comet" v-cloak>
+  <Layout :title="APP_NAME" :isInitialised="isInitialised" v-cloak>
     <template #video>
-      <VideoConverter :store="videoStore" />
+      <VideoConverter v-if="isInitialised" :store="videoStore" />
     </template>
     <template #audio>
-      <AudioConverter :store="audioStore" />
+      <AudioConverter v-if="isInitialised" :store="audioStore" />
     </template>
     <template #image>
-      <ImageConverter :store="imageStore" />
+      <ImageConverter v-if="isInitialised" :store="imageStore" />
     </template>
   </Layout>
 </template>

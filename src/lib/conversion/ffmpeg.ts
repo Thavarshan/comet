@@ -2,6 +2,8 @@ import ffmpeg, { setFfmpegPath, setFfprobePath, ffprobe as ffmpegFfprobe } from 
 import ffmpegStatic from 'ffmpeg-static';
 import { path as ffprobePath } from 'ffprobe-static';
 import path from 'node:path';
+import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
 
 const ffmpegProcesses = new Map<string, ffmpeg.FfmpegCommand>();
 
@@ -41,13 +43,13 @@ export function parseTimemark(timemark: string): number {
 }
 
 /**
- * Handle the video conversion process.
+ * Handle the video/audio conversion process.
  */
 export function handleConversion(
   event: Electron.IpcMainInvokeEvent,
   id: string,
   filePath: string,
-  outputFormat: string,
+  outputFormat: VideoFormat | AudioFormat,
   saveDirectory: string,
   resolve: (value: string) => void,
   reject: (reason: unknown) => void,

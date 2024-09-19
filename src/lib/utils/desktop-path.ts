@@ -4,8 +4,6 @@ import path from 'node:path';
 
 /**
  * Get the path to the desktop directory
- *
- * @returns {string}
  */
 export function getDesktopPath(): string {
   const homeDir = path.resolve(os.homedir());
