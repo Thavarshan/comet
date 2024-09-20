@@ -6,7 +6,7 @@ import { Adapter } from '@/types/adapter';
 export type JimpType = typeof Jimp;
 
 export class JimpAdapter implements Adapter {
-  private jimpProcesses = new Map<string, JimpType>();
+  protected jimpProcesses = new Map<string, JimpType>();
 
   /**
    * Converts the file at the given path to the specified output format.
@@ -21,7 +21,6 @@ export class JimpAdapter implements Adapter {
     const outputFileName = `${path.basename(filePath, path.extname(filePath))}.${outputFormat}`;
     const outputPath = path.join(saveDirectory, outputFileName);
 
-    // Ensure save directory exists
     await fs.mkdir(saveDirectory, { recursive: true });
 
     const image = await Jimp.read(filePath);

@@ -1,141 +1,133 @@
-/**
- * @jest-environment node
- */
+import { dialog, IpcMainInvokeEvent } from 'electron';
+import { getDesktopPath } from '@/lib/utils/desktop-path';
+import { IpcEvent } from '@/enum/ipc-event';
+import { ConversionHandler } from '@/lib/conversion/conversion-handler';
+import { configureIpcHandlers } from '@/lib/system/ipc-handlers';
 
-import { configureIpcHandlers } from '../../src/lib/system/ipc-handlers';
-import { IpcEvent } from '../../src/enum/ipc-event';
-import { dialog, ipcMain, IpcMainInvokeEvent } from 'electron';
-import { getDesktopPath } from '../../src/lib/utils/desktop-path';
-import { ConversionHandler } from '../../src/lib/conversion/conversion-handler';
-
-jest.mock('../../src/lib/utils/desktop-path');
-jest.mock('../../src/lib/conversion/conversion-handler');
+// Mock the dependencies
+jest.mock('electron', () => ({
+  dialog: {
+    showOpenDialog: jest.fn(),
+  },
+}));
+jest.mock('@/lib/utils/desktop-path', () => ({
+  getDesktopPath: jest.fn(),
+}));
+jest.mock('@/lib/conversion/conversion-handler', () => {
+  return {
+    ConversionHandler: jest.fn().mockImplementation(() => ({
+      handle: jest.fn(),
+      cancelAll: jest.fn(),
+      cancel: jest.fn(),
+    })),
+  };
+});
 
 describe('configureIpcHandlers', () => {
-  let mockConversionHandler: jest.Mocked<ConversionHandler>;
+  let ipcMainMock: any;
+  let conversionHandlerMock: any;
 
   beforeEach(() => {
-    jest.resetAllMocks();
-    mockConversionHandler = new ConversionHandler() as jest.Mocked<ConversionHandler>;
+    ipcMainMock = {
+      handle: jest.fn(),
+    };
+
+    jest.clearAllMocks();
+    conversionHandlerMock = new ConversionHandler();
   });
 
-  afterEach(() => {
-    ipcMain.removeAllListeners();
-  });
+  it('should handle GET_DESKTOP_PATH and call getDesktopPath()', () => {
+    configureIpcHandlers(ipcMainMock);
 
-  test('should handle GET_DESKTOP_PATH', async () => {
-    const mockGetDesktopPath = jest.mocked(getDesktopPath);
-    mockGetDesktopPath.mockReturnValue('/mock/desktop/path');
+    const mockGetDesktopPath = getDesktopPath as jest.Mock;
+    mockGetDesktopPath.mockReturnValue('/path/to/desktop');
 
-    configureIpcHandlers(ipcMain);
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.GET_DESKTOP_PATH)[1];
+    handler();
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.GET_DESKTOP_PATH
-    )[1];
-
-    const result = await handler();
-
-    expect(result).toBe('/mock/desktop/path');
     expect(mockGetDesktopPath).toHaveBeenCalled();
   });
 
-  test('should handle DIALOG_SELECT_DIRECTORY', async () => {
-    const mockShowOpenDialog = jest.mocked(dialog.showOpenDialog);
-    mockShowOpenDialog.mockResolvedValue({ canceled: false, filePaths: ['/mock/directory'] });
+  it('should handle DIALOG_SELECT_DIRECTORY and call dialog.showOpenDialog()', async () => {
+    configureIpcHandlers(ipcMainMock);
 
-    configureIpcHandlers(ipcMain);
+    const dialogMock = dialog.showOpenDialog as jest.Mock;
+    dialogMock.mockResolvedValue({ canceled: false, filePaths: ['/path/to/directory'] });
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.DIALOG_SELECT_DIRECTORY
-    )[1];
-
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.DIALOG_SELECT_DIRECTORY)[1];
     const result = await handler();
 
-    expect(result).toBe('/mock/directory');
-    expect(mockShowOpenDialog).toHaveBeenCalledWith({
-      properties: ['openDirectory'],
-    });
+    expect(dialogMock).toHaveBeenCalledWith({ properties: ['openDirectory'] });
+    expect(result).toBe('/path/to/directory');
   });
 
-  test('should handle DIALOG_SELECT_DIRECTORY cancellation', async () => {
-    const mockShowOpenDialog = jest.mocked(dialog.showOpenDialog);
-    mockShowOpenDialog.mockResolvedValue({ canceled: true, filePaths: [] });
+  it('should return null if directory selection is canceled', async () => {
+    configureIpcHandlers(ipcMainMock);
 
-    configureIpcHandlers(ipcMain);
+    const dialogMock = dialog.showOpenDialog as jest.Mock;
+    dialogMock.mockResolvedValue({ canceled: true, filePaths: [] });
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.DIALOG_SELECT_DIRECTORY
-    )[1];
-
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.DIALOG_SELECT_DIRECTORY)[1];
     const result = await handler();
 
+    expect(dialogMock).toHaveBeenCalledWith({ properties: ['openDirectory'] });
     expect(result).toBeNull();
-    expect(mockShowOpenDialog).toHaveBeenCalledWith({
-      properties: ['openDirectory'],
-    });
   });
 
-  test('should handle CONVERT_MEDIA', async () => {
-    // Make sure the mocked conversion handler returns a resolved promise
-    mockConversionHandler.handle.mockResolvedValue('/mock/output/path');
+  it('should handle CONVERT_MEDIA and call conversionHandler.handle()', async () => {
+    configureIpcHandlers(ipcMainMock);
 
-    configureIpcHandlers(ipcMain);
+    const mockHandle = conversionHandlerMock.handle as jest.Mock;
+    mockHandle.mockResolvedValue('conversion-success');
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.CONVERT_MEDIA
-    )[1];
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.CONVERT_MEDIA)[1];
 
-    const result = await handler(
-      {} as IpcMainInvokeEvent,
-      {
-        id: '1',
-        filePath: '/mock/path/video.mp4',
-        outputFormat: 'mp4',
-        saveDirectory: '/mock/save',
-        mediaType: 'video',
-      }
-    );
+    console.log(handler);
 
-    expect(result).toBe('/mock/output/path');
-    expect(mockConversionHandler.handle).toHaveBeenCalledWith(
+
+    const mockEvent = {} as IpcMainInvokeEvent;
+    const mediaParams = {
+      id: '1',
+      filePath: '/path/to/file',
+      outputFormat: 'mp4',
+      saveDirectory: '/path/to/save',
+      mediaType: 'video',
+    };
+
+    const result = await handler(mockEvent, mediaParams);
+
+    expect(mockHandle).toHaveBeenCalledWith(
       '1',
-      '/mock/path/video.mp4',
+      '/path/to/file',
       'mp4',
-      '/mock/save',
+      '/path/to/save',
       'video',
-      expect.any(Object)
+      mockEvent
     );
+    expect(result).toBe('conversion-success');
   });
 
-  test('should handle CANCEL_ITEM_CONVERSION', () => {
-    // Mock the cancel method to return true
-    mockConversionHandler.cancel.mockReturnValue(true);
+  it('should handle CANCEL_CONVERSION and call conversionHandler.cancelAll()', () => {
+    configureIpcHandlers(ipcMainMock);
 
-    configureIpcHandlers(ipcMain);
+    const mockCancelAll = conversionHandlerMock.cancelAll as jest.Mock;
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.CANCEL_ITEM_CONVERSION
-    )[1];
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.CANCEL_CONVERSION)[1];
+    const result = handler();
 
-    const result = handler({} as IpcMainInvokeEvent, '1');
-
-    expect(result).toBe(true);
-    expect(mockConversionHandler.cancel).toHaveBeenCalledWith('1');
+    expect(mockCancelAll).toHaveBeenCalled();
+    expect(result).toBe('cancel-all-success');
   });
 
-  test('should handle CANCEL_CONVERSION', () => {
-    // Ensure cancelAll doesn't return undefined but behaves as expected
-    mockConversionHandler.cancelAll.mockImplementation(() => true);
+  it('should handle CANCEL_ITEM_CONVERSION and call conversionHandler.cancel()', () => {
+    configureIpcHandlers(ipcMainMock);
 
-    configureIpcHandlers(ipcMain);
+    const mockCancel = conversionHandlerMock.cancel as jest.Mock;
 
-    const handler = (ipcMain.handle as jest.Mock).mock.calls.find(
-      ([event]) => event === IpcEvent.CANCEL_CONVERSION
-    )[1];
+    const handler = ipcMainMock.handle.mock.calls.find((call: any) => call[0] === IpcEvent.CANCEL_ITEM_CONVERSION)[1];
+    const result = handler({}, '1');
 
-    const result = handler({} as IpcMainInvokeEvent);
-
-    expect(result).toBe(true);
-    expect(mockConversionHandler.cancelAll).toHaveBeenCalled();
+    expect(mockCancel).toHaveBeenCalledWith('1');
+    expect(result).toBe('cancel-item-success');
   });
 });

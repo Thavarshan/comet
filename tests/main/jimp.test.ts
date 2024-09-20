@@ -9,13 +9,11 @@ import fs from 'fs/promises';
 
 jest.mock('jimp');
 jest.mock('node:path');
-jest.mock('fs/promises');
 
 describe('JimpAdapter', () => {
   let jimpAdapter: JimpAdapter;
   const mockedJimp = jest.mocked(Jimp) as unknown as jest.Mocked<JimpType>;
   const mockedPath = jest.mocked(path) as any;
-  const mockedFs = jest.mocked(fs) as any;
   const mockEvent = {
     sender: {
       send: jest.fn(),
@@ -25,6 +23,12 @@ describe('JimpAdapter', () => {
   beforeEach(() => {
     jimpAdapter = new JimpAdapter();
     jest.resetAllMocks();
+    jest.spyOn(fs, 'mkdir').mockImplementation(async (dir, _options) => {
+      if (dir === '/mock/save') {
+        return Promise.resolve(undefined);
+      }
+      return Promise.reject(new Error(`ENOENT: no such file or directory, mkdir '${dir}'`));
+    });
   });
 
   describe('convert', () => {
@@ -37,7 +41,6 @@ describe('JimpAdapter', () => {
       mockedPath.basename.mockReturnValue('image');
       mockedPath.extname.mockReturnValue('.png');
       mockedPath.join.mockImplementation((...args: any) => args.join('/'));
-      mockedFs.mkdir.mockResolvedValue(undefined);
 
       const outputPath = await jimpAdapter.convert(
         '1',
@@ -48,14 +51,13 @@ describe('JimpAdapter', () => {
       );
 
       expect(outputPath).toBe('/mock/save/image.jpg');
-      expect(mockedFs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
+      expect(fs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
       expect(mockedJimp.read).toHaveBeenCalledWith('/mock/path/image.png');
       expect(mockImage.write).toHaveBeenCalledWith('/mock/save/image.jpg');
       expect(mockEvent.sender.send).toHaveBeenCalledWith('conversion-progress', { id: '1', progress: 100 });
     });
 
     test('should handle Jimp read error', async () => {
-      mockedFs.mkdir.mockResolvedValue(undefined);  // Mock directory creation as successful
       mockedJimp.read.mockRejectedValue(new Error('Jimp read error'));
 
       await expect(
@@ -68,7 +70,7 @@ describe('JimpAdapter', () => {
         )
       ).rejects.toThrow('Jimp read error');
 
-      expect(mockedFs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
+      expect(fs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
       expect(mockedJimp.read).toHaveBeenCalledWith('/mock/path/image.png');
       expect(mockEvent.sender.send).not.toHaveBeenCalled(); // No progress should be sent if there's an error
     });
@@ -79,7 +81,6 @@ describe('JimpAdapter', () => {
       };
 
       mockedJimp.read.mockResolvedValue(mockImage as any);
-      mockedFs.mkdir.mockResolvedValue(undefined);  // Mock directory creation as successful
       mockedPath.basename.mockReturnValue('image');
       mockedPath.extname.mockReturnValue('.png');
       mockedPath.join.mockImplementation((...args: any) => args.join('/'));
@@ -87,7 +88,7 @@ describe('JimpAdapter', () => {
       const outputPath = await jimpAdapter.convert('1', '/mock/path/image.png', 'jpg', '/mock/save', mockEvent);
 
       expect(outputPath).toBe('/mock/save/image.jpg');
-      expect(mockedFs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
+      expect(fs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
       expect(mockedJimp.read).toHaveBeenCalledWith('/mock/path/image.png');
     });
   });

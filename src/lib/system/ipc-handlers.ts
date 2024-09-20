@@ -42,17 +42,11 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
         mediaType: Media;
       },
     ) => {
-      return new Promise<string>((resolve, reject) => {
-        conversionHandler
-          .handle(id, filePath, outputFormat, saveDirectory, mediaType, event)
-          .then(resolve)
-          .catch(reject);
-      });
+      return await conversionHandler.handle(id, filePath, outputFormat, saveDirectory, mediaType, event);
     },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ipcMain.handle(IpcEvent.CANCEL_CONVERSION, (_event: IpcMainInvokeEvent) => {
+  ipcMain.handle(IpcEvent.CANCEL_CONVERSION, () => {
     return conversionHandler.cancelAll();
   });
 

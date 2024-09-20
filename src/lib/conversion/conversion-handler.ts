@@ -5,14 +5,15 @@ import { AudioFormat } from '@/enum/audio-format';
 import { ImageFormat } from '@/enum/image-format';
 import { FfmpegAdapter } from './ffmpeg';
 import { JimpAdapter } from './jimp';
+import { Adapter } from '@/types/adapter';
 
 export class ConversionHandler {
-  protected conversions: Map<string, FfmpegAdapter | JimpAdapter> = new Map();
+  protected conversions: Map<string, Adapter> = new Map();
 
   /**
    * Adds a new conversion to the handler.
    */
-  handle(
+  async handle(
     id: string,
     filePath: string,
     outputFormat: VideoFormat | AudioFormat | ImageFormat,
@@ -22,20 +23,19 @@ export class ConversionHandler {
   ): Promise<string> {
     const adapter = this.getAdapter(type);
 
-    return new Promise((resolve, reject) => {
-      this.conversions.set(id, adapter);
+    this.conversions.set(id, adapter);
 
-      adapter
-        .convert(id, filePath, outputFormat, saveDirectory, event)
-        .then(() => {
-          this.conversions.delete(id);
-          resolve(filePath);
-        })
-        .catch((error) => {
-          this.conversions.delete(id);
-          reject(error);
-        });
-    });
+    try {
+      const result = await adapter.convert(id, filePath, outputFormat, saveDirectory, event);
+
+      this.conversions.delete(id);
+
+      return result;
+    } catch (error) {
+      this.conversions.delete(id);
+
+      throw error;
+    }
   }
 
   /**
@@ -43,7 +43,12 @@ export class ConversionHandler {
    */
   cancel(id: string): boolean {
     const adapter = this.conversions.get(id);
-    return adapter ? adapter.cancel(id) : false;
+    if (adapter) {
+      const result = adapter.cancel(id);
+      this.conversions.delete(id);
+      return result;
+    }
+    return false;
   }
 
   /**

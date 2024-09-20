@@ -20,7 +20,7 @@ export class FfmpegAdapter implements Adapter {
   /**
    * Map of FFmpeg processes by ID.
    */
-  private ffmpegProcesses = new Map<string, ffmpeg.FfmpegCommand>();
+  protected ffmpegProcesses = new Map<string, ffmpeg.FfmpegCommand>();
 
   /**
    * Converts the file at the given path to the specified output format.

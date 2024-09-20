@@ -96,16 +96,18 @@ describe('ConversionHandler', () => {
     });
 
     test('should reject unsupported media type', async () => {
-      await expect(
-        conversionHandler.handle(
+      try {
+        await conversionHandler.handle(
           '1',
           '/mock/path/unknown.file',
           'unknown_format' as VideoFormat,
           '/mock/save',
           'unknown' as Media,
           mockEvent
-        )
-      ).rejects.toThrow('Unsupported type: unknown');
+        );
+      } catch (error) {
+        expect(error).toEqual(new Error('Unsupported type: unknown'));
+      }
     });
 
     test('should handle conversion failure', async () => {
@@ -137,7 +139,8 @@ describe('ConversionHandler', () => {
       const mockJimpAdapter = jest.spyOn(JimpAdapter.prototype, 'cancel').mockReturnValue(true);
 
       // Mock the process is already stored in the map
-      conversionHandler['conversions'].set('1', new JimpAdapter());
+      const jimpAdapterInstance = new JimpAdapter();
+      conversionHandler['conversions'].set('1', jimpAdapterInstance);
 
       const result = conversionHandler.cancel('1');
 

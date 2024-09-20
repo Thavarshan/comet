@@ -18,11 +18,11 @@ export function resetPlatform() {
 }
 
 export class FetchMock {
-  private readonly urls: Map<string, string> = new Map();
+  protected readonly urls: Map<string, string> = new Map();
   public add(url: string, content: string) {
     this.urls.set(url, content);
   }
-  constructor() {
+  constructor () {
     window.fetch = jest.fn().mockImplementation(async (url: string) => {
       const content = this.urls.get(url);
       if (!content) {

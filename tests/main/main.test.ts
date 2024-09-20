@@ -61,7 +61,7 @@ describe('main.ts', () => {
   });
 
   describe('onReady', () => {
-    it('should set up the application correctly', async () => {
+    test('should set up the application correctly', async () => {
       await onReady();
 
       expect(isDevMode).toHaveBeenCalled();
@@ -72,7 +72,7 @@ describe('main.ts', () => {
   });
 
   describe('setupShowWindow', () => {
-    it('should set up the IPC handler for showing the window', () => {
+    test('should set up the IPC handler for showing the window', () => {
       setupShowWindow();
 
       expect(ipcMain.on).toHaveBeenCalledWith(IpcEvent.SHOW_WINDOW, expect.any(Function));
@@ -80,14 +80,14 @@ describe('main.ts', () => {
   });
 
   describe('setupTitleBarClickMac', () => {
-    it('should set up the custom titlebar click handler on macOS', () => {
+    test('should set up the custom titlebar click handler on macOS', () => {
       overridePlatform('darwin');
       setupTitleBarClickMac();
 
       expect(ipcMain.on).toHaveBeenCalledWith(IpcEvent.CLICK_TITLEBAR_MAC, expect.any(Function));
     });
 
-    it('should not set up the custom titlebar click handler on non-macOS', () => {
+    test('should not set up the custom titlebar click handler on non-macOS', () => {
       overridePlatform('win32');
       setupTitleBarClickMac();
 
@@ -96,13 +96,13 @@ describe('main.ts', () => {
   });
 
   describe('setupNativeTheme', () => {
-    it('should set up the IPC handler for setting the native theme', () => {
+    test('should set up the IPC handler for setting the native theme', () => {
       setupNativeTheme();
 
       expect(ipcMain.on).toHaveBeenCalledWith(IpcEvent.SET_NATIVE_THEME, expect.any(Function));
     });
 
-    it('should notify renderer if the theme source is "system"', () => {
+    test('should notify renderer if the theme source is "system"', () => {
       setupNativeTheme();
 
       expect(nativeTheme.on).toHaveBeenCalledWith('updated', expect.any(Function));
@@ -110,7 +110,7 @@ describe('main.ts', () => {
   });
 
   describe('setupGetSystemTheme', () => {
-    it('should set up the IPC handler for getting the system theme', () => {
+    test('should set up the IPC handler for getting the system theme', () => {
       setupGetSystemTheme();
 
       expect(ipcMain.on).toHaveBeenCalledWith(IpcEvent.GET_SYSTEM_THEME, expect.any(Function));
@@ -118,7 +118,7 @@ describe('main.ts', () => {
   });
 
   describe('setupIsDevMode', () => {
-    it('should set up the IPC handler for checking if it is in dev mode', () => {
+    test('should set up the IPC handler for checking if it is in dev mode', () => {
       setupIsDevMode();
 
       expect(ipcMain.on).toHaveBeenCalledWith(IpcEvent.IS_DEV_MODE, expect.any(Function));
@@ -126,14 +126,14 @@ describe('main.ts', () => {
   });
 
   describe('onWindowsAllClosed', () => {
-    it('should quit the app on non-macOS platforms', () => {
+    test('should quit the app on non-macOS platforms', () => {
       overridePlatform('win32');
       onWindowsAllClosed();
 
       expect(app.quit).toHaveBeenCalled();
     });
 
-    it('should not quit the app on macOS', () => {
+    test('should not quit the app on macOS', () => {
       overridePlatform('darwin');
       onWindowsAllClosed();
 
@@ -146,14 +146,14 @@ describe('main.ts', () => {
       jest.clearAllMocks();
     });
 
-    it('should quit the app if shouldQuit returns true', () => {
+    test('should quit the app if shouldQuit returns true', () => {
       (shouldQuit as jest.Mock).mockReturnValueOnce(true);
       main();
 
       expect(app.quit).toHaveBeenCalled();
     });
 
-    it('should set up the app correctly if shouldQuit returns false', () => {
+    test('should set up the app correctly if shouldQuit returns false', () => {
       (shouldQuit as jest.Mock).mockReturnValueOnce(false);
       main();
 
