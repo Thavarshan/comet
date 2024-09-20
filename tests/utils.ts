@@ -22,7 +22,7 @@ export class FetchMock {
   public add(url: string, content: string) {
     this.urls.set(url, content);
   }
-  constructor () {
+  constructor() {
     window.fetch = jest.fn().mockImplementation(async (url: string) => {
       const content = this.urls.get(url);
       if (!content) {
