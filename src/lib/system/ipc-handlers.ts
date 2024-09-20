@@ -8,7 +8,7 @@ import { ImageFormat } from '@/enum/image-format';
 import { Media } from '@/types/media';
 
 // Create a single instance of ConversionHandler to handle all conversions
-const conversionHandler = new ConversionHandler();
+export const conversionHandler = new ConversionHandler();
 
 /**
  * Configure the IPC handlers
