@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme, systemPreferences } from 'electron';
-import { shouldQuit, isDevMode, setupDevTools, getOrCreateMainWindow, configureIpcHandlers, mainIsReady } from './lib';
+import { shouldQuit, isDevMode, getOrCreateMainWindow, configureIpcHandlers, mainIsReady } from './lib';
 import path from 'node:path';
 import { IpcEvent } from '@/enum/ipc-event';
 import { APP_NAME } from '@/consts/app';
@@ -32,7 +32,6 @@ export async function onReady() {
   }
 
   setupShowWindow();
-  setupDevTools();
   setupTitleBarClickMac();
   setupNativeTheme();
   setupGetSystemTheme();

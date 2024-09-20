@@ -2,13 +2,7 @@
  * @jest-environment node
  */
 
-import {
-  parseTimemark,
-  handleConversion,
-  handleConversionCancellation,
-  handleItemConversionCancellation,
-  setFfmpegProcess
-} from '../../src/lib/conversion/ffmpeg';
+import { FfmpegAdapter } from '../../src/lib/conversion/ffmpeg';
 import ffmpeg from 'fluent-ffmpeg';
 import path from 'node:path';
 import { VideoFormat } from '@/enum/video-format';
@@ -16,17 +10,24 @@ import { VideoFormat } from '@/enum/video-format';
 jest.mock('fluent-ffmpeg');
 jest.mock('node:path');
 
-describe('ffmpeg utilities', () => {
+describe('FfmpegAdapter', () => {
+  let ffmpegAdapter: FfmpegAdapter;
+
+  beforeEach(() => {
+    ffmpegAdapter = new FfmpegAdapter();
+    jest.resetAllMocks();
+  });
+
   describe('parseTimemark', () => {
     test('should parse timemark correctly', () => {
-      expect(parseTimemark('00:00:10')).toBe(10);
-      expect(parseTimemark('00:01:10')).toBe(70);
-      expect(parseTimemark('01:01:10')).toBe(3670);
-      expect(parseTimemark('10')).toBe(10);
+      expect(ffmpegAdapter['parseTimemark']('00:00:10')).toBe(10);
+      expect(ffmpegAdapter['parseTimemark']('00:01:10')).toBe(70);
+      expect(ffmpegAdapter['parseTimemark']('01:01:10')).toBe(3670);
+      expect(ffmpegAdapter['parseTimemark']('10')).toBe(10);
     });
   });
 
-  describe('handleConversion', () => {
+  describe('convert', () => {
     const mockedFfmpeg = jest.mocked(ffmpeg) as any;
     const mockedPath = jest.mocked(path) as any;
     const mockEvent = {
@@ -35,16 +36,14 @@ describe('ffmpeg utilities', () => {
       }
     } as unknown as Electron.IpcMainInvokeEvent;
 
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-
-    test('should handle video conversion process', (done) => {
+    test('should handle video conversion process', async () => {
       const mockFfmpegCommand = {
         output: jest.fn().mockReturnThis(),
         on: jest.fn().mockImplementation(function (this: any, event: string, callback: Function) {
           if (event === 'end') {
             setTimeout(() => callback(), 0);
+          } else if (event === 'progress') {
+            setTimeout(() => callback({ timemark: '00:00:50' }), 0); // Mock progress update
           }
           return this;
         }),
@@ -60,95 +59,56 @@ describe('ffmpeg utilities', () => {
       mockedPath.extname.mockReturnValue('.mp4');
       mockedPath.join.mockImplementation((...args: any) => args.join('/'));
 
-      handleConversion(
-        mockEvent,
+      const outputPath = await ffmpegAdapter.convert(
         '1',
         '/mock/path/video.mp4',
         VideoFormat.MP4,
         '/mock/save',
-        (outputPath) => {
-          expect(outputPath).toBe('/mock/save/video.mp4');
-          done();
-        },
-        (error) => {
-          done(error);
-        }
+        mockEvent
       );
 
+      expect(outputPath).toBe('/mock/save/video.mp4');
       expect(mockedFfmpeg.ffprobe).toHaveBeenCalledWith('/mock/path/video.mp4', expect.any(Function));
       expect(mockFfmpegCommand.output).toHaveBeenCalledWith('/mock/save/video.mp4');
       expect(mockFfmpegCommand.save).toHaveBeenCalledWith('/mock/save/video.mp4');
+      expect(mockEvent.sender.send).toHaveBeenCalledWith('conversion-progress', { id: '1', progress: 50 });
     });
 
-    test('should handle ffprobe error', (done) => {
+    test('should handle ffprobe error', async () => {
       mockedFfmpeg.ffprobe = jest.fn((_filePath, callback) => {
         callback(new Error('ffprobe error'), null);
       });
 
-      handleConversion(
-        mockEvent,
+      await expect(ffmpegAdapter.convert(
         '1',
         '/mock/path/video.mp4',
         VideoFormat.MP4,
         '/mock/save',
-        () => {
-          done(new Error('Expected to fail'));
-        },
-        (error) => {
-          expect(error).toEqual(new Error('ffprobe error'));
-          done();
-        }
-      );
+        mockEvent
+      )).rejects.toThrow('ffprobe error');
 
       expect(mockedFfmpeg.ffprobe).toHaveBeenCalledWith('/mock/path/video.mp4', expect.any(Function));
     });
   });
 
-  describe('handleItemConversionCancellation', () => {
-    const mockEvent = {} as unknown as Electron.IpcMainInvokeEvent;
-
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-
+  describe('cancel', () => {
     test('should cancel the conversion process', () => {
       const mockFfmpegCommand = {
         kill: jest.fn()
       };
 
-      setFfmpegProcess('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);
+      ffmpegAdapter['ffmpegProcesses'].set('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);
 
-      const result = handleItemConversionCancellation(mockEvent, '1');
+      const result = ffmpegAdapter.cancel('1');
 
       expect(result).toBe(true);
       expect(mockFfmpegCommand.kill).toHaveBeenCalledWith('SIGKILL');
     });
 
     test('should return false if no conversion process is found', () => {
-      const result = handleItemConversionCancellation(mockEvent, '1');
+      const result = ffmpegAdapter.cancel('1');
 
       expect(result).toBe(false);
-    });
-  });
-
-  describe('handleConversionCancellation', () => {
-    const mockEvent = {} as unknown as Electron.IpcMainInvokeEvent;
-
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-
-    test('should cancel the entire conversion process', () => {
-      const mockFfmpegCommand = {
-        kill: jest.fn()
-      };
-
-      setFfmpegProcess('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);
-
-      const result = handleConversionCancellation(mockEvent);
-
-      expect(result).toBe(true);
-      expect(mockFfmpegCommand.kill).toHaveBeenCalledWith('SIGKILL');
     });
   });
 });

@@ -6,18 +6,17 @@ import { configureIpcHandlers } from '../../src/lib/system/ipc-handlers';
 import { IpcEvent } from '../../src/enum/ipc-event';
 import { dialog, ipcMain, IpcMainInvokeEvent } from 'electron';
 import { getDesktopPath } from '../../src/lib/utils/desktop-path';
-import {
-  handleConversion,
-  handleConversionCancellation,
-  handleItemConversionCancellation
-} from '../../src/lib/conversion/ffmpeg';
+import { ConversionHandler } from '../../src/lib/conversion/conversion-handler';
 
-jest.mock('../../src/lib/desktop-path');
-jest.mock('../../src/lib/ffmpeg');
+jest.mock('../../src/lib/utils/desktop-path');
+jest.mock('../../src/lib/conversion/conversion-handler');
 
 describe('configureIpcHandlers', () => {
+  let mockConversionHandler: jest.Mocked<ConversionHandler>;
+
   beforeEach(() => {
     jest.resetAllMocks();
+    mockConversionHandler = new ConversionHandler() as jest.Mocked<ConversionHandler>;
   });
 
   afterEach(() => {
@@ -77,12 +76,8 @@ describe('configureIpcHandlers', () => {
   });
 
   test('should handle CONVERT_MEDIA', async () => {
-    const mockHandleConversion = jest.mocked(handleConversion);
-    mockHandleConversion.mockImplementation(
-      (_event, _id, _filePath, _outputFormat, _saveDirectory, resolve) => {
-        resolve('/mock/output/path');
-      }
-    );
+    // Make sure the mocked conversion handler returns a resolved promise
+    mockConversionHandler.handle.mockResolvedValue('/mock/output/path');
 
     configureIpcHandlers(ipcMain);
 
@@ -97,24 +92,24 @@ describe('configureIpcHandlers', () => {
         filePath: '/mock/path/video.mp4',
         outputFormat: 'mp4',
         saveDirectory: '/mock/save',
+        mediaType: 'video',
       }
     );
 
     expect(result).toBe('/mock/output/path');
-    expect(mockHandleConversion).toHaveBeenCalledWith(
-      expect.any(Object),
+    expect(mockConversionHandler.handle).toHaveBeenCalledWith(
       '1',
       '/mock/path/video.mp4',
       'mp4',
       '/mock/save',
-      expect.any(Function),
-      expect.any(Function)
+      'video',
+      expect.any(Object)
     );
   });
 
   test('should handle CANCEL_ITEM_CONVERSION', () => {
-    const mockHandleItemConversionCancellation = jest.mocked(handleItemConversionCancellation);
-    mockHandleItemConversionCancellation.mockReturnValue(true);
+    // Mock the cancel method to return true
+    mockConversionHandler.cancel.mockReturnValue(true);
 
     configureIpcHandlers(ipcMain);
 
@@ -125,12 +120,12 @@ describe('configureIpcHandlers', () => {
     const result = handler({} as IpcMainInvokeEvent, '1');
 
     expect(result).toBe(true);
-    expect(mockHandleItemConversionCancellation).toHaveBeenCalledWith(expect.any(Object), '1');
+    expect(mockConversionHandler.cancel).toHaveBeenCalledWith('1');
   });
 
   test('should handle CANCEL_CONVERSION', () => {
-    const mockHandleConversionCancellation = jest.mocked(handleConversionCancellation);
-    mockHandleConversionCancellation.mockReturnValue(true);
+    // Ensure cancelAll doesn't return undefined but behaves as expected
+    mockConversionHandler.cancelAll.mockImplementation(() => true);
 
     configureIpcHandlers(ipcMain);
 
@@ -141,6 +136,6 @@ describe('configureIpcHandlers', () => {
     const result = handler({} as IpcMainInvokeEvent);
 
     expect(result).toBe(true);
-    expect(mockHandleConversionCancellation).toHaveBeenCalledWith(expect.any(Object));
+    expect(mockConversionHandler.cancelAll).toHaveBeenCalled();
   });
 });

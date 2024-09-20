@@ -9,6 +9,7 @@ import { onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { VideoFormat } from '@/enum/video-format';
 import { useI18n } from 'vue-i18n';
+import { Media as MediaType } from '@/enum/media';
 
 const defaultFormat = VideoFormat.MP4;
 
@@ -19,6 +20,10 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
+  if (!props.store.mediaType) {
+    props.store.setMediaType(MediaType.VIDEO);
+  }
+
   if (!props.store.convertTo) {
     props.store.setFormat(defaultFormat);
   }

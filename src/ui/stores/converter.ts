@@ -3,8 +3,12 @@ import { reactive, ref } from 'vue';
 import { useToast } from '@/ui/components/toast/use-toast';
 import { v4 as uuidv4 } from 'uuid';
 import { filesize } from 'filesize';
+import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
+import { ImageFormat } from '@/enum/image-format';
 import type { Item } from '@/types/item';
 import { INITIAL_PROGRESS } from '@/consts/ffprobe';
+import { Media } from '@/types/media';
 
 /**
  * Creates a new converter store.
@@ -19,9 +23,10 @@ export const createConverterStore = () => {
     () => {
       const isInitialised = ref(false);
       const { toast } = useToast();
+      const mediaType = ref<Media | undefined>(undefined);
       const items = reactive<Item[]>([]);
       const saveDirectory = ref<string | undefined>(undefined);
-      const convertTo = ref<string | undefined>(undefined);
+      const convertTo = ref<VideoFormat | AudioFormat | ImageFormat | undefined>(undefined);
       const conversionCancelled = ref(false);
       const conversionInProgress = ref(false);
 
@@ -77,11 +82,16 @@ export const createConverterStore = () => {
       }
 
       /**
+       * Sets the media type.
+       */
+      function setMediaType(type: Media) {
+        mediaType.value = type;
+      }
+
+      /**
        * Handle file uploads.
        *
        * @param {FileList} uploads - The files to upload.
-       *
-       * @returns {void}
        */
       function handleUpload(uploads: FileList) {
         items.push(
@@ -113,9 +123,9 @@ export const createConverterStore = () => {
       /**
        * Sets the format to convert to.
        *
-       * @param {string} format - The format to convert to.
+       * @param {VideoFormat|AudioFormat|ImageFormat} format - The format to convert to.
        */
-      function setFormat(format: string) {
+      function setFormat(format: VideoFormat | AudioFormat | ImageFormat) {
         convertTo.value = format;
       }
 
@@ -142,7 +152,7 @@ export const createConverterStore = () => {
        * Performs the conversion of the items.
        */
       async function performConversion() {
-        if (!items.length || !convertTo.value || !saveDirectory.value) {
+        if (!items.length || !convertTo.value || !saveDirectory.value || !mediaType.value) {
           toast({
             title: 'Error',
             description: 'Please select files and a save directory.',
@@ -167,7 +177,13 @@ export const createConverterStore = () => {
             item.converting = true;
             item.progress = 0;
 
-            await window.electron.convertVideo(item.id as string, item.path, convertTo.value, saveDirectory.value);
+            await window.electron.convertMedia(
+              item.id as string,
+              item.path,
+              convertTo.value,
+              saveDirectory.value,
+              mediaType.value,
+            );
 
             item.convertTo = convertTo.value;
             item.converting = false;
@@ -263,8 +279,10 @@ export const createConverterStore = () => {
         items,
         isInitialised,
         saveDirectory,
+        mediaType,
         convertTo,
         conversionInProgress,
+        setMediaType,
         handleUpload,
         getInitialSaveDirectory,
         handleSaveDirectoryUpdate,

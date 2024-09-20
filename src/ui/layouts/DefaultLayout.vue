@@ -5,7 +5,7 @@ import { Titlebar } from '@/ui/components/titlebar';
 import { Spinner } from '@/ui/components/spinner';
 import LanguageSwitcher from '@/ui/blocks/LanguageSwitcher.vue';
 import ThemeSwitcher from '@/ui/blocks/ThemeSwitcher.vue';
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import { Platform } from '@/enum/platform';
 import { useI18n } from 'vue-i18n';
 

@@ -1,4 +1,8 @@
+import { Media } from '@/types/media';
 import { ColorMode } from '@/types/theme';
+import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
+import { ImageFormat } from '@/enum/image-format';
 
 export {}; // Make this a module
 
@@ -33,7 +37,13 @@ declare global {
       getFilePath: (file: File) => string;
       cancelConversion: () => Promise<unknown>;
       cancelItemConversion: (id: number | string) => Promise<unknown>;
-      convertVideo: (id: string, filePath: string, outputFormat: string, saveDirectory: string) => Promise<string>;
+      convertMedia: (
+        id: string,
+        filePath: string,
+        outputFormat: VideoFormat | AudioFormat | ImageFormat,
+        saveDirectory: string,
+        mediaType: Media,
+      ) => Promise<string>;
       send: (channel: string, ...args: unknown[]) => void;
       on: (channel: string, callback: (event: Electron.IpcRendererEvent, ...args: unknown[]) => void) => void;
       removeAllListeners: (channel: string) => void;

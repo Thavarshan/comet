@@ -4,7 +4,5 @@ export enum ImageFormat {
   BMP = 'bmp',
   GIF = 'gif',
   TIFF = 'tiff',
-  WEBP = 'webp',
-  ICO = 'ico',
   JPEG = 'jpeg',
 }

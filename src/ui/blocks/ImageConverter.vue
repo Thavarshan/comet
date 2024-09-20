@@ -8,6 +8,7 @@ import { IMAGE_CONVERSION_FORMATS as imageFormats } from '@/consts/formats';
 import { onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { ImageFormat } from '@/enum/image-format';
+import { Media as MediaType } from '@/enum/media';
 import { useI18n } from 'vue-i18n';
 
 const defaultFormat = ImageFormat.JPG;
@@ -19,6 +20,10 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
+  if (!props.store.mediaType) {
+    props.store.setMediaType(MediaType.IMAGE);
+  }
+
   if (!props.store.convertTo) {
     props.store.setFormat(defaultFormat);
   }

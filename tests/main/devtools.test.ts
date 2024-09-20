@@ -6,7 +6,7 @@ import { mocked } from 'jest-mock';
 import { setupDevTools } from '../../src/lib/utils/devtools';
 import { isDevMode } from '../../src/lib/utils/devmode';
 
-jest.mock('../../src/lib/devmode');
+jest.mock('../../src/lib/utils/devmode');
 
 jest.mock('electron-devtools-installer', () => ({
   default: jest.fn(),

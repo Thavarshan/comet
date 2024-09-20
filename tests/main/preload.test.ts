@@ -39,7 +39,7 @@ describe('setupGlobals', () => {
       getFilePath: expect.any(Function),
       cancelItemConversion: expect.any(Function),
       cancelConversion: expect.any(Function),
-      convertVideo: expect.any(Function),
+      convertMedia: expect.any(Function),
       send: expect.any(Function),
       on: expect.any(Function),
       removeAllListeners: expect.any(Function),
@@ -105,7 +105,7 @@ describe('setupGlobals', () => {
     await setupGlobals();
     const electron = (contextBridge.exposeInMainWorld as jest.Mock).mock.calls[0][1];
 
-    await electron.convertVideo('1', '/mock/path/video.mp4', 'mp4', '/mock/save');
+    await electron.convertMedia('1', '/mock/path/video.mp4', 'mp4', '/mock/save');
 
     expect(ipcRenderer.invoke).toHaveBeenCalledWith(IpcEvent.CONVERT_MEDIA, {
       id: '1',

@@ -52,7 +52,5 @@ export const IMAGE_CONVERSION_FORMATS = [
   ImageFormat.BMP,
   ImageFormat.GIF,
   ImageFormat.TIFF,
-  ImageFormat.WEBP,
-  ImageFormat.ICO,
   ImageFormat.JPEG,
 ];

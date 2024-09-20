@@ -8,6 +8,7 @@ import { AUDIO_CONVERSION_FORMATS as audioFormats } from '@/consts/formats';
 import { onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { AudioFormat } from '@/enum/audio-format';
+import { Media as MediaType } from '@/enum/media';
 import { useI18n } from 'vue-i18n';
 
 const defaultFormat = AudioFormat.MP3;
@@ -19,6 +20,10 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
+  if (!props.store.mediaType) {
+    props.store.setMediaType(MediaType.AUDIO);
+  }
+
   if (!props.store.convertTo) {
     props.store.setFormat(defaultFormat);
   }

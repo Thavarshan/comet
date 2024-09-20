@@ -1,9 +1,14 @@
 import { dialog, IpcMain, IpcMainInvokeEvent } from 'electron';
-import { getDesktopPath } from '../utils/desktop-path';
-import { IpcEvent } from '../../enum/ipc-event';
-import { handleConversion, handleConversionCancellation, handleItemConversionCancellation } from '../conversion/ffmpeg';
-import { VideoFormat } from '../../enum/video-format';
-import { AudioFormat } from '../../enum/audio-format';
+import { getDesktopPath } from '@/lib/utils/desktop-path';
+import { IpcEvent } from '@/enum/ipc-event';
+import { ConversionHandler } from '@/lib/conversion/conversion-handler';
+import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
+import { ImageFormat } from '@/enum/image-format';
+import { Media } from '@/types/media';
+
+// Create a single instance of ConversionHandler to handle all conversions
+const conversionHandler = new ConversionHandler();
 
 /**
  * Configure the IPC handlers
@@ -28,24 +33,30 @@ export function configureIpcHandlers(ipcMain: IpcMain): void {
         filePath,
         outputFormat,
         saveDirectory,
+        mediaType,
       }: {
         id: string;
         filePath: string;
-        outputFormat: VideoFormat | AudioFormat;
+        outputFormat: VideoFormat | AudioFormat | ImageFormat;
         saveDirectory: string;
+        mediaType: Media;
       },
     ) => {
       return new Promise<string>((resolve, reject) => {
-        handleConversion(event, id, filePath, outputFormat, saveDirectory, resolve, reject);
+        conversionHandler
+          .handle(id, filePath, outputFormat, saveDirectory, mediaType, event)
+          .then(resolve)
+          .catch(reject);
       });
     },
   );
 
-  ipcMain.handle(IpcEvent.CANCEL_CONVERSION, (event: IpcMainInvokeEvent) => {
-    return handleConversionCancellation(event);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ipcMain.handle(IpcEvent.CANCEL_CONVERSION, (_event: IpcMainInvokeEvent) => {
+    return conversionHandler.cancelAll();
   });
 
-  ipcMain.handle(IpcEvent.CANCEL_ITEM_CONVERSION, (event: IpcMainInvokeEvent, id: string) => {
-    return handleItemConversionCancellation(event, id);
+  ipcMain.handle(IpcEvent.CANCEL_ITEM_CONVERSION, (_event: IpcMainInvokeEvent, id: string) => {
+    return conversionHandler.cancel(id);
   });
 }

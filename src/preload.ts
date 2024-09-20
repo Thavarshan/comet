@@ -2,6 +2,10 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer, IpcRendererEvent, webUtils } from 'electron';
 import { IpcEvent } from './enum/ipc-event';
+import { VideoFormat } from '@/enum/video-format';
+import { AudioFormat } from '@/enum/audio-format';
+import { ImageFormat } from '@/enum/image-format';
+import { Media } from './types/media';
 import { ColorMode } from './types/theme';
 
 async function preload(): Promise<void> {
@@ -33,8 +37,14 @@ export async function setupGlobals(): Promise<void> {
     cancelConversion() {
       return ipcRenderer.invoke(IpcEvent.CANCEL_CONVERSION);
     },
-    convertVideo(id: string, filePath: string, outputFormat: string, saveDirectory: string) {
-      return ipcRenderer.invoke(IpcEvent.CONVERT_MEDIA, { id, filePath, outputFormat, saveDirectory });
+    convertMedia(
+      id: string,
+      filePath: string,
+      outputFormat: VideoFormat | AudioFormat | ImageFormat,
+      saveDirectory: string,
+      mediaType: Media,
+    ) {
+      return ipcRenderer.invoke(IpcEvent.CONVERT_MEDIA, { id, filePath, outputFormat, saveDirectory, mediaType });
     },
     send(channel: string, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);
