@@ -1,4 +1,5 @@
 import ThemeSwitcher from './ThemeSwitcher.vue';
+import LanguageSwitcher from './LanguageSwitcher.vue';
 import Dropfile from './Dropfile.vue';
 import SaveDirectory from './SaveDirectory.vue';
 import Controls from './Controls.vue';
@@ -10,6 +11,7 @@ import ImageConverter from './ImageConverter.vue';
 
 export {
   ThemeSwitcher,
+  LanguageSwitcher,
   Dropfile,
   SaveDirectory,
   Controls,

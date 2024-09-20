@@ -31,11 +31,11 @@ export async function onReady() {
     process.env.NODE_ENV = 'production';
   }
 
+  setupIsDevMode();
   setupShowWindow();
   setupTitleBarClickMac();
   setupNativeTheme();
   setupGetSystemTheme();
-  setupIsDevMode();
 
   // Do this after setting everything up to ensure that
   // any IPC listeners are set up before they're used
