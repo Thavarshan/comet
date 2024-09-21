@@ -1,6 +1,28 @@
 # Release Notes
 
-## [Unreleased](https://github.com/stellar-comet/comet/compare/v2.0.4...HEAD)
+## [Unreleased](https://github.com/stellar-comet/comet/compare/v2.1.2...HEAD)
+
+## [v2.1.2](https://github.com/stellar-comet/comet/compare/v2.0.4...v2.1.2) - 2024-09-21
+
+### Added
+
+- Image conversion support using Jimp, enabling conversion of image formats such as PNG, JPEG, and BMP.
+
+### Changed
+
+- Improved UI design with a cleaner layout and enhanced user experience.
+- Enhanced conversion performance with optimized resource usage, making conversions faster and more efficient.
+- Upgraded conversion quality, particularly improving audio output and overall media fidelity.
+
+### Fixed
+
+- Fixed a non-persistent state issue where some settings (e.g., `convertTo` format) were not saved correctly between tab switches.
+- Resolved conversion issues with certain video files that failed to process on specific platforms and architectures.
+- Addressed conversion quality problems affecting the output of certain video files.
+- Solved high resource usage during conversions, reducing CPU and memory consumption.
+- Fixed a bug where removed files were still being processed in the conversion queue.
+
+**Full Changelog**: https://github.com/stellar-comet/comet/compare/v2.0.4...v2.1.2
 
 ## [v2.0.4](https://github.com/stellar-comet/comet/compare/v1.0.0...v2.0.4) - 2024-09-14
 
