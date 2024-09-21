@@ -1,7 +1,7 @@
 export enum IpcEvent {
   CANCEL_CONVERSION = 'cancel-conversion',
   CANCEL_ITEM_CONVERSION = 'cancel-item-conversion',
-  CONVERT_VIDEO = 'convert-video',
+  CONVERT_MEDIA = 'convert-media',
   DIALOG_SELECT_DIRECTORY = 'dialog:select-directory',
   GET_DESKTOP_PATH = 'get-desktop-path',
   SHOW_WINDOW = 'show-window',
@@ -12,12 +12,14 @@ export enum IpcEvent {
   GET_PROJECT_NAME = 'get-project-name',
   LOAD_GIST_REQUEST = 'load-gist-request',
   LOAD_ELECTRON_EXAMPLE_REQUEST = 'load-electron-example-request',
+  NATIVE_THEME_UPDATED = 'native-theme-updated',
+  GET_SYSTEM_THEME = 'get-system-theme',
 }
 
 export const ipcMainEvents = [
   IpcEvent.CANCEL_CONVERSION,
   IpcEvent.CANCEL_ITEM_CONVERSION,
-  IpcEvent.CONVERT_VIDEO,
+  IpcEvent.CONVERT_MEDIA,
   IpcEvent.DIALOG_SELECT_DIRECTORY,
   IpcEvent.GET_DESKTOP_PATH,
   IpcEvent.SHOW_WINDOW,
@@ -28,5 +30,6 @@ export const ipcMainEvents = [
   IpcEvent.GET_PROJECT_NAME,
   IpcEvent.LOAD_GIST_REQUEST,
   IpcEvent.LOAD_ELECTRON_EXAMPLE_REQUEST,
+  IpcEvent.NATIVE_THEME_UPDATED,
+  IpcEvent.GET_SYSTEM_THEME,
 ];
-

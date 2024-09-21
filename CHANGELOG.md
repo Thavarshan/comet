@@ -1,6 +1,30 @@
 # Release Notes
 
-## [Unreleased](https://github.com/stellar-comet/comet/compare/v1.0.0...HEAD)
+## [Unreleased](https://github.com/stellar-comet/comet/compare/v2.0.4...HEAD)
+
+## [v2.0.4](https://github.com/stellar-comet/comet/compare/v1.0.0...v2.0.4) - 2024-09-14
+
+### Added
+
+- Dark mode
+- Multi-language support
+- Audio conversion support
+
+### Changed
+
+- Improved UI design with better user experience
+- Improved conversion performance withy less resource usage
+- Improved conversion quality with better audio quality
+
+### Fixed
+
+- Non-persistent state issue
+- Conversion issue with some video files on some platforms and architectures
+- Conversion quality issue with some video files
+- High resource usage issue
+- Removed files would still be included in conversion queue
+
+**Full Changelog**: https://github.com/stellar-comet/comet/compare/v1.0.0...v2.0.4
 
 ## [v1.0.0](https://github.com/stellar-comet/comet/compare/v0.0.3...v1.0.0) - 2024-09-02
 

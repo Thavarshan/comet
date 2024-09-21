@@ -1,27 +1,26 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  IpcMainEvent,
-  nativeTheme,
-  systemPreferences,
-} from 'electron';
-import {
-  shouldQuit,
-  isDevMode,
-  setupDevTools,
-  getOrCreateMainWindow,
-  configureIpcHandlers,
-  mainIsReady,
-} from './lib';
+import { app, BrowserWindow, ipcMain, IpcMainEvent, nativeTheme, systemPreferences } from 'electron';
+import { shouldQuit, isDevMode, getOrCreateMainWindow, configureIpcHandlers, mainIsReady } from './lib';
 import path from 'node:path';
-import { IpcEvent } from './enum/ipc-event';
+import { IpcEvent } from '@/enum/ipc-event';
+import { APP_NAME } from '@/consts/app';
+
+/**
+ * Get the entry file path for the main window.
+ */
+function getEntryFilePath() {
+  const fakePath = '/fake/path';
+  const isJest = !!process.env.JEST;
+  const mainWindowViteNameExists = typeof MAIN_WINDOW_VITE_NAME !== 'undefined';
+
+  if (!mainWindowViteNameExists) {
+    return fakePath as string;
+  }
+
+  return isJest ? fakePath : (path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`) as string);
+}
 
 // Path to the entry HTML file for the main window
-const entryFilePath = path.join(
-  __dirname,
-  `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`
-);
+const entryFilePath = getEntryFilePath();
 
 /**
  * Handle the app's "ready" event. This is essentially
@@ -32,11 +31,11 @@ export async function onReady() {
     process.env.NODE_ENV = 'production';
   }
 
+  setupIsDevMode();
   setupShowWindow();
-  setupDevTools();
   setupTitleBarClickMac();
   setupNativeTheme();
-  setupIsDevMode();
+  setupGetSystemTheme();
 
   // Do this after setting everything up to ensure that
   // any IPC listeners are set up before they're used
@@ -67,10 +66,7 @@ export function setupTitleBarClickMac() {
   }
 
   ipcMain.on(IpcEvent.CLICK_TITLEBAR_MAC, (event: IpcMainEvent) => {
-    const doubleClickAction = systemPreferences.getUserDefault(
-      'AppleActionOnDoubleClick',
-      'string',
-    );
+    const doubleClickAction = systemPreferences.getUserDefault('AppleActionOnDoubleClick', 'string');
     const win = BrowserWindow.fromWebContents(event.sender);
     if (win) {
       if (doubleClickAction === 'Minimize') {
@@ -93,9 +89,7 @@ export function setupTitleBarClickMac() {
  *
  * @returns Whether the value is a valid native theme source
  */
-function isNativeThemeSource(
-  val: unknown,
-): val is typeof nativeTheme.themeSource {
+function isNativeThemeSource(val: unknown): val is typeof nativeTheme.themeSource {
   return typeof val === 'string' && ['dark', 'light', 'system'].includes(val);
 }
 
@@ -103,10 +97,30 @@ function isNativeThemeSource(
  * Handle theme changes.
  */
 export function setupNativeTheme() {
-  ipcMain.on(IpcEvent.SET_NATIVE_THEME, async (_, source: string) => {
+  ipcMain.on(IpcEvent.SET_NATIVE_THEME, (_event, source: string) => {
     if (isNativeThemeSource(source)) {
       nativeTheme.themeSource = source;
     }
+  });
+
+  // Only notify renderer if the theme source is 'system'
+  if (nativeTheme) {
+    nativeTheme.on('updated', () => {
+      const currentTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+      BrowserWindow.getAllWindows().forEach((win) => {
+        win.webContents.send(IpcEvent.NATIVE_THEME_UPDATED, currentTheme);
+      });
+    });
+  }
+}
+
+/**
+ * Handle getting the system theme.
+ */
+export function setupGetSystemTheme() {
+  ipcMain.on(IpcEvent.GET_SYSTEM_THEME, (event) => {
+    const currentTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+    event.returnValue = currentTheme;
   });
 }
 
@@ -145,7 +159,7 @@ export function main() {
   }
 
   // Set the app's name
-  app.name = 'Comet';
+  app.name = APP_NAME;
 
   // Launch
   app.whenReady().then(onReady);
@@ -155,7 +169,6 @@ export function main() {
       await getOrCreateMainWindow(entryFilePath); // Create the main window if there are no open windows
     });
   });
-
 }
 
 // Run the main method

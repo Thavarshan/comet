@@ -14,45 +14,28 @@ const config: Config = {
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!**/*.d.ts', '!**/*constants.ts'],
   coveragePathIgnorePatterns: ['/node_modules/', '/tests/.*\\.(ts|js)$'],
   coverageReporters: ['json', 'html', 'lcov'],
-  moduleFileExtensions: [
-    "js",
-    "mjs",
-    "cjs",
-    "jsx",
-    "ts",
-    "tsx",
-    "json",
-    "node",
-    "vue"
-  ],
+  moduleFileExtensions: ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'json', 'node', 'vue'],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
-    "^@vue/test-utils": "<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.cjs.js",
-    "radix-vue": "<rootDir>/node_modules/radix-vue/dist/radix-vue.cjs.js",
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@vue/test-utils': '<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.cjs.js',
+    'radix-vue': '<rootDir>/node_modules/radix-vue/dist/radix-vue.cjs.js',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    "^.+\\.(svg|png|jpg|jpeg|gif)$": "jest-transform-stub",
-
+    '^.+\\.(svg|png|jpg|jpeg|gif)$': 'jest-transform-stub',
   },
   resetMocks: false,
   resetModules: true,
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
-  testEnvironment: "jsdom",
+  testEnvironment: 'jsdom',
   testEnvironmentOptions: {
-    customExportConditions: ["node", "node-addons"]
+    customExportConditions: ['node', 'node-addons'],
   },
-  testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/tests/**/?(*.)+(spec|test).[tj]s?(x)"
-  ],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/tests/**/?(*.)+(spec|test).[tj]s?(x)'],
   testPathIgnorePatterns: ['/.tmp/'],
   transform: {
-    "^.+\\.vue$": "@vue/vue3-jest",
-    "^.+\\.ts?$": "ts-jest"
+    '^.+\\.vue$': '@vue/vue3-jest',
+    '^.+\\.ts?$': 'ts-jest',
   },
-  transformIgnorePatterns: [
-    "/node_modules/",
-    "\\.pnp\\.[^\\/]+$"
-  ],
+  transformIgnorePatterns: ['/node_modules/', '\\.pnp\\.[^\\/]+$'],
 };
 
 export default config;
