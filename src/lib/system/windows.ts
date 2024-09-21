@@ -1,15 +1,13 @@
 import { BrowserWindowConstructorOptions, BrowserWindow } from 'electron';
-import { browserWindowOptions } from '../options';
-import { isDevMode } from './devmode';
+import { browserWindowOptions } from '../../options';
+import { isDevMode } from '../utils/devmode';
 
 // Keep a global reference of the window objects, if we don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 export let browserWindows: Array<BrowserWindow | null> = [];
 
 let mainIsReadyResolver: () => void;
-const mainIsReadyPromise = new Promise<void>(
-  (resolve) => (mainIsReadyResolver = resolve),
-);
+const mainIsReadyPromise = new Promise<void>((resolve) => (mainIsReadyResolver = resolve));
 
 /**
  * Resolve the mainIsReadyPromise to indicate that the main window is ready.
@@ -20,11 +18,9 @@ export function mainIsReady() {
 
 /**
  * Get the main window options
- *
- * @returns {BrowserWindowConstructorOptions}
  */
 export function getMainWindowOptions(
-  overrides?: Partial<BrowserWindowConstructorOptions>
+  overrides?: Partial<BrowserWindowConstructorOptions>,
 ): BrowserWindowConstructorOptions {
   return {
     ...browserWindowOptions,
@@ -34,16 +30,8 @@ export function getMainWindowOptions(
 
 /**
  * Create a new BrowserWindow instance
- *
- * @param {BrowserWindowConstructorOptions} options
- * @param {string} entryFilePath
- *
- * @returns {BrowserWindow}
  */
-export function createWindow(
-  options: BrowserWindowConstructorOptions,
-  entryFilePath: string
-): BrowserWindow {
+export function createWindow(options: BrowserWindowConstructorOptions, entryFilePath: string): BrowserWindow {
   let mainWindow: BrowserWindow | null;
   mainWindow = new BrowserWindow(options);
 
@@ -70,13 +58,8 @@ export function createWindow(
 
 /**
  * Load the entry point for the main window
- *
- * @param {BrowserWindow} window
- * @param {string} entryFilePath
- *
- * @returns {void}
  */
-function loadEntryPoint(window: BrowserWindow, entryFilePath: string) {
+function loadEntryPoint(window: BrowserWindow, entryFilePath: string): void {
   if (process.env.JEST) {
     window.loadFile('./fake/path');
 
@@ -92,20 +75,13 @@ function loadEntryPoint(window: BrowserWindow, entryFilePath: string) {
 
 /**
  * Gets or creates the main window, returning it in both cases.
- *
- * @returns {Promise<Electron.BrowserWindow>}
  */
 export async function getOrCreateMainWindow(
   entryFilePath: string,
-  options: BrowserWindowConstructorOptions = getMainWindowOptions()
+  options: BrowserWindowConstructorOptions = getMainWindowOptions(),
 ): Promise<Electron.BrowserWindow> {
   await mainIsReadyPromise;
   return (
-    BrowserWindow.getFocusedWindow()
-    || browserWindows[0]
-    || createWindow(
-      getMainWindowOptions(options),
-      entryFilePath
-    )
+    BrowserWindow.getFocusedWindow() || browserWindows[0] || createWindow(getMainWindowOptions(options), entryFilePath)
   );
 }

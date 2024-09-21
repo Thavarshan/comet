@@ -3,7 +3,7 @@
  */
 
 import * as path from 'node:path';
-import { browserWindows, getMainWindowOptions, getOrCreateMainWindow, mainIsReady } from '@/lib/windows';
+import { browserWindows, getMainWindowOptions, getOrCreateMainWindow, mainIsReady } from '@/lib/system/windows';
 import { overridePlatform, resetPlatform } from '../utils';
 import { mocked } from 'jest-mock';
 import { Windows } from '@/enum/windows';

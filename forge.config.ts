@@ -33,12 +33,12 @@ const config: ForgeConfig = {
     appBundleId: 'com.thavarshan.comet',
     appCategoryType: 'public.app-category.video',
     asar: {
-      unpack: "**/node_modules/{ffmpeg-static,ffprobe-static}/**",
+      unpack: '**/node_modules/{ffmpeg-static,ffprobe-static}/**',
     },
     win32metadata: {
       CompanyName: author.name,
       OriginalFilename: productName,
-    }
+    },
   },
   rebuildConfig: {},
   makers: [
@@ -50,11 +50,11 @@ const config: ForgeConfig = {
         authors: author.name,
         exe: `${productName}.exe`,
         iconUrl: 'https://github.com/stellar-comet/comet/blob/main/assets/icons/icon.ico',
-        loadingGif: path.resolve(__dirname, 'assets/loading.gif'),
+        loadingGif: path.resolve(__dirname, 'assets', 'loading.gif'),
         noMsi: true,
         setupExe: `${name}-${version}-${arch}-setup.exe`,
         setupIcon: path.resolve(iconDir, 'setup-icon.ico'),
-        certificateFile: path.resolve(__dirname, 'tools/certs/dev-cert.pfx'),
+        certificateFile: path.resolve(__dirname, 'tools', 'certs', 'dev-cert.pfx'),
         certificatePassword: process.env.CERT_PASSWORD,
       }),
     },
@@ -91,7 +91,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-rpm',
       platforms: ['linux'],
       config: commonLinuxConfig,
-    }
+    },
   ],
   plugins: [
     new VitePlugin({
@@ -143,10 +143,10 @@ const config: ForgeConfig = {
         prerelease: false,
         draft: true,
         force: true,
-        generateReleaseNotes: true
-      }
-    }
-  ]
+        generateReleaseNotes: true,
+      },
+    },
+  ],
 };
 
 export default config;

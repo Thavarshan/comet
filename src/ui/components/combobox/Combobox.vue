@@ -3,24 +3,14 @@ import { Check, ChevronsUpDown } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { cn } from '@/ui/utils';
 import { Button } from '@/ui/components/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
-} from '@/ui/components/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/ui/components/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/ui/components/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/ui/components/popover';
 import { Badge } from '@/ui/components/badge';
 import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['change']);
 const open = ref(false);
+const listId = `combobox-list-${Math.random().toString(36).substr(2, 9)}`;
 
 const { t } = useI18n();
 
@@ -48,7 +38,9 @@ function setOption(event: CustomEvent) {
           variant="secondary"
           role="combobox"
           :aria-expanded="open"
-          class="justify-between shadow-none">
+          :aria-controls="listId"
+          class="justify-between shadow-none"
+        >
           <span v-if="value" class="mr-2 text-foreground text-xs">{{ t('formats.convertsTo') }}: </span>
           <Badge v-if="value" class="rounded-sm">
             {{ options.find((option: string) => option === value) }}
@@ -62,17 +54,10 @@ function setOption(event: CustomEvent) {
       <Command v-model="value">
         <CommandInput :placeholder="`${t('formats.search')}...`" />
         <CommandEmpty>{{ t('formats.empty') }}</CommandEmpty>
-        <CommandList>
+        <CommandList :id="listId">
           <CommandGroup>
-            <CommandItem
-              v-for="(option, index) in options"
-              :key="index"
-              :value="option"
-              @select="setOption">
-              <Check :class="cn(
-                'mr-2 h-4 w-4',
-                value === option ? 'opacity-100' : 'opacity-0',
-              )"/>
+            <CommandItem v-for="(option, index) in options" :key="index" :value="option" @select="setOption">
+              <Check :class="cn('mr-2 h-4 w-4', value === option ? 'opacity-100' : 'opacity-0')" />
               {{ option }}
             </CommandItem>
           </CommandGroup>

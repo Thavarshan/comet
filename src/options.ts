@@ -1,7 +1,7 @@
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { Windows } from './enum/windows';
 import path from 'node:path';
-import { isDevMode } from './lib/devmode';
+import { isDevMode } from './lib/utils/devmode';
 import { Platform } from './enum/platform';
 
 export const browserWindowOptions = {

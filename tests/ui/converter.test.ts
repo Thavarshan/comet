@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { INITIAL_PROGRESS } from '@/consts/ffprobe';
 import { Item } from '@/types/item';
 import { filesize } from 'filesize';
+import { VideoFormat } from '@/enum/video-format';
+import { Media } from '@/enum/media';
 
 jest.mock('@/ui/components/toast/use-toast');
 jest.mock('uuid');
@@ -20,12 +22,15 @@ describe('Converter Store', () => {
     platform: process.platform as NodeJS.Platform,
     on: jest.fn(),
     removeAllListeners: jest.fn(),
+    setupGetSystemTheme: jest.fn().mockReturnValue('light'),
     getDesktopPath: jest.fn().mockResolvedValue('/mock/desktop/path'),
     getFilePath: jest.fn().mockReturnValue('/mock/file/path'),
-    convertVideo: jest.fn().mockResolvedValue('/mock/output/path'),
+    convertMedia: jest.fn().mockResolvedValue('/mock/output/path'),
     cancelItemConversion: jest.fn().mockResolvedValue(true),
     cancelConversion: jest.fn().mockResolvedValue(true),
     selectDirectory: jest.fn().mockResolvedValue('/mock/save'),
+    send: jest.fn(),
+    getSystemTheme: jest.fn().mockReturnValue('light'),
   };
 
   beforeAll(() => {
@@ -75,8 +80,8 @@ describe('Converter Store', () => {
   });
 
   test('should set conversion format', () => {
-    store.setFormat('avi');
-    expect(store.convertTo).toBe('avi');
+    store.setFormat(VideoFormat.AVI);
+    expect(store.convertTo).toBe(VideoFormat.AVI);
   });
 
   test('should remove item from the list', () => {
@@ -94,7 +99,8 @@ describe('Converter Store', () => {
   test('should perform conversion', async () => {
     store.items.push({ id: '1', name: 'file1.mp4', path: '/mock/file/path', converted: false, converting: false, progress: 0 } as Item);
     store.saveDirectory = '/mock/save';
-    store.convertTo = 'mp4';
+    store.convertTo = VideoFormat.MP4;
+    store.mediaType = Media.VIDEO;
 
     await store.performConversion();
 
@@ -102,7 +108,7 @@ describe('Converter Store', () => {
     expect(store.items[0].progress).toBe(100);
     expect(store.items[0].converting).toBe(false);
     expect(store.conversionInProgress).toBe(false);
-    expect(mockElectron.convertVideo).toHaveBeenCalledWith('1', '/mock/file/path', 'mp4', '/mock/save');
+    expect(mockElectron.convertMedia).toHaveBeenCalledWith('1', '/mock/file/path', VideoFormat.MP4, '/mock/save', Media.VIDEO);
   });
 
   test('should cancel item conversion', async () => {

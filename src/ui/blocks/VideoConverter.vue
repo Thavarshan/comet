@@ -1,29 +1,16 @@
 <script setup lang="ts">
-import {
-  Controls,
-  Dropfile,
-  SaveDirectory,
-  Options,
-  FileItem
-} from '@/ui/blocks';
+import { Controls, Dropfile, SaveDirectory, Options, FileItem } from '@/ui/blocks';
 import { Button } from '@/ui/components/button';
 import { Combobox } from '@/ui/components/combobox';
 import { ScrollArea } from '@/ui/components/scroll-area';
-import {
-  Trash2,
-  Ban,
-  RefreshCw,
-  FileVideo
-} from 'lucide-vue-next';
-import {
-  VIDEO_CONVERSION_FORMATS as videoFormats,
-} from '@/consts/formats';
-import { ref, onMounted } from 'vue';
+import { Trash2, Ban, RefreshCw, FileVideo } from 'lucide-vue-next';
+import { VIDEO_CONVERSION_FORMATS as videoFormats } from '@/consts/formats';
+import { onMounted } from 'vue';
 import type { StoreDefinition } from 'pinia';
 import { VideoFormat } from '@/enum/video-format';
 import { useI18n } from 'vue-i18n';
+import { Media as MediaType } from '@/enum/media';
 
-const defaultSaveDirectory = ref<string | undefined>(undefined);
 const defaultFormat = VideoFormat.MP4;
 
 const { t } = useI18n();
@@ -33,8 +20,13 @@ const props = defineProps<{
 }>();
 
 onMounted(async () => {
-  props.store.setFormat(defaultFormat);
-  defaultSaveDirectory.value = await props.store.getInitialSaveDirectory();
+  if (!props.store.mediaType) {
+    props.store.setMediaType(MediaType.VIDEO);
+  }
+
+  if (!props.store.convertTo) {
+    props.store.setFormat(defaultFormat);
+  }
 });
 </script>
 
@@ -48,8 +40,8 @@ onMounted(async () => {
     <Options>
       <template #left>
         <SaveDirectory
-          v-if="defaultSaveDirectory"
-          :defaultSaveDirectory="defaultSaveDirectory"
+          v-if="store.saveDirectory"
+          :saveDirectory="store.saveDirectory"
           @directory-selected="store.handleSaveDirectoryUpdate"
         />
       </template>
@@ -82,22 +74,14 @@ onMounted(async () => {
     </ScrollArea>
     <Controls class="absolute bottom-0 w-full">
       <template #left>
-        <Button
-          variant="outline"
-          @click="store.clearItems"
-          :disabled="store.conversionInProgress"
-        >
+        <Button variant="outline" @click="store.clearItems" :disabled="store.conversionInProgress">
           <Trash2 class="size-4 text-destructive mr-2" />
           {{ t('buttons.clear') }}
         </Button>
       </template>
       <template #right>
         <div class="flex items-center justify-end gap-x-2">
-          <Button
-            variant="outline"
-            @click="store.cancelConversion"
-            :disabled="!store.conversionInProgress"
-          >
+          <Button variant="outline" @click="store.cancelConversion" :disabled="!store.conversionInProgress">
             <Ban class="size-4 mr-2" />
             {{ t('buttons.cancel') }}
           </Button>

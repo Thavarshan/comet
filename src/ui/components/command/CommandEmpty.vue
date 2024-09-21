@@ -4,7 +4,7 @@ import type { ComboboxEmptyProps } from 'radix-vue';
 import { ComboboxEmpty } from 'radix-vue';
 import { cn } from '@/ui/utils';
 
-const props = defineProps<ComboboxEmptyProps & { class?: HTMLAttributes['class']; }>();
+const props = defineProps<ComboboxEmptyProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

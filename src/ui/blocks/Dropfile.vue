@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Button } from '@/ui/components/button';
-import {
-  Upload,
-} from 'lucide-vue-next';
+import { Upload } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits(['file-uploaded']);
@@ -28,16 +26,16 @@ function handleUpload(event: Event) {
   if (!files) return;
 
   emit('file-uploaded', files);
-};
+}
 
 function handleDragOver(event: DragEvent) {
   event.preventDefault();
   isDragging.value = true;
-};
+}
 
 function handleDragLeave() {
   isDragging.value = false;
-};
+}
 
 function handleDrop(event: DragEvent) {
   event.preventDefault();
@@ -46,16 +44,21 @@ function handleDrop(event: DragEvent) {
   const files = event.dataTransfer?.files;
   if (!files) return;
 
-  emit('file-uploaded', files);
-};
+  // Filter files based on supported formats
+  const acceptedFiles = Array.from(files).filter((file) => {
+    const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
+    return props.supportedFormats.some((format) => fileExtension === `.${format}`);
+  });
+
+  if (acceptedFiles.length > 0) {
+    emit('file-uploaded', acceptedFiles);
+    return;
+  }
+}
 
 function triggerFileInput() {
   fileInput?.value?.click();
-};
-
-function sentenceCase(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
+}
 </script>
 
 <template>
@@ -67,13 +70,27 @@ function sentenceCase(str: string) {
       @dragover="handleDragOver"
       @dragleave="handleDragLeave"
       @drop="handleDrop"
+      role="button"
+      aria-label="Upload files"
+      tabindex="0"
+      @keydown.enter="triggerFileInput"
     >
       <Upload class="size-12 text-slate-300" />
-      <input ref="fileInput" type="file" id="file-uploader" class="hidden" @change="handleUpload" multiple :accept="acceptableFormats">
+      <input
+        ref="fileInput"
+        type="file"
+        id="file-uploader"
+        class="hidden"
+        @change="handleUpload"
+        multiple
+        :accept="acceptableFormats"
+      />
       <div class="font-semibold text-sm text-foreground mt-2 max-w-xs">{{ text }}</div>
       <div class="mt-1 text-xs text-muted-foreground">{{ t('upload.message') }}</div>
       <div class="mt-4">
-        <Button @click="triggerFileInput" variant="secondary" class="group-hover:bg-secondary/80">{{ t('upload.select') }}</Button>
+        <Button @click="triggerFileInput" variant="secondary" class="group-hover:bg-secondary/80">{{
+          t('upload.select')
+        }}</Button>
       </div>
     </label>
   </div>

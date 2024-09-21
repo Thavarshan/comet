@@ -3,7 +3,7 @@ import { type HTMLAttributes, computed } from 'vue';
 import { ToastDescription, type ToastDescriptionProps } from 'radix-vue';
 import { cn } from '@/ui/utils';
 
-const props = defineProps<ToastDescriptionProps & { class?: HTMLAttributes['class']; }>();
+const props = defineProps<ToastDescriptionProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

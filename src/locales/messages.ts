@@ -5,6 +5,7 @@ export const messages = {
     media: {
       video: 'Video',
       audio: 'Audio',
+      image: 'Image',
     },
     upload: {
       title: 'Drag and drop your {type} files here',
@@ -33,6 +34,7 @@ export const messages = {
     media: {
       video: 'Vidéo',
       audio: 'Audio',
+      image: 'Image',
     },
     upload: {
       title: 'Glissez-déposez vos fichiers {type} ici',
@@ -61,6 +63,7 @@ export const messages = {
     media: {
       video: 'Vídeo',
       audio: 'Audio',
+      image: 'Imagen',
     },
     upload: {
       title: 'Arrastra y suelta tus archivos {type} aquí',
@@ -89,6 +92,7 @@ export const messages = {
     media: {
       video: 'Video',
       audio: 'Audio',
+      image: 'Bild',
     },
     upload: {
       title: 'Ziehen Sie Ihre {type}-Dateien hierher',
@@ -117,6 +121,7 @@ export const messages = {
     media: {
       video: 'Видео',
       audio: 'Аудио',
+      image: 'Изображение',
     },
     upload: {
       title: 'Перетащите ваши файлы {type} сюда',

@@ -3,7 +3,7 @@ import { type HTMLAttributes, computed } from 'vue';
 import { TabsList, type TabsListProps } from 'radix-vue';
 import { cn } from '@/ui/utils';
 
-const props = defineProps<TabsListProps & { class?: HTMLAttributes['class']; }>();
+const props = defineProps<TabsListProps & { class?: HTMLAttributes['class'] }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
@@ -15,10 +15,7 @@ const delegatedProps = computed(() => {
 <template>
   <TabsList
     v-bind="delegatedProps"
-    :class="cn(
-      'inline-flex items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground',
-      props.class,
-    )"
+    :class="cn('inline-flex items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground', props.class)"
   >
     <slot />
   </TabsList>
