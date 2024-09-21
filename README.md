@@ -1,4 +1,4 @@
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="./assets/logo.png" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/logo.svg" width="400" height="400" alt="Comet"></a></p>
 
 <p align="center">
 <a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg" alt="Test Status"></a>
