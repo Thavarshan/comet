@@ -32,7 +32,7 @@ function formatPath(path?: string) {
     return;
   }
 
-  let formatted = path?.replace(/^\//, '').replace(/\//g, ' → ');
+  let formatted = path.replace(/\\/g, '/').replace(/^\//, '').replace(/\//g, ' → ');
 
   if (formatted.length > 40) {
     formatted = formatted.slice(formatted.lastIndexOf('→') + 2);
