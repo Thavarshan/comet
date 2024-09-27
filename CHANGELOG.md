@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/stellar-comet/comet/compare/v2.1.2...HEAD)
+## [Unreleased](https://github.com/stellar-comet/comet/compare/v2.2.1...HEAD)
+
+## [v2.2.1](https://github.com/stellar-comet/comet/compare/v2.1.2...v2.2.1) - 2024-09-27
+
+### Changed
+
+- Update media assets
+
+### Fixed
+
+- Save directory path in Windows is not formatted properly
+
+**Full Changelog**: https://github.com/stellar-comet/comet/compare/v2.1.2...v2.2.1
 
 ## [v2.1.2](https://github.com/stellar-comet/comet/compare/v2.0.4...v2.1.2) - 2024-09-21
 
