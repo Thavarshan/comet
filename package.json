@@ -20,10 +20,10 @@
   "homepage": "https://comet.thavarshan.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stellar-comet/comet.git"
+    "url": "https://github.com/Thavarshan/comet.git"
   },
   "bugs": {
-    "url": "https://github.com/stellar-comet/comet/issues"
+    "url": "https://github.com/Thavarshan/comet/issues"
   },
   "license": "MIT",
   "config": {

@@ -8,16 +8,16 @@ First off, thank you for considering contributing to Comet! It’s people like y
 
 If you encounter any bugs or issues while using Comet, please report them. This helps us to maintain the quality of the project and ensures that other users have a better experience.
 
-1. **Search for existing issues**: Before reporting a new issue, check if someone else has already reported it. You can search [here](https://github.com/stellar-comet/comet/issues).
-2. **Create a new issue**: If you don’t find a similar issue, create a new one [here](https://github.com/stellar-comet/comet/issues/new).
+1. **Search for existing issues**: Before reporting a new issue, check if someone else has already reported it. You can search [here](https://github.com/Thavarshan/comet/issues).
+2. **Create a new issue**: If you don’t find a similar issue, create a new one [here](https://github.com/Thavarshan/comet/issues/new).
 3. **Provide details**: Please include as much information as possible. Include the steps to reproduce the issue, the expected outcome, and the actual outcome. Providing screenshots, error messages, and relevant log files can help us resolve the issue faster.
 
 ### Suggesting Features
 
 We welcome suggestions for new features that could enhance Comet.
 
-1. **Search for existing suggestions**: Before suggesting a new feature, check if someone else has already suggested it [here](https://github.com/stellar-comet/comet/issues).
-2. **Create a new feature request**: If your feature is unique, create a new feature request [here](https://github.com/stellar-comet/comet/issues/new?template=feature_request.md).
+1. **Search for existing suggestions**: Before suggesting a new feature, check if someone else has already suggested it [here](https://github.com/Thavarshan/comet/issues).
+2. **Create a new feature request**: If your feature is unique, create a new feature request [here](https://github.com/Thavarshan/comet/issues/new?template=feature_request.md).
 3. **Describe the feature**: Provide a detailed description of the feature, why you think it’s important, and how it could benefit users. If possible, suggest how it could be implemented.
 
 ### Contributing Code
@@ -30,7 +30,7 @@ We love contributions, whether they’re bug fixes, new features, or improving d
 2. **Clone**: Clone the forked repository to your local machine.
 
    ```bash
-   git clone https://github.com/stellar-comet/comet.git
+   git clone https://github.com/Thavarshan/comet.git
    cd comet
    ```
 
@@ -102,4 +102,4 @@ We appreciate contributions to our documentation. If you’ve added a new featur
 
 Your contributions make Comet better for everyone. Thank you for taking the time to improve the project. We’re thrilled to have you as part of our community, and we’re excited to see what you’ll contribute.
 
-If you have any questions, feel free to [open an issue](https://github.com/stellar-comet/comet/issues/new) or reach out to us. Happy coding!
+If you have any questions, feel free to [open an issue](https://github.com/Thavarshan/comet/issues/new) or reach out to us. Happy coding!
