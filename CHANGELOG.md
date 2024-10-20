@@ -1,6 +1,19 @@
 # Release Notes
 
-## [Unreleased](https://github.com/Thavarshan/comet/compare/v2.2.1...HEAD)
+## [Unreleased](https://github.com/Thavarshan/comet/compare/v2.2.2...HEAD)
+
+## [v2.2.2](https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2) - 2024-10-20
+
+### Changed
+
+Release v2.2.1 by @Thavarshan in https://github.com/Thavarshan/comet/pull/41
+
+* Upgraded dependencies
+* Update `namor` `generate` method usage
+* Update to eslint to `v9.13`
+* Update eslint configs
+
+**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2
 
 ## [v2.2.1](https://github.com/Thavarshan/comet/compare/v2.1.2...v2.2.1) - 2024-09-27
 
