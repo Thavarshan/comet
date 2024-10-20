@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { toJS } from 'mobx';
 
 const platform = process.platform;

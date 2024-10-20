@@ -23,7 +23,7 @@ describe('JimpAdapter', () => {
   beforeEach(() => {
     jimpAdapter = new JimpAdapter();
     jest.resetAllMocks();
-    jest.spyOn(fs, 'mkdir').mockImplementation(async (dir, _options) => {
+    jest.spyOn(fs, 'mkdir').mockImplementation(async (dir, _) => {
       if (dir === '/mock/save') {
         return Promise.resolve(undefined);
       }
@@ -42,13 +42,7 @@ describe('JimpAdapter', () => {
       mockedPath.extname.mockReturnValue('.png');
       mockedPath.join.mockImplementation((...args: any) => args.join('/'));
 
-      const outputPath = await jimpAdapter.convert(
-        '1',
-        '/mock/path/image.png',
-        'jpg',
-        '/mock/save',
-        mockEvent
-      );
+      const outputPath = await jimpAdapter.convert('1', '/mock/path/image.png', 'jpg', '/mock/save', mockEvent);
 
       expect(outputPath).toBe('/mock/save/image.jpg');
       expect(fs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
@@ -60,15 +54,9 @@ describe('JimpAdapter', () => {
     test('should handle Jimp read error', async () => {
       mockedJimp.read.mockRejectedValue(new Error('Jimp read error'));
 
-      await expect(
-        jimpAdapter.convert(
-          '1',
-          '/mock/path/image.png',
-          'jpg',
-          '/mock/save',
-          mockEvent
-        )
-      ).rejects.toThrow('Jimp read error');
+      await expect(jimpAdapter.convert('1', '/mock/path/image.png', 'jpg', '/mock/save', mockEvent)).rejects.toThrow(
+        'Jimp read error',
+      );
 
       expect(fs.mkdir).toHaveBeenCalledWith('/mock/save', { recursive: true });
       expect(mockedJimp.read).toHaveBeenCalledWith('/mock/path/image.png');

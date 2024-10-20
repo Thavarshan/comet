@@ -74,7 +74,7 @@ export function pluginExposeRenderer(name: string): Plugin {
       server.httpServer?.once('listening', () => {
         const addressInfo = server.httpServer?.address() as AddressInfo;
         // Expose env constant for main process use.
-        process.env[VITE_DEV_SERVER_URL] = `http://localhost:${addressInfo?.port}`; // eslint-disable-line max-len
+        process.env[VITE_DEV_SERVER_URL] = `http://localhost:${addressInfo?.port}`;
       });
     },
   };
