@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter } from 'node:events';
 
 import { BrowserWindowMock } from './browser-window';

@@ -6,5 +6,4 @@ module.exports = {
   tabWidth: 2,
   useTabs: false,
   endOfLine: 'auto',
-  spaceBeforeFunctionParen: false
-}
+};

@@ -38,7 +38,7 @@ describe('ConversionHandler', () => {
         ImageFormat.JPG,
         '/mock/save',
         MediaType.IMAGE,
-        mockEvent
+        mockEvent,
       );
 
       expect(result).toBe('/mock/path/image.jpg');
@@ -47,12 +47,14 @@ describe('ConversionHandler', () => {
         '/mock/path/image.jpg',
         ImageFormat.JPG,
         '/mock/save',
-        mockEvent
+        mockEvent,
       );
     });
 
     test('should handle video conversion with FfmpegAdapter', async () => {
-      const mockFfmpegAdapter = jest.spyOn(FfmpegAdapter.prototype, 'convert').mockResolvedValue('/mock/path/video.mp4');
+      const mockFfmpegAdapter = jest
+        .spyOn(FfmpegAdapter.prototype, 'convert')
+        .mockResolvedValue('/mock/path/video.mp4');
 
       const result = await conversionHandler.handle(
         '1',
@@ -60,7 +62,7 @@ describe('ConversionHandler', () => {
         VideoFormat.MP4,
         '/mock/save',
         MediaType.VIDEO,
-        mockEvent
+        mockEvent,
       );
 
       expect(result).toBe('/mock/path/video.mp4');
@@ -69,12 +71,14 @@ describe('ConversionHandler', () => {
         '/mock/path/video.mp4',
         VideoFormat.MP4,
         '/mock/save',
-        mockEvent
+        mockEvent,
       );
     });
 
     test('should handle audio conversion with FfmpegAdapter', async () => {
-      const mockFfmpegAdapter = jest.spyOn(FfmpegAdapter.prototype, 'convert').mockResolvedValue('/mock/path/audio.mp3');
+      const mockFfmpegAdapter = jest
+        .spyOn(FfmpegAdapter.prototype, 'convert')
+        .mockResolvedValue('/mock/path/audio.mp3');
 
       const result = await conversionHandler.handle(
         '1',
@@ -82,7 +86,7 @@ describe('ConversionHandler', () => {
         AudioFormat.MP3,
         '/mock/save',
         MediaType.AUDIO,
-        mockEvent
+        mockEvent,
       );
 
       expect(result).toBe('/mock/path/audio.mp3');
@@ -91,7 +95,7 @@ describe('ConversionHandler', () => {
         '/mock/path/audio.mp3',
         AudioFormat.MP3,
         '/mock/save',
-        mockEvent
+        mockEvent,
       );
     });
 
@@ -103,7 +107,7 @@ describe('ConversionHandler', () => {
           'unknown_format' as VideoFormat,
           '/mock/save',
           'unknown' as Media,
-          mockEvent
+          mockEvent,
         );
       } catch (error) {
         expect(error).toEqual(new Error('Unsupported type: unknown'));
@@ -111,7 +115,9 @@ describe('ConversionHandler', () => {
     });
 
     test('should handle conversion failure', async () => {
-      const mockFfmpegAdapter = jest.spyOn(FfmpegAdapter.prototype, 'convert').mockRejectedValue(new Error('Conversion failed'));
+      const mockFfmpegAdapter = jest
+        .spyOn(FfmpegAdapter.prototype, 'convert')
+        .mockRejectedValue(new Error('Conversion failed'));
 
       await expect(
         conversionHandler.handle(
@@ -120,8 +126,8 @@ describe('ConversionHandler', () => {
           VideoFormat.MP4,
           '/mock/save',
           MediaType.VIDEO,
-          mockEvent
-        )
+          mockEvent,
+        ),
       ).rejects.toThrow('Conversion failed');
 
       expect(mockFfmpegAdapter).toHaveBeenCalledWith(
@@ -129,7 +135,7 @@ describe('ConversionHandler', () => {
         '/mock/path/video.mp4',
         VideoFormat.MP4,
         '/mock/save',
-        mockEvent
+        mockEvent,
       );
     });
   });

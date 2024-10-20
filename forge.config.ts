@@ -49,7 +49,7 @@ const config: ForgeConfig = {
         name: productName,
         authors: author.name,
         exe: `${productName}.exe`,
-        iconUrl: 'https://github.com/stellar-comet/comet/blob/main/assets/icons/icon.ico',
+        iconUrl: 'https://github.com/Thavarshan/comet/blob/main/assets/icons/icon.ico',
         loadingGif: path.resolve(__dirname, 'assets', 'loading.gif'),
         noMsi: true,
         setupExe: `${name}-${version}-${arch}-setup.exe`,

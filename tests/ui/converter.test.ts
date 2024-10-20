@@ -97,7 +97,14 @@ describe('Converter Store', () => {
   });
 
   test('should perform conversion', async () => {
-    store.items.push({ id: '1', name: 'file1.mp4', path: '/mock/file/path', converted: false, converting: false, progress: 0 } as Item);
+    store.items.push({
+      id: '1',
+      name: 'file1.mp4',
+      path: '/mock/file/path',
+      converted: false,
+      converting: false,
+      progress: 0,
+    } as Item);
     store.saveDirectory = '/mock/save';
     store.convertTo = VideoFormat.MP4;
     store.mediaType = Media.VIDEO;
@@ -108,7 +115,13 @@ describe('Converter Store', () => {
     expect(store.items[0].progress).toBe(100);
     expect(store.items[0].converting).toBe(false);
     expect(store.conversionInProgress).toBe(false);
-    expect(mockElectron.convertMedia).toHaveBeenCalledWith('1', '/mock/file/path', VideoFormat.MP4, '/mock/save', Media.VIDEO);
+    expect(mockElectron.convertMedia).toHaveBeenCalledWith(
+      '1',
+      '/mock/file/path',
+      VideoFormat.MP4,
+      '/mock/save',
+      Media.VIDEO,
+    );
   });
 
   test('should cancel item conversion', async () => {
@@ -133,7 +146,7 @@ describe('Converter Store', () => {
     await store.init();
 
     // Ensure the event listener is set up
-    const progressCall = mockElectron.on.mock.calls.find(call => call[0] === 'conversion-progress');
+    const progressCall = mockElectron.on.mock.calls.find((call) => call[0] === 'conversion-progress');
     expect(progressCall).toBeDefined();
 
     if (progressCall) {
@@ -150,7 +163,7 @@ describe('Converter Store', () => {
 
     await store.init();
 
-    const cancelHandler = mockElectron.on.mock.calls.find(call => call[0] === 'conversion-canceled')[1];
+    const cancelHandler = mockElectron.on.mock.calls.find((call) => call[0] === 'conversion-canceled')[1];
     cancelHandler(null, mockEvent);
 
     expect(store.items[0].converting).toBe(false);
