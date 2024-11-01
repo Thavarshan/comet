@@ -8,11 +8,9 @@
 </p>
 
 > [!WARNING]
-> **We don't have an Apple Developer account yet, and the application is not code-signed for both Mac and Windows. Therefore, the applications will show a warning popup on the first start.**
-> On **Mac**, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**.
+> **We don't have an Apple Developer account yet, and the application is not code-signed for either Mac or Windows. Therefore, the applications will show a warning popup on the first start.**
+> On **Mac**, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see the button **Open anyway**.
 > On **Windows**, you may see a warning message indicating that the app is from an unknown publisher. Click **More info** and then **Run anyway** to proceed.
-
----
 
 ## About Comet
 
@@ -22,8 +20,6 @@
 ![Comet UI 2](./assets/screenshot_2.png)
 ![Comet UI 3](./assets/screenshot_3.png)
 ![Comet UI 4](./assets/screenshot_4.png)
-
----
 
 ## Project Overview
 
@@ -43,16 +39,12 @@ Comet's goal is to provide a **free, user-friendly, and visually appealing** app
 - **Cancel/Resume Conversions:** Cancel ongoing conversions, with options to manage individual items in the queue.
 - **Jimp and FFmpeg Integration:** Use Jimp for images and FFmpeg for audio/video conversion.
 
----
-
 ## Recent Updates
 
-- **Unified Conversion Handler:** We’ve refactored the media conversion process to use an **Adapter Pattern**, allowing for a unified conversion handler for video, audio, and image files using either **FFmpeg** or **Jimp** depending on the file type.
+- **Unified Conversion Handler:** We’ve refactored the media conversion process to use an **Adapter Pattern**, allowing for a unified conversion handler for video, audio, and image files using either **FFmpeg** or **Jimp**, depending on the file type.
 - **Advanced Testing:** Expanded unit tests using **Jest** to cover media conversion handlers and IPC processes.
-- **Improved Performance:** Faster conversions through optimizations to how we handle bulk file uploads and media processing queues.
-- **Enhanced UI and UX:** More responsive interface and clearer progress tracking for large file batches.
-
----
+- **Improved Performance:** Faster conversions through optimizations in how we handle bulk file uploads and media processing queues.
+- **Enhanced UI and UX:** A more responsive interface and clearer progress tracking for large file batches.
 
 ## Technologies Used
 
@@ -65,8 +57,6 @@ Comet's goal is to provide a **free, user-friendly, and visually appealing** app
 - **i18n:** Internationalization for multi-language support.
 - **Jest:** For unit testing.
 - **GitHub Actions:** Continuous Integration/Continuous Deployment (CI/CD) and release automation.
-
----
 
 ## Getting Started
 
@@ -103,8 +93,6 @@ To get started with Comet:
    npm run test
    ```
 
----
-
 ## Roadmap
 
 - **Phase 1:** Basic UI Implementation (Completed)
@@ -119,9 +107,7 @@ To get started with Comet:
 - **Phase 4:** Cross-Platform Testing and Releases (In Progress)
   - Testing on macOS, Windows, and Linux.
   - Package the app for distribution across platforms.
-  - Address macOS code-signing challenges (currently blocked by lack of Apple Developer account).
-
----
+  - Address macOS code-signing challenges (currently blocked by the lack of an Apple Developer account).
 
 ## Contributing
 
@@ -134,13 +120,9 @@ Contributions are welcome! Here’s how you can contribute:
 5. **Submit a Pull Request:** Once done, submit a PR to the `main` branch.
 6. **Star the Repo:** If you like Comet, please give it a ⭐!
 
----
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 ## Acknowledgements
 
