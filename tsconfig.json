@@ -49,7 +49,7 @@
     "./**/*",
     "src/**/*",
     "tests/**/*"
-  ],
+, ".eslintrc.js"  ],
   "exclude": [
     "node_modules",
     "dist",
