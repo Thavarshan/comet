@@ -1,19 +1,35 @@
 # Release Notes
 
-## [Unreleased](https://github.com/Thavarshan/comet/compare/v2.2.2...HEAD)
+## [Unreleased](https://github.com/Thavarshan/comet/compare/v2.2.3...HEAD)
+
+## [v2.2.3](https://github.com/Thavarshan/comet/compare/v2.2.2...v2.2.3) - 2024-11-04
+
+### Changed
+
+* Revert to previous electron-forge version
+* Revert to previous eslint versions
+* Reset eslint configurations
+
+
+---
+
+* Release v2.2.1 by @Thavarshan in https://github.com/Thavarshan/comet/pull/41
+* Release v2.2.2 by @Thavarshan in https://github.com/Thavarshan/comet/pull/42
+
+**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.3
 
 ## [v2.2.2](https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2) - 2024-10-20
 
 ### Changed
 
-Release v2.2.1 by @Thavarshan in <https://github.com/Thavarshan/comet/pull/41>
+Release v2.2.1 by @Thavarshan in [https://github.com/Thavarshan/comet/pull/41](https://github.com/Thavarshan/comet/pull/41)
 
 * Upgraded dependencies
 * Update `namor` `generate` method usage
 * Update to eslint to `v9.13`
 * Update eslint configs
 
-**Full Changelog**: <https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2>
+**Full Changelog**: [https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2](https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2)
 
 ## [v2.2.1](https://github.com/Thavarshan/comet/compare/v2.1.2...v2.2.1) - 2024-09-27
 
@@ -25,7 +41,7 @@ Release v2.2.1 by @Thavarshan in <https://github.com/Thavarshan/comet/pull/41>
 
 * Save directory path in Windows is not formatted properly
 
-**Full Changelog**: <https://github.com/Thavarshan/comet/compare/v2.1.2...v2.2.1>
+**Full Changelog**: [https://github.com/Thavarshan/comet/compare/v2.1.2...v2.2.1](https://github.com/Thavarshan/comet/compare/v2.1.2...v2.2.1)
 
 ## [v2.1.2](https://github.com/Thavarshan/comet/compare/v2.0.4...v2.1.2) - 2024-09-21
 
@@ -47,7 +63,7 @@ Release v2.2.1 by @Thavarshan in <https://github.com/Thavarshan/comet/pull/41>
 * Solved high resource usage during conversions, reducing CPU and memory consumption.
 * Fixed a bug where removed files were still being processed in the conversion queue.
 
-**Full Changelog**: <https://github.com/Thavarshan/comet/compare/v2.0.4...v2.1.2>
+**Full Changelog**: [https://github.com/Thavarshan/comet/compare/v2.0.4...v2.1.2](https://github.com/Thavarshan/comet/compare/v2.0.4...v2.1.2)
 
 ## [v2.0.4](https://github.com/Thavarshan/comet/compare/v1.0.0...v2.0.4) - 2024-09-14
 
@@ -71,7 +87,7 @@ Release v2.2.1 by @Thavarshan in <https://github.com/Thavarshan/comet/pull/41>
 * High resource usage issue
 * Removed files would still be included in conversion queue
 
-**Full Changelog**: <https://github.com/Thavarshan/comet/compare/v1.0.0...v2.0.4>
+**Full Changelog**: [https://github.com/Thavarshan/comet/compare/v1.0.0...v2.0.4](https://github.com/Thavarshan/comet/compare/v1.0.0...v2.0.4)
 
 ## [v1.0.0](https://github.com/Thavarshan/comet/compare/v0.0.3...v1.0.0) - 2024-09-02
 
