@@ -136,7 +136,7 @@ const config: ForgeConfig = {
       config: {
         authToken: process.env.GH_TOKEN,
         repository: {
-          owner: 'stellar-comet',
+          owner: 'Thavarshan',
           name: name,
         },
         tagPrefix: 'v',
