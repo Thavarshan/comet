@@ -112,3 +112,19 @@ Initial stable release.
 ## [v0.0.1](https://github.com/Thavarshan/comet/compare/v0.0.0...v0.0.1) - 2024-08-17
 
 Initial alpha release for public testing and feedback.
+
+## [v2.2.3](https://github.com/Thavarshan/comet/compare/v2.2.3...v2.2.3) - 2024-11-07
+
+### Changed
+
+* Revert to previous electron-forge version
+* Revert to previous eslint versions
+* Reset eslint configurations
+
+
+---
+
+* Release v2.2.1 by @Thavarshan in https://github.com/Thavarshan/comet/pull/41
+* Release v2.2.2 by @Thavarshan in https://github.com/Thavarshan/comet/pull/42
+
+**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.3
