@@ -91,7 +91,7 @@ describe('configureIpcHandlers', () => {
       'mp4',
       '/path/to/save',
       'video',
-      mockEvent,
+      mockEvent
     );
     expect(result).toBe('conversion-success');
   });

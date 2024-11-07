@@ -32,8 +32,8 @@ describe('FfmpegAdapter', () => {
     const mockedPath = jest.mocked(path) as any;
     const mockEvent = {
       sender: {
-        send: jest.fn(),
-      },
+        send: jest.fn()
+      }
     } as unknown as Electron.IpcMainInvokeEvent;
 
     test('should handle video conversion process', async () => {
@@ -47,7 +47,7 @@ describe('FfmpegAdapter', () => {
           }
           return this;
         }),
-        save: jest.fn().mockReturnThis(),
+        save: jest.fn().mockReturnThis()
       };
 
       mockedFfmpeg.ffprobe = jest.fn((_filePath, callback) => {
@@ -64,7 +64,7 @@ describe('FfmpegAdapter', () => {
         '/mock/path/video.mp4',
         VideoFormat.MP4,
         '/mock/save',
-        mockEvent,
+        mockEvent
       );
 
       expect(outputPath).toBe('/mock/save/video.mp4');
@@ -79,9 +79,13 @@ describe('FfmpegAdapter', () => {
         callback(new Error('ffprobe error'), null);
       });
 
-      await expect(
-        ffmpegAdapter.convert('1', '/mock/path/video.mp4', VideoFormat.MP4, '/mock/save', mockEvent),
-      ).rejects.toThrow('ffprobe error');
+      await expect(ffmpegAdapter.convert(
+        '1',
+        '/mock/path/video.mp4',
+        VideoFormat.MP4,
+        '/mock/save',
+        mockEvent
+      )).rejects.toThrow('ffprobe error');
 
       expect(mockedFfmpeg.ffprobe).toHaveBeenCalledWith('/mock/path/video.mp4', expect.any(Function));
     });
@@ -90,7 +94,7 @@ describe('FfmpegAdapter', () => {
   describe('cancel', () => {
     test('should cancel the conversion process', () => {
       const mockFfmpegCommand = {
-        kill: jest.fn(),
+        kill: jest.fn()
       };
 
       ffmpegAdapter['ffmpegProcesses'].set('1', mockFfmpegCommand as unknown as ffmpeg.FfmpegCommand);

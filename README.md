@@ -1,9 +1,9 @@
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/Thavarshan/comet/blob/main/assets/logo.svg" width="400" height="400" alt="Comet"></a></p>
+<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/logo.svg" width="400" height="400" alt="Comet"></a></p>
 
 <p align="center">
-<a href="https://github.com/Thavarshan/comet/actions"><img src="https://github.com/Thavarshan/comet/actions/workflows/test.yml/badge.svg" alt="Test Status"></a>
-<a href="https://github.com/Thavarshan/comet/actions"><img src="https://github.com/Thavarshan/comet/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
-<a href="https://github.com/Thavarshan/comet/actions"><img src="https://github.com/Thavarshan/comet/actions/workflows/release.yml/badge.svg?branch=release" alt="Release Status"></a>
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg" alt="Test Status"></a>
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release" alt="Release Status"></a>
 <a href="https://packagist.org/packages/jerome/filterable"><img src="https://img.shields.io/packagist/l/jerome/filterable" alt="License"></a>
 </p>
 
@@ -75,7 +75,7 @@ To get started with Comet:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Thavarshan/comet.git
+   git clone https://github.com/stellar-comet/comet.git
    cd comet
    ```
 
