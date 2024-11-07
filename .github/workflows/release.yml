@@ -137,3 +137,65 @@ jobs:
         with:
           name: build-artifacts-windows-${{ matrix.arch }}
           path: out/make/
+
+  upload-artifacts:
+    needs: [build-macos, build-linux, build-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract version from package.json
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version);")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Download build artifacts (macos x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-x64
+          path: artifacts
+
+      - name: Download build artifacts (macos arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-macos-arm64
+          path: artifacts
+
+      - name: Download build artifacts (linux x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-x64
+          path: artifacts
+
+      - name: Download build artifacts (linux arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-linux-arm64
+          path: artifacts
+
+      - name: Download build artifacts (windows x64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-x64
+          path: artifacts
+
+      - name: Download build artifacts (windows arm64)
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-windows-arm64
+          path: artifacts
+
+      - name: Upload files to Cloudflare R2
+        run: |
+          for file in $(find artifacts/ -type f -iname '*comet*'); do
+            echo "Uploading $(basename "$file")"
+            aws s3 cp "$file" "s3://${{ secrets.R2_BUCKET }}/releases/v${{ env.VERSION }}/$(basename "$file")" \
+              --endpoint-url="${{ secrets.R2_ENDPOINT }}" --debug
+          done
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.R2_REGION }}
+        shell: bash
