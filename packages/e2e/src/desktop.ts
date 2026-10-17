@@ -125,13 +125,15 @@ export async function launchDesktop(
         ? new Promise<void>((resolve) => child.once('exit', () => resolve()))
         : Promise.resolve();
 
-      // Closing the window lets Chromium flush its profile. On Windows,
-      // child.kill('SIGTERM') forcibly terminates Electron before that happens.
+      // Closing the last window starts app.quit() on Windows and Linux. Wait
+      // for that shutdown to finish so Chromium can flush localStorage. Sending
+      // SIGTERM on Linux here starts a second quit while before-quit is still
+      // draining the engine and preferences, racing the profile write.
       await page.close({ runBeforeUnload: true });
       await browser.close();
       if (running) {
         // macOS keeps the application alive after its last window closes.
-        if (process.platform !== 'win32') {
+        if (process.platform === 'darwin') {
           child.kill('SIGTERM');
         }
 
