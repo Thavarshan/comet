@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import path from 'node:path';
 
 /**
  * Spawn a native tool without a shell and collect bounded diagnostic output.
@@ -51,14 +52,23 @@ export async function runProcess(
       cleanup();
       reject(error);
     });
-    child.once('close', (code) => {
+    child.once('close', (code, terminationSignal) => {
       cleanup();
       if (signal.aborted) {
         reject(new DOMException('Conversion canceled', 'AbortError'));
       } else if (code === 0) {
         resolve({ stdout, stderr });
       } else {
-        reject(new Error(stderr.trim() || `Process exited with code ${code}`));
+        const reason = terminationSignal
+          ? `Process terminated by ${terminationSignal}`
+          : `Process exited with code ${code}`;
+        reject(
+          new Error(
+            [path.basename(executable), reason, stderr.trim()]
+              .filter(Boolean)
+              .join(': '),
+          ),
+        );
       }
     });
   });

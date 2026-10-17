@@ -60,56 +60,30 @@
       ]
     },
     "linux-arm64": {
-      "sourceRelease": "https://github.com/eugeneware/ffmpeg-static/releases/tag/b6.1.1",
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-30-13-08",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
       "files": [
         {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-arm64.gz",
-          "sha256": "754a678672298bc68156adff58aa7385a592c2b30b1d0ae8750c45c915c4bac0",
-          "output": "ffmpeg",
-          "compression": "gzip"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffprobe-linux-arm64.gz",
-          "sha256": "2ab6aba60ee84412dff9188720703376cb4e7aaf7e0b5e43aa8249f2acae5bf8",
-          "output": "ffprobe",
-          "compression": "gzip"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/linux-arm64.LICENSE",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
-          "output": "LICENSE.ffmpeg"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/linux-arm64.README",
-          "sha256": "d6777d2fd276b23f0ac6666fa619e88ffe4826521881c7ff83836e30cb4acec2",
-          "output": "SOURCE.ffmpeg.txt"
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-30-13-08/ffmpeg-n9.0.2-17-g2a571b6068-linuxarm64-gpl-9.0.tar.xz",
+          "sha256": "91afcd7695d4bbbb9e0057aa10baaf9875ec4e1a97303f9059ec971336a2ab46",
+          "compression": "tar.xz",
+          "directory": "ffmpeg-n9.0.2-17-g2a571b6068-linuxarm64-gpl-9.0",
+          "entries": ["bin/ffmpeg", "bin/ffprobe", "LICENSE.txt"]
         }
       ]
     },
     "linux-x64": {
-      "sourceRelease": "https://github.com/eugeneware/ffmpeg-static/releases/tag/b6.1.1",
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-30-13-08",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
       "files": [
         {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-linux-x64.gz",
-          "sha256": "bfe8a8fc511530457b528c48d77b5737527b504a3797a9bc4866aeca69c2dffa",
-          "output": "ffmpeg",
-          "compression": "gzip"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffprobe-linux-x64.gz",
-          "sha256": "25d9b6ccb05e3d9de9e04e31e2506d8dd7f9f0418981965ac6df12e8d3afd067",
-          "output": "ffprobe",
-          "compression": "gzip"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/linux-x64.LICENSE",
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
-          "output": "LICENSE.ffmpeg"
-        },
-        {
-          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/linux-x64.README",
-          "sha256": "72f4b1b06d419d22ace6e7cc75f06826f90737345aa0b1736158929f4aacc537",
-          "output": "SOURCE.ffmpeg.txt"
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-30-13-08/ffmpeg-n9.0.2-17-g2a571b6068-linux64-gpl-9.0.tar.xz",
+          "sha256": "68ee646831adaae2495618346f3bba94ff207ff83bbd34d643e7004730d66269",
+          "compression": "tar.xz",
+          "directory": "ffmpeg-n9.0.2-17-g2a571b6068-linux64-gpl-9.0",
+          "entries": ["bin/ffmpeg", "bin/ffprobe", "LICENSE.txt"]
         }
       ]
     },
@@ -141,11 +115,14 @@
       ]
     },
     "win32-arm64": {
-      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-30-13-08",
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-08-31-13-27",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
+      "notes": "Pin before Windows ARM64 startup regression: https://github.com/BtbN/FFmpeg-Builds/issues/675",
       "files": [
         {
-          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-30-13-08/ffmpeg-n9.0.2-17-g2a571b6068-winarm64-gpl-9.0.zip",
-          "sha256": "6dcd0626f9f6d6c7323565e57410e9f37ed14a85946ec9ea9caff294ca32f5c0",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-08-31-13-27/ffmpeg-n8.1.2-50-g1a748fe2cd-winarm64-gpl-8.1.zip",
+          "sha256": "722be613f4fdb0b114671515c44a747edd86b814d4e367ca11b10df4539e6e74",
           "compression": "zip",
           "output": "archive",
           "entries": ["bin/ffmpeg.exe", "bin/ffprobe.exe", "LICENSE.txt"]

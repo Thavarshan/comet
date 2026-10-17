@@ -228,7 +228,7 @@ export function OutputInspector({
         )}
         {spec.kind === 'audio' && (
           <>
-            {!lossless && (
+            {!lossless && settings.format !== 'amr' && (
               <Field label={t('design.bitrate')}>
                 <SelectControl
                   label={t('design.bitrate')}
@@ -265,8 +265,13 @@ export function OutputInspector({
                   );
                 }}
               >
-                <SelectOption value="">{t('design.original')}</SelectOption>
-                {[22050, 44100, 48000, 96000].map((rate) => (
+                <SelectOption value="">
+                  {settings.format === 'amr' ? '8000 Hz' : t('design.original')}
+                </SelectOption>
+                {(settings.format === 'amr'
+                  ? []
+                  : [22050, 44100, 48000, 96000]
+                ).map((rate) => (
                   <SelectOption key={rate} value={rate}>
                     {rate} Hz
                   </SelectOption>
@@ -290,9 +295,13 @@ export function OutputInspector({
                   );
                 }}
               >
-                <SelectOption value="">{t('design.original')}</SelectOption>
+                <SelectOption value="">
+                  {settings.format === 'amr' ? 'Mono' : t('design.original')}
+                </SelectOption>
                 <SelectOption value="1">Mono</SelectOption>
-                <SelectOption value="2">Stereo</SelectOption>
+                {settings.format !== 'amr' && (
+                  <SelectOption value="2">Stereo</SelectOption>
+                )}
               </SelectControl>
             </Field>
             {['wav', 'aiff', 'caf'].includes(settings.format) &&

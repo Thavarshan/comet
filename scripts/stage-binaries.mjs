@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import {
   mkdir,
   readFile,
@@ -79,6 +80,16 @@ for (const file of entry.files) {
       }
 
       await writeFile(path.join(destination, path.basename(name)), found[1]);
+    }
+  } else if (file.compression === 'tar.xz') {
+    // Extract only named members from a checksum-verified upstream archive.
+    for (const name of file.entries) {
+      const content = execFileSync(
+        'tar',
+        ['-xJOf', path.join(cache, file.sha256), `${file.directory}/${name}`],
+        { maxBuffer: 256 * 1024 * 1024 },
+      );
+      await writeFile(path.join(destination, path.basename(name)), content);
     }
   } else {
     await writeFile(

@@ -28,3 +28,16 @@ it('handles launch failures, nonzero exits and an already canceled probe', async
     name: 'AbortError',
   });
 });
+
+it.runIf(process.platform !== 'win32')(
+  'identifies native crashes by executable and termination signal',
+  async () => {
+    await expect(
+      runProcess(
+        process.execPath,
+        ['-e', 'process.kill(process.pid, "SIGTERM")'],
+        new AbortController().signal,
+      ),
+    ).rejects.toThrow('Process terminated by SIGTERM');
+  },
+);

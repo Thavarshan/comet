@@ -60,6 +60,10 @@ export function resolveEncoding(
   }
 
   if (spec.kind === 'audio') {
+    if (format === 'amr' && (spec.sampleRate || spec.channels === 2)) {
+      throw new Error('AMR requires 8000 Hz mono audio');
+    }
+
     if (spec.codec === 'alac') {
       if (!['m4a', 'caf'].includes(format)) {
         throw new Error('Apple Lossless requires M4A or CAF');
@@ -159,6 +163,11 @@ export function encodingArguments(
       // Gapless MP3 can start below WavPack's 128-sample block minimum.
       // Set a block size without padding or trimming the decoded audio.
       args.push('-frame_size', '4096');
+    }
+
+    if (format === 'amr') {
+      // AMR-NB is a speech codec with fixed rate/channel requirements.
+      args.push('-ar', '8000', '-ac', '1', '-b:a', '12200');
     }
 
     if (spec.bitrate) {
