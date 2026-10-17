@@ -174,6 +174,11 @@ export function encodingArguments(
       args.push('-b:a', `${spec.bitrate}k`);
     }
 
+    if (format === 'eac3' && !spec.sampleRate) {
+      // 48 kHz keeps short narrowband clips detectable as raw E-AC-3.
+      args.push('-ar', '48000');
+    }
+
     if (spec.sampleRate) {
       args.push('-ar', String(spec.sampleRate));
     }

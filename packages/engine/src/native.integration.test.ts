@@ -159,6 +159,48 @@ describe('bundled native tools', () => {
 
     expect(failures).toEqual([]);
   }, 120000);
+  it('creates detectable E-AC-3 from a short narrowband speech source', async () => {
+    const source = path.join(directory, 'narrowband.wav');
+    await runProcess(
+      paths.ffmpegPath,
+      [
+        '-v',
+        'error',
+        '-f',
+        'lavfi',
+        '-i',
+        'sine=frequency=440:sample_rate=8000',
+        '-t',
+        '0.24',
+        '-ac',
+        '1',
+        source,
+      ],
+      signal(),
+    );
+    const output = await execute(
+      job('audio', source, 'eac3'),
+      signal(),
+      () => {},
+    );
+    const metadata = await runProcess(
+      paths.ffprobePath,
+      ['-v', 'error', '-show_streams', '-of', 'json', output],
+      signal(),
+    );
+    const data = JSON.parse(metadata.stdout) as {
+      streams: { codec_name: string; sample_rate: string }[];
+    };
+    expect(data.streams[0]).toMatchObject({
+      codec_name: 'eac3',
+      sample_rate: '48000',
+    });
+    await runProcess(
+      paths.ffmpegPath,
+      ['-v', 'error', '-xerror', '-i', output, '-f', 'null', '-'],
+      signal(),
+    );
+  });
   it('converts every advertised image format in a worker and preserves original bytes', async () => {
     const original = await readFile(image);
     for (const capability of capabilities.image.filter(

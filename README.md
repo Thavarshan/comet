@@ -1,18 +1,76 @@
 # Comet
 
-A local media converter for video, audio, and images, built with React,
-Electron, FFmpeg and Jimp. Your media stays on your device; conversion needs no
-account or network service.
+A compact desktop app for converting video, audio, and images. Choose your
+files, pick an output format, and convert them locally with bundled media tools.
+No account, upload, or cloud processing is required.
 
-Comet is being modernized from its Vue application. The repository now separates
-the desktop interface, conversion engine, and shared contracts. Marketing and
-documentation applications will follow later.
+[Download stable](https://github.com/Thavarshan/comet/releases/latest) ·
+[Release notes](CHANGELOG.md) · [Contribute](.github/CONTRIBUTING.md)
 
-![React desktop interface](assets/screenshot_react.png)
+> **Development preview:** this branch contains the React rewrite, version
+> `3.0.0-beta.1`. The latest published stable release is `v2.2.3`, which uses
+> the previous interface. The beta is a draft pending platform verification and
+> signing; these screenshots show the development build.
 
-## Development
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="assets/screenshots/desktop-dark.png"
+  />
+  <img
+    src="assets/screenshots/desktop-light.png"
+    alt="Comet’s compact conversion queue with video, audio, and image tabs"
+    width="700"
+  />
+</picture>
 
-Use the pinned Node and npm versions:
+Native macOS captures of `3.0.0-beta.1`, using generated demo files. The light
+view shows completed conversions; the dark view shows files ready to convert.
+
+<details>
+<summary>More screenshots: adding files and output settings</summary>
+
+| Add your media                                                                            | Configure the output                                                                                                   |
+| ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| ![Empty queue with keyboard-accessible file upload](assets/screenshots/desktop-empty.png) | ![Output settings with task, format, codec, quality, and destination controls](assets/screenshots/output-settings.png) |
+
+</details>
+
+## What you can do
+
+- Convert multiple files with drag and drop or the file picker (`⌘/Ctrl + O`).
+- Convert video, extract an audio track, or save a video frame as an image.
+- Choose compatible codecs, quality presets, dimensions, and frame rates.
+- Configure audio bitrate, sample rate, channels, and supported PCM bit depths.
+- Resize images, choose quality, and control transparency or first-frame
+  handling.
+- Monitor each file, cancel a file or the current tab’s batch, and retry
+  failures.
+- Reveal completed files in their folder. Original files are never overwritten;
+  existing output names receive a collision suffix.
+- Use light, dark, or system appearance and English, Spanish, French, German, or
+  Russian. Preferences are saved across launches.
+
+Available output formats depend on the encoders and muxers bundled for your
+platform. Common choices include MP4, MKV, WebM, MOV, MP3, WAV, FLAC, PNG, JPEG,
+WebP, and AVIF. The format picker explains unavailable outputs. This is not a
+promise that every media type can convert into every other media type.
+
+## Convert a file
+
+1. Select **Video**, **Audio**, or **Image**, then add your source files.
+2. Choose the destination folder and output format.
+3. Open **Output settings** for the task, codec, quality, and advanced controls.
+4. Press **Convert**. Each submitted batch keeps its original settings while
+   files added later remain drafts for the next batch.
+
+Video, audio, and image keep separate batches with one active conversion across
+all tabs. Canceling a batch affects that tab. Application restarts begin with an
+empty queue and never replay previous conversions automatically.
+
+## Run from source
+
+Use the pinned Node 24.22.0 and npm 12.2.0 versions:
 
 ```sh
 nvm install
@@ -22,75 +80,77 @@ npm ci
 npm run dev
 ```
 
-The first launch downloads the pinned, checksum-verified media tools for your
-native OS/architecture. Later launches use the verified local cache. End-user
-packages contain the tools and do not download them at runtime.
+The first development launch downloads pinned, checksum-verified FFmpeg and
+FFprobe binaries. Later launches reuse the verified local cache. Distributed
+applications include these tools and do not fetch them at runtime.
 
-| Command                     | Purpose                                                          |
-| --------------------------- | ---------------------------------------------------------------- |
-| `npm run dev` / `npm start` | Desktop development with shared-package watchers                 |
-| `npm run lint`              | ESLint, hooks/accessibility rules and workspace boundaries       |
-| `npm run typecheck`         | All workspace types                                              |
-| `npm test`                  | Contract, engine, bridge, preference and React tests             |
-| `npm run build`             | Production JavaScript/CSS bundles and library outputs            |
-| `npm run binaries`          | Stage verified native FFmpeg/FFprobe resources                   |
-| `npm run test:matrix`       | All supported native source/output pairs with coverage reports   |
-| `npm run test:e2e`          | Shared Playwright desktop suite against the current build        |
-| `npm run test:integration`  | Real media fixtures against the staged tools; run build first    |
-| `npm run package`           | Package the desktop application for the native target            |
-| `npm run test:packaged`     | Verify resources/imports, then test an isolated application copy |
-| `npm run make`              | Create platform distributables                                   |
+| Command                     | Purpose                                                      |
+| --------------------------- | ------------------------------------------------------------ |
+| `npm run dev` / `npm start` | Run desktop development with package watchers                |
+| `npm run format:check`      | Check the 80-column formatting rules                         |
+| `npm run lint`              | Build package types, then lint code and workspace boundaries |
+| `npm run typecheck`         | Check TypeScript across the workspaces                       |
+| `npm test`                  | Run contract, engine, bridge, preference, and React tests    |
+| `npm run test:ci`           | Test release policies and download security boundaries       |
+| `npm run build`             | Build renderer bundles and shared packages                   |
+| `npm run binaries`          | Stage verified native conversion tools                       |
+| `npm run test:integration`  | Convert real fixtures with the staged tools                  |
+| `npm run test:matrix`       | Exercise source/output pairs and report coverage gaps        |
+| `npm run test:e2e`          | Run desktop Playwright tests against the built app           |
+| `npm run package`           | Package the app for the host OS and architecture             |
+| `npm run make`              | Create platform distributables                               |
+| `npm run dist:portable`     | Add the Linux portable tar archive after packaging           |
+| `npm run test:packaged`     | Verify and test an isolated packaged app after make          |
 
-Linux needs the desktop runtime libraries, `rpm`, `fakeroot`, and Xvfb for
-headless packaged testing. Use `xvfb-run --auto-servernum npm run test:packaged`
-in a headless environment. Packaging and media resources must target the same
-architecture.
+For native integration/matrix testing, run `npm run build` and
+`npm run binaries` first. Linux packaging needs `rpm` and `fakeroot`; headless
+E2E also needs the desktop runtime libraries and Xvfb. Use
+`xvfb-run --auto-servernum npm run test:packaged` on a headless Linux host.
+Packaging and native tools must target the same architecture.
 
-## Workspaces
+## Repository structure
 
 ```text
-apps/desktop          Electron main/preload, React renderer and packaging
-packages/engine       Electron-free conversion scheduler and adapters
-packages/contracts    Browser-safe runtime validation and shared types
-packages/ui           Shared shadcn components, tokens and typography
-packages/e2e          Shared Playwright tests, drivers and media fixtures
+apps/desktop          Electron main/preload, React renderer, packaging
+packages/engine       Electron-free scheduling and conversion execution
+packages/contracts    Browser-safe validation and shared domain types
+packages/ui           Shared shadcn components, theme, and typography
+packages/e2e          Playwright drivers, media fixtures, and desktop tests
 ```
 
-The engine owns the queue. Video, audio and image have separate batches, with
-one conversion active globally. Cancel batch affects only the selected tab;
-per-file cancellation leaves its siblings running. Submitted settings stay
-fixed. Original files are preserved and colliding outputs receive unique names.
+The engine owns submitted jobs and scheduling. Electron main owns preferences,
+resource discovery, native dialogs, and the validated IPC bridge. React displays
+queue snapshots and submits commands through the narrow preload API.
 
-The refreshed UI supports light/dark/system appearance and English, Spanish,
-French, German and Russian. Preferences survive restarts; active jobs do not
-restart automatically. Animated/multipage images require explicit first-frame
-consent, and removing transparency requires flattening consent.
+The shared UI uses the Comet shadcn preset with medium radii, Radix primitives,
+Inter typography, tooltips, dialogs, popovers, and Scroll Area. Marketing,
+documentation, and web applications are planned; they do not exist yet.
 
-Output availability reflects the encoders/muxers included in each pinned native
-build. The integration suite executes every output marked available. Unsupported
-formats remain visible but disabled.
+See the [E2E workspace guide](packages/e2e/README.md) for fixture coverage,
+strict-mode checks, reports, and future web test reuse. The suite distinguishes
+unsupported encoders, missing tracks, missing input fixtures, and actual
+failures. AMR, APE, and MPC fixture coverage varies by native build; do not
+claim complete accepted-input coverage while gaps remain.
 
-The shared [E2E workspace](packages/e2e/README.md) verifies source/output pairs,
-video audio-extraction/frame-saving, and every enabled format through the
-packaged desktop UI. Reports distinguish unavailable outputs, expected missing
-tracks, untested input fixtures, and failures. AMR, APE, and MPC still need
-input fixtures on macOS ARM64; use the documented strict coverage flag before
-claiming all accepted inputs are tested. The web app can reuse the configuration
-and page actions once its real conversion workflow exists.
+## Builds and releases
 
-## Releases
+The target matrix is macOS, Windows, and Linux on x64 and ARM64. A target is
+eligible for distribution only after its native packaged checks pass.
 
-The intended release matrix is macOS, Windows and Linux, each x64 and ARM64.
-Only targets with passing native packaged verification should be distributed.
-Local verification does not establish support for another OS/architecture.
-Existing releases are available on
-[GitHub](https://github.com/Thavarshan/comet/releases).
+| Platform | Distributables                      |
+| -------- | ----------------------------------- |
+| macOS    | ZIP application bundle              |
+| Windows  | Squirrel installer and portable ZIP |
+| Linux    | DEB, RPM, and portable tar archive  |
 
-Comet's application code is MIT licensed. Bundled media executables carry their
-own licenses and source notices, included alongside the tools. See
-[LICENSE](LICENSE) and the pinned binary provenance manifest.
+Pull requests run formatting, lint, static security analysis, dependency checks,
+unit/integration tests, conversion-pair coverage, and packaged desktop E2E.
+Additional Linux compatibility jobs cover named Debian, Ubuntu, Fedora,
+openSUSE, and Arch environments. A passing container test does not verify every
+Linux distribution, compositor, or desktop integration.
 
-### CI and release builds
+<details>
+<summary>CI matrix, signing, and release maintenance</summary>
 
 Pull requests and branch builds enter a shared quality gate (80-column
 formatting, ESLint and workspace boundaries, TypeScript, release tooling tests,
@@ -145,3 +205,12 @@ explicit coverage gaps. AMR, APE, and MPC input fixtures still need to be
 supplied before claiming complete accepted-input coverage.
 `COMET_MEDIA_FIXTURES` supplies those fixtures; `COMET_REQUIRE_INPUT_COVERAGE=1`
 makes missing coverage fail.
+
+</details>
+
+## License
+
+Comet’s application code is [MIT licensed](LICENSE). Bundled media executables
+have their own licenses and source notices, shipped alongside the tools. Their
+versions, upstream sources, and checksums are recorded in the
+[binary manifest](scripts/binary-manifest.json).
