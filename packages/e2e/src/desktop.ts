@@ -120,13 +120,22 @@ export async function launchDesktop(
     page,
     child,
     close: async () => {
+      const running = child.exitCode === null && child.signalCode === null;
+      const exited = running
+        ? new Promise<void>((resolve) => child.once('exit', () => resolve()))
+        : Promise.resolve();
+
+      // Closing the window lets Chromium flush its profile. On Windows,
+      // child.kill('SIGTERM') forcibly terminates Electron before that happens.
+      await page.close({ runBeforeUnload: true });
       await browser.close();
-      if (child.exitCode === null && child.signalCode === null) {
-        const exited = new Promise<void>((resolve) =>
-          child.once('exit', () => resolve()),
-        );
-        child.kill('SIGTERM');
-        const timer = setTimeout(() => child.kill('SIGKILL'), 3000);
+      if (running) {
+        // macOS keeps the application alive after its last window closes.
+        if (process.platform !== 'win32') {
+          child.kill('SIGTERM');
+        }
+
+        const timer = setTimeout(() => child.kill('SIGKILL'), 5000);
         await exited;
         clearTimeout(timer);
       }

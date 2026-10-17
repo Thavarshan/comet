@@ -2,6 +2,10 @@
 # Runs inside an ephemeral compatibility container, never on a user's system.
 set -euo pipefail
 
+# Minimal images may default to the ASCII C locale. Chromium needs UTF-8 to
+# resolve the Unicode fixture filenames used by the desktop upload tests.
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 if command -v apt-get >/dev/null; then
   apt-get update
@@ -13,17 +17,18 @@ if command -v apt-get >/dev/null; then
   fi
   apt-get install -y --no-install-recommends \
     xvfb xauth "$gtk" libnss3 "$audio" libgbm1 libxss1 \
-    libdrm2 ca-certificates util-linux passwd
+    libdrm2 ca-certificates util-linux passwd fonts-liberation
 elif command -v dnf >/dev/null; then
   dnf install -y xorg-x11-server-Xvfb xorg-x11-xauth gtk3 nss alsa-lib \
-    mesa-libgbm libXScrnSaver libdrm util-linux shadow-utils tar gzip
+    mesa-libgbm libXScrnSaver libdrm util-linux shadow-utils tar gzip \
+    liberation-sans-fonts
 elif command -v zypper >/dev/null; then
   zypper --non-interactive install xorg-x11-server-Xvfb xauth xvfb-run libgtk-3-0 \
     mozilla-nss libasound2 libgbm1 libXss1 libatk-bridge-2_0-0 libdrm2 \
-    util-linux shadow tar gzip
+    util-linux shadow tar gzip liberation-fonts
 elif command -v pacman >/dev/null; then
   pacman -Syu --noconfirm xorg-server-xvfb xorg-xauth gtk3 nss alsa-lib \
-    mesa libxss at-spi2-core libdrm util-linux shadow tar gzip
+    mesa libxss at-spi2-core libdrm util-linux shadow tar gzip ttf-liberation
 else
   echo 'Unsupported compatibility test image' >&2
   exit 1
