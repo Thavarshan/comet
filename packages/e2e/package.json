@@ -1,0 +1,25 @@
+{
+  "name": "@comet/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./config": "./dist/config.js",
+    "./converter-page": "./dist/converter-page.js",
+    "./desktop": "./dist/desktop.js",
+    "./media": "./dist/media.js",
+    "./upload": "./dist/upload.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:desktop": "playwright test --project=desktop",
+    "test:matrix": "playwright test --project=native-matrix"
+  },
+  "dependencies": {
+    "@comet/contracts": "*",
+    "@comet/engine": "*",
+    "@playwright/test": "1.64.1",
+    "zod": "4.6.7"
+  }
+}

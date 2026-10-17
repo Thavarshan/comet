@@ -94,3 +94,20 @@ note.md
 cert.pem
 key.pem
 temp
+
+# Workspace output and native resources
+dist/
+.turbo/
+playwright-report/
+test-results/
+*.pfx
+*.p12
+
+# Shared component gallery
+.gallery/
+
+# CI-only release aggregation and security reports
+/artifacts/
+/release-assets/
+/sarif-results/
+/dependency-audit.json

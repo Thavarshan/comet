@@ -1,150 +1,147 @@
-<p align="center"><a href="https://comet.thavarshan.com" target="_blank"><img src="https://github.com/stellar-comet/comet/blob/main/assets/logo.svg" width="400" height="400" alt="Comet"></a></p>
+# Comet
 
-<p align="center">
-<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/test.yml/badge.svg" alt="Test Status"></a>
-<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
-<a href="https://github.com/stellar-comet/comet/actions"><img src="https://github.com/stellar-comet/comet/actions/workflows/release.yml/badge.svg?branch=release" alt="Release Status"></a>
-<a href="https://packagist.org/packages/jerome/filterable"><img src="https://img.shields.io/packagist/l/jerome/filterable" alt="License"></a>
-</p>
+A local media converter for video, audio, and images, built with React,
+Electron, FFmpeg and Jimp. Your media stays on your device; conversion needs no
+account or network service.
 
-> [!WARNING]
-> **We don't have an Apple Developer account yet, and the application is not code-signed for both Mac and Windows. Therefore, the applications will show a warning popup on the first start.**
-> On **Mac**, click **Okay**, then go to **Settings / Privacy & Security** and scroll down until you see a button **Open anyway**.
-> On **Windows**, you may see a warning message indicating that the app is from an unknown publisher. Click **More info** and then **Run anyway** to proceed.
+Comet is being modernized from its Vue application. The repository now separates
+the desktop interface, conversion engine, and shared contracts. Marketing and
+documentation applications will follow later.
 
----
+![React desktop interface](assets/screenshot_react.png)
 
-## About Comet
+## Development
 
-**Comet** is a cross-platform media converter application designed to make the conversion of video, audio, and image files as easy and accessible as possible. Built on top of [FFmpeg](https://ffmpeg.org/), **Jimp**, and **Electron**, Comet offers a seamless and efficient user experience for media conversions, all within a simple, intuitive interface.
+Use the pinned Node and npm versions:
 
-![Comet UI 1](./assets/screenshot_1.png)
-![Comet UI 2](./assets/screenshot_2.png)
-![Comet UI 3](./assets/screenshot_3.png)
-![Comet UI 4](./assets/screenshot_4.png)
+```sh
+nvm install
+nvm use
+npm install -g npm@12.2.0
+npm ci
+npm run dev
+```
 
----
+The first launch downloads the pinned, checksum-verified media tools for your
+native OS/architecture. Later launches use the verified local cache. End-user
+packages contain the tools and do not download them at runtime.
 
-## Project Overview
+| Command                     | Purpose                                                          |
+| --------------------------- | ---------------------------------------------------------------- |
+| `npm run dev` / `npm start` | Desktop development with shared-package watchers                 |
+| `npm run lint`              | ESLint, hooks/accessibility rules and workspace boundaries       |
+| `npm run typecheck`         | All workspace types                                              |
+| `npm test`                  | Contract, engine, bridge, preference and React tests             |
+| `npm run build`             | Production JavaScript/CSS bundles and library outputs            |
+| `npm run binaries`          | Stage verified native FFmpeg/FFprobe resources                   |
+| `npm run test:matrix`       | All supported native source/output pairs with coverage reports   |
+| `npm run test:e2e`          | Shared Playwright desktop suite against the current build        |
+| `npm run test:integration`  | Real media fixtures against the staged tools; run build first    |
+| `npm run package`           | Package the desktop application for the native target            |
+| `npm run test:packaged`     | Verify resources/imports, then test an isolated application copy |
+| `npm run make`              | Create platform distributables                                   |
 
-Comet's goal is to provide a **free, user-friendly, and visually appealing** application for converting media files. Whether you need to convert a single file or multiple files at once, Comet is designed to make the process straightforward.
+Linux needs the desktop runtime libraries, `rpm`, `fakeroot`, and Xvfb for
+headless packaged testing. Use `xvfb-run --auto-servernum npm run test:packaged`
+in a headless environment. Packaging and media resources must target the same
+architecture.
 
-### Key Features
+## Workspaces
 
-- **Cross-Platform Compatibility:** Works seamlessly on macOS, Windows, and Linux.
-- **Video, Audio, and Image Conversion:**
-  - Video formats: MP4, MKV, AVI, MOV, etc.
-  - Audio formats: MP3, WAV, AAC, FLAC, etc.
-  - Image formats: JPEG, PNG, BMP, ICO, ICNS, etc.
-- **Bulk File Conversion:** Easily upload and convert multiple files in one go.
-- **Real-Time Progress Tracking:** Track the progress of each conversion with real-time feedback.
-- **Dark Mode:** A sleek dark theme for more comfortable use.
-- **Multi-Language Support:** Available in multiple languages for a global audience.
-- **Cancel/Resume Conversions:** Cancel ongoing conversions, with options to manage individual items in the queue.
-- **Jimp and FFmpeg Integration:** Use Jimp for images and FFmpeg for audio/video conversion.
+```text
+apps/desktop          Electron main/preload, React renderer and packaging
+packages/engine       Electron-free conversion scheduler and adapters
+packages/contracts    Browser-safe runtime validation and shared types
+packages/ui           Shared shadcn components, tokens and typography
+packages/e2e          Shared Playwright tests, drivers and media fixtures
+```
 
----
+The engine owns the queue. Video, audio and image have separate batches, with
+one conversion active globally. Cancel batch affects only the selected tab;
+per-file cancellation leaves its siblings running. Submitted settings stay
+fixed. Original files are preserved and colliding outputs receive unique names.
 
-## Recent Updates
+The refreshed UI supports light/dark/system appearance and English, Spanish,
+French, German and Russian. Preferences survive restarts; active jobs do not
+restart automatically. Animated/multipage images require explicit first-frame
+consent, and removing transparency requires flattening consent.
 
-- **Unified Conversion Handler:** We’ve refactored the media conversion process to use an **Adapter Pattern**, allowing for a unified conversion handler for video, audio, and image files using either **FFmpeg** or **Jimp** depending on the file type.
-- **Advanced Testing:** Expanded unit tests using **Jest** to cover media conversion handlers and IPC processes.
-- **Improved Performance:** Faster conversions through optimizations to how we handle bulk file uploads and media processing queues.
-- **Enhanced UI and UX:** More responsive interface and clearer progress tracking for large file batches.
+Output availability reflects the encoders/muxers included in each pinned native
+build. The integration suite executes every output marked available. Unsupported
+formats remain visible but disabled.
 
----
+The shared [E2E workspace](packages/e2e/README.md) verifies source/output pairs,
+video audio-extraction/frame-saving, and every enabled format through the
+packaged desktop UI. Reports distinguish unavailable outputs, expected missing
+tracks, untested input fixtures, and failures. AMR, APE, and MPC still need
+input fixtures on macOS ARM64; use the documented strict coverage flag before
+claiming all accepted inputs are tested. The web app can reuse the configuration
+and page actions once its real conversion workflow exists.
 
-## Technologies Used
+## Releases
 
-- **Electron:** For building the cross-platform desktop application.
-- **Vue.js (with Composition API and TypeScript):** For the frontend UI.
-- **FFmpeg & Jimp:** Core engines for media conversion (video/audio via FFmpeg, images via Jimp).
-- **Node.js:** Backend services and media processing.
-- **Vite:** Modern build tool for fast development.
-- **Tailwind CSS:** For styling and responsive design.
-- **i18n:** Internationalization for multi-language support.
-- **Jest:** For unit testing.
-- **GitHub Actions:** Continuous Integration/Continuous Deployment (CI/CD) and release automation.
+The intended release matrix is macOS, Windows and Linux, each x64 and ARM64.
+Only targets with passing native packaged verification should be distributed.
+Local verification does not establish support for another OS/architecture.
+Existing releases are available on
+[GitHub](https://github.com/Thavarshan/comet/releases).
 
----
+Comet's application code is MIT licensed. Bundled media executables carry their
+own licenses and source notices, included alongside the tools. See
+[LICENSE](LICENSE) and the pinned binary provenance manifest.
 
-## Getting Started
+### CI and release builds
 
-To get started with Comet:
+Pull requests and branch builds enter a shared quality gate (80-column
+formatting, ESLint and workspace boundaries, TypeScript, release tooling tests,
+and a production dependency audit). CodeQL runs security-extended analysis on
+TypeScript/JavaScript and Actions workflows; high severity findings block
+builds. Development dependency audit findings are retained as a separate report.
 
-1. **Clone the repository:**
+Native jobs run unit tests, real conversion integration tests, the conversion
+pair matrix, and isolated packaged Playwright tests on macOS, Windows, and
+Ubuntu, each on x64 and ARM64. Tests use the bundled conversion tools.
+Playwright reports, failure screenshots, traces, and conversion coverage are
+retained for 14 days. No test retries conceal intermittent failures.
 
-   ```bash
-   git clone https://github.com/stellar-comet/comet.git
-   cd comet
-   ```
+The Linux compatibility stage runs the same packaged desktop tests under Xvfb in
+Debian 12/13, Ubuntu 22.04, Fedora 43, and openSUSE Leap 16 containers on both
+architectures, plus Arch on x64. Ubuntu 24.04 is covered by the native jobs.
+These are explicit tested environments, not a guarantee for every Linux distro.
+Alpine/musl, Wayland compositors, and real desktop integration are outside this
+container matrix. Containers run the app as an unprivileged user with Chromium's
+sandbox; extra container capabilities are limited to disposable CI containers.
+Images track their named distribution so updates can expose compatibility
+regressions. Package installation/OS integration still needs release acceptance
+checks on actual desktops.
 
-2. **Install dependencies:**
+Build outputs are macOS ZIPs, Windows Squirrel installers and portable ZIPs, and
+Linux DEB, RPM, and portable tar archives. `npm run make` invokes Forge;
+`npm run dist:portable` adds the Linux tar with executable modes preserved.
+Packaging and native tests are uncached; npm downloads are cached per lockfile.
+The centralized `@comet/e2e` helpers can also support a future web application;
+there is no web application test project until that application exists.
 
-   ```bash
-   npm install
-   ```
+A `v<desktop version>` tag runs the full pipeline with signing enabled. Only
+successful native and distro verification unlock the `release` environment's
+publish job. It checks every target's commit/version receipt and artifact
+hashes, creates a draft, uploads all distributions plus `SHA256SUMS`, then
+publishes. Tags containing a prerelease suffix publish as prereleases; stable
+tags become latest. Already published releases cannot be overwritten. PR
+workflows never publish and receive no signing credentials.
 
-3. **Run the application in development mode:**
+Before the first release, configure the GitHub `release` environment with tag
+restrictions and any required reviewers, and protect the required CI checks.
+Signing jobs need repository secrets `APPLE_CERTIFICATE_BASE64`,
+`APPLE_CERTIFICATE_PASSWORD`, `APPLE_IDENTITY`, `APPLE_ID`,
+`APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`, `WINDOWS_CERTIFICATE_BASE64`,
+and `WINDOWS_CERTIFICATE_PASSWORD`. Certificates are loaded temporarily and
+cleaned after each job. Enable GitHub code scanning for the repository.
+Dependabot proposes weekly dependency and Action updates; changes are never
+automatically merged.
 
-   ```bash
-   npm run start
-   ```
-
-4. **Build the application for production:**
-
-   ```bash
-   npm run make
-   ```
-
-5. **Test your changes:**
-
-   ```bash
-   npm run test
-   ```
-
----
-
-## Roadmap
-
-- **Phase 1:** Basic UI Implementation (Completed)
-  - File upload functionality, file list management.
-
-- **Phase 2:** FFmpeg & Jimp Integration (Completed)
-  - Core conversion functionality for video, audio, and images.
-
-- **Phase 3:** UI Enhancements (Completed)
-  - Improved conversion progress tracking and batch conversion options.
-
-- **Phase 4:** Cross-Platform Testing and Releases (In Progress)
-  - Testing on macOS, Windows, and Linux.
-  - Package the app for distribution across platforms.
-  - Address macOS code-signing challenges (currently blocked by lack of Apple Developer account).
-
----
-
-## Contributing
-
-Contributions are welcome! Here’s how you can contribute:
-
-1. **Fork the Repository:** Create a fork of this repository.
-2. **Clone the Repo:** Clone the forked repository to your local machine.
-3. **Create a Branch:** Create a new branch for your feature or fix.
-4. **Make Your Changes:** Ensure your changes work as expected and pass tests.
-5. **Submit a Pull Request:** Once done, submit a PR to the `main` branch.
-6. **Star the Repo:** If you like Comet, please give it a ⭐!
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgements
-
-- [FFmpeg](https://ffmpeg.org/) - The powerful multimedia framework that powers video/audio conversion in Comet.
-- [Jimp](https://github.com/oliver-moran/jimp) - Image processing in Comet.
-- [Electron](https://www.electronjs.org/) - For building cross-platform desktop apps.
-- The [Vue.js](https://vuejs.org/) and [Tailwind CSS](https://tailwindcss.com/) communities for their fantastic tools and support.
+The conversion matrix records unavailable encoders and missing fixtures as
+explicit coverage gaps. AMR, APE, and MPC input fixtures still need to be
+supplied before claiming complete accepted-input coverage.
+`COMET_MEDIA_FIXTURES` supplies those fixtures; `COMET_REQUIRE_INPUT_COVERAGE=1`
+makes missing coverage fail.
