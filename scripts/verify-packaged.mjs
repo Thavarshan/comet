@@ -1,4 +1,4 @@
-import { extractFile } from '@electron/asar';
+import { readBundledModule } from './packaged-code.mjs';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { builtinModules } from 'node:module';
@@ -16,10 +16,7 @@ const allowed = new Set([
   ...builtinModules.map((name) => `node:${name}`),
 ]);
 for (const name of ['main', 'preload', 'image-worker']) {
-  const code = extractFile(
-    path.join(resources, 'app.asar'),
-    `.vite/build/${name}.cjs`,
-  ).toString();
+  const code = readBundledModule(path.join(resources, 'app.asar'), name);
   for (const match of code.matchAll(/require\(["']([^"']+)["']\)/g)) {
     if (!allowed.has(match[1])) {
       throw new Error(`Unbundled ${name} dependency: ${match[1]}`);

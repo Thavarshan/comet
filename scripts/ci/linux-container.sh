@@ -31,6 +31,9 @@ fi
 
 cd /work
 tar -xzf /payload/linux-payload.tar.gz
+# Packager output can retain owner-only directory permissions. The test user
+# needs read/traverse access after extraction under a different UID.
+chmod -R a+rX "apps/desktop/out/Comet-${COMET_TARGET}"
 # Chromium's setuid sandbox must remain root-owned while the app runs unprivileged.
 chown root:root "apps/desktop/out/Comet-${COMET_TARGET}/chrome-sandbox"
 chmod 4755 "apps/desktop/out/Comet-${COMET_TARGET}/chrome-sandbox"
@@ -41,4 +44,7 @@ export PATH="/node/bin:$PATH"
 export COMET_EXECUTABLE="/work/apps/desktop/out/Comet-${COMET_TARGET}/Comet"
 export HOME=/home/comet-ci
 # Native FFmpeg/FFprobe and image worker are supplied by the native build job.
-runuser -u comet-ci -- xvfb-run --auto-servernum npm run test:e2e
+# Some distributions reset PATH in runuser; restore the mounted Node SDK after
+# switching users so npm and its child processes resolve the same runtime.
+runuser -u comet-ci -- env PATH="$PATH" \
+  xvfb-run --auto-servernum /node/bin/npm run test:e2e
