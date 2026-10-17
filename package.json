@@ -15,8 +15,8 @@
   "scripts": {
     "dev": "turbo run dev",
     "start": "npm run dev",
-    "lint": "eslint . && node scripts/check-boundaries.mjs",
-    "lint:fix": "prettier --write . && eslint . --fix && prettier --write . && node scripts/check-boundaries.mjs",
+    "lint": "npm run build:packages && eslint . && node scripts/check-boundaries.mjs",
+    "lint:fix": "npm run build:packages && prettier --write . && eslint . --fix && prettier --write . && node scripts/check-boundaries.mjs",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:integration": "npm run test:integration -w @comet/engine",
@@ -34,7 +34,8 @@
     "ui:build": "npm run gallery:build -w @comet/ui",
     "test:matrix": "turbo run test:matrix --filter=@comet/e2e",
     "test:ci": "node --test scripts/*.test.mjs",
-    "dist:portable": "node scripts/portable.mjs"
+    "dist:portable": "node scripts/portable.mjs",
+    "build:packages": "turbo run build --filter=./packages/*"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",
