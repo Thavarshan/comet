@@ -137,6 +137,7 @@ const config: ForgeConfig = {
         options: {
           name: 'comet',
           productName: 'Comet',
+          bin: 'Comet',
           icon: path.join(assets, 'icons/icon.png'),
           categories: ['AudioVideo', 'Utility'],
         },
@@ -149,6 +150,7 @@ const config: ForgeConfig = {
         options: {
           name: 'comet',
           productName: 'Comet',
+          bin: 'Comet',
           icon: path.join(assets, 'icons/icon.png'),
           categories: ['AudioVideo', 'Utility'],
         },

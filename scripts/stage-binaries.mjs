@@ -14,11 +14,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { unzipSync } from 'fflate';
+import manifest from './binary-manifest.json' with { type: 'json' };
+import { fetchBinary, validateDigest } from './binary-policy.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const manifest = JSON.parse(
-  await readFile(path.join(root, 'scripts/binary-manifest.json'), 'utf8'),
-);
 const target =
   process.env.COMET_TARGET ?? `${process.platform}-${process.arch}`;
 const entry = manifest.targets[target];
@@ -34,7 +33,7 @@ await mkdir(destination, { recursive: true });
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
 async function download(file) {
-  const filename = path.join(cache, file.sha256);
+  const filename = path.join(cache, validateDigest(file.sha256));
   try {
     const bytes = await readFile(filename);
     if (hash(bytes) === file.sha256) {
@@ -45,16 +44,8 @@ async function download(file) {
   }
 
   console.log(`Fetching ${new URL(file.url).pathname.split('/').at(-1)}`);
-  const response = await fetch(file.url);
-  if (!response.ok) {
-    throw new Error(`Binary download failed: ${response.status} ${file.url}`);
-  }
-
-  const bytes = Buffer.from(await response.arrayBuffer());
-  if (hash(bytes) !== file.sha256) {
-    throw new Error(`SHA-256 mismatch: ${file.url}`);
-  }
-
+  // Only digest-verified bytes leave the downloader's trust boundary.
+  const bytes = await fetchBinary(file);
   const temporary = `${filename}.${process.pid}.tmp`;
   await writeFile(temporary, bytes);
   await rename(temporary, filename);
