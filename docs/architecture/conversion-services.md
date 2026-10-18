@@ -1,0 +1,70 @@
+# Platform conversion services
+
+`@comet/core` defines `ConversionService`, `InputFile`, `OutputTarget`, and
+`ConversionRequest`. These types contain serializable metadata and opaque IDs.
+They contain no native path, `File`, `Blob`, Electron event, or Node resource.
+The native `BatchRequest` remains a distinct, validated transport DTO.
+
+The shared workflow discovers capabilities, subscribes to queue changes, fetches
+the initial snapshot, and submits immutable conversion requests. Consumers
+accept only increasing queue revisions. Job and batch cancellation resolve after
+the underlying engine finishes resource cleanup. Disposal is idempotent;
+subsequent commands reject with `disposed`.
+
+## Native ownership
+
+`NativeConversionService` wraps an existing `ConversionEngine`. Its host
+registers trusted intake files and selected directories, then passes only the
+returned descriptors to shared code. The adapter resolves those IDs and uses the
+existing engine's validation, FIFO scheduler, probes, abort handling, and atomic
+collision-safe publication. It never trusts a descriptor's name or size in place
+of the registered source. Foreign file and target IDs fail before execution.
+Queue projections omit input and output paths.
+
+Each adapter owns its engine. Call `dispose()` during host shutdown to abort
+work, await cleanup, unsubscribe observers, and clear handle maps. Dispose the
+service after a workflow ends; registered handles live until disposal.
+Independent subscriptions return independent, repeatable unsubscribe functions.
+
+The existing desktop bridge remains operational during this extraction. Issue
+#67 will move its renderer workflow onto the injected service and host UI ports.
+This avoids changing desktop transport and extracting the shared React
+components in the same issue.
+
+## Browser ownership
+
+`@comet/browser-engine` currently supplies an explicit unsupported stub for
+contract development. Every advertised output is unavailable with a reason.
+Probing and submission reject with `unsupported`, an already aborted probe
+rejects with `AbortError`, and cancellation of unknown jobs returns `not-found`.
+It creates no jobs, progress events, workers, uploads, or paid services. The
+image implementation remains issue #74; this stub is not an image MVP.
+
+The package builds declarations and an actual self-contained Vite browser
+library. Browser-externalization warnings fail the build. Repository import
+boundary checks additionally prohibit native engine, Node, and Electron
+dependencies. These checks cover the current dependency graph; future codecs
+still need runtime privacy, memory, and compatibility tests.
+
+## Errors and naming
+
+`ConversionServiceError` carries stable command error codes. The classifier
+recognizes explicit service errors and abort errors without parsing text.
+Recoverable means the user may change inputs/settings or retry; it does not
+authorize automatic retries. A disposed service must be recreated.
+
+`outputFilename` derives a filename from a source label and validated format,
+strips directory components and control characters, and replaces the source
+extension. It does not reserve an output or overwrite an existing file. Native
+publication still chooses a free filename atomically; browser export and
+collision policy will be implemented with the image workflow.
+
+## Verification
+
+Run root lint, type checking, unit tests, and `npm run build:browser`. Service
+tests exercise both adapters through the same typed interface: capability
+isolation, opaque-handle resolution/rejection, path-free snapshots, progress,
+independent subscriptions, abort completion, repeated cancellation, idempotent
+disposal, unavailable formats, and portable target names. Existing engine
+integration and packaged platform checks continue to protect the native
+execution lifecycle.

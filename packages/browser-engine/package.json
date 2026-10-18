@@ -1,0 +1,25 @@
+{
+  "name": "@comet/browser-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "dev": "tsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@comet/contracts": "*",
+    "@comet/core": "*"
+  },
+  "devDependencies": {
+    "vite": "8.3.4"
+  }
+}
