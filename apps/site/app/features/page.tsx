@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../src/lib/metadata';
 import type { ReactElement } from 'react';
 
 /**
  * Metadata describes the shipped desktop experience, not the planned web app.
  */
-export const metadata: Metadata = {
-  title: 'Features and platforms',
-  description:
-    'Explore local image, audio and video conversion with Comet desktop, plus current limitations.',
-};
+export const metadata: Metadata = pageMetadata(
+  '/features/',
+  'Features and platforms',
+  'Explore image, audio and video conversion, desktop screenshots and platform limitations.',
+);
 
 /**
  * This is a static product comparison rather than an interactive capability
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
  */
 export default function FeaturesPage(): ReactElement {
   return (
-    <main id="main-content" className="content-page">
+    <main id="main-content" className="content-page" tabIndex={-1}>
       <p className="section-kicker">CAPABILITIES / 003</p>
       <h1>One workflow. Many kinds of media.</h1>
       <p>
@@ -45,6 +46,43 @@ export default function FeaturesPage(): ReactElement {
           Change supported video containers and encoding settings with the
           native desktop engine. Larger workloads can take time and disk space.
         </p>
+      </section>
+      <section aria-labelledby="screenshots-heading">
+        <h2 id="screenshots-heading">A look inside Comet</h2>
+        <p>
+          Desktop development previews from the project repository. Your
+          installed release and operating system may look different.
+        </p>
+        <div className="screenshot-grid">
+          <figure>
+            <a href="/screenshots/desktop-light.webp">
+              <img
+                src="/screenshots/desktop-light.webp"
+                width="1000"
+                height="1071"
+                loading="lazy"
+                decoding="async"
+                alt="Comet desktop conversion queue with three completed video files and an MP4 output selector"
+              />
+            </a>
+            <figcaption>A local queue, with progress for each file.</figcaption>
+          </figure>
+          <figure>
+            <a href="/screenshots/output-settings.webp">
+              <img
+                src="/screenshots/output-settings.webp"
+                width="1000"
+                height="1071"
+                loading="lazy"
+                decoding="async"
+                alt="Comet desktop output settings for format, codec, quality and destination"
+              />
+            </a>
+            <figcaption>
+              Output controls depend on the installed build.
+            </figcaption>
+          </figure>
+        </div>
       </section>
       <section aria-labelledby="platform-heading">
         <h2 id="platform-heading">Desktop or browser?</h2>

@@ -1,19 +1,20 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../src/lib/metadata';
 import type { ReactElement } from 'react';
 
 /** Search metadata is generated at build time, with no tracking scripts. */
-export const metadata: Metadata = {
-  title: 'Getting started',
-  description:
-    'Install Comet desktop, verify downloads, and report conversion issues.',
-};
+export const metadata: Metadata = pageMetadata(
+  '/docs/',
+  'Getting started',
+  'Install Comet desktop, verify downloads and troubleshoot local media conversion.',
+);
 
 /**
  * Beginner-friendly guidance avoids claiming browser conversion exists.
  */
 export default function GettingStartedPage(): ReactElement {
   return (
-    <main id="main-content" className="content-page">
+    <main id="main-content" className="content-page" tabIndex={-1}>
       <p className="section-kicker">FIELD GUIDE / 001</p>
       <h1>Getting started with Comet</h1>
       <p>
@@ -28,12 +29,41 @@ export default function GettingStartedPage(): ReactElement {
       <p>
         <a href="/download/">Compare stable and beta downloads</a>
       </p>
-      <h2>2. Verify and install</h2>
+      <h2 id="verify-download">2. Verify and install</h2>
       <p>
         Download only from the official GitHub Releases page. Compare the
         downloaded file against its published SHA-256 checksum before
         installing. Do not bypass a warning for a file whose origin or hash you
         cannot verify.
+      </p>
+      <p>
+        The 3.0 beta publishes SHA256SUMS. Older stable releases may not include
+        it; if your release has no published checksum, this check is not
+        available. Do not substitute a checksum from another version.
+      </p>
+      <p>
+        Keep the release's SHA256SUMS file beside your download. In a terminal,
+        replace PACKAGE with the exact downloaded filename and compare the full
+        64-character result with the matching entry in SHA256SUMS.
+      </p>
+      <dl className="checksum-commands">
+        <dt>macOS Terminal</dt>
+        <dd>
+          <code>shasum -a 256 PACKAGE</code>
+        </dd>
+        <dt>Linux terminal</dt>
+        <dd>
+          <code>sha256sum PACKAGE</code>
+        </dd>
+        <dt>Windows PowerShell</dt>
+        <dd>
+          <code>Get-FileHash -Algorithm SHA256 .\PACKAGE</code>
+        </dd>
+      </dl>
+      <p>
+        A checksum detects a changed or incomplete download; it does not replace
+        publisher signing or notarization. If it does not match, delete the
+        download and report the discrepancy before installing.
       </p>
       <h2>3. Convert a local file</h2>
       <p>
@@ -65,6 +95,19 @@ export default function GettingStartedPage(): ReactElement {
         The desktop conversion workflow processes source media locally rather
         than uploading it to a Comet conversion server. External websites linked
         from this site have their own policies.
+      </p>
+      <h3>Can I use Comet offline?</h3>
+      <p>
+        Desktop media conversion runs locally. Downloading the application,
+        visiting documentation and checking GitHub releases require a network
+        connection. Keep the installed app and required media on your device.
+      </p>
+      <h3>Why did a conversion fail or change the result?</h3>
+      <p>
+        Check the output format, available disk space and release notes.
+        Unsupported codecs, damaged inputs and protected media can prevent
+        conversion. Lossy formats may change quality; compare the result before
+        removing the source.
       </p>
       <h3>Can I convert files in my browser?</h3>
       <p>

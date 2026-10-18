@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactElement, ReactNode } from 'react';
 import { MotionToggle } from '../src/components/motion-toggle';
+import { pageMetadata } from '../src/lib/metadata';
 import './globals.css';
 
 /**
@@ -8,30 +9,13 @@ import './globals.css';
  * No server request or user tracking is required to show these values.
  */
 export const metadata: Metadata = {
-  title: {
-    default: 'Comet — Your files, your orbit',
-    template: '%s · Comet',
-  },
-  description:
-    'Convert video, audio, and images on your own computer with Comet. ' +
-    'Open source, private by design, and free to use.',
-  robots: { index: true, follow: true },
+  ...pageMetadata(
+    '/',
+    'Comet — Local media conversion',
+    'Convert video, audio and images on your own computer. Open source, local processing, no conversion account.',
+  ),
+  title: { default: 'Comet — Local media conversion', template: '%s · Comet' },
   icons: { icon: '/logo.svg' },
-  openGraph: {
-    title: 'Comet — Local media conversion',
-    description:
-      'Keep the file. Change the format. Open-source desktop conversion.',
-    images: [
-      {
-        url: '/og-comet.svg',
-        width: 1200,
-        height: 630,
-        alt: 'Comet local media conversion',
-      },
-    ],
-    type: 'website',
-  },
-  twitter: { card: 'summary_large_image', images: ['/og-comet.svg'] },
 };
 
 /** Layout receives a page from the Next.js router as its children. */
@@ -57,7 +41,7 @@ export default function RootLayout({
         </a>
         <div className="site-shell">
           <header className="site-header">
-            <a className="brand" href="/" aria-label="Comet home">
+            <a className="brand" href="/">
               <span className="brand__symbol" aria-hidden="true">
                 <img src="/logo.svg" alt="" width="32" height="32" />
               </span>
@@ -65,6 +49,7 @@ export default function RootLayout({
                 comet<span>.</span>
               </span>
               <span className="brand__edition">THE FILE LAB</span>
+              <span className="sr-only"> home</span>
             </a>
             <nav className="site-navigation" aria-label="Main navigation">
               <a href="/features/">Features</a>
@@ -80,9 +65,13 @@ export default function RootLayout({
               <strong>comet.</strong>
               <span>MADE FOR YOUR MACHINE, NOT THE CLOUD.</span>
             </div>
-            <a href="https://github.com/Thavarshan/comet">
-              OPEN SOURCE ON GITHUB <span aria-hidden="true">↗</span>
-            </a>
+            <nav aria-label="Project information" className="footer-links">
+              <a href="/releases/">Releases</a>
+              <a href="/license/">License</a>
+              <a href="https://github.com/Thavarshan/comet">
+                Source on GitHub <span aria-hidden="true">↗</span>
+              </a>
+            </nav>
           </footer>
         </div>
       </body>

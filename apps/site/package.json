@@ -7,7 +7,7 @@
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build && node scripts/verify-export.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "node --test scripts/site-policy.test.mjs"
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@comet/ui": "*",

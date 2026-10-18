@@ -1,9 +1,9 @@
 # Comet marketing site
 
 A **zero-server, statically generated Next.js site** for the desktop converter.
-This is the first milestone of
-[roadmap #61](https://github.com/Thavarshan/comet/issues/61):
-[issue #69](https://github.com/Thavarshan/comet/issues/69).
+Delivered through [#69](https://github.com/Thavarshan/comet/issues/69) and
+[#70](https://github.com/Thavarshan/comet/issues/70) in
+[roadmap #61](https://github.com/Thavarshan/comet/issues/61).
 
 ## If you are new to web development
 
@@ -59,10 +59,11 @@ npm run build -w @comet/site
 ```
 
 The last command creates **`apps/site/out/`**, containing ordinary HTML and
-static assets. The export verifier checks both routes, the 404 page, official
-release links, and the Cloudflare security file. Repository-wide CI also runs
-lint, formatting, browser package builds, a Chromium smoke test at mobile and
-desktop widths, and the unchanged native matrix.
+static assets. The export verifier checks all seven public routes, the 404 page,
+sitemap/robots, social imagery, official release links, asset budgets, and the
+Cloudflare security file. Repository-wide CI also runs lint, formatting, browser
+package builds, a Chromium smoke test at mobile and desktop widths, and the
+unchanged native matrix.
 
 ## Motion and accessibility
 
@@ -111,17 +112,22 @@ Desktop v3.0.0-beta.1 remains **unsigned** and is clearly marked; install
 warnings and checksum verification are explained. No working web converter is
 advertised.
 
-Follow-up milestones remain separate: deeper copy/SEO/accessibility (#70),
-verified platform-specific release manifests (#71), and free-tier deployment
-(#72). Dynamic rendering with vinext is unnecessary unless SSR is explicitly
-approved after a cost/security review.
+Follow-up milestones remain separate: verified platform-specific release
+manifests (#71) and free-tier deployment (#72). Canonical URLs and indexable
+sitemaps require the actual production origin in `COMET_SITE_URL`; unconfigured
+builds remain unindexed previews. See the
+[publication contract](../../docs/architecture/site-publication.md) and
+[P2.2 acceptance record](../../docs/releases/site-p2.2-acceptance.md). Dynamic
+rendering with vinext is unnecessary unless SSR is explicitly approved after a
+cost/security review.
 
 ## Review checklist
 
-1. Visit the home, downloads and 404 pages at 320px, 390px, tablet and desktop.
+1. Visit every public route and the 404 page at 320px, 390px, tablet and
+   desktop.
 2. Use keyboard only: skip link, nav, pause button, download links and focus.
 3. Test with reduced motion, with motion paused, and with JavaScript disabled.
-4. Confirm neither page sends source media, calls an API, or promises web tools.
+4. Confirm no page sends source media, calls an API, or promises web tools.
 5. Confirm every linked release exists and beta trust warnings are visible.
 6. Run the workspace tests and complete root CI before merging.
 
