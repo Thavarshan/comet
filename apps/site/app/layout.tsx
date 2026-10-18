@@ -17,6 +17,13 @@ export const metadata: Metadata = {
     'Open source, private by design, and free to use.',
   robots: { index: true, follow: true },
   icons: { icon: '/logo.svg' },
+  openGraph: {
+    title: 'Comet — Local media conversion',
+    description: 'Keep the file. Change the format. Open-source desktop conversion.',
+    images: [{ url: '/og-comet.svg', width: 1200, height: 630, alt: 'Comet local media conversion' }],
+    type: 'website',
+  },
+  twitter: { card: 'summary_large_image', images: ['/og-comet.svg'] },
 };
 
 /** Layout receives a page from the Next.js router as its children. */
@@ -52,6 +59,7 @@ export default function RootLayout({
               <span className="brand__edition">THE FILE LAB</span>
             </a>
             <nav className="site-navigation" aria-label="Main navigation">
+              <a href="/features/">Features</a>
               <a href="/download/">Download</a>
               <a href="/docs/">
                 Docs
