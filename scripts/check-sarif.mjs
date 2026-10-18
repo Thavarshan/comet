@@ -18,14 +18,6 @@ for (const file of files) {
     for (const result of run.results ?? []) {
       const rule = rules.get(result.ruleId);
       const severity = Number(rule?.properties?.['security-severity'] ?? 0);
-      const location = result.locations?.[0]?.physicalLocation;
-      const filePath = location?.artifactLocation?.uri ?? '<unknown>';
-      const line = location?.region?.startLine ?? '?';
-      const message = result.message?.text ?? '';
-      console.log(
-        `CodeQL finding: ${result.ruleId} severity=${severity} ` +
-          `${filePath}:${line} ${message}`,
-      );
       if (severity >= 7 || result.level === 'error') {
         throw new Error(`Static analysis gate failed: ${result.ruleId}`);
       }
