@@ -53,10 +53,11 @@ export default function RootLayout({
             </a>
             <nav className="site-navigation" aria-label="Main navigation">
               <a href="/download/">Download</a>
-              <a href="https://github.com/Thavarshan/comet#readme">
-                Docs <span aria-hidden="true">↗</span>
+              <a href="/docs/">
+                Docs
               </a>
             </nav>
+            <a href="/privacy/">Privacy</a>
             <MotionToggle />
           </header>
           {children}
