@@ -7,10 +7,13 @@ No account, upload, or cloud processing is required.
 [Download stable](https://github.com/Thavarshan/comet/releases/latest) ·
 [Release notes](CHANGELOG.md) · [Contribute](.github/CONTRIBUTING.md)
 
-> **Development preview:** this branch contains the React rewrite, version
-> `3.0.0-beta.1`. The latest published stable release is `v2.2.3`, which uses
-> the previous interface. The beta is a draft pending platform verification and
-> signing; these screenshots show the development build.
+> **Unsigned beta:**
+> [v3.0.0-beta.1](https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1)
+> is available for testing with the React interface shown below. macOS builds
+> are not Developer ID signed or notarized; Windows installers are not
+> Authenticode signed, so operating-system trust warnings are expected. Verify
+> downloads with the release's `SHA256SUMS`. v2.2.3 remains the latest stable
+> release and uses the previous interface.
 
 <picture>
   <source
