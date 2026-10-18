@@ -7,6 +7,18 @@ import {
   type MediaMetadata,
   type MediaType,
 } from '@comet/contracts';
+import { ConversionServiceError } from './service.js';
+
+export {
+  ConversionServiceError,
+  classifyConversionError,
+  outputFilename,
+  type ConversionErrorCode,
+  type ConversionRequest,
+  type ConversionService,
+  type InputFile,
+  type OutputTarget,
+} from './service.js';
 
 /** A conversion record without native paths or platform I/O. */
 export interface ConversionJob {
@@ -131,14 +143,20 @@ export function assertOutputAvailable(
   spec?: ConversionSpec,
 ): void {
   if (source !== 'video' && spec && spec.kind !== source) {
-    throw new Error('Invalid source/target operation');
+    throw new ConversionServiceError(
+      'unsupported',
+      'Invalid source/target operation',
+    );
   }
 
   const capability = capabilities[spec?.kind ?? source].find(
     (entry) => entry.format === format && entry.available,
   );
   if (!capability) {
-    throw new Error('Output encoder unavailable');
+    throw new ConversionServiceError(
+      'unsupported',
+      'Output encoder unavailable',
+    );
   }
 
   if (
@@ -147,7 +165,10 @@ export function assertOutputAvailable(
     spec.codec !== 'default' &&
     !capability.codecs?.includes(spec.codec)
   ) {
-    throw new Error('Requested codec is unavailable');
+    throw new ConversionServiceError(
+      'unsupported',
+      'Requested codec is unavailable',
+    );
   }
 }
 
