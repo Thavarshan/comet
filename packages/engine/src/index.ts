@@ -1,3 +1,9 @@
+import {
+  applyJobEvent,
+  assertOutputAvailable,
+  assertMediaAvailable,
+  nextQueuedJob,
+} from '@comet/core';
 import { resolveEncoding } from './options.js';
 import { probeFile } from './metadata.js';
 import { randomUUID } from 'node:crypto';
@@ -186,39 +192,18 @@ export class ConversionEngine {
       throw new Error('Engine is shutting down');
     }
 
-    if (
-      this.jobs.some(
-        (job) => job.mediaType === request.mediaType && !isTerminal(job.state),
-      )
-    ) {
-      throw new Error('This media type already has a submitted batch');
-    }
+    assertMediaAvailable(this.jobs, request.mediaType);
 
-    if (
-      !this.capabilities[request.spec?.kind ?? request.mediaType].some(
-        (value) => value.format === request.outputFormat && value.available,
-      )
-    ) {
-      throw new Error('Output encoder unavailable');
-    }
-
+    assertOutputAvailable(
+      this.capabilities,
+      request.mediaType,
+      request.outputFormat,
+      request.spec,
+    );
     resolveEncoding(
       request.outputFormat,
       request.spec ?? defaultConversion(request.mediaType),
     );
-    const spec = request.spec;
-    const capability = this.capabilities[spec?.kind ?? request.mediaType].find(
-      (entry) => entry.format === request.outputFormat,
-    );
-    if (
-      spec &&
-      spec.kind !== 'image' &&
-      spec.codec !== 'default' &&
-      !capability?.codecs?.includes(spec.codec)
-    ) {
-      throw new Error('Requested codec is unavailable');
-    }
-
     const batchId = randomUUID();
     const jobs: Job[] = request.items.map((item) => ({
       ...item,
@@ -259,12 +244,14 @@ export class ConversionEngine {
     }
 
     if (job.state === 'queued') {
-      job.state = 'canceled';
-      job.progress = 0;
+      Object.assign(
+        job,
+        applyJobEvent(job, { type: 'canceled', at: Date.now() }),
+      );
       this.emit();
     } else {
       const active = this.active;
-      job.state = 'canceling';
+      Object.assign(job, applyJobEvent(job, { type: 'cancel-requested' }));
       this.emit();
       active?.controller.abort();
       await active?.done;
@@ -293,8 +280,10 @@ export class ConversionEngine {
     // another sibling.
     for (const job of jobs) {
       if (job.state === 'queued') {
-        job.state = 'canceled';
-        job.progress = 0;
+        Object.assign(
+          job,
+          applyJobEvent(job, { type: 'canceled', at: Date.now() }),
+        );
       }
     }
 
@@ -360,7 +349,10 @@ export class ConversionEngine {
 
     for (const job of this.jobs) {
       if (job.state === 'queued') {
-        job.state = 'canceled';
+        Object.assign(
+          job,
+          applyJobEvent(job, { type: 'canceled', at: Date.now() }),
+        );
       }
     }
 
@@ -384,7 +376,7 @@ export class ConversionEngine {
     try {
       let job: Job | undefined;
       while (!this.closed) {
-        job = this.jobs.find((value) => value.state === 'queued');
+        job = nextQueuedJob(this.jobs);
         if (!job) {
           const inspection = this.inspections.shift();
           if (!inspection || !this.probePath) {
@@ -425,34 +417,26 @@ export class ConversionEngine {
           resolve = finish;
         });
         this.active = { id: current.id, controller, done, resolve };
-        current.state = 'running';
-        current.startedAt = Date.now();
+        Object.assign(
+          current,
+          applyJobEvent(current, { type: 'started', at: Date.now() }),
+        );
         this.emit();
         try {
           const output = await this.execute(
             structuredClone(current),
             controller.signal,
             (progress, metadata) => {
-              if (metadata) {
-                current.metadata = metadata;
-              }
-
-              if (current.state !== 'running') {
+              const next = applyJobEvent(current, {
+                type: 'progress',
+                value: progress,
+                ...(metadata ? { metadata } : {}),
+              });
+              if (next === current) {
                 return;
               }
 
-              const next =
-                progress === null
-                  ? null
-                  : Math.max(0, Math.min(99, Math.floor(progress)));
-              if (
-                next === current.progress ||
-                (next !== null && !Number.isFinite(next))
-              ) {
-                return;
-              }
-
-              current.progress = next;
+              Object.assign(current, next);
               this.emit();
             },
           );
@@ -462,21 +446,31 @@ export class ConversionEngine {
           }
 
           current.outputPath = output;
-          current.progress = 100;
-          current.state = 'succeeded';
+          Object.assign(
+            current,
+            applyJobEvent(current, { type: 'succeeded', at: Date.now() }),
+          );
         } catch (error) {
           if (controller.signal.aborted) {
-            current.state = 'canceled';
-            current.progress = 0;
+            Object.assign(
+              current,
+              applyJobEvent(current, { type: 'canceled', at: Date.now() }),
+            );
           } else {
-            current.state = 'failed';
-            current.error = {
-              code: 'CONVERSION_FAILED',
-              message: error instanceof Error ? error.message : String(error),
-            };
+            Object.assign(
+              current,
+              applyJobEvent(current, {
+                type: 'failed',
+                at: Date.now(),
+                error: {
+                  code: 'CONVERSION_FAILED',
+                  message:
+                    error instanceof Error ? error.message : String(error),
+                },
+              }),
+            );
           }
         } finally {
-          current.completedAt = Date.now();
           this.active = undefined;
           this.emit();
           resolve();

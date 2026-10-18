@@ -18,6 +18,7 @@ import {
   type Theme,
 } from '@comet/contracts';
 import i18n from './i18n';
+import { acceptQueueSnapshot } from '@comet/core';
 
 interface State {
   queue: QueueSnapshot;
@@ -44,10 +45,12 @@ export const initialState: State = {
  */
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'queue':
-      return action.queue.revision > state.queue.revision
-        ? { ...state, queue: action.queue }
-        : state;
+    case 'queue': {
+      const queue = acceptQueueSnapshot(state.queue, action.queue);
+
+      return queue === state.queue ? state : { ...state, queue };
+    }
+
     case 'ready':
       return {
         ...state,

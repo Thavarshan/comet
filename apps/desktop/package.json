@@ -41,7 +41,8 @@
     "react-dom": "19.3.1",
     "react-i18next": "17.0.20",
     "zod": "4.6.7",
-    "@comet/ui": "*"
+    "@comet/ui": "*",
+    "@comet/core": "*"
   },
   "devDependencies": {
     "@electron-forge/cli": "8.0.1",
