@@ -390,3 +390,9 @@ export function unwrap<T>(reply: Reply<T>): T {
 
   return reply.value;
 }
+
+export type {
+  ReleaseAsset,
+  PublishedRelease,
+  ReleaseManifest,
+} from './releases.js';

@@ -1,0 +1,32 @@
+name: Verify release manifest
+on:
+  schedule:
+    - cron: '31 6 * * 1'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'apps/site/scripts/refresh-releases.mjs'
+      - 'apps/site/src/lib/releases.ts'
+      - 'apps/site/src/data/releases.json'
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify every published download and generate public snapshot
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node apps/site/scripts/refresh-releases.mjs
+      - name: Preserve checked snapshot for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verified-release-manifest
+          path: apps/site/src/data/releases.json
+          retention-days: 14

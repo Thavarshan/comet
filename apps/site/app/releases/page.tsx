@@ -1,4 +1,5 @@
-import { Button } from '@comet/ui/components/button';
+import { ReleaseCenter } from '../../src/components/release-center';
+import { releaseSnapshot } from '../../src/lib/release-snapshot';
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 import { pageMetadata } from '../../src/lib/metadata';
@@ -23,30 +24,7 @@ export default function ReleasesPage(): ReactElement {
         notes, platform packages and any published checksums. A successful
         development build is not automatically a public release.
       </p>
-      <h2>Stable releases</h2>
-      <p>
-        Start with the latest stable release for everyday use. Read its notes
-        and check which operating systems and architectures it supports before
-        downloading. Availability varies by version.
-      </p>
-      <Button asChild size="lg" className="comet-cta comet-cta--dark">
-        <a href="https://github.com/Thavarshan/comet/releases/latest">
-          View the latest stable release
-        </a>
-      </Button>
-      <h2>Beta releases</h2>
-      <p>
-        Beta versions are intended for testing. The 3.0.0-beta.1 macOS builds
-        are not notarized and its Windows builds are unsigned. Verify the
-        published SHA256SUMS and keep your original media.
-      </p>
-      <p>
-        <a href="https://github.com/Thavarshan/comet/releases">
-          Browse all official release notes
-        </a>
-        {' · '}
-        <a href="/docs/#verify-download">Learn how to verify a download</a>
-      </p>
+      <ReleaseCenter manifest={releaseSnapshot()} history />
       <h2>Report a regression</h2>
       <p>
         Include the working and failing versions, operating system, input and

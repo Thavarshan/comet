@@ -36,7 +36,7 @@ test('HTTP security headers restrict powerful browser features', async () => {
 });
 
 test('both marketing pages use the actual shared UI components', async () => {
-  for (const name of ['app/page.tsx', 'app/download/page.tsx']) {
+  for (const name of ['app/page.tsx', 'src/components/release-center.tsx']) {
     const page = await source(name);
 
     assert.ok(page.includes("from '@comet/ui/components/button'"));

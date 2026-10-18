@@ -21,7 +21,7 @@ sources may not use test drivers as a dependency.
 | engine           | core, contracts                                |
 | desktop renderer | core, contracts, converter, ui                 |
 | web              | core, contracts, converter, browser-engine, ui |
-| site             | ui                                             |
+| site             | contracts, ui                                  |
 
 Node builtins, Electron, native executable packages and `@comet/e2e` are
 prohibited in browser runtime code. Core/contracts and either engine cannot
