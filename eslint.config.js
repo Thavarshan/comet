@@ -15,6 +15,7 @@ export default ts.config(
       '**/out/**',
       '**/.cache/**',
       '**/.gallery/**',
+      '**/.bundle/**',
       '**/coverage/**',
       '**/.turbo/**',
       '**/test-results/**',

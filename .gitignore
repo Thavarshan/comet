@@ -105,6 +105,7 @@ test-results/
 
 # Shared component gallery
 .gallery/
+.bundle/
 
 # CI-only release aggregation and security reports
 /artifacts/

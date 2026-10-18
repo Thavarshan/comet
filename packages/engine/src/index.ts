@@ -40,6 +40,8 @@ export { detectCapabilities } from './profiles.js';
 
 export { runProcess } from './process.js';
 
+export { NativeConversionService } from './service.js';
+
 /**
  * Hold the execution slot until cancellation and native cleanup settle.
  */

@@ -33,8 +33,10 @@ allowing deterministic tests without a platform clock dependency.
 `serializeQueue` exports a typed domain view, omitting native path fields and
 adapter handles even if a native record is supplied structurally. It is not an
 untrusted-input decoder or permission to persist source media. Native request
-validation remains in contracts. Separate portable requests, resource handles,
-and conversion-service ports are the scope of #66.
+validation remains in contracts. Portable requests and conversion-service ports
+are defined here; platform adapters retain resource handles privately. See
+[platform conversion services](../../docs/architecture/conversion-services.md)
+for lifecycle, error, naming, and implementation boundaries.
 
 ## Verification
 
