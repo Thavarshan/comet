@@ -1,51 +1,103 @@
+import { Badge } from '@comet/ui/components/badge';
+import { Button } from '@comet/ui/components/button';
 import type { Metadata } from 'next';
+import type { ReactElement } from 'react';
 
+/** These links lead to published GitHub Releases, not draft artifacts. */
+const releases = {
+  stable: 'https://github.com/Thavarshan/comet/releases/latest',
+  beta: 'https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1',
+} as const;
+
+/** Static page metadata is generated at build time. */
 export const metadata: Metadata = {
   title: 'Download',
-  description:
-    'Find published Comet desktop releases for your operating system.',
+  description: 'Choose a published Comet desktop release on GitHub.',
 };
 
-export default function DownloadPage() {
+/**
+ * This first site milestone deliberately does not guess an operating system
+ * or scrape the GitHub API at runtime. A later roadmap ticket (#71) generates
+ * an independently verified release manifest with per-platform links.
+ */
+export default function DownloadPage(): ReactElement {
   return (
-    <main id="main-content" className="inner-page">
-      <span className="eyebrow">Downloads</span>
-      <h1>Get Comet for desktop</h1>
-      <p className="lede">
-        Visit GitHub Releases to choose a build for your operating system. Comet
-        is free and open source.
-      </p>
-      <div className="download-grid">
-        <section className="download-option">
-          <h2>Stable release</h2>
-          <p>
-            Recommended for everyday use. Review the release notes and assets.
-          </p>
-          <a
-            className="action primary"
-            href="https://github.com/Thavarshan/comet/releases/latest"
-          >
-            Latest stable on GitHub
-          </a>
-        </section>
-        <section className="download-option">
-          <h2>Version 3 beta</h2>
-          <p>
-            Experimental and unsigned. macOS and Windows may show operating
-            system trust warnings. Check SHA256SUMS before installing.
-          </p>
-          <a
-            className="action secondary"
-            href="https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1"
-          >
-            Beta release details
-          </a>
-        </section>
-      </div>
-      <p className="roadmap-note">
-        Automatic release discovery and platform-aware links are planned in
-        issue #71.
-      </p>
+    <main id="main-content" className="download-main">
+      <section className="download-hero" aria-labelledby="download-heading">
+        <Badge variant="outline" className="download-badge">
+          RELEASE STATION / DESKTOP
+        </Badge>
+        <span className="download-hero__mark" aria-hidden="true">↓</span>
+        <p className="section-kicker">YOUR NEXT FORMAT STARTS HERE</p>
+        <h1 id="download-heading">
+          Good things
+          <br />
+          <em>come down.</em>
+        </h1>
+        <p>
+          Download Comet from its official GitHub Releases page. Pick the
+          package for your machine, check the release notes, and keep control
+          of your files.
+        </p>
+      </section>
+
+      <section className="release-list" aria-label="Available releases">
+        <article className="release-entry release-entry--stable">
+          <div className="release-entry__rail">
+            <span>01 / RECOMMENDED</span>
+            <span aria-hidden="true">✳</span>
+          </div>
+          <div className="release-entry__body">
+            <Badge variant="secondary" className="release-entry__badge">
+              STABLE
+            </Badge>
+            <h2>The everyday build.</h2>
+            <p>
+              Use the latest published stable desktop release for routine
+              conversion. GitHub lists the exact builds and checksums.
+            </p>
+            <Button asChild size="lg" className="comet-cta comet-cta--dark">
+              <a href={releases.stable}>
+                Browse stable releases <span aria-hidden="true">↗</span>
+              </a>
+            </Button>
+          </div>
+        </article>
+
+        <article className="release-entry release-entry--beta">
+          <div className="release-entry__rail">
+            <span>02 / EARLY ACCESS</span>
+            <span aria-hidden="true">↗</span>
+          </div>
+          <div className="release-entry__body">
+            <Badge variant="outline" className="release-entry__badge">
+              UNSIGNED BETA
+            </Badge>
+            <h2>See what is next.</h2>
+            <p>
+              Version 3.0.0-beta.1 is for testing. Its macOS builds are not
+              notarized and Windows builds are unsigned, so system warnings
+              are expected. Verify each download against SHA256SUMS.
+            </p>
+            <Button asChild size="lg" className="comet-cta comet-cta--outline">
+              <a href={releases.beta}>
+                Explore the beta <span aria-hidden="true">↗</span>
+              </a>
+            </Button>
+          </div>
+        </article>
+      </section>
+
+      <aside className="download-note" aria-label="Important download notes">
+        <strong>ONE SMALL NOTE.</strong>
+        <p>
+          There is no live browser converter yet. These links download the
+          desktop application; automatic platform detection is planned in #71.
+        </p>
+        <a href="https://github.com/Thavarshan/comet/issues/61">
+          See the development roadmap <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
     </main>
   );
 }
