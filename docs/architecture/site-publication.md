@@ -68,7 +68,15 @@ at most 0.1. Its JSON attachment is lab evidence from CI, not production field
 Core Web Vitals or an INP measurement. A deployed URL and real traffic are
 needed for field measurements.
 
-Automated checks do not replace human review. Before closing #70, inspect the
-retained mobile/desktop screenshots, test a screen reader and keyboard on the
-actual deployment, confirm the production origin and release copy, and record
-the date and findings. Do not mark this review complete based solely on axe.
+## Delivery and publication gates
+
+Issue #70 delivers the public pages, source, static SEO output and automated
+accessibility/performance checks. Its acceptance evidence is recorded in
+[the P2.2 acceptance record](../releases/site-p2.2-acceptance.md).
+
+Production hosting is tracked separately in #72. Before publishing an indexed
+production site, confirm the actual origin and response headers, test keyboard
+and screen-reader behavior on that deployment, and review on physical devices.
+Field Core Web Vitals require production traffic and remain post-publication
+measurements. These checks are not claimed complete by the source-delivery
+record. Automated axe scans do not establish full WCAG conformance.
