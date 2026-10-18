@@ -1,0 +1,22 @@
+{
+  "package": "@ffmpeg/core",
+  "version": "0.12.10",
+  "tarball": "https://registry.npmjs.org/@ffmpeg/core/-/core-0.12.10.tgz",
+  "tarballIntegrity": "sha512-dzNplnn2Nxle2c2i2rrDhqcB19q9cglCkWnoMTDN9Q9l3PvdjZWd1HfSPjCNWc/p8Q3CT+Es9fWOR0UhAeYQZA==",
+  "tarballBytes": 20634719,
+  "assets": [
+    {
+      "file": "package/dist/esm/ffmpeg-core.wasm",
+      "bytes": 32232419,
+      "sha256": "9f57947a5bd530d8f00c5b3f2cb2a3492faa7e5d823315342d6a8656d0a6b7b7",
+      "fitsStaticAssetLimit": false
+    },
+    {
+      "file": "package/dist/umd/ffmpeg-core.wasm",
+      "bytes": 32232419,
+      "sha256": "9f57947a5bd530d8f00c5b3f2cb2a3492faa7e5d823315342d6a8656d0a6b7b7",
+      "fitsStaticAssetLimit": false
+    }
+  ],
+  "scope": "Asset-size and integrity inspection only; no codec, device, performance or licensing clearance claim."
+}

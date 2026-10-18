@@ -1,0 +1,143 @@
+{
+  "measuredAt": "2026-10-18T10:01:31.368Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "fixture": "generated 8 × 8 opaque canvas; network requests blocked",
+  "results": [
+    {
+      "name": "chromium",
+      "version": "156.0.8078.4",
+      "offscreenCanvas": true,
+      "crossOriginIsolated": false,
+      "sharedArrayBuffer": false,
+      "formats": [
+        {
+          "requested": "image/png",
+          "actual": "image/png",
+          "supported": true,
+          "bytes": 110,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        },
+        {
+          "requested": "image/jpeg",
+          "actual": "image/jpeg",
+          "supported": true,
+          "bytes": 761,
+          "width": 8,
+          "height": 8,
+          "signature": [255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1]
+        },
+        {
+          "requested": "image/webp",
+          "actual": "image/webp",
+          "supported": true,
+          "bytes": 550,
+          "width": 8,
+          "height": 8,
+          "signature": [82, 73, 70, 70, 30, 2, 0, 0, 87, 69, 66, 80]
+        },
+        {
+          "requested": "image/avif",
+          "actual": "image/png",
+          "supported": false,
+          "bytes": 110,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        }
+      ]
+    },
+    {
+      "name": "firefox",
+      "version": "157.0",
+      "offscreenCanvas": true,
+      "crossOriginIsolated": false,
+      "sharedArrayBuffer": false,
+      "formats": [
+        {
+          "requested": "image/png",
+          "actual": "image/png",
+          "supported": true,
+          "bytes": 76,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        },
+        {
+          "requested": "image/jpeg",
+          "actual": "image/jpeg",
+          "supported": true,
+          "bytes": 633,
+          "width": 8,
+          "height": 8,
+          "signature": [255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1]
+        },
+        {
+          "requested": "image/webp",
+          "actual": "image/webp",
+          "supported": true,
+          "bytes": 68,
+          "width": 8,
+          "height": 8,
+          "signature": [82, 73, 70, 70, 60, 0, 0, 0, 87, 69, 66, 80]
+        },
+        {
+          "requested": "image/avif",
+          "actual": "image/png",
+          "supported": false,
+          "bytes": 76,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        }
+      ]
+    },
+    {
+      "name": "webkit",
+      "version": "27.2",
+      "offscreenCanvas": true,
+      "crossOriginIsolated": false,
+      "sharedArrayBuffer": false,
+      "formats": [
+        {
+          "requested": "image/png",
+          "actual": "image/png",
+          "supported": true,
+          "bytes": 173,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        },
+        {
+          "requested": "image/jpeg",
+          "actual": "image/jpeg",
+          "supported": true,
+          "bytes": 776,
+          "width": 8,
+          "height": 8,
+          "signature": [255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1]
+        },
+        {
+          "requested": "image/webp",
+          "actual": "image/png",
+          "supported": false,
+          "bytes": 173,
+          "width": 8,
+          "height": 8,
+          "signature": [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13]
+        },
+        {
+          "requested": "image/avif",
+          "actual": "image/avif",
+          "supported": true,
+          "bytes": 374,
+          "width": 8,
+          "height": 8,
+          "signature": [0, 0, 0, 32, 102, 116, 121, 112, 97, 118, 105, 102]
+        }
+      ]
+    }
+  ]
+}
