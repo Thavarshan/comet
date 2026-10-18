@@ -52,7 +52,9 @@ export default function HomePage(): ReactElement {
             <span className="status-badge__dot" aria-hidden="true" />
             OPEN SOURCE / LOCAL FIRST
           </Badge>
-          <p className="hero__issue">THE INDEPENDENT MEDIA CONVERTER — EST. 2024</p>
+          <p className="hero__issue">
+            THE INDEPENDENT MEDIA CONVERTER — EST. 2024
+          </p>
           <h1 id="hero-heading">
             Keep the file.
             <br />
@@ -61,8 +63,8 @@ export default function HomePage(): ReactElement {
             format<span className="hero__period">.</span>
           </h1>
           <p className="hero__intro">
-            Video, audio, images. Convert them on your own machine, on your
-            own terms. No uploads. No accounts. No unnecessary noise.
+            Video, audio, images. Convert them on your own machine, on your own
+            terms. No uploads. No accounts. No unnecessary noise.
           </p>
           <div className="hero__actions">
             <Button asChild size="lg" className="comet-cta comet-cta--bright">
@@ -77,7 +79,9 @@ export default function HomePage(): ReactElement {
               Explore the source <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <p className="hero__footnote">DESKTOP APP · MACOS / WINDOWS / LINUX</p>
+          <p className="hero__footnote">
+            DESKTOP APP · MACOS / WINDOWS / LINUX
+          </p>
         </div>
         <OrbitIllustration />
         <span className="hero__edge-label" aria-hidden="true">
@@ -102,7 +106,9 @@ export default function HomePage(): ReactElement {
             application does not ask you to create an account.
           </p>
         </div>
-        <span className="manifesto__asterisk" aria-hidden="true">✳</span>
+        <span className="manifesto__asterisk" aria-hidden="true">
+          ✳
+        </span>
       </section>
 
       <section className="formats" aria-labelledby="formats-heading">
@@ -120,7 +126,9 @@ export default function HomePage(): ReactElement {
               <h3>{item.title}</h3>
               <p>{item.detail}</p>
               <span className="format-row__formats">{item.formats}</span>
-              <span className="format-row__arrow" aria-hidden="true">↗</span>
+              <span className="format-row__arrow" aria-hidden="true">
+                ↗
+              </span>
             </article>
           ))}
         </div>

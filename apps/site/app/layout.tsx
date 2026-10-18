@@ -46,7 +46,9 @@ export default function RootLayout({
               <span className="brand__symbol" aria-hidden="true">
                 <img src="/logo.svg" alt="" width="32" height="32" />
               </span>
-              <span className="brand__wordmark">comet<span>.</span></span>
+              <span className="brand__wordmark">
+                comet<span>.</span>
+              </span>
               <span className="brand__edition">THE FILE LAB</span>
             </a>
             <nav className="site-navigation" aria-label="Main navigation">

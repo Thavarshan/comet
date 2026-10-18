@@ -1,7 +1,8 @@
 # Comet marketing site
 
 A **zero-server, statically generated Next.js site** for the desktop converter.
-This is the first milestone of [roadmap #61](https://github.com/Thavarshan/comet/issues/61):
+This is the first milestone of
+[roadmap #61](https://github.com/Thavarshan/comet/issues/61):
 [issue #69](https://github.com/Thavarshan/comet/issues/69).
 
 ## If you are new to web development
@@ -11,33 +12,33 @@ building** the project; Cloudflare simply hands those finished pages to
 visitors. Unlike a traditional web application, it does not need a continuously
 running computer to assemble each page.
 
-- **React** describes what visitors see, using components (small reusable
-  pieces of the page).
+- **React** describes what visitors see, using components (small reusable pieces
+  of the page).
 - **TypeScript** checks that components receive the right kinds of values.
 - **CSS** controls typography, layouts, colors, and animations.
-- **`@comet/ui`** supplies our shared Button, Badge, Inter font, and tokens.
-  The marketing-specific layout is deliberately custom, not another dashboard.
+- **`@comet/ui`** supplies our shared Button, Badge, Inter font, and tokens. The
+  marketing-specific layout is deliberately custom, not another dashboard.
 - **GitHub Releases** hosts downloadable desktop applications. The site links
   visitors there; it does not create or distribute installers itself.
 
 ## Where things live
 
-| Path | Plain-English purpose |
-| --- | --- |
-| `app/layout.tsx` | Header, navigation, footer and search metadata |
-| `app/page.tsx` | Home-page story and supported media categories |
-| `app/download/page.tsx` | Stable/beta links and release warnings |
-| `app/not-found.tsx` | The friendly page when a URL does not exist |
-| `src/components/orbit-illustration.tsx` | CSS-only orbital illustration |
-| `src/components/motion-toggle.tsx` | Pause/resume animation button |
-| `app/globals.css` | All site art direction, responsive rules and motion |
-| `public/_headers` | Cloudflare HTTP security policy |
-| `wrangler.toml` | Static-assets-only hosting setup |
-| `scripts/verify-export.mjs` | Tests built HTML, links and security files |
+| Path                                    | Plain-English purpose                               |
+| --------------------------------------- | --------------------------------------------------- |
+| `app/layout.tsx`                        | Header, navigation, footer and search metadata      |
+| `app/page.tsx`                          | Home-page story and supported media categories      |
+| `app/download/page.tsx`                 | Stable/beta links and release warnings              |
+| `app/not-found.tsx`                     | The friendly page when a URL does not exist         |
+| `src/components/orbit-illustration.tsx` | CSS-only orbital illustration                       |
+| `src/components/motion-toggle.tsx`      | Pause/resume animation button                       |
+| `app/globals.css`                       | All site art direction, responsive rules and motion |
+| `public/_headers`                       | Cloudflare HTTP security policy                     |
+| `wrangler.toml`                         | Static-assets-only hosting setup                    |
+| `scripts/verify-export.mjs`             | Tests built HTML, links and security files          |
 
 Every component has a docblock explaining **why it exists**, and the less
-obvious code paths include inline explanations. Comments should teach intent
-and constraints, not restate every obvious line.
+obvious code paths include inline explanations. Comments should teach intent and
+constraints, not restate every obvious line.
 
 ## Run the site
 
@@ -48,8 +49,8 @@ npm ci
 npm run dev -w @comet/site
 ```
 
-Open the local address printed by Next.js. While developing, React updates
-when you save a file.
+Open the local address printed by Next.js. While developing, React updates when
+you save a file.
 
 ```sh
 npm run typecheck -w @comet/site
@@ -68,8 +69,8 @@ The design is inspired by orbital navigation charts and printed engineering
 manuals. It uses parchment, dark ink, warm signal orange and a lime focal
 accent; editorial hierarchy and fine rules replace generic shadcn cards.
 
-The orbital diagram is **an illustration**, not a functional web converter.
-It has a screen-reader description and its internal decorations are hidden from
+The orbital diagram is **an illustration**, not a functional web converter. It
+has a screen-reader description and its internal decorations are hidden from
 assistive technology. Motion is implemented with CSS, not a paid animation
 service or heavy JavaScript package.
 
@@ -87,20 +88,20 @@ cannot respond; operating-system motion preferences still work.
 ## Strict typing and boundaries
 
 The workspace inherits `strict: true`, `noUncheckedIndexedAccess`,
-`noImplicitReturns`, and `exactOptionalPropertyTypes` from the monorepo.
-Shared content arrays use `satisfies` for shape validation; React components
-declare their return and prop types. `app/` and `src/` remain browser-safe,
-without Electron, native FFmpeg, runtime Node imports, or uploaded media.
+`noImplicitReturns`, and `exactOptionalPropertyTypes` from the monorepo. Shared
+content arrays use `satisfies` for shape validation; React components declare
+their return and prop types. `app/` and `src/` remain browser-safe, without
+Electron, native FFmpeg, runtime Node imports, or uploaded media.
 
 ## Security, hosting and honest product claims
 
-`next.config.ts` uses `output: 'export'`; the Wrangler config serves only
-static `out/` assets, with explicit 404 behavior. **There is no Worker script,
-SSR, database, media API, account, user tracking, or paid backend.** This issue
-does not deploy anything or require Cloudflare credentials.
+`next.config.ts` uses `output: 'export'`; the Wrangler config serves only static
+`out/` assets, with explicit 404 behavior. **There is no Worker script, SSR,
+database, media API, account, user tracking, or paid backend.** This issue does
+not deploy anything or require Cloudflare credentials.
 
-`public/_headers` includes CSP, anti-framing, HSTS and privacy-friendly
-feature restrictions. Next.js' static bootstrap currently needs inline script
+`public/_headers` includes CSP, anti-framing, HSTS and privacy-friendly feature
+restrictions. Next.js' static bootstrap currently needs inline script
 permission. Tightening that exception should be tested with a deployed preview
 rather than silently breaking the site. Local file serving does not apply
 Cloudflare response headers.

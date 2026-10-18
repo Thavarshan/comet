@@ -32,7 +32,9 @@ export default function DownloadPage(): ReactElement {
         <Badge variant="outline" className="download-badge">
           RELEASE STATION / DESKTOP
         </Badge>
-        <span className="download-hero__mark" aria-hidden="true">↓</span>
+        <span className="download-hero__mark" aria-hidden="true">
+          ↓
+        </span>
         <p className="section-kicker">YOUR NEXT FORMAT STARTS HERE</p>
         <h1 id="download-heading">
           Good things
@@ -41,8 +43,8 @@ export default function DownloadPage(): ReactElement {
         </h1>
         <p>
           Download Comet from its official GitHub Releases page. Pick the
-          package for your machine, check the release notes, and keep control
-          of your files.
+          package for your machine, check the release notes, and keep control of
+          your files.
         </p>
       </section>
 
@@ -81,8 +83,8 @@ export default function DownloadPage(): ReactElement {
             <h2>See what is next.</h2>
             <p>
               Version 3.0.0-beta.1 is for testing. Its macOS builds are not
-              notarized and Windows builds are unsigned, so system warnings
-              are expected. Verify each download against SHA256SUMS.
+              notarized and Windows builds are unsigned, so system warnings are
+              expected. Verify each download against SHA256SUMS.
             </p>
             <Button asChild size="lg" className="comet-cta comet-cta--outline">
               <a href={releases.beta}>
