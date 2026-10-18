@@ -20,8 +20,8 @@ export default function ReleasesPage(): ReactElement {
       <h1>Know what you install.</h1>
       <p>
         GitHub Releases is the source of truth for published versions, release
-        notes, platform packages and checksums. A successful development build
-        is not automatically a public release.
+        notes, platform packages and any published checksums. A successful
+        development build is not automatically a public release.
       </p>
       <h2>Stable releases</h2>
       <p>

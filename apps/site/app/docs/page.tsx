@@ -37,6 +37,11 @@ export default function GettingStartedPage(): ReactElement {
         cannot verify.
       </p>
       <p>
+        The 3.0 beta publishes SHA256SUMS. Older stable releases may not include
+        it; if your release has no published checksum, this check is not
+        available. Do not substitute a checksum from another version.
+      </p>
+      <p>
         Keep the release's SHA256SUMS file beside your download. In a terminal,
         replace PACKAGE with the exact downloaded filename and compare the full
         64-character result with the matching entry in SHA256SUMS.

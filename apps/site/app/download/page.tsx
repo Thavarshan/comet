@@ -63,7 +63,8 @@ export default function DownloadPage(): ReactElement {
             <h2>The everyday build.</h2>
             <p>
               Use the latest published stable desktop release for routine
-              conversion. GitHub lists the exact builds and checksums.
+              conversion. GitHub lists the exact builds and release notes. Some
+              older stable releases do not publish SHA256SUMS.
             </p>
             <Button asChild size="lg" className="comet-cta comet-cta--dark">
               <a href={releases.stable}>
