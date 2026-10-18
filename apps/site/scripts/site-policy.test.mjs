@@ -12,7 +12,10 @@ import { test } from 'node:test';
  * @returns {Promise<string>} Text from the requested file.
  */
 async function source(name) {
-  return readFile(new URL('../' + name, import.meta.url), 'utf8');
+  const text = await readFile(new URL('../' + name, import.meta.url), 'utf8');
+
+  // JSX line wrapping must not change checks for human-readable policy text.
+  return text.replace(/\s+/g, ' ');
 }
 
 test('Cloudflare serves static files without a Worker script', async () => {
@@ -72,4 +75,25 @@ test('the static marketing workspace cannot import the native engine', async () 
     assert.ok(!page.includes("from '@comet/engine'"));
     assert.ok(!page.includes("from 'electron'"));
   }
+});
+
+test('public guidance discloses browser limitations and hosting logs', async () => {
+  const docs = await source('app/docs/page.tsx');
+  const privacy = await source('app/privacy/page.tsx');
+  const layout = await source('app/layout.tsx');
+
+  assert.ok(docs.includes('not available'));
+  assert.ok(privacy.includes('Hosting providers may process'));
+  assert.ok(privacy.includes('unsigned'));
+  assert.ok(layout.includes('href="/docs/"'));
+  assert.ok(layout.includes('href="/privacy/"'));
+});
+
+test('feature descriptions remain explicit about web availability', async () => {
+  const features = await source('app/features/page.tsx');
+  const layout = await source('app/layout.tsx');
+
+  assert.ok(features.includes('no live browser converter yet'));
+  assert.ok(layout.includes('href="/features/"'));
+  assert.ok(layout.includes('og-comet.svg'));
 });
