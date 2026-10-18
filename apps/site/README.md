@@ -1,6 +1,8 @@
 # Comet marketing site (P2.1)
 
-Static Next.js marketing/download shell for [roadmap #61](https://github.com/Thavarshan/comet/issues/61) and [issue #69](https://github.com/Thavarshan/comet/issues/69).
+Static Next.js marketing/download shell for
+[roadmap #61](https://github.com/Thavarshan/comet/issues/61) and
+[issue #69](https://github.com/Thavarshan/comet/issues/69).
 
 ## Work locally
 
@@ -14,8 +16,8 @@ npm test -w @comet/site
 npm run build -w @comet/site
 ```
 
-The production output is `apps/site/out/`. The site is fully prerendered,
-with no runtime Node server, login, database, paid endpoint or uploaded media.
+The production output is `apps/site/out/`. The site is fully prerendered, with
+no runtime Node server, login, database, paid endpoint or uploaded media.
 Cloudflare Workers Static Assets can serve this directory without a Worker
 script, as configured in `wrangler.toml`. This ticket does **not** deploy it.
 
@@ -29,8 +31,8 @@ The application imports design tokens, base styles, and Inter typography from
 `@comet/ui`. It has independent routes and a responsive layout. Download links
 go to GitHub Releases; platform-specific discovery and verified manifest
 generation are tracked in #71. Content, docs, accessibility and SEO expansion
-are tracked in #70, and Cloudflare deployment credentials/config in #72.
-Browser conversion is **not** claimed to exist.
+are tracked in #70, and Cloudflare deployment credentials/config in #72. Browser
+conversion is **not** claimed to exist.
 
 Next.js `output: 'export'` makes vinext unnecessary for this static application.
 Re-evaluate vinext only after a separately approved requirement for SSR, dynamic
@@ -38,7 +40,7 @@ routes, or server actions—and a free-tier cost/security assessment.
 
 ## Operational checks
 
-- Verify `out/index.html`, `out/download/index.html`, `out/404.html`, 
+- Verify `out/index.html`, `out/download/index.html`, `out/404.html`,
   `out/_headers`, and `out/robots.txt` exist after build.
 - Serve `out/` over HTTP to test navigation and mobile viewports.
 - Use the existing root `npm run lint`, `npm run typecheck`,

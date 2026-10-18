@@ -29,17 +29,25 @@ export default function HomePage() {
       </section>
       <section className="feature-grid" aria-label="Product highlights">
         <article className="feature">
-          <span aria-hidden="true" className="feature-icon">01</span>
+          <span aria-hidden="true" className="feature-icon">
+            01
+          </span>
           <h2>Private by design</h2>
-          <p>Desktop conversion happens on your computer, without an account.</p>
+          <p>
+            Desktop conversion happens on your computer, without an account.
+          </p>
         </article>
         <article className="feature">
-          <span aria-hidden="true" className="feature-icon">02</span>
+          <span aria-hidden="true" className="feature-icon">
+            02
+          </span>
           <h2>Three media types</h2>
           <p>Work with images, audio, and video in one focused application.</p>
         </article>
         <article className="feature">
-          <span aria-hidden="true" className="feature-icon">03</span>
+          <span aria-hidden="true" className="feature-icon">
+            03
+          </span>
           <h2>Open source</h2>
           <p>Explore the code, report issues, and help shape the roadmap.</p>
         </article>
