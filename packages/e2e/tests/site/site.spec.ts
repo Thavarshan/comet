@@ -72,7 +72,9 @@ test('motion can be paused and the browser accessibility setting is honored', as
 }) => {
   await page.goto('/');
   const ring = page.locator('.orbit-ring--outer');
-  const pause = page.getByRole('button', { name: 'Pause decorative motion' });
+  const pause = page.getByRole('button', {
+    name: 'Pause motion (decorative animations)',
+  });
 
   await pause.click();
   await expect(page.locator('html')).toHaveAttribute(
@@ -80,7 +82,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
     'true',
   );
   await expect(
-    page.getByRole('button', { name: 'Resume decorative motion' }),
+    page.getByRole('button', { name: 'Resume motion (decorative animations)' }),
   ).toHaveAttribute('aria-pressed', 'true');
 
   const playState = await ring.evaluate(
@@ -88,7 +90,9 @@ test('motion can be paused and the browser accessibility setting is honored', as
   );
   expect(playState).toBe('paused');
 
-  await page.getByRole('button', { name: 'Resume decorative motion' }).click();
+  await page
+    .getByRole('button', { name: 'Resume motion (decorative animations)' })
+    .click();
   await expect(page.locator('html')).toHaveAttribute(
     'data-motion-paused',
     'false',
@@ -143,6 +147,11 @@ for (const width of [390, 1280]) {
   test(
     'public routes pass WCAG A/AA checks at width ' + width,
     async ({ page }, testInfo) => {
+      const failures: {
+        route: string;
+        violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations'];
+      }[] = [];
+
       await page.setViewportSize({ width, height: 900 });
       for (const route of [
         '/',
@@ -170,10 +179,14 @@ for (const width of [390, 1280]) {
           }),
           contentType: 'image/png',
         });
-        expect(audit.violations, route + ' accessibility violations').toEqual(
-          [],
-        );
+        if (audit.violations.length > 0) {
+          failures.push({ route, violations: audit.violations });
+        }
       }
+
+      expect(failures, 'Accessibility violations across public routes').toEqual(
+        [],
+      );
     },
   );
 }

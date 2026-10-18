@@ -41,7 +41,7 @@ export default function RootLayout({
         </a>
         <div className="site-shell">
           <header className="site-header">
-            <a className="brand" href="/" aria-label="Comet home">
+            <a className="brand" href="/">
               <span className="brand__symbol" aria-hidden="true">
                 <img src="/logo.svg" alt="" width="32" height="32" />
               </span>
@@ -49,6 +49,7 @@ export default function RootLayout({
                 comet<span>.</span>
               </span>
               <span className="brand__edition">THE FILE LAB</span>
+              <span className="sr-only"> home</span>
             </a>
             <nav className="site-navigation" aria-label="Main navigation">
               <a href="/features/">Features</a>

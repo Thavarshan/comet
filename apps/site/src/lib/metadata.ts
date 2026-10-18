@@ -30,6 +30,8 @@ export function getSiteOrigin(
 
   if (
     url.protocol !== 'https:' ||
+    ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) ||
+    url.hostname.endsWith('.localhost') ||
     url.username ||
     url.password ||
     url.pathname !== '/' ||

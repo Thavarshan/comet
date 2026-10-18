@@ -1450,3 +1450,8 @@ html[data-motion-paused='true'] *::after {
     outline: 3px solid Highlight;
   }
 }
+
+/* This small caption needs 4.5:1 contrast on the darker closing surface. */
+.closing .section-kicker {
+  color: #84400f;
+}

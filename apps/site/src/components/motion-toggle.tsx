@@ -31,7 +31,9 @@ export function MotionToggle(): ReactElement {
   return (
     <button
       aria-label={
-        paused ? 'Resume decorative motion' : 'Pause decorative motion'
+        paused
+          ? 'Resume motion (decorative animations)'
+          : 'Pause motion (decorative animations)'
       }
       aria-pressed={paused}
       className="motion-toggle"

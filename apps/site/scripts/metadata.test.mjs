@@ -13,6 +13,9 @@ test('canonical configuration accepts HTTPS origins and rejects URL pollution', 
     'https://comet.example/',
   );
   for (const value of [
+    'https://localhost',
+    'https://127.0.0.1',
+    'https://[::1]',
     'http://comet.example',
     'not a URL',
     'https://comet.example/path',

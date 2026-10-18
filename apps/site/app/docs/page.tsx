@@ -57,7 +57,7 @@ export default function GettingStartedPage(): ReactElement {
         </dd>
         <dt>Windows PowerShell</dt>
         <dd>
-          <code>Get-FileHash -Algorithm SHA256 .\\PACKAGE</code>
+          <code>Get-FileHash -Algorithm SHA256 .\PACKAGE</code>
         </dd>
       </dl>
       <p>
