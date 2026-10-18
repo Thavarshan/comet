@@ -1,0 +1,29 @@
+name: Format PR 119
+on:
+  push:
+    branches: [feat/70-docs-privacy-foundation]
+permissions:
+  contents: write
+jobs:
+  prettier:
+    if: "!contains(github.event.head_commit.message, 'style(site): apply Prettier')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.0'
+          cache: npm
+      - run: npm ci
+      - run: npx prettier --write apps/site/app/docs/page.tsx apps/site/app/features/page.tsx apps/site/app/globals.css apps/site/app/layout.tsx apps/site/app/privacy/page.tsx apps/site/scripts/site-policy.test.mjs apps/site/scripts/verify-export.mjs packages/e2e/tests/site/site.spec.ts
+      - name: Commit formatted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/site packages/e2e/tests/site/site.spec.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "style(site): apply Prettier to release pages"
+            git push
+          fi
