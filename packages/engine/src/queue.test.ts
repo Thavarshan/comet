@@ -86,6 +86,7 @@ it('does not mutate completed metadata when an executor reports late progress', 
 
     return '/tmp/comet-late-progress-output';
   };
+
   const engine = new ConversionEngine(capabilities, execute, async () => {});
   try {
     await engine.enqueueBatch(batch('video', 1));
