@@ -422,21 +422,28 @@ test('Linux package choice and release controls support keyboard navigation', as
     'href',
     'https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet_2.2.3_amd64.deb',
   );
-  await page.getByLabel('Version', { exact: true }).selectOption('1.0.0');
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await page.getByLabel('Version', { exact: true }).selectOption('0.0.1');
   await page
     .getByLabel('Operating system', { exact: true })
-    .selectOption('windows');
-  await expect(
-    page
-      .getByLabel('Processor architecture', { exact: true })
-      .locator('option'),
-  ).toHaveCount(1);
+    .selectOption('macos');
+  const architecture = page.getByLabel('Processor architecture', {
+    exact: true,
+  });
+  await expect(architecture.locator('option')).toHaveText([
+    'Choose a processor',
+    'ARM64 / Apple Silicon',
+  ]);
+  await expect(architecture).toHaveValue('');
   await expect(page.getByRole('link', { name: /^Download v/ })).toHaveCount(0);
   await expect(
-    page.getByText('No verified processor-specific package is available', {
-      exact: false,
-    }),
-  ).toBeVisible();
+    page.getByRole('link', { name: 'Check this release on GitHub' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/Thavarshan/comet/releases/tag/v0.0.1',
+  );
 });
 
 test('published beta packages remain explicit on mobile for every supported CPU', async ({
