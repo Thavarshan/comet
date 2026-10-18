@@ -66,7 +66,16 @@ for (const release of manifest.releases) {
   }
 }
 
-assert.ok(!download.includes('api.github.com'));
+// Parse actual resource/link destinations rather than inspecting URL substrings.
+for (const match of download.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
+  const destination = new URL(match[1], 'https://static.invalid');
+  assert.notEqual(
+    destination.hostname,
+    'api.github.com',
+    'The static download page must not reference the GitHub API',
+  );
+}
+
 assert.ok(notFound.includes('Wrong orbit.'));
 assert.ok(landing.includes('href="/download/"'));
 const docs = await readFile(path.join(output, 'docs/index.html'), 'utf8');
