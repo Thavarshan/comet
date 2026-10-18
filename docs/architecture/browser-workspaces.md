@@ -102,9 +102,9 @@ so new callers cannot accidentally weaken release checks. Signing policy is
 independent.
 
 Quality checks run root unit tests and `npm run build:browser`, covering
-internal packages and non-desktop applications as they are added. There are
-currently no web/site applications; an absent future workspace is not a build
-failure.
+internal packages and non-desktop applications as they are added. There are a
+static marketing site in `apps/site`; the future converter app remains
+unavailable until implemented and deployed.
 
 From a clean checkout using the pinned Node/npm versions:
 
@@ -124,3 +124,32 @@ imports, aliases and manifest dependencies cause a nonzero exit with file/line
 or package diagnostics. They also check valid native imports and browser-safe
 edges. Full native packaging remains verified by CI and the immutable release
 tag.
+
+## Shared configuration and task ownership
+
+Apps and packages use the root Prettier, EditorConfig, and ESLint configuration.
+Application source under `apps/*/src` and the Next.js `apps/site/app` tree uses
+the same type-aware safety and public API documentation rules as package source.
+Browser libraries extend `tsconfig.browser.json`, which inherits the strict
+compiler contract from `tsconfig.base.json`. Framework-specific configuration
+stays in the app that needs it; do not copy shared compiler options into apps.
+
+Use `@comet/ui` exports for reusable components and its stylesheet for shared
+tokens. Site-specific composition, copy, and decorative styles may remain in the
+site. Declare internal dependencies in each consumer's package manifest; never
+import another workspace's private source via a relative path.
+
+Run browser checks through the root Turbo entry points:
+
+```sh
+npm run test:site -- --project=site-chromium
+npm run test:browser -- --project=chromium
+```
+
+`test:site` depends explicitly on `@comet/site#build` because the test driver
+serves exported HTML without importing the site as a runtime dependency.
+`test:browser` builds its declared package dependencies before its harness. Both
+browser tasks run uncached so a cached result cannot hide a browser or platform
+change. Install the required Playwright browsers before running them. Build
+artifacts are cached, but Next.js's internal `.next/cache` is excluded. Changes
+to root formatting and compiler configuration invalidate Turbo tasks.
