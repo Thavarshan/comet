@@ -25,7 +25,12 @@ const download = await readFile(
   path.join(output, 'download/index.html'),
   'utf8',
 );
-assert.match(download, /github\.com\/Thavarshan\/comet\/releases\/latest/);
+assert.ok(
+  download.includes(
+    'href="https://github.com/Thavarshan/comet/releases/latest"',
+  ),
+  'Missing exact latest stable release link',
+);
 
 const headers = await readFile(path.join(output, '_headers'), 'utf8');
 assert.match(headers, /Content-Security-Policy:/);
