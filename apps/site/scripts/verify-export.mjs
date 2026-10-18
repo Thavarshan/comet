@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { brotliCompressSync } from 'node:zlib';
 import path from 'node:path';
+import { validateManifest } from '../src/lib/releases.ts';
 
 /**
  * Fail a production build if its static pages or security files are missing.
@@ -43,29 +44,29 @@ const download = await readFile(
 const notFound = await readFile(path.join(output, '404.html'), 'utf8');
 const headers = await readFile(path.join(output, '_headers'), 'utf8');
 
-/*
- * Validate exact known destinations. A substring regex for a GitHub URL can
- * accept malicious lookalike hosts, so we match the full href attribute.
- * Issue #71 will replace the fixed release links with a verified manifest.
- */
-assert.ok(
-  landing.includes('href="/download/"'),
-  'Home page must link to the exported download page',
-);
+// Check rendered exact destinations against the same validated build snapshot.
+assert.ok(landing.includes('href="/download/"'));
 assert.ok(landing.includes('Keep the file.'));
 assert.ok(landing.includes('Pause motion'));
-assert.ok(
-  download.includes(
-    'href="https://github.com/Thavarshan/comet/releases/latest"',
+const manifest = validateManifest(
+  JSON.parse(
+    await readFile(
+      new URL('../src/data/releases.json', import.meta.url),
+      'utf8',
+    ),
   ),
-  'Download page must link to the official stable release',
 );
 assert.ok(
-  download.includes(
-    'href="https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1"',
-  ),
-  'Download page must link to the correct published beta',
+  download.includes('href="https://github.com/Thavarshan/comet/releases"'),
 );
+for (const release of manifest.releases) {
+  assert.ok(download.includes(`href="${release.url}"`));
+  for (const asset of release.assets) {
+    assert.ok(download.includes(`href="${asset.url}"`));
+  }
+}
+
+assert.ok(!download.includes('api.github.com'));
 assert.ok(notFound.includes('Wrong orbit.'));
 assert.ok(landing.includes('href="/download/"'));
 const docs = await readFile(path.join(output, 'docs/index.html'), 'utf8');

@@ -1455,3 +1455,92 @@ html[data-motion-paused='true'] *::after {
 .closing .section-kicker {
   color: #84400f;
 }
+
+/* Native selectors keep release choices available to keyboards and touch. */
+.release-center {
+  max-width: 76rem;
+  margin: 3rem auto;
+  padding: clamp(1rem, 4vw, 3rem);
+  border: 1px solid var(--comet-ink, #17231d);
+  background: #f5f0df;
+  color: #17231d;
+}
+.release-center a:not(.comet-cta) {
+  color: #84400f;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.release-center__status {
+  border-bottom: 1px solid #adae9e;
+  padding-bottom: 1.5rem;
+}
+.release-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+.release-control {
+  display: grid;
+  gap: 0.5rem;
+}
+.release-control label {
+  font-weight: 600;
+}
+.release-controls select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.5rem;
+  border: 1px solid #17231d;
+  border-radius: 0;
+  background: #fffdf4;
+  color: #17231d;
+}
+.release-selection,
+.release-history-entry {
+  padding-block: 2rem;
+  border-bottom: 1px solid #adae9e;
+}
+.release-selection h2,
+.release-history-entry h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  margin-block: 1rem;
+}
+.release-selection p,
+.release-history-entry p {
+  margin-block: 1rem;
+}
+.release-filename,
+.release-checksum,
+.release-all-assets {
+  overflow-wrap: anywhere;
+}
+.release-notes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  padding: 1rem;
+  background: #fffdf4;
+  margin-top: 1rem;
+}
+.release-center summary {
+  cursor: pointer;
+  padding-block: 1rem;
+  font-weight: 600;
+}
+.release-all-assets li {
+  margin-block: 0.75rem;
+}
+.release-center :focus-visible {
+  outline: 3px solid #84400f;
+  outline-offset: 4px;
+}
+
+.release-selection .comet-cta {
+  max-width: 100%;
+  min-height: 3rem;
+  height: auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

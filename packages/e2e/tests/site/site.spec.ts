@@ -14,7 +14,10 @@ test('site navigates from home to official desktop downloads', async ({
   const forbiddenRequests: string[] = [];
 
   page.on('request', (request) => {
-    if (!['GET', 'HEAD'].includes(request.method())) {
+    if (
+      !['GET', 'HEAD'].includes(request.method()) ||
+      request.url().startsWith('https://api.github.com/')
+    ) {
       forbiddenRequests.push(request.method() + ' ' + request.url());
     }
   });
@@ -29,10 +32,12 @@ test('site navigates from home to official desktop downloads', async ({
     'Good things',
   );
 
-  const release = page.getByRole('link', { name: /Browse stable releases/ });
+  const release = page.getByRole('link', {
+    name: /Browse all official releases/,
+  });
   await expect(release).toHaveAttribute(
     'href',
-    'https://github.com/Thavarshan/comet/releases/latest',
+    'https://github.com/Thavarshan/comet/releases',
   );
 
   expect(forbiddenRequests).toEqual([]);
@@ -333,4 +338,158 @@ test('mobile first paint and layout stay within lab budgets', async ({
     body: JSON.stringify(results, null, 2),
     contentType: 'application/json',
   });
+});
+
+test('release selector offers exact assets with explicit architecture and format', async ({
+  page,
+}) => {
+  await page.goto('/download/');
+  await page
+    .getByLabel('Operating system', { exact: true })
+    .selectOption('windows');
+  await expect(
+    page.getByLabel('Processor architecture', { exact: true }),
+  ).toHaveValue('');
+  await expect(page.getByRole('link', { name: /^Download v/ })).toHaveCount(0);
+  await page
+    .getByLabel('Processor architecture', { exact: true })
+    .selectOption('arm64');
+  await page.getByLabel('Package format', { exact: true }).selectOption('exe');
+  await expect(
+    page.getByRole('link', { name: /^Download v2.2.3/ }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-arm64-setup.exe',
+  );
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await expect(page.getByLabel('Package format', { exact: true })).toHaveValue(
+    '',
+  );
+  await page
+    .getByLabel('Operating system', { exact: true })
+    .selectOption('macos');
+  await page
+    .getByLabel('Processor architecture', { exact: true })
+    .selectOption('arm64');
+  await page.getByLabel('Package format', { exact: true }).selectOption('zip');
+  await expect(
+    page.getByRole('link', { name: /^Download v3.0.0-beta.1/ }),
+  ).toHaveAttribute(
+    'href',
+    /\/v3\.0\.0-beta\.1\/comet-3\.0\.0-beta\.1-darwin-arm64-/,
+  );
+  await page.goto('/releases/');
+  await expect(
+    page.getByRole('heading', { name: 'v2.2.3', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'v3.0.0-beta.1', exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await expect(
+    page.getByRole('heading', { name: 'v3.0.0-beta.1', exact: true }),
+  ).toBeVisible();
+});
+
+test('Linux package choice and release controls support keyboard navigation', async ({
+  page,
+}) => {
+  await page.goto('/download/');
+  const channel = page.getByLabel('Release channel', { exact: true });
+  await channel.focus();
+  await page.keyboard.press('Tab');
+  await expect(page.getByLabel('Version', { exact: true })).toBeFocused();
+  await page
+    .getByLabel('Operating system', { exact: true })
+    .selectOption('linux');
+  await page
+    .getByLabel('Processor architecture', { exact: true })
+    .selectOption('x64');
+  const formats = page.getByLabel('Package format', { exact: true });
+  await expect(formats.locator('option')).toHaveText([
+    'Choose a package',
+    'deb',
+    'rpm',
+  ]);
+  await formats.selectOption('deb');
+  await expect(
+    page.getByRole('link', { name: /^Download v2.2.3/ }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet_2.2.3_amd64.deb',
+  );
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await page.getByLabel('Version', { exact: true }).selectOption('0.0.1');
+  await page
+    .getByLabel('Operating system', { exact: true })
+    .selectOption('macos');
+  const architecture = page.getByLabel('Processor architecture', {
+    exact: true,
+  });
+  await expect(architecture.locator('option')).toHaveText([
+    'Choose a processor',
+    'Apple Silicon (ARM64)',
+  ]);
+  await expect(architecture).toHaveValue('');
+  await expect(page.getByRole('link', { name: /^Download v/ })).toHaveCount(0);
+  await expect(
+    page.getByRole('link', { name: 'Check this release on GitHub' }),
+  ).toHaveAttribute(
+    'href',
+    'https://github.com/Thavarshan/comet/releases/tag/v0.0.1',
+  );
+});
+
+test('published beta packages remain explicit on mobile for every supported CPU', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/download/');
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await page
+    .getByLabel('Version', { exact: true })
+    .selectOption('3.0.0-beta.1');
+  for (const os of ['windows', 'macos', 'linux']) {
+    for (const arch of ['x64', 'arm64']) {
+      await page
+        .getByLabel('Operating system', { exact: true })
+        .selectOption(os);
+      await page
+        .getByLabel('Processor architecture', { exact: true })
+        .selectOption(arch);
+      const format = { windows: 'exe', macos: 'zip', linux: 'deb' }[os];
+      if (!format) {
+        throw new Error('Unsupported test OS');
+      }
+
+      await page
+        .getByLabel('Package format', { exact: true })
+        .selectOption(format);
+      const link = page.getByRole('link', { name: /^Download v3.0.0-beta.1/ });
+      await expect(link).toHaveAttribute(
+        'href',
+        new RegExp(
+          `/v3\\.0\\.0-beta\\.1/comet-3\\.0\\.0-beta\\.1-${{ windows: 'win32', macos: 'darwin', linux: 'linux' }[os]}-${arch}-`,
+        ),
+      );
+      await link.focus();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await testInfo.attach(`download-${os}-${arch}-390`, {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+    }
+  }
 });

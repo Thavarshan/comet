@@ -14,7 +14,7 @@ const dependencies = {
   engine: ['contracts', 'core'],
   renderer: ['contracts', 'core', 'converter', 'ui'],
   web: ['contracts', 'core', 'converter', 'ui', 'browser-engine'],
-  site: ['ui'],
+  site: ['contracts', 'ui'],
 };
 
 /** Resolve runtime ownership for source and built files on either OS. */

@@ -5,15 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
-    "build": "next build && node scripts/verify-export.mjs",
+    "build": "node scripts/prepare-release-snapshot.mjs && next build && node scripts/verify-export.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "node --test scripts/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs",
+    "releases:refresh": "node scripts/refresh-releases.mjs"
   },
   "dependencies": {
     "@comet/ui": "*",
     "next": "16.4.2",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "@comet/contracts": "*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
