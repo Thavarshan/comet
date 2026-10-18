@@ -223,8 +223,18 @@ test('all routes have metadata, intact local links and reserved image space', as
 /**
  * Reading and download navigation remain available without JavaScript.
  */
-test('essential content works without JavaScript', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+test('essential content works without JavaScript', async ({
+  browser,
+  baseURL,
+}) => {
+  if (!baseURL) {
+    throw new Error('The site test configuration must provide a baseURL.');
+  }
+
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    baseURL,
+  });
   try {
     const page = await context.newPage();
     await page.goto('/');
