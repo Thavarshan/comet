@@ -73,3 +73,16 @@ test('the static marketing workspace cannot import the native engine', async () 
     assert.ok(!page.includes("from 'electron'"));
   }
 });
+
+
+test('public guidance discloses browser limitations and hosting logs', async () => {
+  const docs = await source('app/docs/page.tsx');
+  const privacy = await source('app/privacy/page.tsx');
+  const layout = await source('app/layout.tsx');
+
+  assert.ok(docs.includes('not available'));
+  assert.ok(privacy.includes('Hosting providers may process'));
+  assert.ok(privacy.includes('unsigned'));
+  assert.ok(layout.includes('href="/docs/"'));
+  assert.ok(layout.includes('href="/privacy/"'));
+});
