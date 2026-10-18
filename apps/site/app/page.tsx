@@ -9,6 +9,13 @@ import { OrbitIllustration } from '../src/components/orbit-illustration';
  * as const asks TypeScript to preserve the exact values. A new developer can
  * add a feature here without copying markup or inventing another component.
  */
+interface MediaFeature {
+  readonly number: string;
+  readonly title: 'Image' | 'Audio' | 'Video';
+  readonly detail: string;
+  readonly formats: string;
+}
+
 const mediaTypes = [
   {
     number: '01',
@@ -28,7 +35,7 @@ const mediaTypes = [
     detail: 'Switch containers, adjust settings, keep originals.',
     formats: 'MP4 / MOV / WEBM',
   },
-] as const;
+] as const satisfies readonly MediaFeature[];
 
 /**
  * A static landing page: all copy and links are available without JavaScript.

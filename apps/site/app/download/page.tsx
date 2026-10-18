@@ -4,10 +4,15 @@ import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 
 /** These links lead to published GitHub Releases, not draft artifacts. */
+interface ReleaseLinks {
+  readonly stable: string;
+  readonly beta: string;
+}
+
 const releases = {
   stable: 'https://github.com/Thavarshan/comet/releases/latest',
   beta: 'https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1',
-} as const;
+} as const satisfies ReleaseLinks;
 
 /** Static page metadata is generated at build time. */
 export const metadata: Metadata = {
