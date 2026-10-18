@@ -1,0 +1,99 @@
+name: Verify desktop
+on:
+  workflow_call:
+    inputs:
+      signing:
+        type: boolean
+        default: false
+    secrets:
+      APPLE_CERTIFICATE_BASE64:
+        required: false
+      APPLE_CERTIFICATE_PASSWORD:
+        required: false
+      APPLE_IDENTITY:
+        required: false
+      APPLE_ID:
+        required: false
+      APPLE_APP_SPECIFIC_PASSWORD:
+        required: false
+      APPLE_TEAM_ID:
+        required: false
+      WINDOWS_CERTIFICATE_BASE64:
+        required: false
+      WINDOWS_CERTIFICATE_PASSWORD:
+        required: false
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  security:
+    uses: ./.github/workflows/security.yml
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install -g npm@12.2.0
+      - run: npm ci
+      - name: Install shell analysis tools
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - run: bash scripts/ci/lint-workflows.sh
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:ci
+      - name: Production dependency vulnerability gate
+        run: npm audit --omit=dev --audit-level=high
+      - name: Record development dependency findings
+        if: always()
+        run: npm audit --json > dependency-audit.json || true
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: dependency-audit
+          path: dependency-audit.json
+          retention-days: 14
+  native:
+    needs: [quality, security]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15-intel
+            target: darwin-x64
+          - runner: macos-15
+            target: darwin-arm64
+          - runner: windows-2025
+            target: win32-x64
+          - runner: windows-11-arm
+            target: win32-arm64
+    uses: ./.github/workflows/native.yml
+    with:
+      runner: ${{ matrix.runner }}
+      target: ${{ matrix.target }}
+      signing: ${{ inputs.signing }}
+    secrets: inherit
+  linux-native:
+    needs: [quality, security]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: linux-x64
+          - runner: ubuntu-24.04-arm
+            target: linux-arm64
+    uses: ./.github/workflows/native.yml
+    with:
+      runner: ${{ matrix.runner }}
+      target: ${{ matrix.target }}
+      signing: ${{ inputs.signing }}
+    secrets: inherit
+
+  linux-compatibility:
+    needs: linux-native
+    uses: ./.github/workflows/linux-compatibility.yml

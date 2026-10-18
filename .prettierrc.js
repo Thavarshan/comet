@@ -1,10 +1,10 @@
-module.exports = {
-  semi: true,
-  trailingComma: 'all',
+export default {
   singleQuote: true,
-  printWidth: 120,
+  trailingComma: 'all',
+  printWidth: 80,
   tabWidth: 2,
   useTabs: false,
-  endOfLine: 'auto',
-  spaceBeforeFunctionParen: false
-}
+  semi: true,
+  endOfLine: 'lf',
+  proseWrap: 'always',
+};

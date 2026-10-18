@@ -1,6 +1,7 @@
 # Security Policy
 
-**PLEASE DON'T DISCLOSE SECURITY-RELATED ISSUES PUBLICLY, [SEE BELOW](#reporting-a-vulnerability).**
+**PLEASE DON'T DISCLOSE SECURITY-RELATED ISSUES PUBLICLY,
+[SEE BELOW](#reporting-a-vulnerability).**
 
 ## Supported Versions
 
@@ -11,7 +12,9 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Sentinel, please send an email to <Jerome Thayananthajothy> (<tjthavarshan@gmail.com>). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Sentinel, please send an email
+to <Jerome Thayananthajothy> (<tjthavarshan@gmail.com>). All security
+vulnerabilities will be promptly addressed.
 
 ### Public PGP Key
 

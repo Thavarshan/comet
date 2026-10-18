@@ -1,6 +1,48 @@
 # Release Notes
 
-## [Unreleased](https://github.com/Thavarshan/comet/compare/v2.2.3...HEAD)
+## v3.0.0-beta.1 — Release candidate preparation — 2026-10-17
+
+This beta is not approved for production distribution. The public stable release
+remains v2.2.3 until the native platform and distribution gates pass.
+
+### Added
+
+- npm/Turborepo workspaces for desktop, engine, contracts, shared UI, and E2E.
+- Shared shadcn components, compact desktop controls, and a centered titlebar.
+- Real conversion integration tests and packaged Playwright workflows.
+- Native x64/ARM64 verification on macOS, Windows, and Linux, plus a Linux
+  distribution compatibility matrix.
+- Signed, tag-based release automation with artifact hashes and verification
+  receipts; pull request checks cannot publish.
+
+### Changed
+
+- Replace Vue/Pinia with React and TypeScript, retaining five UI languages.
+- Extract an Electron-free conversion engine with a single global execution slot.
+- Replace fluent-ffmpeg with explicit native process and image worker execution.
+- Expand capability-aware output formats and media conversion controls.
+- Restrict the desktop bridge and persist versioned preferences in main.
+- Enforce strict typing, linting, and 80-column formatting.
+
+### Fixed
+
+- Await cancellation and cleanup before reporting terminal job state.
+- Preserve source files and avoid destination filename collisions.
+- Retain settings across launches and import legacy locale/theme preferences.
+
+### Release gates still required
+
+- Successful CI on all six native targets and all configured Linux distributions.
+- macOS signing/notarization and Windows signing credentials and verification.
+- Release environment approval before publication.
+- AMR, APE, and MPC fixture coverage before claiming every accepted input is
+  verified. Formats without bundled encoder support remain unavailable.
+
+## [v2.2.3](https://github.com/Thavarshan/comet/releases/tag/v2.2.3) - 2024-11-07
+
+### Changed
+
+- Revert Electron Forge and ESLint upgrades and reset ESLint configuration.
 
 ## [v2.2.2](https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2) - 2024-10-20
 

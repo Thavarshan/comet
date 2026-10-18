@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "targets": {
+    "darwin-arm64": {
+      "sourceRelease": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://git.martin-riedl.de/ffmpeg/build-script",
+      "files": [
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2/ffmpeg.zip",
+          "sha256": "c8ed4c4e6978a03c485edbfe4e0a5dc2380f8a30bba5150531b31b094492d924",
+          "compression": "zip",
+          "entries": ["ffmpeg"]
+        },
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2/ffprobe.zip",
+          "sha256": "fcbe839537485eaee7a7a8bc5cbc0f90d53617e80943e8a5b2e31cb851197ea6",
+          "compression": "zip",
+          "entries": ["ffprobe"]
+        },
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2/versions.txt",
+          "sha256": "fc92572e752e09b20e7ff28d64fb7096f7bc1a0d589b2e40f17ac91b7fd0ca61",
+          "output": "BUILD.ffmpeg.txt"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n9.0.2/LICENSE.md",
+          "sha256": "2e1d16c72fd74e12063776371da757322f8b77589386532f4fd8634bde7de1af",
+          "output": "LICENSE.ffmpeg"
+        }
+      ]
+    },
+    "darwin-x64": {
+      "sourceRelease": "https://ffmpeg.martin-riedl.de/download/macos/amd64/1789931006_9.0.2",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://git.martin-riedl.de/ffmpeg/build-script",
+      "files": [
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/amd64/1789931006_9.0.2/ffmpeg.zip",
+          "sha256": "7c6b4125b191cbf773832dc51f424cf2b6bb7da43007d1e066f95909e47cacd4",
+          "compression": "zip",
+          "entries": ["ffmpeg"]
+        },
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/amd64/1789931006_9.0.2/ffprobe.zip",
+          "sha256": "2322438ed2f6319a691291b247d09c69dcaa3a982460d1f269a7e1af335cfdfd",
+          "compression": "zip",
+          "entries": ["ffprobe"]
+        },
+        {
+          "url": "https://ffmpeg.martin-riedl.de/download/macos/amd64/1789931006_9.0.2/versions.txt",
+          "sha256": "64347e66bb487d52c6a8a43180028dc2a4d1dc0519ec81233d55e2bd59ebd98e",
+          "output": "BUILD.ffmpeg.txt"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n9.0.2/LICENSE.md",
+          "sha256": "2e1d16c72fd74e12063776371da757322f8b77589386532f4fd8634bde7de1af",
+          "output": "LICENSE.ffmpeg"
+        }
+      ]
+    },
+    "linux-arm64": {
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-30-13-08",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
+      "files": [
+        {
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-30-13-08/ffmpeg-n9.0.2-17-g2a571b6068-linuxarm64-gpl-9.0.tar.xz",
+          "sha256": "91afcd7695d4bbbb9e0057aa10baaf9875ec4e1a97303f9059ec971336a2ab46",
+          "compression": "tar.xz",
+          "directory": "ffmpeg-n9.0.2-17-g2a571b6068-linuxarm64-gpl-9.0",
+          "entries": ["bin/ffmpeg", "bin/ffprobe", "LICENSE.txt"]
+        }
+      ]
+    },
+    "linux-x64": {
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-09-30-13-08",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
+      "files": [
+        {
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-09-30-13-08/ffmpeg-n9.0.2-17-g2a571b6068-linux64-gpl-9.0.tar.xz",
+          "sha256": "68ee646831adaae2495618346f3bba94ff207ff83bbd34d643e7004730d66269",
+          "compression": "tar.xz",
+          "directory": "ffmpeg-n9.0.2-17-g2a571b6068-linux64-gpl-9.0",
+          "entries": ["bin/ffmpeg", "bin/ffprobe", "LICENSE.txt"]
+        }
+      ]
+    },
+    "win32-x64": {
+      "sourceRelease": "https://github.com/eugeneware/ffmpeg-static/releases/tag/b6.1.1",
+      "files": [
+        {
+          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffmpeg-win32-x64.gz",
+          "sha256": "8883a3dffbd0a16cf4ef95206ea05283f78908dbfb118f73c83f4951dcc06d77",
+          "output": "ffmpeg.exe",
+          "compression": "gzip"
+        },
+        {
+          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/ffprobe-win32-x64.gz",
+          "sha256": "f309e6223ad89d2fe54bccd420a7709b66fd27540674e92309578ed491a43c8d",
+          "output": "ffprobe.exe",
+          "compression": "gzip"
+        },
+        {
+          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/win32-x64.LICENSE",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "output": "LICENSE.ffmpeg"
+        },
+        {
+          "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.1.1/win32-x64.README",
+          "sha256": "a636a7183c58006351acbaf35303c0ed85c6e1320fd4e80de453ba6157de6311",
+          "output": "SOURCE.ffmpeg.txt"
+        }
+      ]
+    },
+    "win32-arm64": {
+      "sourceRelease": "https://github.com/BtbN/FFmpeg-Builds/releases/tag/autobuild-2026-08-31-13-27",
+      "sourceCode": "https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz",
+      "buildRecipe": "https://github.com/BtbN/FFmpeg-Builds",
+      "notes": "Pin before Windows ARM64 startup regression: https://github.com/BtbN/FFmpeg-Builds/issues/675",
+      "files": [
+        {
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-08-31-13-27/ffmpeg-n8.1.2-50-g1a748fe2cd-winarm64-gpl-8.1.zip",
+          "sha256": "722be613f4fdb0b114671515c44a747edd86b814d4e367ca11b10df4539e6e74",
+          "compression": "zip",
+          "output": "archive",
+          "entries": ["bin/ffmpeg.exe", "bin/ffprobe.exe", "LICENSE.txt"]
+        }
+      ]
+    }
+  }
+}

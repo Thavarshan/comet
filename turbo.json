@@ -1,0 +1,45 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["tsconfig.base.json", "eslint.config.js"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".vite/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "package": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "make": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
+    "test:matrix": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "outputs": []
+    }
+  },
+  "globalPassThroughEnv": [
+    "COMET_*",
+    "APPLE_*",
+    "WINDOWS_CERTIFICATE_*",
+    "ELECTRON_CACHE"
+  ]
+}

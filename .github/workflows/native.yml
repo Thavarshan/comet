@@ -1,0 +1,134 @@
+name: Native desktop
+on:
+  workflow_call:
+    inputs:
+      runner:
+        type: string
+        required: true
+      target:
+        type: string
+        required: true
+      signing:
+        type: boolean
+        default: false
+    secrets:
+      APPLE_CERTIFICATE_BASE64:
+        required: false
+      APPLE_CERTIFICATE_PASSWORD:
+        required: false
+      APPLE_IDENTITY:
+        required: false
+      APPLE_ID:
+        required: false
+      APPLE_APP_SPECIFIC_PASSWORD:
+        required: false
+      APPLE_TEAM_ID:
+        required: false
+      WINDOWS_CERTIFICATE_BASE64:
+        required: false
+      WINDOWS_CERTIFICATE_PASSWORD:
+        required: false
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 60
+    env:
+      COMET_TARGET: ${{ inputs.target }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install -g npm@12.2.0
+      - run: npm ci
+      - name: Linux packaging dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm fakeroot xvfb
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - run: npm run test:ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run binaries
+      - run: npm run test:integration
+      - name: Native conversion pair matrix
+        run: npm run test:matrix
+      - name: Configure release signing
+        if: inputs.signing
+        run: node scripts/prepare-signing.mjs
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_IDENTITY: ${{ secrets.APPLE_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD:
+            ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+          WINDOWS_CERTIFICATE_PASSWORD:
+            ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+      - run: npm run make
+        env:
+          APPLE_IDENTITY: ${{ inputs.signing && secrets.APPLE_IDENTITY || '' }}
+          APPLE_ID: ${{ inputs.signing && secrets.APPLE_ID || '' }}
+          APPLE_APP_SPECIFIC_PASSWORD:
+            ${{ inputs.signing && secrets.APPLE_APP_SPECIFIC_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ inputs.signing && secrets.APPLE_TEAM_ID || '' }}
+          WINDOWS_CERTIFICATE_PASSWORD:
+            ${{ inputs.signing && secrets.WINDOWS_CERTIFICATE_PASSWORD || '' }}
+      - run: npm run dist:portable
+      - name: Native packaged smoke test
+        env:
+          COMET_EXPECT_SIGNED: ${{ inputs.signing }}
+          COMET_EXPECTED_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            xvfb-run --auto-servernum npm run test:packaged
+          else
+            npm run test:packaged
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: comet-${{ inputs.target }}
+          path: |
+            apps/desktop/out/make/
+            apps/desktop/out/verification/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Archive Linux compatibility payload
+        if: runner.os == 'Linux'
+        run: |
+          tar -czf "$RUNNER_TEMP/linux-payload.tar.gz" \
+            apps/desktop/out/Comet-${COMET_TARGET} \
+            packages/engine/dist packages/contracts/dist \
+            packages/e2e/dist apps/desktop/.cache/bin/${COMET_TARGET}
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: runner.os == 'Linux'
+        with:
+          name: linux-payload-${{ inputs.target }}
+          path: ${{ runner.temp }}/linux-payload.tar.gz
+          retention-days: 7
+      - name: Upload conversion coverage and E2E diagnostics
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: comet-tests-${{ inputs.target }}
+          path: |
+            packages/e2e/playwright-report/
+            packages/e2e/test-results/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Remove signing material
+        if: always() && inputs.signing
+        run: |
+          rm -f "$RUNNER_TEMP/comet-signing.pfx" "$RUNNER_TEMP/comet-signing.p12"
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            security delete-keychain "$RUNNER_TEMP/comet-build.keychain-db" || true
+          fi

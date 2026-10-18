@@ -1,0 +1,22 @@
+name: Static security analysis
+on:
+  workflow_call:
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  codeql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: github/codeql-action/init@f051dc808ef3645eb0d08647ec751634ec2304ac # v4
+        with:
+          languages: javascript-typescript,actions
+          queries: security-extended
+          build-mode: none
+      - uses: github/codeql-action/analyze@f051dc808ef3645eb0d08647ec751634ec2304ac # v4
+        with:
+          output: sarif-results
+      - name: Reject high severity static findings
+        run: node scripts/check-sarif.mjs sarif-results
