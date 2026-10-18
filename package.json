@@ -36,7 +36,9 @@
     "test:ci": "node --test scripts/*.test.mjs",
     "dist:portable": "node scripts/portable.mjs",
     "build:packages": "turbo run build --filter=./packages/*",
-    "build:browser": "turbo run build --filter=./packages/* --filter=./apps/* --filter=!@comet/desktop"
+    "build:browser": "turbo run build --filter=./packages/* --filter=./apps/* --filter=!@comet/desktop",
+    "test:site": "turbo run test:site --filter=@comet/e2e --",
+    "test:browser": "turbo run test:browser --filter=@comet/e2e --"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",

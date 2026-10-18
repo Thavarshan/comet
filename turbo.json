@@ -3,12 +3,22 @@
   "globalDependencies": [
     "tsconfig.base.json",
     "eslint.config.js",
-    "tsconfig.browser.json"
+    "tsconfig.browser.json",
+    ".prettierrc.js",
+    ".prettierignore",
+    ".editorconfig"
   ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vite/**", ".bundle/**", ".next/**", "out/**"]
+      "outputs": [
+        "dist/**",
+        ".vite/**",
+        ".bundle/**",
+        ".next/**",
+        "!.next/cache/**",
+        "out/**"
+      ]
     },
     "typecheck": {
       "dependsOn": ["^build"],
@@ -35,6 +45,16 @@
       "dependsOn": ["^build"]
     },
     "test:matrix": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test:site": {
+      "cache": false,
+      "dependsOn": ["@comet/site#build"],
+      "outputs": []
+    },
+    "test:browser": {
       "cache": false,
       "dependsOn": ["^build"],
       "outputs": []

@@ -16,6 +16,7 @@ export default ts.config(
       '**/.cache/**',
       '**/.gallery/**',
       '**/.bundle/**',
+      '**/.next/**',
       '**/coverage/**',
       '**/.turbo/**',
       '**/test-results/**',
@@ -55,7 +56,11 @@ export default ts.config(
     },
   },
   {
-    files: ['apps/desktop/src/**/*.{ts,tsx}', 'packages/*/src/**/*.{ts,tsx}'],
+    files: [
+      'apps/*/src/**/*.{ts,tsx}',
+      'apps/site/app/**/*.{ts,tsx}',
+      'packages/*/src/**/*.{ts,tsx}',
+    ],
     ignores: ['**/*.test.{ts,tsx}', '**/*.d.ts'],
     languageOptions: {
       parserOptions: {
