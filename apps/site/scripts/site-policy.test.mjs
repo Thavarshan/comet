@@ -74,7 +74,6 @@ test('the static marketing workspace cannot import the native engine', async () 
   }
 });
 
-
 test('public guidance discloses browser limitations and hosting logs', async () => {
   const docs = await source('app/docs/page.tsx');
   const privacy = await source('app/privacy/page.tsx');
@@ -86,7 +85,6 @@ test('public guidance discloses browser limitations and hosting logs', async () 
   assert.ok(layout.includes('href="/docs/"'));
   assert.ok(layout.includes('href="/privacy/"'));
 });
-
 
 test('feature descriptions remain explicit about web availability', async () => {
   const features = await source('app/features/page.tsx');
