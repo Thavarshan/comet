@@ -1,0 +1,32 @@
+# One-time formatter for the current PR. Delete after it writes the source.
+name: Format Comet site PR
+on:
+  push:
+    branches:
+      - feat/69-static-next-site
+permissions:
+  contents: write
+jobs:
+  format:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm install -g npm@12.2.0
+      - run: npm ci
+      - name: Format site source with repository Prettier rules
+        run: npm exec -- prettier --write apps/site
+      - name: Commit formatting only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/site
+          if ! git diff --cached --quiet; then
+            git commit -m "style(site): apply canonical Prettier formatting"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
