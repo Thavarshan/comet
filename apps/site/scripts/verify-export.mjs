@@ -15,11 +15,13 @@ const required = [
   'index.html',
   'download/index.html',
   'docs/index.html',
+  'features/index.html',
   'privacy/index.html',
   '404.html',
   'robots.txt',
   '_headers',
   'logo.svg',
+  'og-comet.svg',
 ];
 
 for (const name of required) {
@@ -62,8 +64,12 @@ assert.ok(notFound.includes('Wrong orbit.'));
 assert.ok(landing.includes('href="/download/"'));
 const docs = await readFile(path.join(output, 'docs/index.html'), 'utf8');
 const privacy = await readFile(path.join(output, 'privacy/index.html'), 'utf8');
+const features = await readFile(path.join(output, 'features/index.html'), 'utf8');
 assert.ok(docs.includes('Getting started with Comet'));
 assert.ok(privacy.includes('Privacy and limitations'));
+assert.ok(features.includes('Desktop or browser?'));
+assert.ok(features.includes('no live browser converter yet'));
+assert.ok(landing.includes('og-comet.svg'));
 assert.ok(docs.includes('not available'));
 assert.ok(privacy.includes('hosting providers') || privacy.includes('Hosting providers'));
 assert.ok(headers.includes('Content-Security-Policy:'));
