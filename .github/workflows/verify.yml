@@ -55,6 +55,8 @@ jobs:
         run: npm exec -w @comet/e2e -- playwright install --with-deps chromium
       - name: Shared browser conversion harness
         run: npm run test:browser -w @comet/e2e -- --project=chromium
+      - name: Marketing site responsive smoke test
+        run: npm run test:site -w @comet/e2e -- --project=site-chromium
       - name: Retain browser failure diagnostics
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -63,6 +65,8 @@ jobs:
           path: |
             packages/e2e/playwright-report/browser
             packages/e2e/test-results/browser
+            packages/e2e/playwright-report/site
+            packages/e2e/test-results/site
           retention-days: 7
       - name: Production dependency vulnerability gate
         run: npm audit --omit=dev --audit-level=high

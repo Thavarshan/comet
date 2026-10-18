@@ -61,7 +61,8 @@ npm run build -w @comet/site
 The last command creates **`apps/site/out/`**, containing ordinary HTML and
 static assets. The export verifier checks both routes, the 404 page, official
 release links, and the Cloudflare security file. Repository-wide CI also runs
-lint, formatting, browser package builds and the unchanged native matrix.
+lint, formatting, browser package builds, a Chromium smoke test at mobile and
+desktop widths, and the unchanged native matrix.
 
 ## Motion and accessibility
 
@@ -123,6 +124,10 @@ approved after a cost/security review.
 4. Confirm neither page sends source media, calls an API, or promises web tools.
 5. Confirm every linked release exists and beta trust warnings are visible.
 6. Run the workspace tests and complete root CI before merging.
+
+A real Chromium smoke test checks navigation, 320px/390px/tablet/desktop
+overflow, an operable pause button, reduced motion and read-only page requests.
+It runs from static `out/` over localhost with no Cloudflare credentials.
 
 Visual and physical-device review still need human sign-off. Passing build and
 source tests are **not** a substitute for checking the actual page in browsers.
