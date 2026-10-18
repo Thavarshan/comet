@@ -192,9 +192,7 @@ export function ReleaseCenter({
                 <option value="">Choose a processor</option>
                 {architectures.map((architecture) => (
                   <option key={architecture} value={architecture ?? ''}>
-                    {architecture === 'x64'
-                      ? 'x64 / Intel / AMD'
-                      : 'ARM64 / Apple Silicon'}
+                    {architectureLabel(architecture, os)}
                   </option>
                 ))}
               </NativeSelect>
@@ -246,8 +244,11 @@ export function ReleaseCenter({
                 </Button>
                 <Checksum asset={asset} />
                 <p>
-                  Signing: {asset.signing}. macOS notarization:{' '}
-                  {asset.notarization}. Minimum OS version: unknown.{' '}
+                  Signing: {asset.signing}.{' '}
+                  {asset.os === 'macos' && (
+                    <>Notarization: {asset.notarization}. </>
+                  )}
+                  Minimum OS version: unknown.{' '}
                   {asset.trustSource && (
                     <a href={asset.trustSource}>Published trust warning</a>
                   )}
@@ -395,4 +396,20 @@ function browserDay(): number {
 
 function serverDay(): number {
   return 0;
+}
+
+/** CPU names should describe the chosen system, not a different platform. */
+function architectureLabel(
+  architecture: ReleaseAsset['arch'],
+  os: string,
+): string {
+  if (architecture === 'x64') {
+    return os === 'macos' ? 'Intel (x64)' : 'x64 (Intel / AMD)';
+  }
+
+  if (architecture === 'arm64') {
+    return os === 'macos' ? 'Apple Silicon (ARM64)' : 'ARM64';
+  }
+
+  return 'Unknown architecture';
 }

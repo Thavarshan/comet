@@ -434,7 +434,7 @@ test('Linux package choice and release controls support keyboard navigation', as
   });
   await expect(architecture.locator('option')).toHaveText([
     'Choose a processor',
-    'ARM64 / Apple Silicon',
+    'Apple Silicon (ARM64)',
   ]);
   await expect(architecture).toHaveValue('');
   await expect(page.getByRole('link', { name: /^Download v/ })).toHaveCount(0);
@@ -480,7 +480,7 @@ test('published beta packages remain explicit on mobile for every supported CPU'
           `/v3\\.0\\.0-beta\\.1/comet-3\\.0\\.0-beta\\.1-${{ windows: 'win32', macos: 'darwin', linux: 'linux' }[os]}-${arch}-`,
         ),
       );
-      await link.scrollIntoViewIfNeeded();
+      await link.focus();
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth,
