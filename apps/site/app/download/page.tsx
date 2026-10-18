@@ -1,6 +1,7 @@
 import { Badge } from '@comet/ui/components/badge';
 import { Button } from '@comet/ui/components/button';
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../src/lib/metadata';
 import type { ReactElement } from 'react';
 
 /** These links lead to published GitHub Releases, not draft artifacts. */
@@ -15,10 +16,11 @@ const releases = {
 } as const satisfies ReleaseLinks;
 
 /** Static page metadata is generated at build time. */
-export const metadata: Metadata = {
-  title: 'Download',
-  description: 'Choose a published Comet desktop release on GitHub.',
-};
+export const metadata: Metadata = pageMetadata(
+  '/download/',
+  'Download',
+  'Choose a published Comet desktop release and verify its checksum on GitHub.',
+);
 
 /**
  * This first site milestone deliberately does not guess an operating system
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
  */
 export default function DownloadPage(): ReactElement {
   return (
-    <main id="main-content" className="download-main">
+    <main id="main-content" className="download-main" tabIndex={-1}>
       <section className="download-hero" aria-labelledby="download-heading">
         <Badge variant="outline" className="download-badge">
           RELEASE STATION / DESKTOP

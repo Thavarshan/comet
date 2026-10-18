@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
+import { brotliCompressSync } from 'node:zlib';
 import path from 'node:path';
 
 /**
@@ -17,11 +18,16 @@ const required = [
   'docs/index.html',
   'features/index.html',
   'privacy/index.html',
+  'releases/index.html',
+  'license/index.html',
+  'sitemap.xml',
   '404.html',
   'robots.txt',
   '_headers',
   'logo.svg',
-  'og-comet.svg',
+  'og-comet.png',
+  'screenshots/desktop-light.webp',
+  'screenshots/output-settings.webp',
 ];
 
 for (const name of required) {
@@ -72,7 +78,20 @@ assert.ok(docs.includes('Getting started with Comet'));
 assert.ok(privacy.includes('Privacy and limitations'));
 assert.ok(features.includes('Desktop or browser?'));
 assert.ok(features.includes('no live browser converter yet'));
-assert.ok(landing.includes('og-comet.svg'));
+// Social images are emitted only when a canonical deployment is configured.
+const origin = process.env.COMET_SITE_URL;
+const sitemap = await readFile(path.join(output, 'sitemap.xml'), 'utf8');
+const robots = await readFile(path.join(output, 'robots.txt'), 'utf8');
+if (origin) {
+  assert.ok(landing.includes('og-comet.png'));
+  assert.ok(sitemap.includes(new URL('/features/', origin).href));
+  assert.ok(robots.includes(new URL('/sitemap.xml', origin).href));
+} else {
+  assert.ok(landing.includes('noindex'));
+  assert.ok(robots.includes('Disallow: /'));
+  assert.ok(!sitemap.includes('<loc>'));
+}
+
 assert.ok(docs.includes('not available'));
 assert.ok(
   privacy.includes('hosting providers') ||
@@ -83,3 +102,32 @@ assert.ok(headers.includes("frame-ancestors 'none'"));
 assert.ok(!landing.includes('/_next/image?'), 'No runtime image optimizer');
 
 console.log('Comet site static pages and release links verified');
+
+// Fail before deployment if a screenshot or social asset becomes excessive.
+for (const asset of [
+  'og-comet.png',
+  'screenshots/desktop-light.webp',
+  'screenshots/output-settings.webp',
+]) {
+  assert.ok(
+    (await stat(path.join(output, asset))).size < 150_000,
+    asset + ' exceeds the 150 kB asset budget',
+  );
+}
+
+// Budget all exported JavaScript, including framework and route chunks.
+let javascriptBytes = 0;
+for (const asset of await readdir(path.join(output, '_next'), {
+  recursive: true,
+})) {
+  if (asset.endsWith('.js')) {
+    const bytes = await readFile(path.join(output, '_next', asset));
+    javascriptBytes += brotliCompressSync(bytes).length;
+  }
+}
+
+assert.ok(
+  javascriptBytes < 250_000,
+  'Exported JavaScript exceeds 250 kB Brotli',
+);
+console.log('Exported JavaScript Brotli bytes:', javascriptBytes);

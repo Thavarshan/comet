@@ -1381,7 +1381,7 @@ html[data-motion-paused='true'] *::after {
   color: var(--site-muted);
 }
 
-.content-page a {
+.content-page a:not(.comet-cta) {
   color: #84400f;
   font-weight: 700;
   text-decoration: underline;
@@ -1397,5 +1397,56 @@ html[data-motion-paused='true'] *::after {
   .site-navigation {
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+}
+
+/* Content images reserve their space to avoid moving text while loading. */
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.screenshot-grid figure {
+  margin: 0;
+  min-width: 0;
+}
+.screenshot-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--site-line);
+  border-radius: 0.75rem;
+}
+.screenshot-grid figcaption {
+  margin-top: 0.75rem;
+  color: var(--site-muted);
+  line-height: 1.6;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.checksum-commands dt {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+.checksum-commands dd {
+  margin: 0.5rem 0;
+  overflow-wrap: anywhere;
+}
+.checksum-commands code {
+  font-size: 0.9rem;
+}
+@media (max-width: 680px) {
+  .screenshot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (forced-colors: active) {
+  a:focus-visible,
+  button:focus-visible,
+  main:focus {
+    outline: 3px solid Highlight;
   }
 }

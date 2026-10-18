@@ -18,7 +18,8 @@
         ".next/**",
         "!.next/cache/**",
         "out/**"
-      ]
+      ],
+      "env": ["COMET_SITE_URL"]
     },
     "typecheck": {
       "dependsOn": ["^build"],

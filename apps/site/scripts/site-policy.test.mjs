@@ -95,5 +95,6 @@ test('feature descriptions remain explicit about web availability', async () => 
 
   assert.ok(features.includes('no live browser converter yet'));
   assert.ok(layout.includes('href="/features/"'));
-  assert.ok(layout.includes('og-comet.svg'));
+  const metadata = await source('src/lib/metadata.ts');
+  assert.ok(metadata.includes('og-comet.png'));
 });

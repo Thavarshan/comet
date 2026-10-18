@@ -1,6 +1,16 @@
 import { Badge } from '@comet/ui/components/badge';
 import { Button } from '@comet/ui/components/button';
 import type { ReactElement } from 'react';
+import type { Metadata } from 'next';
+import { pageMetadata } from '../src/lib/metadata';
+
+/** The homepage describes the available desktop product. */
+export const metadata: Metadata = pageMetadata(
+  '/',
+  'Local media converter',
+  'Convert video, audio and images locally with Comet desktop for macOS, Windows and Linux. Explore downloads, guides and source code.',
+);
+
 import { OrbitIllustration } from '../src/components/orbit-illustration';
 
 /**
@@ -44,7 +54,7 @@ const mediaTypes = [
  */
 export default function HomePage(): ReactElement {
   return (
-    <main id="main-content" className="home-main">
+    <main id="main-content" className="home-main" tabIndex={-1}>
       <section className="hero" aria-labelledby="hero-heading">
         <div className="hero__grain" aria-hidden="true" />
         <div className="hero__copy">

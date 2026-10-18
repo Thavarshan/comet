@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '../../src/lib/metadata';
 import type { ReactElement } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Privacy and limitations',
-  description:
-    'How the Comet static site and local desktop converter handle media.',
-};
+export const metadata: Metadata = pageMetadata(
+  '/privacy/',
+  'Privacy and limitations',
+  'Understand local media processing, hosting logs and current browser limitations.',
+);
 
 /**
  * Product-specific disclosures, not a substitute for a reviewed legal policy.
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
  */
 export default function PrivacyPage(): ReactElement {
   return (
-    <main id="main-content" className="content-page">
+    <main id="main-content" className="content-page" tabIndex={-1}>
       <p className="section-kicker">TRANSPARENCY / 002</p>
       <h1>Privacy and limitations</h1>
       <h2>Desktop media processing</h2>
