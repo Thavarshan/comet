@@ -26,10 +26,15 @@ work, await cleanup, unsubscribe observers, and clear handle maps. Dispose the
 service after a workflow ends; registered handles live until disposal.
 Independent subscriptions return independent, repeatable unsubscribe functions.
 
-The existing desktop bridge remains operational during this extraction. Issue
-#67 will move its renderer workflow onto the injected service and host UI ports.
-This avoids changing desktop transport and extracting the shared React
-components in the same issue.
+The existing desktop bridge remains operational. Its renderer adapter supplies
+the service and host UI ports consumed by `@comet/converter`. Renderer-owned
+registries retain native transport details; the living main-process engine
+remains authoritative. The backend native adapter is also available for Node
+hosts. React effect cleanup removes subscriptions and aborts draft probes; it
+does not shut down the native engine.
+
+See the [shared converter contract](../../packages/converter/README.md) for
+host-owned preferences, optional platform actions, localization, and styles.
 
 ## Browser ownership
 

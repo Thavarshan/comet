@@ -4,7 +4,7 @@ import { Hint } from '@comet/ui/components/hint';
 import { cn } from '@comet/ui/lib/utils';
 
 /**
- * Apply comfortable desktop sizing to the shared Mira button primitive.
+ * Apply compact sizing to the shared Mira button primitive.
  */
 export function Button({
   variant = 'secondary',

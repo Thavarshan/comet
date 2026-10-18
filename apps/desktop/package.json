@@ -42,7 +42,8 @@
     "react-i18next": "17.0.20",
     "zod": "4.6.7",
     "@comet/ui": "*",
-    "@comet/core": "*"
+    "@comet/core": "*",
+    "@comet/converter": "*"
   },
   "devDependencies": {
     "@electron-forge/cli": "8.0.1",

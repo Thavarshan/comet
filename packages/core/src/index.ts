@@ -7,7 +7,7 @@ import {
   type MediaMetadata,
   type MediaType,
 } from '@comet/contracts';
-import { ConversionServiceError } from './service.js';
+import { ConversionServiceError, type OutputTarget } from './service.js';
 
 export {
   ConversionServiceError,
@@ -29,6 +29,7 @@ export interface ConversionJob {
   sizeBytes: number;
   mediaType: MediaType;
   outputFormat: string;
+  target?: OutputTarget;
   spec?: ConversionSpec | undefined;
   state: JobState;
   progress: number | null;
@@ -193,6 +194,7 @@ export function serializeQueue(queue: ConversionQueue): string {
       sizeBytes: job.sizeBytes,
       mediaType: job.mediaType,
       outputFormat: job.outputFormat,
+      target: job.target ? { id: job.target.id } : undefined,
       spec: job.spec,
       state: job.state,
       progress: job.progress,

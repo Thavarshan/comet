@@ -21,7 +21,7 @@ import {
   type Capabilities,
 } from '@comet/contracts';
 import { App } from './App';
-import { AppProvider, initialState, reducer } from './state';
+import { AppProvider } from './state';
 import i18n from './i18n';
 
 const capabilities = Object.fromEntries(
@@ -215,17 +215,10 @@ const panel = () => screen.getByRole('tabpanel');
 const picker = () =>
   within(panel()).getByLabelText('Add files') as HTMLInputElement;
 describe('React conversion workflows', () => {
-  it('keeps subscriptions balanced under StrictMode and discards stale snapshots', async () => {
+  it('keeps native and shared subscriptions balanced under StrictMode', async () => {
     const view = await start();
     expect(listeners.size).toBe(1);
     expect(themeListeners.size).toBe(1);
-    const newest = reducer(initialState, {
-      type: 'queue',
-      queue: { ...snapshot, revision: 10 },
-    });
-    expect(
-      reducer(newest, { type: 'queue', queue: { ...snapshot, revision: 2 } }),
-    ).toBe(newest);
     view.unmount();
     expect(listeners.size).toBe(0);
     expect(themeListeners.size).toBe(0);
@@ -333,6 +326,22 @@ describe('React conversion workflows', () => {
     expect(window.comet.selectDirectory).toHaveBeenCalled();
     expect(window.comet.savePreferences).not.toHaveBeenCalled();
   });
+  it('keeps native persistence errors visible and dismissible', async () => {
+    await start();
+    vi.mocked(window.comet.selectDirectory).mockResolvedValue(ok('/tmp/next'));
+    vi.mocked(window.comet.savePreferences).mockRejectedValue(
+      new Error('Disk full'),
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Save to' }));
+    const alert = await screen.findByRole('alert');
+    await userEvent.click(
+      within(alert).getByRole('button', { name: 'Technical details' }),
+    );
+    expect(await screen.findByText('Disk full')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Video' })).toBeVisible();
+  });
   it('cancels only the selected tab batch and retains queued settings', async () => {
     await start();
     fireEvent.change(picker(), {
@@ -389,10 +398,55 @@ describe('React conversion workflows', () => {
       };
       listeners.forEach((listener) => listener(snapshot));
     });
+    vi.mocked(window.comet.selectDirectory).mockResolvedValue(ok('/tmp/next'));
+    await userEvent.click(screen.getByRole('button', { name: 'Save to' }));
     await userEvent.click(
       screen.getByRole('button', { name: 'Retry: video.mp4' }),
     );
     expect(window.comet.enqueueBatch).toHaveBeenCalledTimes(2);
+    expect(window.comet.enqueueBatch).toHaveBeenLastCalledWith(
+      expect.objectContaining({ outputDirectory: '/tmp' }),
+    );
+  });
+  it('restores opaque input and destination handles from living engine jobs', async () => {
+    snapshot = {
+      revision: 1,
+      batches: [{ id: 'batch', mediaType: 'video', jobIds: ['job'] }],
+      jobs: [
+        {
+          id: 'job',
+          batchId: 'batch',
+          itemId: 'source',
+          inputPath: '/private/original.mp4',
+          name: 'original.mp4',
+          sizeBytes: 10,
+          mediaType: 'video',
+          outputFormat: 'mp4',
+          outputDirectory: '/private/original-output',
+          state: 'failed',
+          progress: 0,
+          error: { code: 'CONVERSION_FAILED', message: 'Test failure' },
+        },
+      ],
+    };
+    await start();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Retry: original.mp4' }),
+    );
+    expect(window.comet.getFilePath).not.toHaveBeenCalled();
+    expect(window.comet.enqueueBatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        outputDirectory: '/private/original-output',
+        items: [
+          {
+            itemId: 'source',
+            inputPath: '/private/original.mp4',
+            name: 'original.mp4',
+            sizeBytes: 10,
+          },
+        ],
+      }),
+    );
   });
   it('provides startup recovery and localized settings with an explicit system theme', async () => {
     vi.mocked(window.comet.getEnvironment).mockResolvedValue({

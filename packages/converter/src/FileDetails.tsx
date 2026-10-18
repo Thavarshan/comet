@@ -1,8 +1,10 @@
 import { useEffect, useState, type ReactElement } from 'react';
-import { unwrap, type MediaMetadata, type SourceFile } from '@comet/contracts';
+import type { MediaMetadata } from '@comet/contracts';
+import type { DraftFile } from './platform.js';
+import { useConverter } from './state.js';
 
 /**
- * Inspect a draft through the engine's bounded native scheduler.
+ * Inspect a draft through the platform's bounded scheduler.
  * Removing a row cancels inspection and ignores any response already in flight.
  */
 export function FileDetails({
@@ -10,20 +12,24 @@ export function FileDetails({
   metadata,
   locale,
 }: {
-  file: SourceFile;
+  file: DraftFile;
   metadata?: MediaMetadata | undefined;
   locale: string;
 }): ReactElement {
   const [source, setSource] = useState(metadata);
+  const { platform } = useConverter();
   useEffect(() => {
     if (metadata) {
       return;
     }
 
     let disposed = false;
-    void window.comet
-      .inspectFile(file)
-      .then(unwrap)
+    const controller = new AbortController();
+    void platform.service
+      .probe(
+        { id: file.itemId, name: file.name, sizeBytes: file.sizeBytes },
+        controller.signal,
+      )
       .then((value) => {
         if (!disposed) {
           setSource(value);
@@ -35,9 +41,9 @@ export function FileDetails({
 
     return () => {
       disposed = true;
-      void window.comet.cancelInspection(file.itemId).catch(() => {});
+      controller.abort();
     };
-  }, [file, metadata]);
+  }, [file.itemId, file.name, file.sizeBytes, metadata, platform]);
   const size = new Intl.NumberFormat(locale, {
     style: 'unit',
     unit: file.sizeBytes >= 1e6 ? 'megabyte' : 'kilobyte',

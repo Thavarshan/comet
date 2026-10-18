@@ -1,49 +1,32 @@
+import { useEffect, useState, type ReactElement } from 'react';
+import { CircleAlert, LoaderCircle, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  ConverterProvider,
+  ConverterWorkspace,
+} from '@comet/converter';
 import { Alert, AlertTitle } from '@comet/ui/components/alert';
 import { Disclosure } from '@comet/ui/components/disclosure';
-import type { ReactElement } from 'react';
-import { useEffect, useState } from 'react';
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from '@comet/ui/components/tabs';
 import { TooltipProvider } from '@comet/ui/components/tooltip';
-import {
-  CircleAlert,
-  FileAudio,
-  FileImage,
-  FileVideo,
-  LoaderCircle,
-  X,
-} from 'lucide-react';
-import { mediaTypes, type MediaType } from '@comet/contracts';
-import { useTranslation } from 'react-i18next';
-import { Button } from './Button';
-import { ConverterPanel } from './ConverterPanel';
-import { Settings } from './Settings';
 import { DesktopTitlebar } from './DesktopTitlebar';
+import { Settings } from './Settings';
+import { DesktopConverterPlatform } from './converter-platform';
 import { useApp } from './state';
 
-const icons = { video: FileVideo, audio: FileAudio, image: FileImage };
-
-/**
- * Render startup recovery and media tabs around the shared queue.
- */
+/** Desktop owns window chrome, bootstrap, persistence, and native settings. */
 export function App(): ReactElement {
   const { t } = useTranslation();
-  const { phase, error, retry, dismiss, queue } = useApp();
-  const [media, setMedia] = useState<MediaType>('video');
+  const { phase, error, retry, dismiss, preferences, updatePreferences } =
+    useApp();
+  const [platform] = useState(() => new DesktopConverterPlatform(window.comet));
   useEffect(() => {
     const shortcuts = (event: KeyboardEvent) => {
-      if (!(event.metaKey || event.ctrlKey) || event.altKey) {
-        return;
-      }
-
-      if (event.key.toLowerCase() === 'o') {
-        event.preventDefault();
-        window.dispatchEvent(new Event('comet:add-files'));
-      } else if (event.key === ',') {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        !event.altKey &&
+        event.key === ','
+      ) {
         event.preventDefault();
         window.dispatchEvent(new Event('comet:settings'));
       }
@@ -65,7 +48,7 @@ export function App(): ReactElement {
     );
   }
 
-  if (phase === 'error') {
+  if (phase === 'error' || !preferences) {
     return (
       <main className="app-shell">
         <DesktopTitlebar />
@@ -83,62 +66,17 @@ export function App(): ReactElement {
     <TooltipProvider delayDuration={400} skipDelayDuration={150}>
       <main className="app-shell">
         <DesktopTitlebar />
-        <Tabs
-          className="tabs"
-          value={media}
-          onValueChange={(value) => setMedia(value as MediaType)}
+        <ConverterProvider
+          platform={platform}
+          preferences={platform.preferences(preferences)}
+          onPreferencesChange={(next) =>
+            updatePreferences((previous) =>
+              platform.applyPreferences(previous, next),
+            )
+          }
         >
-          <div className="desktop-toolbar">
-            <TabsList className="tab-list" aria-label={t('ui.queue')}>
-              {mediaTypes.map((type) => {
-                const Icon = icons[type];
-
-                return (
-                  <TabsTrigger
-                    className="tab"
-                    key={type}
-                    value={type}
-                    aria-label={t(`media.${type}`)}
-                  >
-                    <Icon size={16} />
-                    {t(`media.${type}`)}
-                    {!!queue.jobs.filter(
-                      (job) =>
-                        job.mediaType === type &&
-                        !['succeeded', 'failed', 'canceled'].includes(
-                          job.state,
-                        ),
-                    ).length && (
-                      <span className="tab-count">
-                        {
-                          queue.jobs.filter(
-                            (job) =>
-                              job.mediaType === type &&
-                              !['succeeded', 'failed', 'canceled'].includes(
-                                job.state,
-                              ),
-                          ).length
-                        }
-                      </span>
-                    )}
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-            <Settings />
-          </div>
-          {mediaTypes.map((type) => (
-            <TabsContent
-              className="tab-content"
-              key={type}
-              value={type}
-              forceMount
-              hidden={media !== type}
-            >
-              <ConverterPanel media={type} active={media === type} />
-            </TabsContent>
-          ))}
-        </Tabs>
+          <ConverterWorkspace toolbar={<Settings />} />
+        </ConverterProvider>
         {error ? (
           <Alert className="error-banner" variant="destructive">
             <div>

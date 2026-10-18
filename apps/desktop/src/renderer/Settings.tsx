@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from '@comet/ui/components/dialog';
 import { locales, type Locale, type Theme } from '@comet/contracts';
-import { Button } from './Button';
+import { Button } from '@comet/converter';
 import { useApp } from './state';
 
 const names: Record<Locale, string> = {
