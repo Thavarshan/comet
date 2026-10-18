@@ -86,6 +86,12 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
       inspector.getByRole('combobox', { name: 'Task' }),
     ).toBeFocused();
     await inspector.getByRole('button', { name: 'Advanced options' }).click();
+    // Establish geometry after the dialog's entrance zoom has settled.
+    await inspector.evaluate(async (element) => {
+      await Promise.all(
+        element.getAnimations().map((animation) => animation.finished),
+      );
+    });
     const viewport = inspector.locator('[data-slot="scroll-area-viewport"]');
     const heading = inspector.getByRole('heading');
     const headerBefore = await heading.boundingBox();

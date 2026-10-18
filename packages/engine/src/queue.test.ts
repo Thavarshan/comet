@@ -69,6 +69,38 @@ function controlled() {
 }
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 15));
+
+it('does not mutate completed metadata when an executor reports late progress', async () => {
+  let late: Parameters<Executor>[2] | undefined;
+  const metadata = {
+    duration: 1,
+    width: 8,
+    height: 8,
+    videoCodec: 'h264',
+    frames: 1,
+    audio: [],
+  };
+  const execute: Executor = async (_job, _signal, progress) => {
+    late = progress;
+    progress(0, metadata);
+
+    return '/tmp/comet-late-progress-output';
+  };
+
+  const engine = new ConversionEngine(capabilities, execute, async () => {});
+  try {
+    await engine.enqueueBatch(batch('video', 1));
+    await tick();
+    expect(engine.getSnapshot().jobs[0]?.state).toBe('succeeded');
+    const revision = engine.getSnapshot().revision;
+    late?.(50, { ...metadata, width: 999 });
+    expect(engine.getSnapshot().revision).toBe(revision);
+    expect(engine.getSnapshot().jobs[0]?.metadata?.width).toBe(8);
+  } finally {
+    await engine.shutdown();
+  }
+});
+
 describe('global conversion scheduler', () => {
   it('preserves arrival order while a submission waits for directory validation', async () => {
     const c = controlled();

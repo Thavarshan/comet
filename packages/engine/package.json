@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@comet/contracts": "*",
-    "jimp": "1.6.1"
+    "jimp": "1.6.1",
+    "@comet/core": "*"
   }
 }
