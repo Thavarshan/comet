@@ -66,7 +66,7 @@ for (const release of manifest.releases) {
   }
 }
 
-// Parse actual resource/link destinations rather than inspecting URL substrings.
+// Parse resource/link destinations and compare the exact hostname.
 for (const match of download.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
   const destination = new URL(match[1], 'https://static.invalid');
   assert.notEqual(
