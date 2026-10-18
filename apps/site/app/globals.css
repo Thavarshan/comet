@@ -1345,3 +1345,58 @@ html[data-motion-paused='true'] *::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Editorial information pages share one responsive, readable document frame. */
+.content-page {
+  width: min(100%, 900px);
+  margin-inline: auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+}
+
+.content-page h1 {
+  max-width: 14ch;
+  margin: 1rem 0 2rem;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.07em;
+}
+
+.content-page h2 {
+  margin: 3rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--site-line);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.content-page h3 {
+  margin-top: 2rem;
+  font-size: 1.15rem;
+}
+
+.content-page p {
+  max-width: 68ch;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--site-muted);
+}
+
+.content-page a {
+  color: #84400f;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+@media (max-width: 680px) {
+  .site-header {
+    flex-wrap: wrap;
+    padding-block: 1rem;
+  }
+
+  .site-navigation {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
