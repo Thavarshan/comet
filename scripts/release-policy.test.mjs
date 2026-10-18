@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import {
   validateReleaseTarget,
   releaseRequiresSigning,
+  releaseAssetName,
 } from './release-policy.mjs';
 
 const expected = { target: 'linux-x64', version: '3.0.0', commit: 'abc123' };
@@ -82,4 +83,17 @@ test('only the approved beta accepts verified unsigned desktop artifacts', () =>
       validateReleaseTarget({ ...verified, commit: 'stale' }, outputs, beta),
     );
   }
+});
+
+test('Debian prerelease assets and checksums retain the published filename', () => {
+  const name = releaseAssetName(
+    '3.0.0-beta.1',
+    'linux-x64',
+    '/make/deb/x64/comet_3.0.0~beta.1_amd64.deb',
+  );
+  assert.equal(
+    name,
+    'comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb',
+  );
+  assert.match(name, /^[A-Za-z0-9._-]+$/);
 });
