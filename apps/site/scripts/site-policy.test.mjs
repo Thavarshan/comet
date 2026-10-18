@@ -86,3 +86,13 @@ test('public guidance discloses browser limitations and hosting logs', async () 
   assert.ok(layout.includes('href="/docs/"'));
   assert.ok(layout.includes('href="/privacy/"'));
 });
+
+
+test('feature descriptions remain explicit about web availability', async () => {
+  const features = await source('app/features/page.tsx');
+  const layout = await source('app/layout.tsx');
+
+  assert.ok(features.includes('no live browser converter yet'));
+  assert.ok(layout.includes('href="/features/"'));
+  assert.ok(layout.includes('og-comet.svg'));
+});
