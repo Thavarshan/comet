@@ -5,7 +5,11 @@ import { Badge } from '@comet/ui/components/badge';
 import { Button } from '@comet/ui/components/button';
 import type { ReleaseAsset, ReleaseManifest } from '@comet/contracts';
 import { useSyncExternalStore, useState, type ReactElement } from 'react';
-import { detectPlatform, releaseRepository } from '../lib/releases';
+import {
+  detectPlatform,
+  releaseRepository,
+  isReleaseSnapshotStale,
+} from '../lib/releases';
 
 interface ReleaseCenterProps {
   readonly manifest: ReleaseManifest;
@@ -31,7 +35,7 @@ export function ReleaseCenter({
     serverDay,
   );
   const os = chosenOs ?? detected;
-  const [arch, setArch] = useState('');
+  const [chosenArch, setArch] = useState('');
   const [format, setFormat] = useState('');
   const hint = detected
     ? 'Your browser suggests an operating system. Confirm it and choose your processor; no architecture was assumed.'
@@ -41,6 +45,14 @@ export function ReleaseCenter({
   );
   const release =
     releases.find((entry) => entry.version === version) ?? releases[0];
+  const architectures = [
+    ...new Set(
+      release?.assets
+        .filter((asset) => asset.os === os && asset.arch !== null)
+        .map((asset) => asset.arch) ?? [],
+    ),
+  ].sort();
+  const arch = architectures.find((item) => item === chosenArch) ?? '';
   const formats = [
     ...new Set(
       release?.assets
@@ -58,9 +70,17 @@ export function ReleaseCenter({
     ) ?? [];
   const assets = compatible.filter((asset) => asset.format === format);
   const asset = assets.length === 1 ? assets[0] : undefined;
-  const stale =
-    manifest.refreshFailed ||
-    currentDay - Math.floor(Date.parse(manifest.verifiedAt) / 86400000) > 7;
+  const stale = isReleaseSnapshotStale(manifest, currentDay);
+
+  let fallbackMessage =
+    'Confirm your system, processor and package to reveal a direct download.';
+  if (os && architectures.length === 0) {
+    fallbackMessage =
+      'No verified processor-specific package is available for this system. Check all assets below or the original release.';
+  } else if (os && arch && format) {
+    fallbackMessage =
+      'No unique compatible asset is available for this selection.';
+  }
 
   return (
     <section
@@ -84,8 +104,8 @@ export function ReleaseCenter({
         <a href={releaseRepository}>Browse all official releases</a>
       </div>
       <div className="release-controls">
-        <label htmlFor="release-channel">
-          Release channel
+        <div className="release-control">
+          <label htmlFor="release-channel">Release channel</label>
           <NativeSelect
             id="release-channel"
             value={channel}
@@ -98,11 +118,11 @@ export function ReleaseCenter({
             <option value="stable">Stable</option>
             <option value="prerelease">Prerelease / testing</option>
           </NativeSelect>
-        </label>
+        </div>
         {!history && (
           <>
-            <label htmlFor="release-version">
-              Version
+            <div className="release-control">
+              <label htmlFor="release-version">Version</label>
               <NativeSelect
                 id="release-version"
                 value={release?.version ?? ''}
@@ -120,9 +140,9 @@ export function ReleaseCenter({
                   </option>
                 ))}
               </NativeSelect>
-            </label>
-            <label htmlFor="release-os">
-              Operating system
+            </div>
+            <div className="release-control">
+              <label htmlFor="release-os">Operating system</label>
               <NativeSelect
                 id="release-os"
                 value={os}
@@ -133,13 +153,34 @@ export function ReleaseCenter({
                 }}
               >
                 <option value="">Choose a system</option>
-                <option value="windows">Windows</option>
-                <option value="macos">macOS</option>
-                <option value="linux">Linux</option>
+                <option
+                  value="windows"
+                  disabled={
+                    !release?.assets.some((asset) => asset.os === 'windows')
+                  }
+                >
+                  Windows
+                </option>
+                <option
+                  value="macos"
+                  disabled={
+                    !release?.assets.some((asset) => asset.os === 'macos')
+                  }
+                >
+                  macOS
+                </option>
+                <option
+                  value="linux"
+                  disabled={
+                    !release?.assets.some((asset) => asset.os === 'linux')
+                  }
+                >
+                  Linux
+                </option>
               </NativeSelect>
-            </label>
-            <label htmlFor="release-arch">
-              Processor architecture
+            </div>
+            <div className="release-control">
+              <label htmlFor="release-arch">Processor architecture</label>
               <NativeSelect
                 id="release-arch"
                 value={arch}
@@ -149,12 +190,17 @@ export function ReleaseCenter({
                 }}
               >
                 <option value="">Choose a processor</option>
-                <option value="x64">x64 / Intel / AMD</option>
-                <option value="arm64">ARM64 / Apple Silicon</option>
+                {architectures.map((architecture) => (
+                  <option key={architecture} value={architecture ?? ''}>
+                    {architecture === 'x64'
+                      ? 'x64 / Intel / AMD'
+                      : 'ARM64 / Apple Silicon'}
+                  </option>
+                ))}
               </NativeSelect>
-            </label>
-            <label htmlFor="release-format">
-              Package format
+            </div>
+            <div className="release-control">
+              <label htmlFor="release-format">Package format</label>
               <NativeSelect
                 id="release-format"
                 value={format}
@@ -167,7 +213,7 @@ export function ReleaseCenter({
                   </option>
                 ))}
               </NativeSelect>
-            </label>
+            </div>
           </>
         )}
       </div>
@@ -184,7 +230,7 @@ export function ReleaseCenter({
               {release.channel === 'stable' ? 'EVERYDAY BUILD' : 'EARLY ACCESS'}{' '}
               / {release.tag}
             </p>
-            <h2>{asset ? 'Ready when you are.' : 'Find your exact fit.'}</h2>
+            <h2>{asset ? 'Your matching package.' : 'Find your exact fit.'}</h2>
             {asset ? (
               <>
                 <p className="release-filename">{asset.name}</p>
@@ -209,9 +255,7 @@ export function ReleaseCenter({
               </>
             ) : (
               <p>
-                {os && arch && (format || compatible.length === 0)
-                  ? 'No unique compatible asset is available for this selection.'
-                  : 'Confirm your system, processor and package to reveal a direct download.'}{' '}
+                {fallbackMessage}{' '}
                 <a href={release.url}>Check this release on GitHub</a>.
               </p>
             )}

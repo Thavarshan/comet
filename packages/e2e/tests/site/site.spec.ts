@@ -14,7 +14,10 @@ test('site navigates from home to official desktop downloads', async ({
   const forbiddenRequests: string[] = [];
 
   page.on('request', (request) => {
-    if (!['GET', 'HEAD'].includes(request.method())) {
+    if (
+      !['GET', 'HEAD'].includes(request.method()) ||
+      request.url().startsWith('https://api.github.com/')
+    ) {
       forbiddenRequests.push(request.method() + ' ' + request.url());
     }
   });
@@ -423,11 +426,63 @@ test('Linux package choice and release controls support keyboard navigation', as
   await page
     .getByLabel('Operating system', { exact: true })
     .selectOption('windows');
-  await page
-    .getByLabel('Processor architecture', { exact: true })
-    .selectOption('arm64');
+  await expect(
+    page
+      .getByLabel('Processor architecture', { exact: true })
+      .locator('option'),
+  ).toHaveCount(1);
   await expect(page.getByRole('link', { name: /^Download v/ })).toHaveCount(0);
   await expect(
-    page.getByText('No unique compatible asset is available', { exact: false }),
+    page.getByText('No verified processor-specific package is available', {
+      exact: false,
+    }),
   ).toBeVisible();
+});
+
+test('published beta packages remain explicit on mobile for every supported CPU', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/download/');
+  await page
+    .getByLabel('Release channel', { exact: true })
+    .selectOption('prerelease');
+  await page
+    .getByLabel('Version', { exact: true })
+    .selectOption('3.0.0-beta.1');
+  for (const os of ['windows', 'macos', 'linux']) {
+    for (const arch of ['x64', 'arm64']) {
+      await page
+        .getByLabel('Operating system', { exact: true })
+        .selectOption(os);
+      await page
+        .getByLabel('Processor architecture', { exact: true })
+        .selectOption(arch);
+      const format = { windows: 'exe', macos: 'zip', linux: 'deb' }[os];
+      if (!format) {
+        throw new Error('Unsupported test OS');
+      }
+
+      await page
+        .getByLabel('Package format', { exact: true })
+        .selectOption(format);
+      const link = page.getByRole('link', { name: /^Download v3.0.0-beta.1/ });
+      await expect(link).toHaveAttribute(
+        'href',
+        new RegExp(
+          `/v3\\.0\\.0-beta\\.1/comet-3\\.0\\.0-beta\\.1-${{ windows: 'win32', macos: 'darwin', linux: 'linux' }[os]}-${arch}-`,
+        ),
+      );
+      await link.scrollIntoViewIfNeeded();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await testInfo.attach(`download-${os}-${arch}-390`, {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+    }
+  }
 });

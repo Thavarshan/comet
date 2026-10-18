@@ -349,3 +349,14 @@ export function detectPlatform(userAgent: string): ReleaseAsset['os'] {
 
   return null;
 }
+
+/** Failed refreshes never reset the snapshot verification clock. */
+export function isReleaseSnapshotStale(
+  manifest: ReleaseManifest,
+  currentDay: number,
+): boolean {
+  return (
+    manifest.refreshFailed ||
+    currentDay - Math.floor(Date.parse(manifest.verifiedAt) / 86400000) > 7
+  );
+}

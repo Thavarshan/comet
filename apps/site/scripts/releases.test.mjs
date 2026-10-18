@@ -308,3 +308,37 @@ test('missing and corrupt snapshots prepare a buildable empty fallback', async (
     await rm(directory, { recursive: true });
   }
 });
+
+test('stale snapshots warn after seven days or an unsuccessful refresh', async () => {
+  const { isReleaseSnapshotStale } = await import('../src/lib/releases.ts');
+  const manifest = {
+    schemaVersion: 1,
+    verifiedAt: '2026-10-01T00:00:00.000Z',
+    refreshFailed: false,
+    releases: [],
+  };
+  assert.equal(
+    isReleaseSnapshotStale(manifest, Date.parse('2026-10-07') / 86400000),
+    false,
+  );
+  assert.equal(
+    isReleaseSnapshotStale(manifest, Date.parse('2026-10-10') / 86400000),
+    true,
+  );
+  assert.equal(
+    isReleaseSnapshotStale(
+      { ...manifest, refreshFailed: true },
+      Date.parse('2026-10-01') / 86400000,
+    ),
+    true,
+  );
+  const beta = release({
+    id: 4,
+    tag_name: 'v2.0.0-beta.1',
+    html_url: 'https://github.com/Thavarshan/comet/releases/tag/v2.0.0-beta.1',
+  });
+  assert.deepEqual(
+    normalizeReleases([beta]).filter((item) => item.channel === 'stable'),
+    [],
+  );
+});

@@ -1480,9 +1480,11 @@ html[data-motion-paused='true'] *::after {
   gap: 1.25rem;
   margin: 2rem 0;
 }
-.release-controls label {
+.release-control {
   display: grid;
   gap: 0.5rem;
+}
+.release-control label {
   font-weight: 600;
 }
 .release-controls select {
