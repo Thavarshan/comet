@@ -73,7 +73,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
   await page.goto('/');
   const ring = page.locator('.orbit-ring--outer');
   const pause = page.getByRole('button', {
-    name: 'Pause motion (decorative animations)',
+    name: 'Pause motion',
   });
 
   await pause.click();
@@ -82,7 +82,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
     'true',
   );
   await expect(
-    page.getByRole('button', { name: 'Resume motion (decorative animations)' }),
+    page.getByRole('button', { name: 'Resume motion' }),
   ).toHaveAttribute('aria-pressed', 'true');
 
   const playState = await ring.evaluate(
@@ -90,9 +90,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
   );
   expect(playState).toBe('paused');
 
-  await page
-    .getByRole('button', { name: 'Resume motion (decorative animations)' })
-    .click();
+  await page.getByRole('button', { name: 'Resume motion' }).click();
   await expect(page.locator('html')).toHaveAttribute(
     'data-motion-paused',
     'false',

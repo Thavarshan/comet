@@ -53,7 +53,7 @@ assert.ok(
   'Home page must link to the exported download page',
 );
 assert.ok(landing.includes('Keep the file.'));
-assert.ok(landing.includes('Pause motion (decorative animations)'));
+assert.ok(landing.includes('Pause motion'));
 assert.ok(
   download.includes(
     'href="https://github.com/Thavarshan/comet/releases/latest"',
