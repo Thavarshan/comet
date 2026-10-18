@@ -8,7 +8,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vite/**", ".bundle/**"]
+      "outputs": ["dist/**", ".vite/**", ".bundle/**", ".next/**", "out/**"]
     },
     "typecheck": {
       "dependsOn": ["^build"],

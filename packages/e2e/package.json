@@ -17,7 +17,8 @@
     "test:matrix": "playwright test --project=native-matrix",
     "test": "vitest run",
     "harness:build": "vite build --config vite.harness.config.ts",
-    "test:browser": "npm run harness:build && playwright test --config playwright.browser.config.ts"
+    "test:browser": "npm run harness:build && playwright test --config playwright.browser.config.ts",
+    "test:site": "playwright test --config playwright.site.config.ts"
   },
   "dependencies": {
     "@comet/contracts": "*",
