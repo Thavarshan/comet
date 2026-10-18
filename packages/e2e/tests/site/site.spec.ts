@@ -43,7 +43,13 @@ test('the exported pages fit narrow screens without sideways scrolling', async (
   for (const width of [320, 390, 768, 1280]) {
     await page.setViewportSize({ width, height: 820 });
 
-    for (const route of ['/', '/download/', '/features/', '/docs/', '/privacy/']) {
+    for (const route of [
+      '/',
+      '/download/',
+      '/features/',
+      '/docs/',
+      '/privacy/',
+    ]) {
       await page.goto(route);
 
       const fitsViewport = await page.evaluate(
@@ -93,7 +99,6 @@ test('motion can be paused and the browser accessibility setting is honored', as
   expect(parseFloat(reducedDuration)).toBeLessThan(0.01);
 });
 
-
 test('product guidance is navigable and honest about browser availability', async ({
   page,
 }) => {
@@ -105,11 +110,15 @@ test('product guidance is navigable and honest about browser availability', asyn
 
   await page.getByRole('link', { name: 'Docs' }).click();
   await expect(page).toHaveURL('/docs/');
-  await expect(page.getByRole('heading', { name: 'Getting started with Comet' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Getting started with Comet' }),
+  ).toBeVisible();
 
   await page.getByRole('link', { name: 'Privacy' }).click();
   await expect(page).toHaveURL('/privacy/');
-  await expect(page.getByRole('heading', { name: 'Privacy and limitations' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Privacy and limitations' }),
+  ).toBeVisible();
 });
 
 test('keyboard users can reach the skip link on a content page', async ({
