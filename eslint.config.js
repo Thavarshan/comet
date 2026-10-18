@@ -4,6 +4,7 @@ import hooks from 'eslint-plugin-react-hooks';
 import a11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 import jsdoc from 'eslint-plugin-jsdoc';
+import { builtinModules } from 'node:module';
 
 export default ts.config(
   {
@@ -57,13 +58,7 @@ export default ts.config(
     ignores: ['**/*.test.{ts,tsx}', '**/*.d.ts'],
     languageOptions: {
       parserOptions: {
-        project: [
-          './apps/desktop/tsconfig.json',
-          './packages/contracts/tsconfig.json',
-          './packages/engine/tsconfig.json',
-          './packages/ui/tsconfig.json',
-          './packages/e2e/tsconfig.json',
-        ],
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -87,6 +82,37 @@ export default ts.config(
       ],
       'jsdoc/require-description': 'error',
       'jsdoc/check-tag-names': 'error',
+    },
+  },
+  {
+    files: [
+      'packages/{contracts,core,converter,browser-engine,ui}/src/**/*.{ts,tsx}',
+      'apps/{web,site}/src/**/*.{ts,tsx}',
+      'apps/site/{app,pages}/**/*.{ts,tsx}',
+      'apps/desktop/src/renderer/**/*.{ts,tsx}',
+    ],
+    ignores: ['**/*.{test,spec}.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: builtinModules,
+          patterns: [
+            {
+              group: [
+                'node:*',
+                'electron',
+                'electron/*',
+                '@comet/engine',
+                '@comet/engine/*',
+                '@comet/e2e',
+                '@comet/e2e/*',
+              ],
+              message: 'Use a browser-safe platform service boundary.',
+            },
+          ],
+        },
+      ],
     },
   },
   {

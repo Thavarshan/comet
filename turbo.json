@@ -1,6 +1,10 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["tsconfig.base.json", "eslint.config.js"],
+  "globalDependencies": [
+    "tsconfig.base.json",
+    "eslint.config.js",
+    "tsconfig.browser.json"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
