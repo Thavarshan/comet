@@ -2,6 +2,9 @@ name: Verify desktop
 on:
   workflow_call:
     inputs:
+      exhaustive:
+        type: boolean
+        default: true
       signing:
         type: boolean
         default: false
@@ -46,6 +49,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run test:ci
+      - run: npm test
+      - run: npm run build:browser
       - name: Production dependency vulnerability gate
         run: npm audit --omit=dev --audit-level=high
       - name: Record development dependency findings
@@ -76,6 +81,7 @@ jobs:
       runner: ${{ matrix.runner }}
       target: ${{ matrix.target }}
       signing: ${{ inputs.signing }}
+      exhaustive: ${{ inputs.exhaustive }}
     secrets: inherit
   linux-native:
     needs: [quality, security]
@@ -92,6 +98,7 @@ jobs:
       runner: ${{ matrix.runner }}
       target: ${{ matrix.target }}
       signing: ${{ inputs.signing }}
+      exhaustive: ${{ inputs.exhaustive }}
     secrets: inherit
 
   linux-compatibility:
