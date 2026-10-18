@@ -14,21 +14,17 @@ import {
   unwrap,
   type Environment,
   type Preferences,
-  type QueueSnapshot,
   type Theme,
 } from '@comet/contracts';
 import i18n from './i18n';
-import { acceptQueueSnapshot } from '@comet/core';
 
 interface State {
-  queue: QueueSnapshot;
   preferences?: Preferences;
   environment?: Environment;
   phase: 'loading' | 'ready' | 'error';
   error?: string | undefined;
 }
 type Action =
-  | { type: 'queue'; queue: QueueSnapshot }
   | { type: 'ready'; preferences: Preferences; environment: Environment }
   | { type: 'preferences'; preferences: Preferences }
   | { type: 'systemTheme'; theme: 'light' | 'dark' }
@@ -36,21 +32,14 @@ type Action =
   | { type: 'error'; error?: string };
 
 export const initialState: State = {
-  queue: { revision: -1, jobs: [], batches: [] },
   phase: 'loading',
 };
 
 /**
- * Apply queue revisions monotonically and keep UI-only state independent.
+ * Keep native preferences, bootstrap errors, and system appearance in desktop.
  */
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'queue': {
-      const queue = acceptQueueSnapshot(state.queue, action.queue);
-
-      return queue === state.queue ? state : { ...state, queue };
-    }
-
     case 'ready':
       return {
         ...state,
@@ -82,13 +71,12 @@ interface AppContextValue extends State {
   updatePreferences(
     change: (previous: Preferences) => Preferences,
   ): Promise<void>;
-  acceptSnapshot(snapshot: QueueSnapshot): void;
 }
 const AppContext = createContext<AppContextValue | null>(null);
 
 /**
- * Connect React to the bridge with Strict Mode-safe subscriptions.
- * Subscribe before fetching initial state to avoid losing queue updates.
+ * Load native preferences and observe system appearance under Strict Mode.
+ * The shared converter owns conversion snapshots and subscriptions.
  */
 export function AppProvider({
   children,
@@ -106,18 +94,9 @@ export function AppProvider({
       }),
     [],
   );
-  const acceptSnapshot = useCallback(
-    (queue: QueueSnapshot) => dispatch({ type: 'queue', queue }),
-    [],
-  );
   useEffect(() => {
     let disposed = false;
     dispatch({ type: 'phase', phase: 'loading' });
-    const unsubscribe = window.comet.onQueueChanged((queue) => {
-      if (!disposed) {
-        acceptSnapshot(queue);
-      }
-    });
     const unsubscribeTheme = window.comet.onThemeChanged((theme) => {
       if (!disposed) {
         dispatch({ type: 'systemTheme', theme });
@@ -126,15 +105,12 @@ export function AppProvider({
 
     async function initialize() {
       try {
-        const [environmentReply, preferencesReply, queueReply] =
-          await Promise.all([
-            window.comet.getEnvironment(),
-            window.comet.getPreferences(),
-            window.comet.getSnapshot(),
-          ]);
+        const [environmentReply, preferencesReply] = await Promise.all([
+          window.comet.getEnvironment(),
+          window.comet.getPreferences(),
+        ]);
         const environment = unwrap(environmentReply);
         let preferences = unwrap(preferencesReply);
-        const queue = unwrap(queueReply);
         if (disposed) {
           return;
         }
@@ -167,7 +143,6 @@ export function AppProvider({
         }
 
         preferencesRef.current = preferences;
-        acceptSnapshot(queue);
         dispatch({ type: 'ready', preferences, environment });
       } catch (error) {
         if (!disposed) {
@@ -181,10 +156,9 @@ export function AppProvider({
 
     return () => {
       disposed = true;
-      unsubscribe();
       unsubscribeTheme();
     };
-  }, [attempt, report, acceptSnapshot]);
+  }, [attempt, report]);
   useEffect(() => {
     if (!state.preferences) {
       return;
@@ -230,7 +204,6 @@ export function AppProvider({
         report,
         dismiss: () => dispatch({ type: 'error' }),
         updatePreferences,
-        acceptSnapshot,
       }}
     >
       {children}

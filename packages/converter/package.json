@@ -1,0 +1,41 @@
+{
+  "name": "@comet/converter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./src/style.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "dev": "tsc --watch --preserveWatchOutput"
+  },
+  "dependencies": {
+    "@comet/contracts": "*",
+    "@comet/core": "*",
+    "@comet/ui": "*",
+    "i18next": "26.4.7",
+    "react-i18next": "17.0.20",
+    "lucide-react": "0.577.0"
+  },
+  "peerDependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@testing-library/jest-dom": "6.9.1"
+  }
+}

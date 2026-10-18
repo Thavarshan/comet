@@ -7,6 +7,7 @@ import {
   Ban,
   Check,
   CircleAlert,
+  Download,
   FileAudio,
   FileImage,
   FileVideo,
@@ -34,17 +35,16 @@ import {
   defaultConversion,
   inputExtensions,
   isTerminal,
-  unwrap,
-  type Job,
   type MediaType,
-  type SourceFile,
   type ConversionSpec,
 } from '@comet/contracts';
 import { Button } from './Button';
 import { FormatPicker } from './FormatPicker';
 import { FileDetails } from './FileDetails';
 import { OutputInspector } from './OutputInspector';
-import { useApp } from './state';
+import { useConverter } from './state.js';
+import type { ConversionJob as Job } from '@comet/core';
+import type { DraftFile } from './platform.js';
 
 const icons = { video: FileVideo, audio: FileAudio, image: FileImage };
 
@@ -63,12 +63,13 @@ export function ConverterPanel({
   const {
     queue,
     preferences,
-    environment,
+    capabilities,
+    platform,
     report,
     updatePreferences,
     acceptSnapshot,
-  } = useApp();
-  const [drafts, setDrafts] = useState<SourceFile[]>([]);
+  } = useConverter();
+  const [drafts, setDrafts] = useState<DraftFile[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notice, setNotice] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -77,6 +78,8 @@ export function ConverterPanel({
   const inputId = useId();
   const submissionLock = useRef(false);
   const Icon = icons[media];
+  const OutputIcon =
+    platform.outputAction?.kind === 'download' ? Download : FolderOpen;
   useEffect(() => {
     if (!active) {
       return;
@@ -87,7 +90,7 @@ export function ConverterPanel({
 
     return () => window.removeEventListener('comet:add-files', add);
   }, [active]);
-  if (!preferences || !environment) {
+  if (!capabilities) {
     return null;
   }
 
@@ -107,17 +110,17 @@ export function ConverterPanel({
     (job) => job.state === 'failed' || job.state === 'canceled',
   );
   const retryGroup = failed.filter((job) => job.batchId === failed[0]?.batchId);
-  const rows: (SourceFile | Job)[] = [
+  const rows: (DraftFile | Job)[] = [
     ...jobs,
     ...drafts.filter((file) => !jobsByItem.has(file.itemId)),
   ];
-  const available = environment.capabilities[spec.kind].some(
+  const available = capabilities[spec.kind].some(
     (entry) => entry.format === settings.format && entry.available,
   );
 
   function addFiles(files: File[]) {
     const rejected: string[] = [];
-    const additions: SourceFile[] = [];
+    const additions: DraftFile[] = [];
     for (const file of files) {
       if (!acceptsFile(media, file.name)) {
         rejected.push(file.name);
@@ -125,18 +128,18 @@ export function ConverterPanel({
       }
 
       try {
-        const inputPath = window.comet.getFilePath(file);
-        if (!inputPath) {
-          rejected.push(file.name);
-          continue;
+        const registered = platform.intake([file]);
+        for (const input of registered) {
+          additions.push({
+            itemId: input.id,
+            name: input.name,
+            sizeBytes: input.sizeBytes,
+          });
         }
 
-        additions.push({
-          itemId: crypto.randomUUID(),
-          inputPath,
-          name: file.name,
-          sizeBytes: file.size,
-        });
+        if (!registered.length) {
+          rejected.push(file.name);
+        }
       } catch {
         rejected.push(file.name);
       }
@@ -152,7 +155,7 @@ export function ConverterPanel({
     );
   }
 
-  async function submit(files: SourceFile[], original?: Job) {
+  async function submit(files: DraftFile[], original?: Job) {
     if (busy || submissionLock.current || !files.length) {
       return;
     }
@@ -160,22 +163,19 @@ export function ConverterPanel({
     submissionLock.current = true;
     setSubmitting(true);
     try {
-      const snapshot = unwrap(
-        await window.comet.enqueueBatch({
-          mediaType: media,
-          items: files.map(({ itemId, inputPath, name, sizeBytes }) => ({
-            itemId,
-            inputPath,
-            name,
-            sizeBytes,
-          })),
-          outputFormat: original?.outputFormat ?? settings.format,
-          outputDirectory: original?.outputDirectory ?? settings.directory,
-          spec:
-            original?.spec ??
-            (original ? defaultConversion(original.mediaType) : spec),
-        }),
-      );
+      const snapshot = await platform.service.enqueue({
+        mediaType: media,
+        files: files.map(({ itemId, name, sizeBytes }) => ({
+          id: itemId,
+          name,
+          sizeBytes,
+        })),
+        outputFormat: original?.outputFormat ?? settings.format,
+        target: original?.target ?? settings.destination.target,
+        spec:
+          original?.spec ??
+          (original ? defaultConversion(original.mediaType) : spec),
+      });
       acceptSnapshot(snapshot);
       const ids = new Set(files.map((file) => file.itemId));
       setDrafts((previous) => previous.filter((file) => !ids.has(file.itemId)));
@@ -189,13 +189,13 @@ export function ConverterPanel({
 
   async function selectDirectory() {
     try {
-      const directory = unwrap(await window.comet.selectDirectory(media));
-      if (directory) {
+      const destination = await platform.selectDestination?.(media);
+      if (destination) {
         await updatePreferences((previous) => ({
           ...previous,
           media: {
             ...previous.media,
-            [media]: { ...previous.media[media], directory },
+            [media]: { ...previous.media[media], destination },
           },
         }));
       }
@@ -204,10 +204,10 @@ export function ConverterPanel({
     }
   }
 
-  async function remove(file: SourceFile | Job) {
+  async function remove(file: DraftFile | Job) {
     try {
       if ('state' in file) {
-        acceptSnapshot(unwrap(await window.comet.removeItem(file.itemId)));
+        acceptSnapshot(await platform.removeItem(file.itemId));
       } else {
         setDrafts((previous) =>
           previous.filter((item) => item.itemId !== file.itemId),
@@ -220,7 +220,7 @@ export function ConverterPanel({
 
   async function clear() {
     try {
-      acceptSnapshot(unwrap(await window.comet.clearMedia(media)));
+      acceptSnapshot(await platform.clearMedia(media));
       setDrafts([]);
     } catch (error) {
       report(error);
@@ -231,8 +231,10 @@ export function ConverterPanel({
     <OutputInspector
       media={media}
       settings={settings}
-      capabilities={environment.capabilities}
-      selectDirectory={() => void selectDirectory()}
+      capabilities={capabilities}
+      selectDirectory={
+        platform.selectDestination ? () => void selectDirectory() : undefined
+      }
       change={(format: string, next: ConversionSpec) => {
         void updatePreferences((previous) => ({
           ...previous,
@@ -282,22 +284,29 @@ export function ConverterPanel({
       <div className="conversion-workspace">
         <div className="queue-pane">
           <div className="output-bar">
-            <Button
-              className="destination-button"
-              title={settings.directory}
-              aria-label={t('ui.destination')}
-              onClick={() => void selectDirectory()}
-            >
-              <FolderOpen size={16} />
-              <span className="truncate">
-                {settings.directory.split(/[\\/]/).filter(Boolean).at(-1)}
+            {platform.selectDestination ? (
+              <Button
+                className="destination-button"
+                title={
+                  settings.destination.description ?? settings.destination.label
+                }
+                aria-label={t('ui.destination')}
+                disabled={!platform.selectDestination}
+                onClick={() => void selectDirectory()}
+              >
+                <FolderOpen size={16} />
+                <span className="truncate">{settings.destination.label}</span>
+              </Button>
+            ) : (
+              <span className="destination-button truncate">
+                {settings.destination.label}
               </span>
-            </Button>
+            )}
             <span className="output-label">{t('ui.format')}</span>
             <div className="compact-format">
               <FormatPicker
                 value={settings.format}
-                options={environment.capabilities[spec.kind]}
+                options={capabilities[spec.kind]}
                 onChange={(format) => {
                   void updatePreferences((previous) => ({
                     ...previous,
@@ -416,7 +425,11 @@ export function ConverterPanel({
                         <StatusIcon size={20} />
                       </div>
                       <div className="file-info">
-                        <Hint content={file.inputPath}>
+                        <Hint
+                          content={
+                            platform.describeInput?.(file.itemId) ?? file.name
+                          }
+                        >
                           <strong>{file.name}</strong>
                         </Hint>
                         <FileDetails
@@ -425,7 +438,7 @@ export function ConverterPanel({
                           locale={preferences.locale}
                         />
                         <div className="file-meta">
-                          <span className="status">
+                          <span className="status" role="status">
                             <span className="status-dot" />
                             {t(`ui.${state}`)}
                           </span>
@@ -458,21 +471,21 @@ export function ConverterPanel({
                         )}
                       </div>
                       <div className="file-actions">
-                        {job?.state === 'succeeded' && (
-                          <Button
-                            icon
-                            variant="ghost"
-                            aria-label={`${t('design.reveal')}: ${file.name}`}
-                            onClick={() =>
-                              void window.comet
-                                .revealOutput(job.id)
-                                .then(unwrap)
-                                .catch(report)
-                            }
-                          >
-                            <FolderOpen size={16} />
-                          </Button>
-                        )}
+                        {job?.state === 'succeeded' &&
+                          platform.outputAction && (
+                            <Button
+                              icon
+                              variant="ghost"
+                              aria-label={`${platform.outputAction.label()}: ${file.name}`}
+                              onClick={() =>
+                                void platform.outputAction
+                                  ?.run(job.id)
+                                  .catch(report)
+                              }
+                            >
+                              <OutputIcon size={16} />
+                            </Button>
+                          )}
                         {job &&
                           (job.state === 'failed' ||
                             job.state === 'canceled') && (
@@ -494,9 +507,8 @@ export function ConverterPanel({
                             aria-label={`${t('ui.cancelJob')}: ${file.name}`}
                             disabled={job.state === 'canceling'}
                             onClick={() => {
-                              void window.comet
+                              void platform.service
                                 .cancelJob(job.id)
-                                .then(unwrap)
                                 .catch(report);
                             }}
                           >
@@ -546,10 +558,7 @@ export function ConverterPanel({
                   disabled={submitting}
                   aria-label={t('ui.cancelBatch')}
                   onClick={() => {
-                    void window.comet
-                      .cancelBatch(batchId)
-                      .then(unwrap)
-                      .catch(report);
+                    void platform.service.cancelBatch(batchId).catch(report);
                   }}
                 >
                   <Ban size={15} />

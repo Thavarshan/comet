@@ -16,17 +16,17 @@ import {
   type Capabilities,
   type ConversionSpec,
   type MediaType,
-  type Preferences,
 } from '@comet/contracts';
 import { FormatPicker } from './FormatPicker';
 import { Button } from './Button';
+import type { ConverterSettings } from './platform.js';
 
 interface InspectorProps {
   media: MediaType;
-  settings: Preferences['media'][MediaType];
+  settings: ConverterSettings;
   capabilities: Capabilities;
   change: (format: string, spec: ConversionSpec) => void;
-  selectDirectory: () => void;
+  selectDirectory?: (() => void) | undefined;
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
@@ -141,18 +141,24 @@ export function OutputInspector({
       )}
       <Separator />
       <Field label={t('ui.destination')}>
-        <Button
-          title={settings.directory}
-          onClick={selectDirectory}
-          className="w-full justify-start min-w-0"
-        >
-          <FolderOpen size={16} />
-          <span className="truncate">
-            {settings.directory.split(/[\\/]/).filter(Boolean).at(-1) ??
-              settings.directory}
-          </span>
-        </Button>
-        <p className="field-help break-all">{settings.directory}</p>
+        {selectDirectory ? (
+          <Button
+            title={
+              settings.destination.description ?? settings.destination.label
+            }
+            disabled={!selectDirectory}
+            onClick={selectDirectory}
+            className="w-full justify-start min-w-0"
+          >
+            <FolderOpen size={16} />
+            <span className="truncate">{settings.destination.label}</span>
+          </Button>
+        ) : (
+          <span>{settings.destination.label}</span>
+        )}
+        <p className="field-help break-all">
+          {settings.destination.description}
+        </p>
       </Field>
       <Disclosure className="advanced-options" label={t('design.advanced')}>
         {spec.kind === 'video' && (
