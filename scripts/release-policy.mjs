@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 /** All native targets must supply independently verified artifacts. */
 export const targets = [
   'darwin-arm64',
@@ -41,4 +43,11 @@ export function validateReleaseTarget(receipt, files, expected) {
       throw new Error(`Missing ${extension} for ${expected.target}`);
     }
   }
+}
+
+/** Match GitHub's download-safe asset alphabet before generating checksums. */
+export function releaseAssetName(version, target, filename) {
+  const basename = path.basename(filename).replace(/[^A-Za-z0-9._-]/g, '.');
+
+  return `comet-${version}-${target}-${basename}`;
 }

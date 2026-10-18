@@ -8,7 +8,11 @@ import {
 } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
-import { targets, validateReleaseTarget } from './release-policy.mjs';
+import {
+  targets,
+  validateReleaseTarget,
+  releaseAssetName,
+} from './release-policy.mjs';
 import { artifactManifest } from './artifact-manifest.mjs';
 
 const { version } = JSON.parse(
@@ -65,7 +69,7 @@ for (const target of targets) {
   }
 
   for (const file of distributables) {
-    const name = `comet-${version}-${target}-${path.basename(file)}`;
+    const name = releaseAssetName(version, target, file);
     if (names.has(name)) {
       throw new Error(`Duplicate release artifact name: ${name}`);
     }
