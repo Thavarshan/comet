@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Comet — local media conversion</title>
+  <desc id="description">Dark ink background with concentric orbital lines, a warm orange accent and a clear product message.</desc>
+  <rect width="1200" height="630" fill="#0a1015"/>
+  <g fill="none" stroke="#c4e989" stroke-opacity=".42">
+    <circle cx="935" cy="320" r="250"/>
+    <circle cx="935" cy="320" r="185"/>
+    <circle cx="935" cy="320" r="115"/>
+  </g>
+  <circle cx="935" cy="320" r="53" fill="#c4e989"/>
+  <circle cx="1120" cy="320" r="12" fill="#f69b4b"/>
+  <path d="M60 90H1140M60 540H1140" stroke="#60736d" stroke-width="2"/>
+  <text x="72" y="165" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#c4e989">COMET / THE FILE LAB</text>
+  <text x="72" y="305" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#faf9f4">Keep the file.</text>
+  <text x="72" y="390" font-family="Georgia, serif" font-size="72" font-style="italic" fill="#c4e989">Change the format.</text>
+  <text x="72" y="490" font-family="Arial, sans-serif" font-size="25" fill="#c5c9c4">Open source · Desktop · Local first</text>
+</svg>
