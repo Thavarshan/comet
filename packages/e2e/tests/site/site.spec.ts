@@ -161,6 +161,21 @@ for (const width of [390, 1280]) {
         '/license/',
       ]) {
         await page.goto(route);
+        // Exercise native lazy loading before saving a complete page image.
+        for (const image of await page.locator('img').all()) {
+          await image.scrollIntoViewIfNeeded();
+          await expect(image).toHaveJSProperty('complete', true);
+          expect(
+            await image.evaluate(
+              (element) => (element as HTMLImageElement).naturalWidth,
+            ),
+          ).toBeGreaterThan(0);
+        }
+
+        await page.evaluate(() =>
+          window.scrollTo({ top: 0, behavior: 'instant' }),
+        );
+
         const audit = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
           .analyze();
