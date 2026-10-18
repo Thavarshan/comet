@@ -1,0 +1,15 @@
+@import '@comet/ui/styles/globals.css';
+@import '@comet/converter/styles.css';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+#root {
+  display: flex;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 13px;
+}

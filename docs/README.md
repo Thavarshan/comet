@@ -7,6 +7,7 @@ restored.
 - [ADR 0001: local conversion across desktop and browser](architecture/0001-local-conversion-platform.md)
 - [Browser workspace contract and CI tiers](architecture/browser-workspaces.md)
 - [Platform conversion services](architecture/conversion-services.md)
+- [Adapter contracts and browser test harness](architecture/adapter-contract-testing.md)
 
 Implementation progress and dependencies remain in
 [roadmap #61](https://github.com/Thavarshan/comet/issues/61).

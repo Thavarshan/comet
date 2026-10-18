@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.browser.json",
+  "compilerOptions": { "noEmit": true, "types": ["vite/client"] },
+  "include": ["fixtures/converter/**/*.tsx"]
+}

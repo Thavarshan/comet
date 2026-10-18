@@ -83,3 +83,6 @@ The page object currently uses English conversion control names. Web tests
 should initialize that locale or adapt the actions to their localized labels. A
 future web test must also verify the actual downloaded result from its real
 conversion service; reaching a success label alone is not sufficient.
+
+Browser harness and adapter contract commands are documented in
+[adapter contract testing](../../docs/architecture/adapter-contract-testing.md).
