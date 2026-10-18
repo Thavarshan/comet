@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import type { ReactElement } from 'react';
 
-/** Metadata describes the shipped desktop experience, not the planned web app. */
+/**
+ * Metadata describes the shipped desktop experience, not the planned web app.
+ */
 export const metadata: Metadata = {
   title: 'Features and platforms',
   description:
@@ -47,9 +49,9 @@ export default function FeaturesPage(): ReactElement {
       <section aria-labelledby="platform-heading">
         <h2 id="platform-heading">Desktop or browser?</h2>
         <p>
-          Desktop is the available product for local conversion today.
-          Comet Web is planned, but there is no live browser converter yet.
-          Browser codec coverage and performance may differ from native builds.
+          Desktop is the available product for local conversion today. Comet Web
+          is planned, but there is no live browser converter yet. Browser codec
+          coverage and performance may differ from native builds.
         </p>
         <p>
           <a href="/download/">Choose a desktop download</a> ·{' '}

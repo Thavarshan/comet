@@ -19,8 +19,16 @@ export const metadata: Metadata = {
   icons: { icon: '/logo.svg' },
   openGraph: {
     title: 'Comet — Local media conversion',
-    description: 'Keep the file. Change the format. Open-source desktop conversion.',
-    images: [{ url: '/og-comet.svg', width: 1200, height: 630, alt: 'Comet local media conversion' }],
+    description:
+      'Keep the file. Change the format. Open-source desktop conversion.',
+    images: [
+      {
+        url: '/og-comet.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Comet local media conversion',
+      },
+    ],
     type: 'website',
   },
   twitter: { card: 'summary_large_image', images: ['/og-comet.svg'] },
@@ -61,9 +69,7 @@ export default function RootLayout({
             <nav className="site-navigation" aria-label="Main navigation">
               <a href="/features/">Features</a>
               <a href="/download/">Download</a>
-              <a href="/docs/">
-                Docs
-              </a>
+              <a href="/docs/">Docs</a>
             </nav>
             <a href="/privacy/">Privacy</a>
             <MotionToggle />

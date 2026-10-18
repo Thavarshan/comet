@@ -1346,7 +1346,6 @@ html[data-motion-paused='true'] *::after {
   }
 }
 
-
 /* Editorial information pages share one responsive, readable document frame. */
 .content-page {
   width: min(100%, 900px);

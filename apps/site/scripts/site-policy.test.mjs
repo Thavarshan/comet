@@ -12,7 +12,10 @@ import { test } from 'node:test';
  * @returns {Promise<string>} Text from the requested file.
  */
 async function source(name) {
-  return readFile(new URL('../' + name, import.meta.url), 'utf8');
+  const text = await readFile(new URL('../' + name, import.meta.url), 'utf8');
+
+  // JSX line wrapping must not change checks for human-readable policy text.
+  return text.replace(/\s+/g, ' ');
 }
 
 test('Cloudflare serves static files without a Worker script', async () => {
