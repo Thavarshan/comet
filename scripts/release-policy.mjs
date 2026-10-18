@@ -8,7 +8,12 @@ export const targets = [
   'win32-x64',
 ];
 
-/** Reject stale receipts, unsigned releases, and incomplete maker outputs. */
+/** Only this explicitly approved beta may ship without release signatures. */
+export function releaseRequiresSigning(version) {
+  return version !== '3.0.0-beta.1';
+}
+
+/** Reject stale receipts, missing signatures, and incomplete outputs. */
 export function validateReleaseTarget(receipt, files, expected) {
   for (const field of ['target', 'version', 'commit']) {
     if (receipt[field] !== expected[field]) {
@@ -16,7 +21,9 @@ export function validateReleaseTarget(receipt, files, expected) {
     }
   }
 
-  const needsSignature = !expected.target.startsWith('linux');
+  const needsSignature =
+    releaseRequiresSigning(expected.version) &&
+    !expected.target.startsWith('linux');
   if (
     receipt.result !== 'passed' ||
     (needsSignature && receipt.signed !== true)

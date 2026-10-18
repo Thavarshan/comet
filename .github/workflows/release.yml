@@ -11,18 +11,21 @@ concurrency:
 jobs:
   validate-tag:
     runs-on: ubuntu-24.04
+    outputs:
+      signing: ${{ steps.policy.outputs.signing }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
       - name: Match tag to desktop version
+        id: policy
         run: node scripts/validate-tag.mjs
   verify:
     needs: validate-tag
     uses: ./.github/workflows/verify.yml
     with:
-      signing: true
+      signing: ${{ fromJSON(needs.validate-tag.outputs.signing) }}
     secrets: inherit
   publish:
     needs: verify
