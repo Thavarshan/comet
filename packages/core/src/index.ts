@@ -9,6 +9,8 @@ import {
 } from '@comet/contracts';
 import { ConversionServiceError, type OutputTarget } from './service.js';
 
+export { QueueConversionService, type QueueExecutor } from './queue-service.js';
+
 export {
   ConversionServiceError,
   classifyConversionError,
@@ -69,6 +71,11 @@ export type JobEvent =
   | { type: 'progress'; value: number | null; metadata?: MediaMetadata }
   | { type: 'cancel-requested' }
   | { type: 'canceled'; at: number }
+  | {
+      type: 'cleanup-failed';
+      at: number;
+      error: { code: string; message: string };
+    }
   | { type: 'succeeded'; at: number }
   | { type: 'failed'; at: number; error: { code: string; message: string } };
 
@@ -109,7 +116,9 @@ export function applyJobEvent<T extends ConversionJob>(
       return {
         ...job,
         progress,
-        ...(event.metadata ? { metadata: event.metadata } : {}),
+        ...(event.metadata
+          ? { metadata: structuredClone(event.metadata) }
+          : {}),
       };
     }
 
@@ -125,6 +134,13 @@ export function applyJobEvent<T extends ConversionJob>(
       return job.state === 'running'
         ? { ...job, state: 'failed', error: event.error, completedAt: event.at }
         : job;
+    case 'cleanup-failed':
+      return {
+        ...job,
+        state: 'failed',
+        error: event.error,
+        completedAt: event.at,
+      };
   }
 }
 

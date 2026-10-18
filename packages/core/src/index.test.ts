@@ -45,6 +45,26 @@ it('advances FIFO across media after ordinary failures and enforces live batches
 });
 
 describe('portable lifecycle', () => {
+  it('retains metadata ownership after an adapter reports progress', () => {
+    const metadata = {
+      duration: 1,
+      width: 8,
+      height: 6,
+      videoCodec: null,
+      frames: 1,
+      audio: [],
+    };
+    const job = applyJobEvent(
+      applyJobEvent(queued(), { type: 'started', at: 1 }),
+      {
+        type: 'progress',
+        value: 20,
+        metadata,
+      },
+    );
+    metadata.width = 999;
+    expect(job.metadata?.width).toBe(8);
+  });
   it('keeps queued input immutable and emits a terminal transition once', () => {
     const source = queued();
     const running = applyJobEvent(source, { type: 'started', at: 10 });
