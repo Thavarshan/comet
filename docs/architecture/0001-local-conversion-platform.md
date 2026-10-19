@@ -6,6 +6,19 @@ below remain unfulfilled until the corresponding implementation is tested.
 Related: [#63](https://github.com/Thavarshan/comet/issues/63),
 [#61](https://github.com/Thavarshan/comet/issues/61).
 
+## Current implementation status (2026-10-19)
+
+This ADR records the original direction; its roadmap references below are
+historical planning context, not open-work assertions. The shared contracts,
+core lifecycle/service layer, native engine adapter, converter workspace, static
+marketing/download site, release snapshot pipeline, boundary checks, and browser
+harness have since been implemented. The marketing site is present at
+`apps/site`; there is no product web-converter app. `@comet/browser-engine`
+remains an explicit unsupported stub. Browser image conversion and its intake,
+worker/resource, and preview milestones remain open (#74–77). Cloudflare site
+deployment remains open (#72). See [docs index](../README.md) for current
+operational guides and acceptance records.
+
 ## Decision and scope
 
 Keep Comet as the product name. Defer the Honeymelon workstream (#86–96),

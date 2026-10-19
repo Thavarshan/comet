@@ -1,9 +1,10 @@
 # Comet marketing site
 
 A **zero-server, statically generated Next.js site** for the desktop converter.
-Delivered through [#69](https://github.com/Thavarshan/comet/issues/69) and
-[#70](https://github.com/Thavarshan/comet/issues/70) in
-[roadmap #61](https://github.com/Thavarshan/comet/issues/61).
+The current implementation includes marketing pages, a versioned release and
+download centre, and an assets-only Cloudflare deployment/recovery workflow. The
+presence of deployment code does not establish that live environments have been
+configured or verified; use the operational runbook for that evidence.
 
 ## If you are new to web development
 
@@ -27,7 +28,7 @@ running computer to assemble each page.
 | --------------------------------------- | --------------------------------------------------- |
 | `app/layout.tsx`                        | Header, navigation, footer and search metadata      |
 | `app/page.tsx`                          | Home-page story and supported media categories      |
-| `app/download/page.tsx`                 | Stable/beta links and release warnings              |
+| `app/download/page.tsx`                 | Platform/version selection and trust warnings       |
 | `app/not-found.tsx`                     | The friendly page when a URL does not exist         |
 | `src/components/orbit-illustration.tsx` | CSS-only orbital illustration                       |
 | `src/components/motion-toggle.tsx`      | Pause/resume animation button                       |
@@ -46,6 +47,7 @@ Use the repository-pinned Node.js 24.22.0 and npm 12.2.0.
 
 ```sh
 npm ci
+npm run build:packages
 npm run dev -w @comet/site
 ```
 
@@ -59,7 +61,7 @@ npm run build -w @comet/site
 ```
 
 The last command creates **`apps/site/out/`**, containing ordinary HTML and
-static assets. The export verifier checks all seven public routes, the 404 page,
+static assets. The export verifier checks the public routes, the 404 page,
 sitemap/robots, social imagery, official release links, asset budgets, and the
 Cloudflare security file. Repository-wide CI also runs lint, formatting, browser
 package builds, a Chromium smoke test at mobile and desktop widths, and the
@@ -99,8 +101,9 @@ Electron, native FFmpeg, runtime Node imports, or uploaded media.
 
 `next.config.ts` uses `output: 'export'`; the Wrangler config serves only static
 `out/` assets, with explicit 404 behavior. **There is no Worker script, SSR,
-database, media API, account, user tracking, or paid backend.** This issue does
-not deploy anything or require Cloudflare credentials.
+database, media API, account, user tracking, or paid backend.** Local build and
+verification require no Cloudflare credentials. Deployment uses the dedicated
+workflow and environment-scoped credentials.
 
 `public/_headers` includes CSP, anti-framing, HSTS and privacy-friendly feature
 restrictions. Next.js' static bootstrap currently needs inline script
@@ -112,14 +115,44 @@ Desktop v3.0.0-beta.1 remains **unsigned** and is clearly marked; install
 warnings and checksum verification are explained. No working web converter is
 advertised.
 
-Follow-up milestones remain separate: verified platform-specific release
-manifests (#71) and free-tier deployment (#72). Canonical URLs and indexable
-sitemaps require the actual production origin in `COMET_SITE_URL`; unconfigured
-builds remain unindexed previews. See the
-[publication contract](../../docs/architecture/site-publication.md) and
-[P2.2 acceptance record](../../docs/releases/site-p2.2-acceptance.md). Dynamic
-rendering with vinext is unnecessary unless SSR is explicitly approved after a
-cost/security review.
+## Release and download data
+
+`src/data/releases.json` is the committed GitHub release manifest. The build
+prepares a release snapshot, exports Next.js HTML, then verifies that export.
+`src/lib/releases.ts` validates and normalizes releases, compares versions,
+classifies assets, and detects the visitor's OS. The release centre provides
+version/channel and platform choices; automatic OS selection is a convenience,
+so users can choose a different target explicitly. Downloads go to GitHub
+release assets rather than a media/storage service owned by the site.
+
+```sh
+npm run releases:refresh -w @comet/site
+npm run build -w @comet/site
+npm run test:site
+```
+
+Refresh reads GitHub release metadata; review the resulting manifest changes.
+The release-manifest workflow automates refreshes. Static builds consume a
+snapshot rather than requiring each visitor to call GitHub. Stale or missing
+release data must retain honest warnings/fallbacks; never invent a download URL.
+See the [release centre contract](../../docs/releases/release-center.md).
+
+## Deployment status and configuration
+
+`COMET_SITE_URL` must contain the actual production origin for canonical URLs
+and indexable sitemap metadata. Unconfigured builds remain unindexed previews.
+The `site-deploy.yml` workflow admits verified `main` commits and provides
+explicit preview/production deployment and rollback actions. Wrangler serves
+`out/` assets without an application Worker script or storage bindings.
+
+Live deployment requires separately configured Cloudflare account access, GitHub
+environments, URL variables and environment-scoped credentials. Follow
+[deployment and recovery](../../docs/operations/site-deployment.md) for setup,
+verification, and rollback. This README documents repository support, not a
+claim that deployment or human visual acceptance has occurred.
+
+See also the [publication contract](../../docs/architecture/site-publication.md)
+and [P2.2 acceptance record](../../docs/releases/site-p2.2-acceptance.md).
 
 ## Review checklist
 

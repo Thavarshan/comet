@@ -1,22 +1,27 @@
 # @comet/core
 
-Platform-neutral conversion rules shared by desktop and future browser adapters.
-The package imports contracts only; it has no Node, Electron, React, filesystem,
-binary-discovery, or native process dependency. It builds with ambient Node
-types disabled through `tsconfig.browser.json`.
+Platform-neutral conversion rules shared by desktop and browser service
+adapters. The package imports contracts only; it has no Node, Electron, React,
+filesystem, binary-discovery, or native process dependency. It builds with
+ambient Node types disabled through `tsconfig.browser.json`.
 
 ## Ownership inventory
 
-| Behavior                                                                   | Owner after this extraction                                            |
-| -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Job states, lifecycle events, progress clamping, terminal/late-event rules | core                                                                   |
-| FIFO next-job selection and one-live-batch-per-media eligibility           | core                                                                   |
-| Output capability/codec eligibility                                        | core; native encoder argument validation remains in engine             |
-| Monotonic snapshot acceptance and domain serialization                     | core                                                                   |
-| Async execution slot, probing priority, abort/cleanup waiting, shutdown    | native engine; platform orchestration will use the service port in #66 |
-| Native input/output paths, atomic output publishing, collision handling    | native adapter                                                         |
-| File/Blob or native-path handle maps and user destination selection        | platform adapter                                                       |
-| React context, themes/localization, native bridge subscriptions            | desktop, pending shared converter extraction in #67                    |
+| Behavior                                                           | Current owner                    |
+| ------------------------------------------------------------------ | -------------------------------- |
+| Immutable job lifecycle, progress clamping, terminal/late events   | Core reducer                     |
+| Portable service types, errors, output naming, snapshot acceptance | Core                             |
+| Reusable single-slot queue and executor cleanup coordination       | `QueueConversionService` in core |
+| Existing native queue, processes/workers, filesystem publication   | Native engine and its adapter    |
+| File/Blob/native-path registries and destination selection         | Platform adapter                 |
+| Shared React conversion workflow                                   | `@comet/converter`               |
+| Preferences persistence, document theme, platform controls         | Host application                 |
+
+`QueueConversionService` is an executor-driven scheduler, not a media codec.
+Executors provide capability discovery, validation, probing, execution, and
+cleanup. Submitted jobs take priority over queued inspections. Cleanup failures
+must not be reported as successful cancellation. The existing native engine
+retains its own execution orchestration while sharing the reducer rules.
 
 Native `Job` records structurally satisfy `ConversionJob`. The engine delegates
 state decisions to the immutable reducer and applies the result to its existing
@@ -55,3 +60,23 @@ Run `npm test -w @comet/core`, root `npm run lint` / `npm run typecheck`, native
 `npm run test:integration`, and desktop `npm run test:e2e` after a desktop
 build. Cross-platform packaged CI remains required before merging runtime
 changes.
+
+## Commands and output
+
+Run commands from the repository root with Node.js 24.22.0 and npm 12.2.0.
+Install once with `npm ci`; run `npm run build:packages` before invoking
+workspace checks directly so dependency exports exist. Root `npm run typecheck`
+and `npm test` use Turbo to build upstream packages automatically.
+
+```sh
+npm run build -w @comet/core
+npm run typecheck -w @comet/core
+npm test -w @comet/core
+npm run dev -w @comet/core
+```
+
+Import the public API from `@comet/core`; TypeScript emits JavaScript and
+declarations to `dist/`, and `dev` watches those outputs. The only workspace
+dependency is contracts. Keep this package browser-safe: no Node, Electron,
+React, filesystem handles, or media bytes. The browser adapter is currently an
+unsupported stub, even though shared scheduling contracts are implemented.

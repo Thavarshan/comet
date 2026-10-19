@@ -1,7 +1,8 @@
 # Browser workspace contract
 
 Related: [#64](https://github.com/Thavarshan/comet/issues/64) and
-[ADR 0001](0001-local-conversion-platform.md).
+[ADR 0001](0001-local-conversion-platform.md). Issue #64 is closed; this page
+records the active package-boundary and CI contract.
 
 ## Runtime dependency rules
 
@@ -89,24 +90,27 @@ Keep tests in their own typecheck configuration if they need Node globals. Use
 runtime exports from `dist`, keep type exports adjacent, and declare workspace
 dependencies so Turborepo orders `^build` correctly. Do not reach into sibling
 `src/` directories to avoid building declarations. Set application build outputs
-when adding web/site workspaces; Next.js export output must be included in its
-Turbo task outputs rather than assuming every app emits `dist/`.
+when adding another application workspace. The existing Next.js static export
+uses `out/`; include its build outputs in Turbo rather than assuming every app
+emits `dist/`.
 
 ## CI tiers and reproduction
 
-PR verification retains all six native build targets, integration tests,
-packaged smoke tests, and the Linux distro matrix. PRs omit only the exhaustive
-conversion pair matrix. Pushes to main, scheduled runs, manual CI, and release
-tags retain the exhaustive matrix. Reusable verification defaults to exhaustive
-so new callers cannot accidentally weaken release checks. Signing policy is
-independent.
+Pull requests run the shared quality/security gate, six native target builds,
+integration tests, packaged smoke tests, and Linux distribution compatibility
+jobs. They run the Chromium browser harness and static site smoke test as part
+of quality verification. PRs omit only the exhaustive native conversion-pair
+matrix. Pushes to main, scheduled runs, manual CI, and release tags retain the
+exhaustive matrix. Reusable verification defaults to exhaustive so new callers
+cannot accidentally weaken release checks. Signing policy is independent.
 
-Quality checks run root unit tests and `npm run build:browser`, covering
-internal packages and non-desktop applications as they are added. There are a
-static marketing site in `apps/site`; the future converter app remains
-unavailable until implemented and deployed.
+Quality checks run root unit tests, `npm run build:browser`, the browser
+fixture, and static site tests. The static marketing/download site in
+`apps/site` is implemented. No product converter app exists under `apps/web`;
+`@comet/browser-engine` remains an unsupported stub until browser conversion
+work (#74–77) is implemented.
 
-From a clean checkout using the pinned Node/npm versions:
+From a clean checkout using Node.js 24.22.0 (`.nvmrc`) and npm 12.2.0:
 
 ```sh
 npm ci
