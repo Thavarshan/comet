@@ -54,6 +54,31 @@ cleanup, stale initial snapshots, initialization recovery, and all five locales.
 The mock emits test snapshots; it does not claim to encode images.
 
 Desktop DOM tests and packaged Electron E2E continue exercising this same
-workspace through the real preload adapter. Narrow layout rules are included;
-cross-browser/mobile measurement and the real browser image adapter remain the
-later browser testing and implementation issues.
+workspace through the real preload adapter. Narrow layout rules are included.
+The E2E workspace now mounts this UI over the unsupported browser adapter in
+Chromium, Firefox, and WebKit configurations. This checks browser boundaries and
+unavailable states, not real image encoding. The production browser image
+adapter remains unimplemented.
+
+## Commands and package output
+
+Run commands from the repository root with Node.js 24.22.0 and npm 12.2.0.
+Install once with `npm ci`; run `npm run build:packages` before invoking
+workspace checks directly so dependency exports exist. Root `npm run typecheck`
+and `npm test` use Turbo to build upstream packages automatically.
+
+```sh
+npm run build -w @comet/converter
+npm run typecheck -w @comet/converter
+npm test -w @comet/converter
+npm run dev -w @comet/converter
+```
+
+TypeScript emits `dist/` JavaScript and declarations; `dev` watches those
+exports. `@comet/converter/styles.css` exports source CSS. Runtime dependencies
+include contracts, core, UI, and localization helpers; React/React DOM are
+peers. There is no standalone app server in this workspace. The desktop is the
+real conversion host; the browser fixture is test infrastructure.
+
+See [service ownership](../../docs/architecture/conversion-services.md) and
+[adapter/browser testing](../../docs/architecture/adapter-contract-testing.md).

@@ -1,27 +1,33 @@
 # Shared end-to-end tests
 
 `@comet/e2e` owns Playwright configuration, desktop launch/upload helpers,
-reusable conversion page actions, native fixtures, and conversion coverage. It
-is a test workspace; applications must not depend on it at runtime.
+reusable conversion page actions, native fixtures, browser harness tests, static
+site tests, and conversion coverage. It is a test workspace; applications must
+not depend on it at runtime.
 
 ## Run
 
-From the repository root, using the Node/npm versions in `.nvmrc`:
+From the repository root, using Node.js 24.22.0 (`.nvmrc`) and npm 12.2.0
+(`package.json`):
 
 ```sh
 npm ci
 npm run binaries
 npm run build
 npm run test:matrix
-npm run package
+npm run make
+npm run dist:portable
 npm run test:packaged
 ```
 
-`npm run test:matrix` builds engine/contracts dependencies and runs the native
-conversion project. It does not launch a browser. `npm run test:e2e` runs the
-desktop project against the development build or `COMET_EXECUTABLE`.
-`test:packaged` verifies native resources, copies the packaged application
-outside the checkout, and runs the same desktop suite against that copy.
+`npm run test:matrix` uses Turbo to build upstream workspace dependencies and
+runs the native conversion project. It does not launch a browser.
+`npm run test:e2e` runs the desktop project against the development build or
+`COMET_EXECUTABLE`. `test:packaged` verifies native resources, copies the
+packaged application outside the checkout, and runs the same desktop suite
+against that copy. Create distributables with `make` first: the verification
+receipt hashes those outputs. `dist:portable` adds the Linux tar archive and is
+a no-op on other OSes.
 
 Reports, traces, and failure screenshots live in `playwright-report/` and
 `test-results/` within this workspace. Desktop and native projects have separate
@@ -64,10 +70,36 @@ and images are not turned into video or into each other; those would require new
 product features. Platform results apply only to the tools tested on that
 OS/architecture.
 
-## Reuse in the future web app
+## Browser harness and static site
 
-There is no web application in this repository yet, so there is no passing web
-suite or simulated web conversion backend. When it exists, it can import:
+There is no product web converter app yet. A real browser fixture mounts
+`@comet/converter` over the explicitly unsupported `BrowserConversionService`.
+It tests unavailable capabilities, intake/UI behavior, and request boundaries;
+it does not claim to encode or download converted media.
+
+```sh
+npm run build:packages
+npm exec -w @comet/e2e -- playwright install chromium firefox webkit
+npm run test:browser
+npm run test:site
+```
+
+Browser projects cover Chromium, Firefox, and WebKit locally; the small PR
+harness runs Chromium. `test:site` builds the static marketing site through
+Turbo and serves its exported HTML with Python 3 on port 4187 for Chromium
+navigation, responsive layout, accessibility, motion, and download checks. The
+browser fixture uses Vite preview on port 4173; `COMET_E2E_WEB_URL` can point it
+at an existing host instead. External requests and non-GET/HEAD traffic are
+rejected by the browser boundary tests.
+
+`npm test -w @comet/e2e` runs controlled native/core queue contract tests, not
+Playwright or real browser encoding. `npm run typecheck -w @comet/e2e` checks
+both Node tooling and browser fixture configurations.
+`npm run build -w @comet/e2e` emits reusable helpers to `dist/`.
+
+## Reusable helpers
+
+Future hosts can import:
 
 - `@comet/e2e/config`: `createTestConfig(options, reportName)` supplies shared
   timeouts, traces, screenshots, and reports; pass the web app's `webServer`,

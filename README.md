@@ -89,7 +89,7 @@ applications include these tools and do not fetch them at runtime.
 
 | Command                     | Purpose                                                      |
 | --------------------------- | ------------------------------------------------------------ |
-| `npm run dev` / `npm start` | Run desktop development with package watchers                |
+| `npm run dev` / `npm start` | Run workspace development tasks with package watchers        |
 | `npm run format:check`      | Check the 80-column formatting rules                         |
 | `npm run lint`              | Build package types, then lint code and workspace boundaries |
 | `npm run typecheck`         | Check TypeScript across the workspaces                       |
@@ -113,21 +113,31 @@ Packaging and native tools must target the same architecture.
 
 ## Repository structure
 
-```text
-apps/desktop          Electron main/preload, React renderer, packaging
-packages/engine       Electron-free scheduling and conversion execution
-packages/contracts    Browser-safe validation and shared domain types
-packages/ui           Shared shadcn components, theme, and typography
-packages/e2e          Playwright drivers, media fixtures, and desktop tests
-```
+| Workspace                                           | Current responsibility                                                |
+| --------------------------------------------------- | --------------------------------------------------------------------- |
+| [Desktop](apps/desktop/README.md)                   | Electron app, native integration, renderer shell and packaging        |
+| [Site](apps/site/README.md)                         | Static marketing site, release/download centre and deployment tooling |
+| [Contracts](packages/contracts/README.md)           | Validation, shared DTOs and release types                             |
+| [Core](packages/core/README.md)                     | Portable lifecycle rules, service ports and executor-driven queue     |
+| [Engine](packages/engine/README.md)                 | Native processes/workers and conversion execution                     |
+| [Browser engine](packages/browser-engine/README.md) | Explicit unsupported service stub; no working browser encoding yet    |
+| [Converter](packages/converter/README.md)           | Shared React conversion workspace and host contract                   |
+| [UI](packages/ui/README.md)                         | Shared primitives, tokens, styles and component gallery               |
+| [E2E](packages/e2e/README.md)                       | Native matrix, desktop/browser harness and static site tests          |
+
+Every workspace is private. Install dependencies at the repository root; Turbo
+builds upstream packages before dependent builds, tests, and type checks. Direct
+`npm -w` commands bypass that graph, so build package dependencies first.
 
 The engine owns submitted jobs and scheduling. Electron main owns preferences,
 resource discovery, native dialogs, and the validated IPC bridge. React displays
 queue snapshots and submits commands through the narrow preload API.
 
 The shared UI uses the Comet shadcn preset with medium radii, Radix primitives,
-Inter typography, tooltips, dialogs, popovers, and Scroll Area. Marketing,
-documentation, and web applications are planned; they do not exist yet.
+Inter typography, tooltips, dialogs, popovers, and Scroll Area. The marketing
+site and repository documentation are implemented. A standalone web converter
+application is not present; the browser adapter and browser test harness provide
+foundations without advertising working browser conversion.
 
 See the [E2E workspace guide](packages/e2e/README.md) for fixture coverage,
 strict-mode checks, reports, and future web test reuse. The suite distinguishes
@@ -147,10 +157,11 @@ eligible for distribution only after its native packaged checks pass.
 | Linux    | DEB, RPM, and portable tar archive  |
 
 Pull requests run formatting, lint, static security analysis, dependency checks,
-unit/integration tests, conversion-pair coverage, and packaged desktop E2E.
-Additional Linux compatibility jobs cover named Debian, Ubuntu, Fedora,
-openSUSE, and Arch environments. A passing container test does not verify every
-Linux distribution, compositor, or desktop integration.
+unit/integration tests, and packaged desktop E2E. The exhaustive conversion-pair
+matrix runs on non-PR CI events and release verification. Additional Linux
+compatibility jobs cover named Debian, Ubuntu, Fedora, openSUSE, and Arch
+environments. A passing container test does not verify every Linux distribution,
+compositor, or desktop integration.
 
 <details>
 <summary>CI matrix, signing, and release maintenance</summary>
@@ -161,11 +172,12 @@ and a production dependency audit). CodeQL runs security-extended analysis on
 TypeScript/JavaScript and Actions workflows; high severity findings block
 builds. Development dependency audit findings are retained as a separate report.
 
-Native jobs run unit tests, real conversion integration tests, the conversion
-pair matrix, and isolated packaged Playwright tests on macOS, Windows, and
-Ubuntu, each on x64 and ARM64. Tests use the bundled conversion tools.
-Playwright reports, failure screenshots, traces, and conversion coverage are
-retained for 14 days. No test retries conceal intermittent failures.
+Native jobs run unit tests, real conversion integration tests, and isolated
+packaged Playwright tests on macOS, Windows, and Ubuntu, each on x64 and ARM64.
+The conversion-pair matrix additionally runs when exhaustive verification is
+enabled; PR CI disables that exhaustive step. Tests use the bundled conversion
+tools. Playwright reports, failure screenshots, traces, and conversion coverage
+are retained for 14 days. No test retries conceal intermittent failures.
 
 The Linux compatibility stage runs the same packaged desktop tests under Xvfb in
 Debian 12/13, Ubuntu 22.04, Fedora 43, and openSUSE Leap 16 containers on both
