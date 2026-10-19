@@ -1184,3 +1184,19 @@ html[data-motion-paused='true'] *::after {
     padding: 24px 16px 0;
   }
 }
+
+/* Match the reference's icon sizes instead of Mira's compact desktop sizes. */
+.mobile-navigation [data-slot='button'] {
+  width: 36px;
+  height: 36px;
+}
+.mobile-navigation button svg {
+  width: 20px;
+  height: 20px;
+}
+.github-button svg,
+.site-button svg,
+.secondary-link svg {
+  width: 16px;
+  height: 16px;
+}
