@@ -25,6 +25,7 @@ const required = [
   '404.html',
   'robots.txt',
   '_headers',
+  '_redirects',
   'logo.svg',
   'og-comet.png',
   'screenshots/desktop-light.webp',
