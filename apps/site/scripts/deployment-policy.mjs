@@ -7,7 +7,8 @@ export function previewHeaders(headers) {
   if (!/^\/\*\r?\n/.test(headers)) {
     throw new Error('Expected the global static security header block');
   }
-  if (/^  X-Robots-Tag: noindex, nofollow\r?$/m.test(headers)) {
+
+  if (/^ {2}X-Robots-Tag: noindex, nofollow\r?$/m.test(headers)) {
     return headers;
   }
 

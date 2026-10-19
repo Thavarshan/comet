@@ -23,6 +23,7 @@ test('preview indexing headers preserve the single global security block', () =>
     assert.ok(result.includes('max-age=31536000, immutable'));
     assert.equal(previewHeaders(result), result);
   }
+
   assert.throws(() => previewHeaders('/_next/static/*\n'), /global static/);
 });
 
