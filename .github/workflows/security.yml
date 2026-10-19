@@ -20,3 +20,10 @@ jobs:
           output: sarif-results
       - name: Reject high severity static findings
         run: node scripts/check-sarif.mjs sarif-results
+      - name: Preserve static analysis findings
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: static-analysis-sarif
+          path: sarif-results
+          retention-days: 7
