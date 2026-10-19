@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { verifyDeployment } from './verify-deployment.mjs';
+import {
+  verifyDeployment,
+  verifyPublishedDeployment,
+} from './verify-deployment.mjs';
 import { publicRoutes } from '../src/lib/metadata.ts';
 import {
   deploymentPolicy,
@@ -212,4 +215,48 @@ test('a green workflow cannot hide a failed independent CodeQL check', () => {
       ]),
     /unsuccessful/,
   );
+});
+
+test('new host propagation reruns all checks after a temporary 404', async () => {
+  let requests = 0;
+  const pauses = [];
+  const ready = publicSite('production');
+  await verifyPublishedDeployment(
+    'https://comet.example.com',
+    'production',
+    'a'.repeat(40),
+    {
+      fetcher: (url, options) => {
+        requests += 1;
+
+        return requests === 1
+          ? new Response('Not ready', { status: 404 })
+          : ready(url, options);
+      },
+      wait: async (milliseconds) => {
+        pauses.push(milliseconds);
+      },
+    },
+  );
+  assert.deepEqual(pauses, [5000]);
+  assert.ok(requests > publicRoutes.length);
+});
+
+test('persistent security failures exhaust retries and reject deployment', async () => {
+  let pauses = 0;
+  await assert.rejects(
+    verifyPublishedDeployment(
+      'https://comet.example.com',
+      'production',
+      'a'.repeat(40),
+      {
+        fetcher: publicSite('production', 'security'),
+        wait: async () => {
+          pauses += 1;
+        },
+      },
+    ),
+    /SAMEORIGIN/,
+  );
+  assert.equal(pauses, 5);
 });

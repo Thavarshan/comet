@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { setTimeout } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
 import { publicRoutes, getSiteOrigin } from '../src/lib/metadata.ts';
 
@@ -134,9 +135,38 @@ export async function verifyDeployment(
   );
 }
 
+/** Allow edge propagation, but require every live check to pass together. */
+export async function verifyPublishedDeployment(
+  origin,
+  target,
+  revision,
+  { fetcher = fetch, wait = setTimeout } = {},
+) {
+  for (let attempt = 1; attempt <= 6; attempt += 1) {
+    try {
+      await verifyDeployment(origin, target, revision, fetcher);
+
+      return;
+    } catch (error) {
+      if (attempt === 6) {
+        throw error;
+      }
+
+      console.warn(
+        `Live checks pending; retry ${attempt}/5 after edge propagation.`,
+      );
+      await wait(5000);
+    }
+  }
+}
+
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  await verifyDeployment(process.argv[2], process.argv[3], process.argv[4]);
+  await verifyPublishedDeployment(
+    process.argv[2],
+    process.argv[3],
+    process.argv[4],
+  );
 }
