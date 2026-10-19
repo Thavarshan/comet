@@ -24,12 +24,15 @@ test('site navigates from home to official desktop downloads', async ({
 
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Keep the file.',
+    'Smart Media Conversion',
   );
-  await page.getByRole('link', { name: /Download Comet/ }).click();
+  await page
+    .locator('.hero')
+    .getByRole('link', { name: 'Download Free' })
+    .click();
   await expect(page).toHaveURL('/download/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Good things',
+    'Download Comet',
   );
 
   const release = page.getByRole('link', {
@@ -76,7 +79,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
   page,
 }) => {
   await page.goto('/');
-  const ring = page.locator('.orbit-ring--outer');
+  const hero = page.locator('.hero-copy');
   const pause = page.getByRole('button', {
     name: 'Pause motion',
   });
@@ -90,7 +93,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
     page.getByRole('button', { name: 'Resume motion' }),
   ).toHaveAttribute('aria-pressed', 'true');
 
-  const playState = await ring.evaluate(
+  const playState = await hero.evaluate(
     (element) => getComputedStyle(element).animationPlayState,
   );
   expect(playState).toBe('paused');
@@ -102,7 +105,7 @@ test('motion can be paused and the browser accessibility setting is honored', as
   );
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  const reducedDuration = await ring.evaluate(
+  const reducedDuration = await hero.evaluate(
     (element) => getComputedStyle(element).animationDuration,
   );
 
@@ -113,12 +116,18 @@ test('product guidance is navigable and honest about browser availability', asyn
   page,
 }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: 'Features' }).click();
+  await page
+    .getByRole('navigation', { name: 'Main navigation' })
+    .getByRole('link', { name: 'Features', exact: true })
+    .click();
   await expect(page).toHaveURL('/features/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.getByText('no live browser converter yet')).toBeVisible();
 
-  await page.getByRole('link', { name: 'Docs' }).click();
+  await page
+    .getByRole('navigation', { name: 'Main navigation' })
+    .getByRole('link', { name: 'Docs', exact: true })
+    .click();
   await expect(page).toHaveURL('/docs/');
   await expect(
     page.getByRole('heading', { name: 'Getting started with Comet' }),
@@ -491,5 +500,57 @@ test('published beta packages remain explicit on mobile for every supported CPU'
         contentType: 'image/png',
       });
     }
+  }
+});
+
+test('mobile navigation traps focus, closes with Escape and follows links', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const trigger = page.getByRole('button', { name: 'Open menu' });
+
+  await trigger.click();
+  const dialog = page.getByRole('dialog', { name: 'Comet', exact: true });
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Tab');
+  expect(
+    await dialog.evaluate((element) =>
+      element.contains(document.activeElement),
+    ),
+  ).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await dialog.getByRole('link', { name: 'Docs', exact: true }).click();
+  await expect(page).toHaveURL('/docs/');
+  await expect(
+    page.getByRole('heading', { name: 'Getting started with Comet' }),
+  ).toBeVisible();
+});
+
+test('FAQ remains keyboard operable without JavaScript', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+
+  try {
+    await page.goto('/');
+    const question = page
+      .locator('summary')
+      .filter({ hasText: 'Is Comet really free?' });
+    await question.focus();
+    await page.keyboard.press('Enter');
+    await expect(
+      page.getByText('There are no subscription fees', { exact: false }),
+    ).toBeVisible();
+    await page.keyboard.press('Enter');
+    await expect(
+      page.getByText('There are no subscription fees', { exact: false }),
+    ).not.toBeVisible();
+  } finally {
+    await context.close();
   }
 });
