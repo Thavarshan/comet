@@ -11,17 +11,18 @@
     "releases:refresh": "node scripts/refresh-releases.mjs"
   },
   "dependencies": {
+    "@comet/contracts": "*",
     "@comet/ui": "*",
     "next": "16.4.2",
     "react": "19.3.1",
-    "react-dom": "19.3.1",
-    "@comet/contracts": "*"
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "24.10.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "tailwindcss": "4.3.3"
+    "tailwindcss": "4.3.3",
+    "wrangler": "4.151.1"
   }
 }

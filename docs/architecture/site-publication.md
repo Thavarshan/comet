@@ -46,7 +46,8 @@ unreleased browser functionality. The getting-started page explains SHA-256
 verification on each desktop platform and preserves source media guidance.
 Release and license pages link the official GitHub release history, repository
 license, source and contribution guide. Release inventory, automatic platform
-detection and version selection remain owned by issue #71.
+detection and version selection are delivered by #71. Refresh and recovery are
+documented in [Release Center operations](../releases/release-center.md).
 
 ## Evidence and budgets
 
@@ -74,9 +75,11 @@ Issue #70 delivers the public pages, source, static SEO output and automated
 accessibility/performance checks. Its acceptance evidence is recorded in
 [the P2.2 acceptance record](../releases/site-p2.2-acceptance.md).
 
-Production hosting is tracked separately in #72. Before publishing an indexed
-production site, confirm the actual origin and response headers, test keyboard
-and screen-reader behavior on that deployment, and review on physical devices.
-Field Core Web Vitals require production traffic and remain post-publication
-measurements. These checks are not claimed complete by the source-delivery
-record. Automated axe scans do not establish full WCAG conformance.
+Production hosting is tracked separately in #72. Follow
+[static site deployment and recovery](../operations/site-deployment.md). Before
+publishing an indexed production site, confirm the actual origin and response
+headers, test keyboard and screen-reader behavior on that deployment, and review
+on physical devices. Field Core Web Vitals require production traffic and remain
+post-publication measurements. These checks are not claimed complete by the
+source-delivery record. Automated axe scans do not establish full WCAG
+conformance.
