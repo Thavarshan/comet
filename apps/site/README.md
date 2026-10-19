@@ -24,18 +24,18 @@ running computer to assemble each page.
 
 ## Where things live
 
-| Path                                    | Plain-English purpose                               |
-| --------------------------------------- | --------------------------------------------------- |
-| `app/layout.tsx`                        | Header, navigation, footer and search metadata      |
-| `app/page.tsx`                          | Home-page story and supported media categories      |
-| `app/download/page.tsx`                 | Platform/version selection and trust warnings       |
-| `app/not-found.tsx`                     | The friendly page when a URL does not exist         |
-| `src/components/orbit-illustration.tsx` | CSS-only orbital illustration                       |
-| `src/components/motion-toggle.tsx`      | Pause/resume animation button                       |
-| `app/globals.css`                       | All site art direction, responsive rules and motion |
-| `public/_headers`                       | Cloudflare HTTP security policy                     |
-| `wrangler.toml`                         | Static-assets-only hosting setup                    |
-| `scripts/verify-export.mjs`             | Tests built HTML, links and security files          |
+| Path                               | Plain-English purpose                               |
+| ---------------------------------- | --------------------------------------------------- |
+| `app/layout.tsx`                   | Header, navigation, footer and search metadata      |
+| `app/page.tsx`                     | Home-page story and supported media categories      |
+| `app/download/page.tsx`            | Platform/version selection and trust warnings       |
+| `app/not-found.tsx`                | The friendly page when a URL does not exist         |
+| `src/components/site-header.tsx`   | Sticky navigation and accessible mobile sheet       |
+| `src/components/motion-toggle.tsx` | Pause/resume animation button                       |
+| `app/globals.css`                  | All site art direction, responsive rules and motion |
+| `public/_headers`                  | Cloudflare HTTP security policy                     |
+| `wrangler.toml`                    | Static-assets-only hosting setup                    |
+| `scripts/verify-export.mjs`        | Tests built HTML, links and security files          |
 
 Every component has a docblock explaining **why it exists**, and the less
 obvious code paths include inline explanations. Comments should teach intent and
@@ -69,25 +69,26 @@ unchanged native matrix.
 
 ## Motion and accessibility
 
-The design is inspired by orbital navigation charts and printed engineering
-manuals. It uses parchment, dark ink, warm signal orange and a lime focal
-accent; editorial hierarchy and fine rules replace generic shadcn cards.
+The visual reference is the owner-provided `honeymelon/website` directory. The
+Next.js implementation carries over its white surfaces, warm amber palette,
+centered hero, generous section spacing, floating screenshots, alternating
+showcases, rounded cards, FAQ and four-column footer. Comet branding, MIT
+licensing, actual desktop screenshots and verified download behavior are
+retained. Old Mac-only, remux, hardware-acceleration and concurrency claims are
+not copied.
 
-The orbital diagram is **an illustration**, not a functional web converter. It
-has a screen-reader description and its internal decorations are hidden from
-assistive technology. Motion is implemented with CSS, not a paid animation
-service or heavy JavaScript package.
+- Shared shadcn buttons, badges and dialogs come from `@comet/ui`.
+- The mobile menu traps focus, supports Escape and restores trigger focus.
+- Native FAQ disclosures work with keyboard input and without JavaScript.
+- Essential navigation is also available in the static footer.
+- The opening copy has one short entrance animation, with no decorative loops.
+- `prefers-reduced-motion` disables animation automatically.
+- The footer retains the keyboard-accessible **Pause motion** control.
+- Amber controls use dark text and readable accents to preserve contrast.
 
-- Ring rotation suggests conversion in progress.
-- Floating source/output labels suggest a format change.
-- A breathing core and subtle beacons make the diagram feel alive.
-- The opening copy rises into view once and hover feedback is restrained.
-- `prefers-reduced-motion` disables movement for users who request it.
-- The header provides a separate, keyboard-accessible **Pause motion** control.
-
-Animations never prevent access to text, navigation, or downloads. The page
-loads fully without JavaScript, except that the optional pause button then
-cannot respond; operating-system motion preferences still work.
+No reference analytics, external fonts or visitor-time GitHub API calls are
+carried over. All media screenshots depict Comet's unsigned 3.0 beta and are
+labeled accordingly; the stable download remains separate.
 
 ## Strict typing and boundaries
 

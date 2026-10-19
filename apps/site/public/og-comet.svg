@@ -1,17 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
-  <title id="title">Comet — local media conversion</title>
-  <desc id="description">Dark ink background with concentric orbital lines, a warm orange accent and a clear product message.</desc>
-  <rect width="1200" height="630" fill="#0a1015"/>
-  <g fill="none" stroke="#c4e989" stroke-opacity=".42">
-    <circle cx="935" cy="320" r="250"/>
-    <circle cx="935" cy="320" r="185"/>
-    <circle cx="935" cy="320" r="115"/>
+  <title id="title">Comet — Smart Media Conversion</title>
+  <desc id="description">Warm amber typography on a clean white background. Free, open source media conversion for your computer.</desc>
+  <rect width="1200" height="630" fill="#fff"/>
+  <rect x="1" y="1" width="1198" height="628" rx="24" fill="none" stroke="#f0e4d2" stroke-width="2"/>
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <text x="600" y="120" font-size="28" font-weight="600" fill="#453322">Comet</text>
+    <text x="600" y="270" font-size="62" font-weight="600" letter-spacing="-2" fill="#453322">Smart Media Conversion</text>
+    <text x="600" y="345" font-size="62" font-weight="600" letter-spacing="-2" fill="#ad6a21">for Your Computer</text>
+    <text x="600" y="425" font-size="24" fill="#80664f">Video, audio and images. Your files stay on your device.</text>
+    <rect x="426" y="477" width="348" height="56" rx="12" fill="#e7a653"/>
+    <text x="600" y="513" font-size="21" font-weight="500" fill="#453019">Free &amp; Open Source</text>
+    <text x="600" y="580" font-size="18" fill="#80664f">macOS · Windows · Linux</text>
   </g>
-  <circle cx="935" cy="320" r="53" fill="#c4e989"/>
-  <circle cx="1120" cy="320" r="12" fill="#f69b4b"/>
-  <path d="M60 90H1140M60 540H1140" stroke="#60736d" stroke-width="2"/>
-  <text x="72" y="165" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#c4e989">COMET / THE FILE LAB</text>
-  <text x="72" y="305" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#faf9f4">Keep the file.</text>
-  <text x="72" y="390" font-family="Georgia, serif" font-size="72" font-style="italic" fill="#c4e989">Change the format.</text>
-  <text x="72" y="490" font-family="Arial, sans-serif" font-size="25" fill="#c5c9c4">Open source · Desktop · Local first</text>
 </svg>

@@ -30,6 +30,7 @@ const required = [
   'og-comet.png',
   'screenshots/desktop-light.webp',
   'screenshots/output-settings.webp',
+  'screenshots/desktop-dark.webp',
 ];
 
 for (const name of required) {
@@ -47,7 +48,7 @@ const headers = await readFile(path.join(output, '_headers'), 'utf8');
 
 // Check rendered exact destinations against the same validated build snapshot.
 assert.ok(landing.includes('href="/download/"'));
-assert.ok(landing.includes('Keep the file.'));
+assert.ok(landing.includes('Smart Media Conversion'));
 assert.ok(landing.includes('Pause motion'));
 const manifest = validateManifest(
   JSON.parse(
@@ -119,6 +120,7 @@ for (const asset of [
   'og-comet.png',
   'screenshots/desktop-light.webp',
   'screenshots/output-settings.webp',
+  'screenshots/desktop-dark.webp',
 ]) {
   assert.ok(
     (await stat(path.join(output, asset))).size < 150_000,
