@@ -20,9 +20,12 @@ v3.0.0-beta.1 as an unsigned beta. Confirm release status before publication.
 Current v3 screenshots depict the **beta**, not the stable build. Explain
 platform trust warnings and point to official checksums where applicable.
 
-**Not yet released:** browser-based conversion, a unified monorepo marketing
-site, full browser/desktop format parity, and a Honeymelon rename. Don't write
-as though these are live or committed.
+**Website:** the static Next.js marketing site and Release Center are
+implemented in `apps/site`. Verify the current public deployment before sharing
+its URL; deployment evidence belongs in issue #72.
+
+**Not yet released:** browser-based conversion and full browser/desktop format
+parity. Comet remains the product name; the Honeymelon rebrand is deferred.
 
 ## Audiences and honest value proposition
 
@@ -39,9 +42,9 @@ stronger security guarantees than have been tested.
 
 ## First 90 days
 
-- Oct 19–Nov 1: baseline, community trust/onboarding, brand go/no-go, assets
+- Oct 19–Nov 1: baseline, community trust/onboarding, verified product assets
 - Nov 2–15: constructive feedback and appropriately targeted soft launch
-- Nov 16–Dec 13: major release launch **only if product and brand gates pass**
+- Nov 16–Dec 13: major release launch **only if product release gates pass**
 - Dec 14–Jan 17: helpful tutorials, issue feedback and contributor retention
 
 ## Distribution policy
