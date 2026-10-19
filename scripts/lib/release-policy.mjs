@@ -10,6 +10,13 @@ export const targets = [
   'win32-x64',
 ];
 
+/** Reject a tag that does not describe the desktop version being shipped. */
+export function validateReleaseTag(version, tag) {
+  if (tag !== `v${version}`) {
+    throw new Error('Release tag must match the desktop version');
+  }
+}
+
 /** Only this explicitly approved beta may ship without release signatures. */
 export function releaseRequiresSigning(version) {
   return version !== '3.0.0-beta.1';

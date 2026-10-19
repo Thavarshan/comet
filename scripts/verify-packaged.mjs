@@ -1,10 +1,10 @@
-import { readBundledModule } from './packaged-code.mjs';
+import { readBundledModule } from './lib/packaged-code.mjs';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { builtinModules } from 'node:module';
 import { execFileSync, spawnSync } from 'node:child_process';
 import path from 'node:path';
-import { packagePaths } from './package-paths.mjs';
+import { packagePaths } from './lib/package-paths.mjs';
 
 const { resources, target, executable } = packagePaths();
 const allowed = new Set([

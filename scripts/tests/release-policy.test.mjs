@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
+  validateReleaseTag,
   validateReleaseTarget,
   releaseRequiresSigning,
   releaseAssetName,
-} from './release-policy.mjs';
+} from '../lib/release-policy.mjs';
 
 const expected = { target: 'linux-x64', version: '3.0.0', commit: 'abc123' };
 const receipt = { ...expected, result: 'passed', signed: true };
@@ -96,4 +97,13 @@ test('Debian prerelease assets and checksums retain the published filename', () 
     'comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb',
   );
   assert.match(name, /^[A-Za-z0-9._-]+$/);
+});
+
+test('release tags must exactly match the desktop version', () => {
+  assert.doesNotThrow(() =>
+    validateReleaseTag('3.0.0-beta.1', 'v3.0.0-beta.1'),
+  );
+  for (const tag of [undefined, '', '3.0.0', 'v3.0.1', 'main']) {
+    assert.throws(() => validateReleaseTag('3.0.0', tag), /Release tag/);
+  }
 });

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { rejectSecurityFindings } from './check-sarif.mjs';
+import { rejectSecurityFindings } from '../check-sarif.mjs';
 
 const highRule = {
   id: 'js/example-high',

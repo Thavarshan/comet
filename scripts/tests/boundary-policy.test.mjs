@@ -8,7 +8,7 @@ import {
   boundaryOwner,
   boundaryViolation,
   sourceImports,
-} from './boundary-policy.mjs';
+} from '../lib/boundary-policy.mjs';
 
 test('syntax inspection catches side effects and every module import form', () => {
   const source = `

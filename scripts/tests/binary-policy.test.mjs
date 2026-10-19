@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createHash } from 'node:crypto';
-import manifest from './binary-manifest.json' with { type: 'json' };
+import manifest from '../binary-manifest.json' with { type: 'json' };
 import {
   downloadUrl,
   validateDigest,
   verifyDownload,
   fetchBinary,
-} from './binary-policy.mjs';
+} from '../lib/binary-policy.mjs';
 
 const url = manifest.targets['linux-x64'].files[0].url;
 const payload = Buffer.from('verified native resource');

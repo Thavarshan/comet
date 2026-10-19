@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { unzipSync } from 'fflate';
 import manifest from './binary-manifest.json' with { type: 'json' };
-import { fetchBinary, validateDigest } from './binary-policy.mjs';
+import { fetchBinary, validateDigest } from './lib/binary-policy.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const target =
