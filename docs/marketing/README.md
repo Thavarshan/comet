@@ -11,9 +11,9 @@ product name, GitHub repository identity, release processes, or customer data.
 
 ## What we are marketing
 
-**Current:** Comet is a free, open-source desktop app that converts video,
-audio and images locally with bundled media tools. Files do not need to be
-uploaded to a Comet-hosted service and the desktop app requires no account.
+**Current:** Comet is a free, open-source desktop app that converts video, audio
+and images locally with bundled media tools. Files do not need to be uploaded to
+a Comet-hosted service and the desktop app requires no account.
 
 **Stable vs beta:** The project README identifies v2.2.3 as stable and
 v3.0.0-beta.1 as an unsigned beta. Confirm release status before publication.
@@ -38,6 +38,7 @@ Avoid claiming universal format/codec coverage, benchmark superiority or
 stronger security guarantees than have been tested.
 
 ## First 90 days
+
 - Oct 19–Nov 1: baseline, community trust/onboarding, brand go/no-go, assets
 - Nov 2–15: constructive feedback and appropriately targeted soft launch
 - Nov 16–Dec 13: major release launch **only if product and brand gates pass**
@@ -63,19 +64,18 @@ Proposed description: "Free, open-source desktop media converter for video,
 audio and images. Convert locally with no uploads or account."
 
 Suggested topics to verify against GitHub rules and actually shipped features:
-`media-converter`, `video-converter`, `audio-converter`,
-`image-converter`, `electron`, `react`, `typescript`, `ffmpeg`,
-`open-source`, `cross-platform`.
+`media-converter`, `video-converter`, `audio-converter`, `image-converter`,
+`electron`, `react`, `typescript`, `ffmpeg`, `open-source`, `cross-platform`.
 
 The issue template's support link calls this a "library" and says issues are
-bug-only while feature templates exist. Security documentation also references
-a different product and stale support versions. These need careful correction:
-see [M1](https://github.com/Thavarshan/comet/issues/112), not silent removal.
+bug-only while feature templates exist. Security documentation also references a
+different product and stale support versions. These need careful correction: see
+[M1](https://github.com/Thavarshan/comet/issues/112), not silent removal.
 
 ## Weekly operating procedure
 
 1. Re-check GitHub and published release truth; note data timestamp.
-2. Update the scorecard with *measured* deltas, and mark unavailable metrics.
+2. Update the scorecard with _measured_ deltas, and mark unavailable metrics.
 3. Review developer feedback, first PRs, media bugs, beta status and website.
 4. Publish only verified, venue-appropriate content.
 5. Select the next three actions by useful feedback and attributable adoption.

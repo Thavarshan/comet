@@ -13,8 +13,8 @@ images. Convert files locally without creating an account or uploading them.
 
 **Your media. Your computer. Your control.**
 
-Convert video, audio and image files locally with a straightforward desktop
-app powered by open-source media tooling.
+Convert video, audio and image files locally with a straightforward desktop app
+powered by open-source media tooling.
 
 - Primary CTA: **Download stable desktop version**
   https://github.com/Thavarshan/comet/releases/latest
@@ -31,10 +31,10 @@ beta screenshots to depict the current stable release.
 
 **Want a real open-source TypeScript project to contribute to?**
 
-We're rebuilding Comet, an open-source desktop app for converting video,
-audio and images locally. The desktop app uses Electron; our newer beta uses
-React and TypeScript, and the codebase includes native conversion execution,
-shared domain contracts and platform test coverage.
+We're rebuilding Comet, an open-source desktop app for converting video, audio
+and images locally. The desktop app uses Electron; our newer beta uses React and
+TypeScript, and the codebase includes native conversion execution, shared domain
+contracts and platform test coverage.
 
 Useful contributions aren't limited to big features. Documentation, smaller
 UI/accessibility fixes, localization, reproducible bug reports and targeted
@@ -46,8 +46,8 @@ https://github.com/Thavarshan/comet
 We are still validating the 3.0 beta and planning (not shipping) a browser
 experience. Feedback about what feels confusing is as useful as a PR.
 
-**Publishing check:** ensure newcomer issues are genuinely small and ready,
-and confirm public channel permits project posts.
+**Publishing check:** ensure newcomer issues are genuinely small and ready, and
+confirm public channel permits project posts.
 
 ## Beta testing invitation — draft
 
@@ -58,8 +58,8 @@ refreshed React interface and expanded conversion controls, and we'd value
 real-world feedback on usability and format compatibility.
 
 This is an **unsigned beta**, not the recommended stable build. macOS and
-Windows may display trust warnings. Only download from official GitHub
-Releases, review the release notes and verify the published SHA-256 hashes.
+Windows may display trust warnings. Only download from official GitHub Releases,
+review the release notes and verify the published SHA-256 hashes.
 
 Test release: https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1
 Report issues: https://github.com/Thavarshan/comet/issues
@@ -75,9 +75,9 @@ and that project maintainers can realistically triage incoming reports.
 
 ### Building Comet: a media converter that works locally
 
-Converting a video should not require uploading it somewhere or learning a
-long command-line invocation. That's the problem behind Comet, a small,
-open-source desktop application for video, audio and image conversion.
+Converting a video should not require uploading it somewhere or learning a long
+command-line invocation. That's the problem behind Comet, a small, open-source
+desktop application for video, audio and image conversion.
 
 Behind the interface, the project has a less obvious set of engineering
 problems: coordinating native work, cancelling running jobs without leaving
@@ -92,9 +92,9 @@ released online converter.
 
 **Title:** Comet — Open-source desktop media converter
 
-**Description:** Free desktop application for converting video, audio and
-images locally. No account or media upload required. Browse the source and
-choose the stable installer available for your operating system.
+**Description:** Free desktop application for converting video, audio and images
+locally. No account or media upload required. Browse the source and choose the
+stable installer available for your operating system.
 
 **Categories:** Media conversion, video tools, audio tools, image tools,
 open-source desktop software.
