@@ -3,7 +3,8 @@
 The site is a static Next.js export in `apps/site`. It shares the monorepo
 TypeScript presets, typed ESLint rules, UI primitives and Turbo pipeline. It has
 no media upload API, account service, runtime image optimizer or tracking
-script. The planned browser converter is explicitly unavailable in the copy.
+script. The browser converter is explicitly unavailable in the copy; there is no
+product web-converter application.
 
 ## Canonical deployment
 
@@ -45,9 +46,12 @@ desktop development previews. These are actual repository images, not mockups of
 unreleased browser functionality. The getting-started page explains SHA-256
 verification on each desktop platform and preserves source media guidance.
 Release and license pages link the official GitHub release history, repository
-license, source and contribution guide. Release inventory, automatic platform
-detection and version selection are delivered by #71. Refresh and recovery are
-documented in [Release Center operations](../releases/release-center.md).
+license, source and contribution guide. Release inventory, OS suggestion,
+version/channel history and explicit platform selection are implemented under
+closed issue #71. Release refresh and recovery are documented in
+[Release Center operations](../releases/release-center.md). OS detection does
+not claim CPU architecture; visitors choose x64/ARM64 and package format
+explicitly.
 
 ## Evidence and budgets
 
@@ -71,11 +75,14 @@ needed for field measurements.
 
 ## Delivery and publication gates
 
-Issue #70 delivers the public pages, source, static SEO output and automated
-accessibility/performance checks. Its acceptance evidence is recorded in
-[the P2.2 acceptance record](../releases/site-p2.2-acceptance.md).
+The public pages, source, static SEO output and automated accessibility and
+performance checks were delivered under closed issue #70. Historical evidence is
+in [the P2.2 acceptance record](../releases/site-p2.2-acceptance.md).
 
-Production hosting is tracked separately in #72. Follow
+Cloudflare preview/production publication is the remaining open site milestone
+(#72). The repository contains its deploy, verification, and rollback workflow,
+but do not infer from source code or CI that live environments are configured or
+deployed. Follow
 [static site deployment and recovery](../operations/site-deployment.md). Before
 publishing an indexed production site, confirm the actual origin and response
 headers, test keyboard and screen-reader behavior on that deployment, and review

@@ -8,7 +8,8 @@ single-slot execution, collision naming in the fixture, failure advancement,
 abort cleanup, repeated cancellation, disposal and independent unsubscribe. They
 do not claim that a mock encoded real media. Native integration tests and
 packaged platform tests retain actual output, collision and source-preservation
-coverage. The browser's real encoder will join these contracts when implemented.
+coverage. A real browser encoder must join these contracts before browser
+conversion is considered implemented.
 
 `QueueConversionService` uses the existing core lifecycle reducer and owns no
 files, workers, Node modules or output bytes. Its executor supplies capability
@@ -35,15 +36,17 @@ The script builds the fixture and launches a local static Vite preview. A
 dedicated config prevents Vitest from collecting Playwright specs. Browser
 projects reuse the common trace, screenshot, and report settings. The browser
 suite rejects external requests and all methods except GET/HEAD while local
-files are selected. A future app can supply `COMET_E2E_WEB_URL` to reuse the
-same launch infrastructure without Cloudflare credentials.
+files are selected. The optional `COMET_E2E_WEB_URL` can point these tests at an
+existing browser fixture host. There is still no product web converter
+application.
 
 Import UI and converter styles into one host CSS entry so Tailwind processes
 both source declarations; importing separate styles directly from JavaScript can
 leave a standalone `@source` directive unprocessed.
 
-PR quality CI installs Chromium and runs the small harness. Failure traces,
-screenshots and reports are retained seven days. Firefox/WebKit run locally now
-and will join the complete image-MVP CI matrix in #77. Existing six-target
-desktop packaged checks and eleven Linux distro jobs remain intact. The full
-native conversion-pair matrix remains on main, schedules and release tags.
+PR quality CI installs Chromium and runs the small converter harness and static
+site tests; browser diagnostics are retained for seven days. Local
+configurations also cover Firefox and WebKit; the open #77 milestone tracks the
+browser image MVP test suite and preview. Desktop CI covers six native build
+targets and the Linux distro compatibility job. PRs skip only the exhaustive
+native conversion-pair matrix; non-PR exhaustive verification retains it.
