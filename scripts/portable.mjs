@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { packagePaths } from './package-paths.mjs';
+import { packagePaths } from './lib/package-paths.mjs';
 
 const { directory, target } = packagePaths();
 const { version } = JSON.parse(

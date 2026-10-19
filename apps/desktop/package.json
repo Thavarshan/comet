@@ -20,8 +20,8 @@
     "url": "https://github.com/Thavarshan/comet/issues"
   },
   "scripts": {
-    "dev": "node ../../scripts/start-desktop.mjs",
-    "build": "node ../../scripts/build-desktop.mjs",
+    "dev": "node scripts/start.mjs",
+    "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "package": "electron-forge package",

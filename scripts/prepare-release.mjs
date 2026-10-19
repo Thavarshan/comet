@@ -10,17 +10,16 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import {
   targets,
+  validateReleaseTag,
   validateReleaseTarget,
   releaseAssetName,
-} from './release-policy.mjs';
-import { artifactManifest } from './artifact-manifest.mjs';
+} from './lib/release-policy.mjs';
+import { artifactManifest } from './lib/artifact-manifest.mjs';
 
 const { version } = JSON.parse(
   await readFile('apps/desktop/package.json', 'utf8'),
 );
-if (process.env.GITHUB_REF_NAME !== `v${version}`) {
-  throw new Error('Release tag must match the desktop version');
-}
+validateReleaseTag(version, process.env.GITHUB_REF_NAME);
 
 await rm('release-assets', { recursive: true, force: true });
 await mkdir('release-assets', { recursive: true });

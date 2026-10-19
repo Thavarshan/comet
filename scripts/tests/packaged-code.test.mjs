@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createPackage } from '@electron/asar';
-import { readBundledModule } from './packaged-code.mjs';
+import { readBundledModule } from '../lib/packaged-code.mjs';
 
 test('reads nested bundled modules from a real ASAR using host path rules', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'comet-asar-'));

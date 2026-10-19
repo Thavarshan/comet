@@ -6,7 +6,7 @@ import {
   boundaryViolation,
   relativeImport,
   sourceImports,
-} from './boundary-policy.mjs';
+} from './lib/boundary-policy.mjs';
 
 const ignored = new Set([
   'node_modules',

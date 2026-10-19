@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { mkdtemp, mkdir, writeFile, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { artifactManifest } from './artifact-manifest.mjs';
+import { artifactManifest } from '../lib/artifact-manifest.mjs';
 
 test('artifact receipts detect changed bytes and refuse symbolic links', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'comet-artifacts-'));

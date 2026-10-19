@@ -3,8 +3,8 @@ import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { packagePaths, root } from './package-paths.mjs';
-import { artifactManifest } from './artifact-manifest.mjs';
+import { packagePaths, root } from './lib/package-paths.mjs';
+import { artifactManifest } from './lib/artifact-manifest.mjs';
 
 const { target, directory, relativeExecutable } = packagePaths();
 const isolated = await mkdtemp(path.join(tmpdir(), 'comet-packaged-'));
