@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { getSiteOrigin } from '../src/lib/metadata.ts';
+import { previewHeaders } from './deployment-policy.mjs';
 
 const target = process.argv[2];
 const revision = process.argv[3];
@@ -19,10 +20,7 @@ const output = new URL('../out/', import.meta.url);
 const headersFile = new URL('_headers', output);
 const headers = await readFile(headersFile, 'utf8');
 if (target === 'preview') {
-  await writeFile(
-    headersFile,
-    headers + '\n/*\n  X-Robots-Tag: noindex, nofollow\n',
-  );
+  await writeFile(headersFile, previewHeaders(headers));
 }
 
 await writeFile(

@@ -2,6 +2,21 @@ import { appendFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { getSiteOrigin } from '../src/lib/metadata.ts';
 
+/** Preserve the existing global security block when disabling indexing. */
+export function previewHeaders(headers) {
+  if (!/^\/\*\r?\n/.test(headers)) {
+    throw new Error('Expected the global static security header block');
+  }
+  if (/^  X-Robots-Tag: noindex, nofollow\r?$/m.test(headers)) {
+    return headers;
+  }
+
+  return headers.replace(
+    /^\/\*\r?\n/,
+    '/*\n  X-Robots-Tag: noindex, nofollow\n',
+  );
+}
+
 /** Publishing is limited to deliberate dispatches of reviewed main commits. */
 export function deploymentPolicy(input) {
   if (

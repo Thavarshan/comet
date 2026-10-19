@@ -4,8 +4,27 @@ import { verifyDeployment } from './verify-deployment.mjs';
 import { publicRoutes } from '../src/lib/metadata.ts';
 import {
   deploymentPolicy,
+  previewHeaders,
   requireSuccessfulChecks,
 } from './deployment-policy.mjs';
+
+test('preview indexing headers preserve the single global security block', () => {
+  const headers =
+    '/*\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n' +
+    "  Content-Security-Policy: connect-src 'self'\n\n" +
+    '/_next/static/*\n  Cache-Control: public, max-age=31536000, immutable\n';
+  for (const input of [headers, headers.replaceAll('\n', '\r\n')]) {
+    const result = previewHeaders(input);
+    assert.equal(result.match(/^\/\*$/gm)?.length, 1);
+    assert.ok(result.startsWith('/*\n  X-Robots-Tag: noindex, nofollow\n'));
+    assert.ok(result.includes('X-Content-Type-Options: nosniff'));
+    assert.ok(result.includes('X-Frame-Options: DENY'));
+    assert.ok(result.includes("Content-Security-Policy: connect-src 'self'"));
+    assert.ok(result.includes('max-age=31536000, immutable'));
+    assert.equal(previewHeaders(result), result);
+  }
+  assert.throws(() => previewHeaders('/_next/static/*\n'), /global static/);
+});
 
 /** Simulate public HTTP responses, including the conditional cache boundary. */
 function publicSite(target, broken = '') {
