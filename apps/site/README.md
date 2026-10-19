@@ -94,9 +94,10 @@ labeled accordingly; the stable download remains separate.
 
 The workspace inherits `strict: true`, `noUncheckedIndexedAccess`,
 `noImplicitReturns`, and `exactOptionalPropertyTypes` from the monorepo. Shared
-content arrays use `satisfies` for shape validation; React components declare
-their return and prop types. `app/` and `src/` remain browser-safe, without
-Electron, native FFmpeg, runtime Node imports, or uploaded media.
+content arrays use inferred readonly tuples and validated contract types; React
+components declare their return and prop types. `app/` and `src/` remain
+browser-safe, without Electron, native FFmpeg, runtime Node imports, or uploaded
+media.
 
 ## Security, hosting and honest product claims
 

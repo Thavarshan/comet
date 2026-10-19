@@ -216,7 +216,7 @@ summary {
   margin: 0;
   font-size: 36px;
   font-weight: 600;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
 }
 .section-title {
@@ -258,7 +258,7 @@ summary {
   font-size: 60px;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.025em;
 }
 .hero h1 span {
   color: var(--site-heading-accent);
@@ -1199,4 +1199,17 @@ html[data-motion-paused='true'] *::after {
 .secondary-link svg {
   width: 16px;
   height: 16px;
+}
+
+/* The reference's shorter proof section separates hero and feature content. */
+#proof {
+  padding-block: 96px;
+}
+@media (max-width: 639px) {
+  #proof {
+    padding-block: 80px;
+  }
+  .proof-container .section-title {
+    font-size: 24px;
+  }
 }
