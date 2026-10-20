@@ -1,5 +1,5 @@
 import { constants } from 'node:fs';
-import { copyFile, lstat, mkdir, readFile, unlink } from 'node:fs/promises';
+import { lstat, mkdir, open, writeFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { migratePreferences } from '@honeymelon/contracts';
 
@@ -33,16 +33,39 @@ export async function migrateProfile(
     let original: string;
 
     try {
-      const status = await lstat(source);
-      if (!status.isFile() || status.size > 1024 * 1024) {
-        continue;
-      }
+      const handle = await open(
+        source,
+        constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0),
+      );
+      try {
+        // Inspect the opened file, not a path that could be replaced later.
+        const status = await handle.stat();
+        const maximum = 1024 * 1024;
+        if (
+          !status.isFile() ||
+          status.size > maximum ||
+          (await lstat(source)).isSymbolicLink()
+        ) {
+          continue;
+        }
 
-      original = await readFile(source, 'utf8');
-      migratePreferences(JSON.parse(original));
+        // Bound allocation even if another process grows the file meanwhile.
+        const buffer = Buffer.alloc(maximum + 1);
+        const { bytesRead } = await handle.read(buffer, 0, buffer.length, 0);
+        if (bytesRead > maximum) {
+          continue;
+        }
+
+        original = buffer.subarray(0, bytesRead).toString('utf8');
+        migratePreferences(JSON.parse(original));
+      } finally {
+        await handle.close();
+      }
     } catch (error) {
       if (
-        (error as NodeJS.ErrnoException).code === 'ENOENT' ||
+        ['ENOENT', 'ELOOP'].includes(
+          (error as NodeJS.ErrnoException).code ?? '',
+        ) ||
         error instanceof SyntaxError ||
         (error instanceof Error && error.name === 'ZodError')
       ) {
@@ -54,9 +77,8 @@ export async function migrateProfile(
 
     await mkdir(destination, { recursive: true });
     try {
-      await copyFile(source, target, constants.COPYFILE_EXCL);
-      // Validate what was actually copied in case the old app wrote meanwhile.
-      migratePreferences(JSON.parse(await readFile(target, 'utf8')));
+      // Publish the validated bytes; never reopen a mutable source path.
+      await writeFile(target, original, { flag: 'wx' });
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
         return 'existing';

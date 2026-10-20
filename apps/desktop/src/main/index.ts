@@ -58,7 +58,7 @@ app.on('second-instance', () => {
 });
 
 /**
- * Match native caption buttons and startup paint to the shared Neutral surfaces.
+ * Match native caption buttons and startup paint to the Neutral theme.
  */
 function windowChromeColors() {
   return nativeTheme.shouldUseDarkColors
