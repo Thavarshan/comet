@@ -78,7 +78,7 @@ export async function migrateProfile(
     await mkdir(destination, { recursive: true });
     try {
       // Publish the validated bytes; never reopen a mutable source path.
-      await writeFile(target, original, { flag: 'wx' });
+      await writeFile(target, original, { flag: 'wx', mode: 0o600 });
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
         return 'existing';

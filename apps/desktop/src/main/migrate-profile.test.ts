@@ -95,3 +95,17 @@ it('supports lowercase historical profiles and clean first installs', async () =
   );
   expect(await migrateProfile(root, destination)).toBe('imported');
 });
+
+it('concurrent imports publish once without replacing newer settings', async () => {
+  const { root, source, destination } = await fixture();
+  const original = JSON.stringify(defaultPreferences(tmpdir()));
+  await writeFile(path.join(source, 'preferences-v1.json'), original);
+  const results = await Promise.all([
+    migrateProfile(root, destination),
+    migrateProfile(root, destination),
+  ]);
+  expect(results.sort()).toEqual(['existing', 'imported']);
+  expect(
+    await readFile(path.join(destination, 'preferences-v1.json'), 'utf8'),
+  ).toBe(original);
+});
