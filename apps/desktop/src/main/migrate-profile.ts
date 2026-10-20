@@ -1,5 +1,13 @@
 import { constants } from 'node:fs';
-import { lstat, mkdir, open, writeFile, unlink } from 'node:fs/promises';
+import {
+  lstat,
+  mkdir,
+  open,
+  writeFile,
+  mkdtemp,
+  link,
+  rm,
+} from 'node:fs/promises';
 import path from 'node:path';
 import { migratePreferences } from '@honeymelon/contracts';
 
@@ -19,7 +27,8 @@ export async function migrateProfile(
   const target = path.join(destination, filename);
 
   try {
-    await lstat(target);
+    const existing = await open(target, 'r');
+    await existing.close();
 
     return 'existing';
   } catch (error) {
@@ -76,17 +85,21 @@ export async function migrateProfile(
     }
 
     await mkdir(destination, { recursive: true });
+    const temporary = await mkdtemp(path.join(destination, '.import-'));
     try {
-      // Publish the validated bytes; never reopen a mutable source path.
-      await writeFile(target, original, { flag: 'wx', mode: 0o600 });
+      const staged = path.join(temporary, filename);
+      await writeFile(staged, original, { flag: 'wx', mode: 0o600 });
+      // A hard link publishes complete validated bytes atomically. Existing
+      // preferences win; the historical source is never linked or reopened.
+      await link(staged, target);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
         return 'existing';
       }
 
-      // Remove only our own incomplete import; never remove the old profile.
-      await unlink(target).catch(() => {});
       throw error;
+    } finally {
+      await rm(temporary, { recursive: true, force: true });
     }
 
     return 'imported';
