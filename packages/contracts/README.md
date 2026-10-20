@@ -1,13 +1,13 @@
-# @comet/contracts
+# @honeymelon/contracts
 
-Browser-safe shared types and Zod validation for the Comet workspaces. This is
-an internal, private package; its `0.1.0` version is not a published npm
+Browser-safe shared types and Zod validation for the Honeymelon workspaces. This
+is an internal, private package; its `0.1.0` version is not a published npm
 release.
 
 ## Public surface
 
-Import from `@comet/contracts`; compiled JavaScript and declarations are emitted
-to `dist/`.
+Import from `@honeymelon/contracts`; compiled JavaScript and declarations are
+emitted to `dist/`.
 
 | Source              | Responsibility                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -19,7 +19,8 @@ The catalogue describes possible formats; runtime capability discovery decides
 which a platform can actually provide. A type or valid format name does not
 prove an encoder exists. Native batch/path DTOs and desktop bridge types coexist
 here with portable domain types; shared browser workflows use the opaque handle
-service types defined in `@comet/core` rather than interpreting native paths.
+service types defined in `@honeymelon/core` rather than interpreting native
+paths.
 
 This package depends on Zod and must remain free of Node, Electron, filesystem,
 and native engine imports. Engine, core, converter, browser adapter, desktop,
@@ -33,10 +34,10 @@ workspace checks directly so dependency exports exist. Root `npm run typecheck`
 and `npm test` use Turbo to build upstream packages automatically.
 
 ```sh
-npm run build -w @comet/contracts
-npm run typecheck -w @comet/contracts
-npm test -w @comet/contracts
-npm run dev -w @comet/contracts
+npm run build -w @honeymelon/contracts
+npm run typecheck -w @honeymelon/contracts
+npm test -w @honeymelon/contracts
+npm run dev -w @honeymelon/contracts
 ```
 
 `dev` watches TypeScript output. Tests cover contract validation and migration.

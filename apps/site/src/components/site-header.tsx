@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@comet/ui/components/button';
+import { Button } from '@honeymelon/ui/components/button';
 import {
   Dialog,
   DialogClose,
@@ -8,14 +8,14 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '@comet/ui/components/dialog';
+} from '@honeymelon/ui/components/dialog';
 import { Menu, Star } from 'lucide-react';
 import { useEffect, useState, type ReactElement } from 'react';
 
 const navigation = [
   { href: '/features/', label: 'Features' },
   { href: '/docs/', label: 'Docs' },
-  { href: 'https://github.com/Thavarshan/comet/issues', label: 'Support' },
+  { href: 'https://github.com/Thavarshan/honeymelon/issues', label: 'Support' },
 ] as const;
 
 /** Match the reference's quiet sticky header and accessible mobile sheet. */
@@ -35,9 +35,9 @@ export function SiteHeader(): ReactElement {
   return (
     <header className="site-header" data-scrolled={scrolled}>
       <div className="site-container header-inner">
-        <a className="brand" href="/" aria-label="Comet home">
+        <a className="brand" href="/" aria-label="Honeymelon home">
           <img src="/logo.svg" alt="" width="32" height="32" />
-          <span>Comet</span>
+          <span>Honeymelon</span>
         </a>
         <nav className="site-navigation" aria-label="Main navigation">
           {navigation.map((link) => (
@@ -46,7 +46,7 @@ export function SiteHeader(): ReactElement {
             </Button>
           ))}
           <Button asChild variant="outline" className="github-button" size="sm">
-            <a href="https://github.com/Thavarshan/comet">
+            <a href="https://github.com/Thavarshan/honeymelon">
               <Star aria-hidden="true" /> Star on GitHub
             </a>
           </Button>
@@ -62,9 +62,9 @@ export function SiteHeader(): ReactElement {
               </Button>
             </DialogTrigger>
             <DialogContent className="site-menu" closeLabel="Close menu">
-              <DialogTitle className="brand">Comet</DialogTitle>
+              <DialogTitle className="brand">Honeymelon</DialogTitle>
               <DialogDescription className="sr-only">
-                Explore Comet, get help, or choose a desktop download.
+                Explore Honeymelon, get help, or choose a desktop download.
               </DialogDescription>
               <nav aria-label="Mobile navigation">
                 {navigation.map((link) => (
@@ -77,7 +77,7 @@ export function SiteHeader(): ReactElement {
                     Download
                   </a>
                 </DialogClose>
-                <a href="https://github.com/Thavarshan/comet">
+                <a href="https://github.com/Thavarshan/honeymelon">
                   <Star aria-hidden="true" /> Star on GitHub
                 </a>
               </nav>

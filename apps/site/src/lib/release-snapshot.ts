@@ -1,4 +1,4 @@
-import type { ReleaseManifest } from '@comet/contracts';
+import type { ReleaseManifest } from '@honeymelon/contracts';
 import snapshot from '../data/releases.json';
 import { validateManifest } from './releases';
 

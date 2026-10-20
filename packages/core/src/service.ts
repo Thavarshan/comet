@@ -4,7 +4,7 @@ import type {
   ConversionSpec,
   MediaMetadata,
   MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import type { ConversionQueue } from './index.js';
 
 /** Serializable identity; each platform retains its own file handle. */

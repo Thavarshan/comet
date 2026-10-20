@@ -1,34 +1,16 @@
-@import '@comet/ui/styles/globals.css';
+@import '@honeymelon/ui/styles/globals.css';
 
 /*
- * The Honeymelon website's warm, minimal visual language, scoped to marketing.
- * Desktop keeps its shared theme; components still come from @comet/ui.
+ * The Honeymelon website's minimal visual language, scoped to marketing.
+ * Desktop keeps its shared theme; components still come from @honeymelon/ui.
  */
 :root {
   color-scheme: light;
-  --background: #fff;
-  --foreground: #453322;
-  --card: #fff;
-  --card-foreground: #453322;
-  --popover: #fff;
-  --popover-foreground: #453322;
-  --primary: #e7a653;
-  --primary-foreground: #453019;
-  --secondary: #fff4df;
-  --secondary-foreground: #654823;
-  --muted: #fff9eb;
-  --muted-foreground: #80664f;
-  --accent: #fff8eb;
-  --accent-foreground: #453322;
-  --border: #f0e4d2;
-  --input: #dfcfb8;
-  --ring: #9c6025;
-  --radius: 0.75rem;
-  --site-muted: #80664f;
-  --site-line: #f2eadd;
-  --site-tint: #fffdf8;
-  --site-accent: #995a19;
-  --site-heading-accent: #b47728;
+  --site-muted: var(--muted-foreground);
+  --site-line: var(--border);
+  --site-tint: var(--muted);
+  --site-accent: var(--foreground);
+  --site-heading-accent: var(--foreground);
 }
 
 html {
@@ -58,8 +40,8 @@ summary {
   outline-offset: 4px;
 }
 ::selection {
-  background: #fae4bf;
-  color: #453322;
+  background: var(--accent);
+  color: var(--foreground);
 }
 .site-shell {
   min-height: 100vh;
@@ -77,7 +59,7 @@ summary {
   border-radius: 8px;
   padding: 0.75rem 1rem;
   background: var(--foreground);
-  color: #fff;
+  color: var(--background);
 }
 .skip-link:focus {
   top: 0.75rem;
@@ -87,7 +69,7 @@ summary {
   top: 0;
   z-index: 40;
   border-bottom: 1px solid transparent;
-  background: rgb(255 255 255 / 96%);
+  background: color-mix(in oklch, var(--background) 96%, transparent);
   transition:
     border-color 200ms,
     backdrop-filter 200ms;
@@ -131,7 +113,7 @@ summary {
   box-shadow: none;
 }
 .site-button:hover {
-  background: #e1a04d;
+  background: var(--primary);
 }
 .site-button--large {
   min-height: 48px;
@@ -142,7 +124,7 @@ summary {
 .github-button {
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: #fff;
+  background: var(--background);
   color: var(--foreground);
   min-height: 40px;
   padding: 8px 20px;
@@ -205,6 +187,7 @@ summary {
   border-top: 1px solid var(--site-line);
 }
 .section-tint {
+  --site-muted: var(--secondary-foreground);
   background: var(--site-tint);
 }
 .section-heading {
@@ -244,7 +227,7 @@ summary {
   padding: 8px 16px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: #fff;
+  background: var(--background);
   color: var(--site-muted);
   font-size: 14px;
   font-weight: 400;
@@ -330,7 +313,7 @@ figcaption {
   height: 24px;
   margin-top: 2px;
   border-radius: 50%;
-  background: #fcf1df;
+  background: var(--muted);
   color: var(--site-accent);
 }
 .check-circle svg {
@@ -363,7 +346,7 @@ figcaption {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: #fcf1df;
+  background: var(--muted);
   color: var(--site-accent);
 }
 .feature-title svg {
@@ -404,7 +387,7 @@ figcaption {
   font-size: 36px;
   font-weight: 600;
   line-height: 1;
-  color: #a46d2c;
+  color: var(--foreground);
   font-variant-numeric: tabular-nums;
 }
 .steps-grid h3 {
@@ -482,7 +465,7 @@ figcaption {
   padding: 40px;
   border: 1px solid var(--border);
   border-radius: 24px;
-  background: #fff;
+  background: var(--background);
 }
 .price-heading {
   text-align: center;
@@ -594,7 +577,7 @@ figcaption {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #fcf1df;
+  background: var(--muted);
   color: var(--site-accent);
   font-size: 12px;
   font-weight: 600;
@@ -801,7 +784,7 @@ figcaption {
 }
 .content-page a:not([data-slot='button']),
 .download-note a {
-  color: #88501b;
+  color: var(--foreground);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -832,6 +815,7 @@ figcaption {
   color: var(--site-muted);
 }
 .download-note {
+  --site-muted: var(--secondary-foreground);
   max-width: 720px;
   margin: 48px auto 0;
   padding: 24px;
@@ -852,7 +836,7 @@ figcaption {
   font-size: 80px;
   color: var(--primary);
 }
-.comet-cta {
+.honeymelon-cta {
   min-height: 48px;
   padding: 12px 24px;
   border-radius: 12px;
@@ -860,8 +844,8 @@ figcaption {
   background: var(--primary);
   color: var(--primary-foreground);
 }
-.comet-cta:hover {
-  background: #e1a04d;
+.honeymelon-cta:hover {
+  background: var(--primary);
 }
 .screenshot-grid {
   display: grid;
@@ -894,11 +878,11 @@ figcaption {
   padding: 32px;
   border: 1px solid var(--border);
   border-radius: 24px;
-  background: #fff;
+  background: var(--background);
   color: var(--foreground);
 }
 .release-center a:not([data-slot='button']) {
-  color: #88501b;
+  color: var(--foreground);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -938,7 +922,7 @@ figcaption {
   padding: 8px 32px 8px 12px;
   border: 1px solid var(--input);
   border-radius: 10px;
-  background: #fff;
+  background: var(--background);
   color: var(--foreground);
   font-size: 14px;
 }
@@ -991,7 +975,7 @@ figcaption {
   margin-block: 12px;
   font-size: 14px;
 }
-.release-selection .comet-cta {
+.release-selection .honeymelon-cta {
   max-width: 100%;
   min-height: 48px;
   height: auto;
@@ -1175,9 +1159,9 @@ html[data-motion-paused='true'] *::after {
 }
 .hero-screenshot img,
 .showcase img {
-  border: 1px solid rgb(69 51 34 / 15%);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 16px 44px rgb(69 51 34 / 12%);
+  box-shadow: 0 16px 44px rgb(0 0 0 / 10%);
 }
 @media (max-width: 639px) {
   .hero-screenshot {

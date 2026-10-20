@@ -1,5 +1,5 @@
 {
-  "name": "@comet/e2e",
+  "name": "@honeymelon/e2e",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -21,12 +21,12 @@
     "test:site": "playwright test --config playwright.site.config.ts"
   },
   "dependencies": {
-    "@comet/browser-engine": "*",
-    "@comet/contracts": "*",
-    "@comet/converter": "*",
-    "@comet/core": "*",
-    "@comet/engine": "*",
-    "@comet/ui": "*",
+    "@honeymelon/browser-engine": "*",
+    "@honeymelon/contracts": "*",
+    "@honeymelon/converter": "*",
+    "@honeymelon/core": "*",
+    "@honeymelon/engine": "*",
+    "@honeymelon/ui": "*",
     "@playwright/test": "1.64.1",
     "zod": "4.6.7"
   },

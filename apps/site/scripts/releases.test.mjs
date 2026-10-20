@@ -13,7 +13,7 @@ const release = (overrides = {}) => ({
   tag_name: 'v1.2.3',
   draft: false,
   prerelease: false,
-  html_url: 'https://github.com/Thavarshan/comet/releases/tag/v1.2.3',
+  html_url: 'https://github.com/Thavarshan/honeymelon/releases/tag/v1.2.3',
   published_at: '2026-10-18T10:00:00Z',
   body: 'Published notes',
   assets: [],
@@ -24,23 +24,23 @@ const asset = (name = 'comet-win32-arm64.exe', overrides = {}) => ({
   name,
   state: 'uploaded',
   size: 100,
-  browser_download_url: `https://github.com/Thavarshan/comet/releases/download/v1.2.3/${name}`,
+  browser_download_url: `https://github.com/Thavarshan/honeymelon/releases/download/v1.2.3/${name}`,
   digest: null,
   ...overrides,
 });
 
 test('classifies real platform tokens without guessing unknown architectures', () => {
   for (const [name, os, arch, format] of [
-    ['Comet-darwin-arm64-3.0.0-beta.1.zip', 'macos', 'arm64', 'zip'],
-    ['Comet-darwin-x64-2.2.3.zip', 'macos', 'x64', 'zip'],
+    ['Honeymelon-darwin-arm64-3.0.0-beta.1.zip', 'macos', 'arm64', 'zip'],
+    ['Honeymelon-darwin-x64-2.2.3.zip', 'macos', 'x64', 'zip'],
     ['comet-win32-arm64-setup.exe', 'windows', 'arm64', 'exe'],
     ['comet_2.2.3_amd64.deb', 'linux', 'x64', 'deb'],
     ['comet-2.2.3-1.aarch64.rpm', 'linux', 'arm64', 'rpm'],
     ['comet-linux-x64.tar.gz', 'linux', 'x64', 'tar.gz'],
     ['comet-x86_64.AppImage', 'linux', 'x64', 'appimage'],
-    ['Comet.appx', 'windows', null, 'appx'],
+    ['Honeymelon.appx', 'windows', null, 'appx'],
     ['comet-arm64-x64.exe', 'windows', null, 'exe'],
-    ['comet.zip', null, null, 'zip'],
+    ['honeymelon.zip', null, null, 'zip'],
     ['comet-linux-darwin-x64.zip', null, 'x64', 'zip'],
   ]) {
     assert.deepEqual(classifyAsset(name), { os, arch, format });
@@ -50,13 +50,14 @@ test('classifies real platform tokens without guessing unknown architectures', (
 test('stable and prerelease states stay separate; drafts and updater files vanish', () => {
   assert.deepEqual(normalizeReleases([release({ draft: true })]), []);
   const stable = release({
-    assets: [asset(), asset('Comet-full.nupkg', { id: 3 })],
+    assets: [asset(), asset('Honeymelon-full.nupkg', { id: 3 })],
   });
   assert.equal(normalizeReleases([stable])[0].assets.length, 1);
   const beta = release({
     id: 4,
     tag_name: 'v2.0.0-beta.1',
-    html_url: 'https://github.com/Thavarshan/comet/releases/tag/v2.0.0-beta.1',
+    html_url:
+      'https://github.com/Thavarshan/honeymelon/releases/tag/v2.0.0-beta.1',
   });
   assert.equal(normalizeReleases([beta])[0].channel, 'prerelease');
   assert.equal(
@@ -83,12 +84,12 @@ test('rejects duplicate versions, untrusted paths, invalid state and digest', ()
     /Duplicate/,
   );
   for (const overrides of [
-    { browser_download_url: 'https://evil.example/comet.exe' },
+    { browser_download_url: 'https://evil.example/honeymelon.exe' },
     {
       browser_download_url:
-        'https://github.com/Other/comet/releases/download/v1.2.3/comet-win32-arm64.exe',
+        'https://github.com/Other/honeymelon/releases/download/v1.2.3/comet-win32-arm64.exe',
     },
-    { name: '../comet.exe' },
+    { name: '../honeymelon.exe' },
     { state: 'new' },
     { size: -1 },
     { digest: 'sha256:fake' },
@@ -254,7 +255,7 @@ test('trust facts require an explicit published note and retain their source', (
     release({
       body: notes,
       assets: [
-        asset('Comet-darwin-arm64.zip'),
+        asset('Honeymelon-darwin-arm64.zip'),
         asset('comet-win32-arm64.exe', { id: 3 }),
       ],
     }),
@@ -288,7 +289,7 @@ test('missing and corrupt snapshots prepare a buildable empty fallback', async (
   const { pathToFileURL } = await import('node:url');
   const { prepareReleaseSnapshot } =
     await import('./prepare-release-snapshot.mjs');
-  const directory = await mkdtemp(tmpdir() + '/comet-snapshot-');
+  const directory = await mkdtemp(tmpdir() + '/honeymelon-snapshot-');
   const destination = pathToFileURL(directory + '/releases.json');
   try {
     await prepareReleaseSnapshot(destination);
@@ -335,7 +336,8 @@ test('stale snapshots warn after seven days or an unsuccessful refresh', async (
   const beta = release({
     id: 4,
     tag_name: 'v2.0.0-beta.1',
-    html_url: 'https://github.com/Thavarshan/comet/releases/tag/v2.0.0-beta.1',
+    html_url:
+      'https://github.com/Thavarshan/honeymelon/releases/tag/v2.0.0-beta.1',
   });
   assert.deepEqual(
     normalizeReleases([beta]).filter((item) => item.channel === 'stable'),

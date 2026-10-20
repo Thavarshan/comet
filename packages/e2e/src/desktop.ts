@@ -19,19 +19,19 @@ export async function launchDesktop(
 ): Promise<DesktopSession> {
   const appDirectory = desktopDirectory;
   const executable =
-    process.env.COMET_EXECUTABLE ??
+    process.env.HONEYMELON_EXECUTABLE ??
     (createRequire(path.join(desktopDirectory, 'package.json'))(
       'electron',
     ) as string);
   const environment: NodeJS.ProcessEnv = {
     ...process.env,
-    COMET_TEST_USER_DATA: profile,
+    HONEYMELON_TEST_USER_DATA: profile,
   };
   delete environment.ELECTRON_RUN_AS_NODE;
   const child = spawn(
     executable,
     [
-      ...(process.env.COMET_EXECUTABLE ? [] : [appDirectory]),
+      ...(process.env.HONEYMELON_EXECUTABLE ? [] : [appDirectory]),
       '--remote-debugging-port=0',
     ],
     {

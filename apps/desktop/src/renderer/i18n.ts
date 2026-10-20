@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { converterMessages as messages } from '@comet/converter';
+import { converterMessages as messages } from '@honeymelon/converter';
 
 void i18n.use(initReactI18next).init({
   resources: Object.fromEntries(

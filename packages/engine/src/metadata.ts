@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import path from 'node:path';
 import { stat } from 'node:fs/promises';
-import type { MediaMetadata } from '@comet/contracts';
+import type { MediaMetadata } from '@honeymelon/contracts';
 import { runProcess } from './process.js';
 
 const streamSchema = z.object({

@@ -15,7 +15,7 @@ import { selectDesktopFiles } from '../src/upload.js';
 import { nativePaths } from '../src/paths.js';
 import { ConverterPage } from '../src/converter-page.js';
 import { createSeedMedia, verifyMedia, mediaDigest } from '../src/media.js';
-import { defaultPreferences, mediaTypes } from '@comet/contracts';
+import { defaultPreferences, mediaTypes } from '@honeymelon/contracts';
 
 const { ffmpegPath: ffmpeg, ffprobePath: ffprobe } = nativePaths;
 
@@ -26,7 +26,7 @@ function native(args: string[]) {
 }
 
 test('isolated desktop converts video, audio and images, cancels a batch, and persists settings', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-e2e-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-e2e-'));
   const profile = path.join(directory, 'profile');
   const output = path.join(directory, 'output');
   const fixtures = path.join(directory, 'fixtures');
@@ -122,7 +122,7 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
       await converter.expectComplete();
     }
 
-    const reply = await page.evaluate(() => window.comet.getSnapshot());
+    const reply = await page.evaluate(() => window.honeymelon.getSnapshot());
     if (!reply.ok) {
       throw new Error(reply.error.message);
     }
@@ -152,10 +152,13 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
       .click();
     await expect(panel.getByText('Canceled', { exact: true })).toHaveCount(2);
     expect(
-      (await readdir(output)).some((name) => name.startsWith('.comet-')),
+      (await readdir(output)).some((name) => name.startsWith('.honeymelon-')),
     ).toBe(false);
     const titlebar = page.locator('.desktop-titlebar');
-    const title = page.getByRole('heading', { name: 'Comet', exact: true });
+    const title = page.getByRole('heading', {
+      name: 'Honeymelon',
+      exact: true,
+    });
     const barBounds = await titlebar.boundingBox();
     const titleBounds = await title.boundingBox();
     expect(barBounds).not.toBeNull();
@@ -168,8 +171,8 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
       ),
     ).toBeLessThanOrEqual(1);
     await expect(titlebar).toHaveCSS('-webkit-app-region', 'drag');
-    if (process.env.COMET_SCREENSHOT) {
-      await page.screenshot({ path: process.env.COMET_SCREENSHOT });
+    if (process.env.HONEYMELON_SCREENSHOT) {
+      await page.screenshot({ path: process.env.HONEYMELON_SCREENSHOT });
     }
 
     await page.getByRole('button', { name: 'Settings', exact: true }).click();
@@ -200,7 +203,7 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
     ).toBeVisible();
     await expect(session.page.locator('html')).toHaveClass(/dark/);
     const restarted = await session.page.evaluate(() =>
-      window.comet.getSnapshot(),
+      window.honeymelon.getSnapshot(),
     );
     expect(restarted.ok && restarted.value.jobs).toEqual([]);
   } finally {
@@ -210,7 +213,7 @@ test('isolated desktop converts video, audio and images, cancels a batch, and pe
 });
 
 test('imports a legacy packaged profile while retaining application identity and file origin', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-legacy-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-legacy-'));
   const profile = path.join(directory, 'profile');
   await mkdir(profile);
   let session: DesktopSession | undefined;
@@ -238,7 +241,9 @@ test('imports a legacy packaged profile while retaining application identity and
     expect(preferences.locale).toBe('es');
     expect(preferences.theme).toBe('dark');
     expect(preferences.legacyImported).toBe(true);
-    const queue = await session.page.evaluate(() => window.comet.getSnapshot());
+    const queue = await session.page.evaluate(() =>
+      window.honeymelon.getSnapshot(),
+    );
     expect(queue.ok && queue.value.jobs).toEqual([]);
   } finally {
     await session?.close();
@@ -249,7 +254,9 @@ test('imports a legacy packaged profile while retaining application identity and
 for (const media of mediaTypes) {
   test(`desktop converts every available ${media} output through the UI`, async () => {
     test.setTimeout(180000);
-    const directory = await mkdtemp(path.join(tmpdir(), 'comet-ui-formats-'));
+    const directory = await mkdtemp(
+      path.join(tmpdir(), 'honeymelon-ui-formats-'),
+    );
     let session: DesktopSession | undefined;
     try {
       const profile = path.join(directory, 'profile');
@@ -270,7 +277,7 @@ for (const media of mediaTypes) {
       session = await launchDesktop(profile, directory);
       const { page } = session;
       const environment = await page.evaluate(() =>
-        window.comet.getEnvironment(),
+        window.honeymelon.getEnvironment(),
       );
       if (!environment.ok) {
         throw new Error(environment.error.message);
@@ -303,7 +310,9 @@ for (const media of mediaTypes) {
           await converter.addFiles([seeds[media]]);
           await converter.convert();
           await converter.expectComplete();
-          const reply = await page.evaluate(() => window.comet.getSnapshot());
+          const reply = await page.evaluate(() =>
+            window.honeymelon.getSnapshot(),
+          );
           if (!reply.ok) {
             throw new Error(reply.error.message);
           }

@@ -1,23 +1,23 @@
 {
-  "productName": "Comet",
+  "productName": "Honeymelon",
   "description": "A simple media converter",
   "author": {
     "name": "Jerome Thayananthajothy",
     "email": "tjthavarshan@gmail.com"
   },
   "license": "MIT",
-  "homepage": "https://comet.thavarshan.com",
-  "name": "@comet/desktop",
-  "version": "3.0.0-beta.1",
+  "homepage": "https://honeymelon.app",
+  "name": "@honeymelon/desktop",
+  "version": "3.0.0-beta.2",
   "private": true,
   "type": "module",
   "main": ".vite/build/main.cjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thavarshan/comet.git"
+    "url": "https://github.com/Thavarshan/honeymelon.git"
   },
   "bugs": {
-    "url": "https://github.com/Thavarshan/comet/issues"
+    "url": "https://github.com/Thavarshan/honeymelon/issues"
   },
   "scripts": {
     "dev": "node scripts/start.mjs",
@@ -28,8 +28,8 @@
     "make": "electron-forge make"
   },
   "dependencies": {
-    "@comet/contracts": "*",
-    "@comet/engine": "*",
+    "@honeymelon/contracts": "*",
+    "@honeymelon/engine": "*",
     "@radix-ui/react-popover": "1.3.1",
     "@radix-ui/react-tabs": "1.2.1",
     "class-variance-authority": "0.7.1",
@@ -41,9 +41,9 @@
     "react-dom": "19.3.1",
     "react-i18next": "17.0.20",
     "zod": "4.6.7",
-    "@comet/ui": "*",
-    "@comet/core": "*",
-    "@comet/converter": "*"
+    "@honeymelon/ui": "*",
+    "@honeymelon/core": "*",
+    "@honeymelon/converter": "*"
   },
   "devDependencies": {
     "@electron-forge/cli": "8.0.1",

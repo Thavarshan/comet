@@ -1,5 +1,5 @@
 {
-  "name": "@comet/converter",
+  "name": "@honeymelon/converter",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -20,9 +20,9 @@
     "dev": "tsc --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@comet/contracts": "*",
-    "@comet/core": "*",
-    "@comet/ui": "*",
+    "@honeymelon/contracts": "*",
+    "@honeymelon/core": "*",
+    "@honeymelon/ui": "*",
     "i18next": "26.4.7",
     "react-i18next": "17.0.20",
     "lucide-react": "0.577.0"

@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest';
 import { createBridge } from './bridge';
-import { channels } from '@comet/contracts';
+import { channels } from '@honeymelon/contracts';
 
 it('passes only payloads and removes only its own subscription', async () => {
   const listeners = new Map<

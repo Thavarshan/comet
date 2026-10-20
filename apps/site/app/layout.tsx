@@ -12,10 +12,13 @@ import './globals.css';
 export const metadata: Metadata = {
   ...pageMetadata(
     '/',
-    'Comet — Local media conversion',
+    'Honeymelon — Local media conversion',
     'Convert video, audio and images on your own computer. Open source, local processing, no conversion account.',
   ),
-  title: { default: 'Comet — Local media conversion', template: '%s · Comet' },
+  title: {
+    default: 'Honeymelon — Local media conversion',
+    template: '%s · Honeymelon',
+  },
   icons: { icon: '/logo.svg' },
 };
 
@@ -47,9 +50,9 @@ export default function RootLayout({
             <div className="site-container">
               <div className="footer-grid">
                 <div className="footer-brand">
-                  <a className="brand" href="/" aria-label="Comet home">
+                  <a className="brand" href="/" aria-label="Honeymelon home">
                     <img src="/logo.svg" alt="" width="28" height="28" />
-                    <span>Comet</span>
+                    <span>Honeymelon</span>
                   </a>
                   <p>
                     Free &amp; open source media conversion. Built for your
@@ -65,9 +68,9 @@ export default function RootLayout({
                 </nav>
                 <nav aria-label="Resources">
                   <h2>Resources</h2>
-                  <a href="https://github.com/Thavarshan/comet">GitHub</a>
+                  <a href="https://github.com/Thavarshan/honeymelon">GitHub</a>
                   <a href="/releases/">Releases</a>
-                  <a href="https://github.com/Thavarshan/comet/issues">
+                  <a href="https://github.com/Thavarshan/honeymelon/issues">
                     Support
                   </a>
                 </nav>
@@ -78,7 +81,7 @@ export default function RootLayout({
                 </nav>
               </div>
               <div className="footer-bottom">
-                <p>Comet. Free &amp; open source under the MIT license.</p>
+                <p>Honeymelon. Free &amp; open source under the MIT license.</p>
                 <MotionToggle />
                 <p>macOS · Windows · Linux</p>
               </div>

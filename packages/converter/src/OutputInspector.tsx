@@ -1,22 +1,22 @@
-import { Separator } from '@comet/ui/components/separator';
-import { Disclosure } from '@comet/ui/components/disclosure';
+import { Separator } from '@honeymelon/ui/components/separator';
+import { Disclosure } from '@honeymelon/ui/components/disclosure';
 import {
   SelectControl,
   SelectOption,
-} from '@comet/ui/components/select-control';
+} from '@honeymelon/ui/components/select-control';
 import { useId, type ReactElement, type ReactNode } from 'react';
 import { FolderOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Input } from '@comet/ui/components/input';
-import { Label } from '@comet/ui/components/label';
-import { Slider } from '@comet/ui/components/slider';
-import { Switch } from '@comet/ui/components/switch';
+import { Input } from '@honeymelon/ui/components/input';
+import { Label } from '@honeymelon/ui/components/label';
+import { Slider } from '@honeymelon/ui/components/slider';
+import { Switch } from '@honeymelon/ui/components/switch';
 import {
   defaultConversion,
   type Capabilities,
   type ConversionSpec,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import { FormatPicker } from './FormatPicker';
 import { Button } from './Button';
 import type { ConverterSettings } from './platform.js';

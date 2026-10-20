@@ -19,7 +19,7 @@ import { fetchBinary, validateDigest } from './lib/binary-policy.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const target =
-  process.env.COMET_TARGET ?? `${process.platform}-${process.arch}`;
+  process.env.HONEYMELON_TARGET ?? `${process.platform}-${process.arch}`;
 const entry = manifest.targets[target];
 if (!entry) {
   throw new Error(`Unsupported binary target: ${target}`);

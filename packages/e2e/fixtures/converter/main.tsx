@@ -8,8 +8,8 @@ import {
   converterMessages,
   type ConverterPlatform,
   type ConverterPreferences,
-} from '@comet/converter';
-import { BrowserConversionService } from '@comet/browser-engine';
+} from '@honeymelon/converter';
+import { BrowserConversionService } from '@honeymelon/browser-engine';
 import './style.css';
 
 const i18n = createInstance();

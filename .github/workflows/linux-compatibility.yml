@@ -33,18 +33,18 @@ jobs:
       - run: npm ci
       - name: Identify native architecture
         run: |
-          echo "COMET_TARGET=linux-$(node -p process.arch)" >> "$GITHUB_ENV"
+          echo "HONEYMELON_TARGET=linux-$(node -p process.arch)" >> "$GITHUB_ENV"
           echo "NODE_DIRECTORY=$(dirname "$(dirname "$(command -v node)")")" >> "$GITHUB_ENV"
           echo "DISTRO_ID=$(echo '${{ matrix.image }}' | tr '/:' '--')" >> "$GITHUB_ENV"
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: linux-payload-${{ env.COMET_TARGET }}
+          name: linux-payload-${{ env.HONEYMELON_TARGET }}
           path: ${{ runner.temp }}/payload
       - name: Convert media in the packaged app on this distribution
         run: |
           docker run --rm --init --shm-size=1g \
             --cap-add=SYS_ADMIN --security-opt seccomp=unconfined \
-            -e CI=true -e COMET_TARGET \
+            -e CI=true -e HONEYMELON_TARGET \
             -v "$PWD:/work" \
             -v "$NODE_DIRECTORY:/node:ro" \
             -v "$RUNNER_TEMP/payload:/payload:ro" \
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
-          name: distro-${{ env.COMET_TARGET }}-${{ env.DISTRO_ID }}
+          name: distro-${{ env.HONEYMELON_TARGET }}-${{ env.DISTRO_ID }}
           path: |
             packages/e2e/playwright-report/
             packages/e2e/test-results/

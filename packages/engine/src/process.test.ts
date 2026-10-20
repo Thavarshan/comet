@@ -13,7 +13,7 @@ it('waits for native process termination when canceled', async () => {
 });
 it('handles launch failures, nonzero exits and an already canceled probe', async () => {
   await expect(
-    runProcess('/missing/comet-tool', [], new AbortController().signal),
+    runProcess('/missing/honeymelon-tool', [], new AbortController().signal),
   ).rejects.toThrow();
   await expect(
     runProcess(

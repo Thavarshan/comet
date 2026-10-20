@@ -19,7 +19,7 @@ import {
   type QueueSnapshot,
   type BatchRequest,
   type Capabilities,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import { App } from './App';
 import { AppProvider } from './state';
 import i18n from './i18n';
@@ -191,7 +191,7 @@ beforeEach(async () => {
   snapshot = { revision: 0, jobs: [], batches: [] };
   localStorage.clear();
   await i18n.changeLanguage('en');
-  window.comet = fakeBridge();
+  window.honeymelon = fakeBridge();
 });
 afterEach(() => {
   cleanup();
@@ -237,13 +237,13 @@ describe('React conversion workflows', () => {
     fireEvent.change(picker(), { target: { files: [file] } });
     expect(screen.getAllByText('MOVIE.MP4')).toHaveLength(2);
     await userEvent.click(screen.getByRole('button', { name: 'Convert' }));
-    expect(window.comet.enqueueBatch).toHaveBeenCalledWith(
+    expect(window.honeymelon.enqueueBatch).toHaveBeenCalledWith(
       expect.objectContaining({
         outputFormat: 'mp4',
         items: expect.any(Array),
       }),
     );
-    expect(window.comet.enqueueBatch).toHaveBeenCalledTimes(1);
+    expect(window.honeymelon.enqueueBatch).toHaveBeenCalledTimes(1);
   });
   it('preserves drafts across tabs and shares validation between picker and drop', async () => {
     await start();
@@ -303,7 +303,7 @@ describe('React conversion workflows', () => {
     const resolution = screen.getByRole('combobox', { name: 'Dimensions' });
     await userEvent.click(resolution);
     await userEvent.click(screen.getByRole('option', { name: '720p' }));
-    expect(window.comet.savePreferences).toHaveBeenLastCalledWith(
+    expect(window.honeymelon.savePreferences).toHaveBeenLastCalledWith(
       expect.objectContaining({
         media: expect.objectContaining({
           video: expect.objectContaining({
@@ -317,19 +317,22 @@ describe('React conversion workflows', () => {
       screen.getByRole('option', { name: 'Keep original' }),
     );
     expect(resolution).toHaveTextContent('Keep original');
-    const saved = vi.mocked(window.comet.savePreferences).mock.lastCall?.[0];
+    const saved = vi.mocked(window.honeymelon.savePreferences).mock
+      .lastCall?.[0];
     expect(saved?.media.video.spec).not.toHaveProperty('height');
   });
   it('leaves destination unchanged when the native picker is canceled', async () => {
     await start();
     await userEvent.click(screen.getByRole('button', { name: 'Save to' }));
-    expect(window.comet.selectDirectory).toHaveBeenCalled();
-    expect(window.comet.savePreferences).not.toHaveBeenCalled();
+    expect(window.honeymelon.selectDirectory).toHaveBeenCalled();
+    expect(window.honeymelon.savePreferences).not.toHaveBeenCalled();
   });
   it('keeps native persistence errors visible and dismissible', async () => {
     await start();
-    vi.mocked(window.comet.selectDirectory).mockResolvedValue(ok('/tmp/next'));
-    vi.mocked(window.comet.savePreferences).mockRejectedValue(
+    vi.mocked(window.honeymelon.selectDirectory).mockResolvedValue(
+      ok('/tmp/next'),
+    );
+    vi.mocked(window.honeymelon.savePreferences).mockRejectedValue(
       new Error('Disk full'),
     );
     await userEvent.click(screen.getByRole('button', { name: 'Save to' }));
@@ -355,14 +358,16 @@ describe('React conversion workflows', () => {
     });
     await userEvent.click(screen.getByRole('button', { name: 'Convert' }));
     await userEvent.click(screen.getByRole('button', { name: 'Cancel batch' }));
-    expect(window.comet.cancelBatch).toHaveBeenCalledWith(
+    expect(window.honeymelon.cancelBatch).toHaveBeenCalledWith(
       snapshot.batches[1]!.id,
     );
     await userEvent.click(screen.getByRole('tab', { name: 'Video' }));
     expect(within(panel()).getByLabelText('Output format')).not.toBeDisabled();
     expect(screen.getByRole('button', { name: 'Convert' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Cancel batch' }));
-    expect(window.comet.cancelBatch).toHaveBeenLastCalledWith(videoBatchId);
+    expect(window.honeymelon.cancelBatch).toHaveBeenLastCalledWith(
+      videoBatchId,
+    );
   });
   it('shows native progress and retries failed jobs with fresh submission', async () => {
     await start();
@@ -398,13 +403,15 @@ describe('React conversion workflows', () => {
       };
       listeners.forEach((listener) => listener(snapshot));
     });
-    vi.mocked(window.comet.selectDirectory).mockResolvedValue(ok('/tmp/next'));
+    vi.mocked(window.honeymelon.selectDirectory).mockResolvedValue(
+      ok('/tmp/next'),
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Save to' }));
     await userEvent.click(
       screen.getByRole('button', { name: 'Retry: video.mp4' }),
     );
-    expect(window.comet.enqueueBatch).toHaveBeenCalledTimes(2);
-    expect(window.comet.enqueueBatch).toHaveBeenLastCalledWith(
+    expect(window.honeymelon.enqueueBatch).toHaveBeenCalledTimes(2);
+    expect(window.honeymelon.enqueueBatch).toHaveBeenLastCalledWith(
       expect.objectContaining({ outputDirectory: '/tmp' }),
     );
   });
@@ -433,8 +440,8 @@ describe('React conversion workflows', () => {
     await userEvent.click(
       screen.getByRole('button', { name: 'Retry: original.mp4' }),
     );
-    expect(window.comet.getFilePath).not.toHaveBeenCalled();
-    expect(window.comet.enqueueBatch).toHaveBeenCalledWith(
+    expect(window.honeymelon.getFilePath).not.toHaveBeenCalled();
+    expect(window.honeymelon.enqueueBatch).toHaveBeenCalledWith(
       expect.objectContaining({
         outputDirectory: '/private/original-output',
         items: [
@@ -449,7 +456,7 @@ describe('React conversion workflows', () => {
     );
   });
   it('provides startup recovery and localized settings with an explicit system theme', async () => {
-    vi.mocked(window.comet.getEnvironment).mockResolvedValue({
+    vi.mocked(window.honeymelon.getEnvironment).mockResolvedValue({
       ok: false,
       error: { code: 'OPERATION_FAILED', message: 'unavailable' },
     });
@@ -458,8 +465,10 @@ describe('React conversion workflows', () => {
         <App />
       </AppProvider>,
     );
-    await screen.findByRole('heading', { name: 'Comet could not get ready' });
-    window.comet.getEnvironment = fakeBridge().getEnvironment;
+    await screen.findByRole('heading', {
+      name: 'Honeymelon could not get ready',
+    });
+    window.honeymelon.getEnvironment = fakeBridge().getEnvironment;
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     await screen.findByRole('tab', { name: 'Video' });
     await userEvent.click(screen.getByRole('button', { name: 'Settings' }));

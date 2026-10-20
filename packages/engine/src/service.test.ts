@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest';
-import type { Capabilities, MediaMetadata } from '@comet/contracts';
-import type { ConversionService } from '@comet/core';
+import type { Capabilities, MediaMetadata } from '@honeymelon/contracts';
+import type { ConversionService } from '@honeymelon/core';
 import { ConversionEngine, NativeConversionService } from './index';
 
 const capabilities: Capabilities = {

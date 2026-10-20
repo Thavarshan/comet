@@ -7,7 +7,7 @@ import { createPackage } from '@electron/asar';
 import { readBundledModule } from '../lib/packaged-code.mjs';
 
 test('reads nested bundled modules from a real ASAR using host path rules', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-asar-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-asar-'));
   try {
     const source = path.join(directory, 'source');
     const build = path.join(source, '.vite', 'build');

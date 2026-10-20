@@ -5,7 +5,7 @@ import {
   type BatchRequest,
   type Capabilities,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
 const capabilities = Object.fromEntries(
   Object.entries(formats).map(([media, values]) => [
@@ -42,7 +42,7 @@ function controlled() {
       const finish = () => {
         active--;
         progress(1000);
-        resolve('/tmp/comet-test-output-does-not-exist');
+        resolve('/tmp/honeymelon-test-output-does-not-exist');
       };
 
       pending.push({
@@ -84,7 +84,7 @@ it('does not mutate completed metadata when an executor reports late progress', 
     late = progress;
     progress(0, metadata);
 
-    return '/tmp/comet-late-progress-output';
+    return '/tmp/honeymelon-late-progress-output';
   };
 
   const engine = new ConversionEngine(capabilities, execute, async () => {});

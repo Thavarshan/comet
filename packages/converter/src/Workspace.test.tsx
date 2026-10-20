@@ -12,8 +12,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createInstance } from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import type { Capabilities, Locale } from '@comet/contracts';
-import type { ConversionQueue, ConversionService } from '@comet/core';
+import type { Capabilities, Locale } from '@honeymelon/contracts';
+import type { ConversionQueue, ConversionService } from '@honeymelon/core';
 import {
   ConverterProvider,
   ConverterWorkspace,
@@ -180,7 +180,7 @@ afterEach(() => {
 });
 
 it('mounts the actual converter without Electron and hides native-only actions', async () => {
-  expect(window).not.toHaveProperty('comet');
+  expect(window).not.toHaveProperty('honeymelon');
   const host = browserHost();
   const { view } = await mount(host);
   await screen.findByRole('tab', { name: 'Image' });
@@ -264,7 +264,9 @@ it('offers initialization recovery through the injected service', async () => {
     new Error('offline'),
   );
   await mount(host);
-  await screen.findByRole('heading', { name: 'Comet could not get ready' });
+  await screen.findByRole('heading', {
+    name: 'Honeymelon could not get ready',
+  });
   vi.mocked(host.service.discoverCapabilities).mockResolvedValue(capabilities);
   await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
   await screen.findByRole('tab', { name: 'Image' });

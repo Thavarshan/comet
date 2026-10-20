@@ -14,7 +14,7 @@ if (process.platform === 'linux') {
   await mkdir(output, { recursive: true });
   execFileSync('tar', [
     '-czf',
-    path.join(output, `comet-${version}-${target}.tar.gz`),
+    path.join(output, `honeymelon-${version}-${target}.tar.gz`),
     '-C',
     path.dirname(directory),
     path.basename(directory),

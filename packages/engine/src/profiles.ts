@@ -1,4 +1,4 @@
-import { formats, type Capabilities } from '@comet/contracts';
+import { formats, type Capabilities } from '@honeymelon/contracts';
 import { runProcess } from './process.js';
 
 /**

@@ -20,8 +20,9 @@ import {
   mediaTypes,
   fileSchema,
   type Capabilities,
-} from '@comet/contracts';
-import { ConversionEngine, detectCapabilities } from '@comet/engine';
+} from '@honeymelon/contracts';
+import { ConversionEngine, detectCapabilities } from '@honeymelon/engine';
+import { migrateProfile } from './migrate-profile.js';
 import { PreferenceStore } from './preferences.js';
 import { reply, trustedSender } from './ipc.js';
 
@@ -33,10 +34,12 @@ const developmentUrl =
 // Vite emits CommonJS; __dirname is supplied by Electron for the packaged
 // entry.
 const buildDirectory = __dirname;
-app.name = 'Comet';
-if (process.env.COMET_TEST_USER_DATA) {
-  app.setPath('userData', process.env.COMET_TEST_USER_DATA);
-}
+app.name = 'Honeymelon';
+app.setPath(
+  'userData',
+  process.env.HONEYMELON_TEST_USER_DATA ??
+    path.join(app.getPath('appData'), 'Honeymelon'),
+);
 
 let mainWindow: BrowserWindow | null = null;
 let engine: ConversionEngine;
@@ -44,13 +47,23 @@ let preferences: PreferenceStore;
 let capabilities: Capabilities;
 let quitting = false;
 
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+
+    mainWindow.focus();
+  }
+});
+
 /**
- * Match native caption buttons and startup paint to the shared Zinc surfaces.
+ * Match native caption buttons and startup paint to the shared Neutral surfaces.
  */
 function windowChromeColors() {
   return nativeTheme.shouldUseDarkColors
-    ? { color: '#09090b', symbolColor: '#fafafa' }
-    : { color: '#ffffff', symbolColor: '#18181b' };
+    ? { color: '#0a0a0a', symbolColor: '#fafafa' }
+    : { color: '#ffffff', symbolColor: '#171717' };
 }
 
 /**
@@ -72,7 +85,7 @@ function createWindow() {
     show: false,
     resizable: true,
     autoHideMenuBar: true,
-    title: 'Comet',
+    title: 'Honeymelon',
     titleBarStyle: 'hidden',
     ...(process.platform === 'darwin'
       ? { trafficLightPosition: { x: 14, y: 11 } }
@@ -248,6 +261,10 @@ function registerHandlers() {
 async function ready() {
   const home = homedir();
   const desktop = path.join(home, 'Desktop');
+  if (!process.env.HONEYMELON_TEST_USER_DATA) {
+    await migrateProfile(app.getPath('appData'), app.getPath('userData'));
+  }
+
   preferences = new PreferenceStore(
     path.join(app.getPath('userData'), 'preferences-v1.json'),
     existsSync(desktop) ? desktop : home,
@@ -317,7 +334,7 @@ async function ready() {
 }
 
 // Squirrel lifecycle events must not launch a second application window.
-if (squirrelStartup) {
+if (squirrelStartup || !app.requestSingleInstanceLock()) {
   app.quit();
 } else {
   app
@@ -325,7 +342,7 @@ if (squirrelStartup) {
     .then(ready)
     .catch((error) => {
       dialog.showErrorBox(
-        'Comet could not start',
+        'Honeymelon could not start',
         error instanceof Error ? error.message : String(error),
       );
       app.exit(1);

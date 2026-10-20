@@ -4,7 +4,7 @@ import {
   type CancelResult,
   type MediaMetadata,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import {
   applyJobEvent,
   assertMediaAvailable,

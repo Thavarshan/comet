@@ -1,22 +1,22 @@
-# Contributing to Comet
+# Contributing to Honeymelon
 
-First off, thank you for considering contributing to Comet! It’s people like you
-who make open-source projects successful. Whether you’re here to fix a bug,
-improve the documentation, or suggest a new feature, we welcome your help.
+First off, thank you for considering contributing to Honeymelon! It’s people
+like you who make open-source projects successful. Whether you’re here to fix a
+bug, improve the documentation, or suggest a new feature, we welcome your help.
 
 ## 🛠 How to Contribute
 
 ### Reporting Bugs
 
-If you encounter any bugs or issues while using Comet, please report them. This
-helps us to maintain the quality of the project and ensures that other users
-have a better experience.
+If you encounter any bugs or issues while using Honeymelon, please report them.
+This helps us to maintain the quality of the project and ensures that other
+users have a better experience.
 
 1. **Search for existing issues**: Before reporting a new issue, check if
    someone else has already reported it. You can search
-   [here](https://github.com/Thavarshan/comet/issues).
+   [here](https://github.com/Thavarshan/honeymelon/issues).
 2. **Create a new issue**: If you don’t find a similar issue, create a new one
-   [here](https://github.com/Thavarshan/comet/issues/new).
+   [here](https://github.com/Thavarshan/honeymelon/issues/new).
 3. **Provide details**: Please include as much information as possible. Include
    the steps to reproduce the issue, the expected outcome, and the actual
    outcome. Providing screenshots, error messages, and relevant log files can
@@ -24,14 +24,14 @@ have a better experience.
 
 ### Suggesting Features
 
-We welcome suggestions for new features that could enhance Comet.
+We welcome suggestions for new features that could enhance Honeymelon.
 
 1. **Search for existing suggestions**: Before suggesting a new feature, check
    if someone else has already suggested it
-   [here](https://github.com/Thavarshan/comet/issues).
+   [here](https://github.com/Thavarshan/honeymelon/issues).
 2. **Create a new feature request**: If your feature is unique, create a new
    feature request
-   [here](https://github.com/Thavarshan/comet/issues/new?template=feature_request.md).
+   [here](https://github.com/Thavarshan/honeymelon/issues/new?template=feature_request.md).
 3. **Describe the feature**: Provide a detailed description of the feature, why
    you think it’s important, and how it could benefit users. If possible,
    suggest how it could be implemented.
@@ -48,8 +48,8 @@ documentation. Before contributing code, please read the following guidelines:
 2. **Clone**: Clone the forked repository to your local machine.
 
    ```bash
-   git clone https://github.com/Thavarshan/comet.git
-   cd comet
+   git clone https://github.com/Thavarshan/honeymelon.git
+   cd honeymelon
    ```
 
 #### Step 2: Set Up the Development Environment
@@ -147,13 +147,13 @@ submit a PR.
 
 ## 🌟 Thank You
 
-Your contributions make Comet better for everyone. Thank you for taking the time
-to improve the project. We’re thrilled to have you as part of our community, and
-we’re excited to see what you’ll contribute.
+Your contributions make Honeymelon better for everyone. Thank you for taking the
+time to improve the project. We’re thrilled to have you as part of our
+community, and we’re excited to see what you’ll contribute.
 
 If you have any questions, feel free to
-[open an issue](https://github.com/Thavarshan/comet/issues/new) or reach out to
-us. Happy coding!
+[open an issue](https://github.com/Thavarshan/honeymelon/issues/new) or reach
+out to us. Happy coding!
 
 Run `npm run make` followed by `npm run test:packaged` before changing
 distribution code. Never add signing credentials or invoke publishing from PR

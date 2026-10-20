@@ -232,11 +232,11 @@
 }
 .state-succeeded .file-icon,
 .state-succeeded .status {
-  color: #15803d;
+  color: var(--foreground);
 }
 .dark .state-succeeded .file-icon,
 .dark .state-succeeded .status {
-  color: #86efac;
+  color: var(--foreground);
 }
 .state-failed .file-icon,
 .state-failed .status {

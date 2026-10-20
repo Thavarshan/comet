@@ -16,7 +16,7 @@ import {
   type Capabilities,
   type Job,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
 let directory: string;
 let audio: string;
@@ -55,7 +55,7 @@ function job(
 }
 
 beforeAll(async () => {
-  directory = await mkdtemp(path.join(tmpdir(), 'comet-native-'));
+  directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-native-'));
   audio = path.join(directory, 'audio ü space.wav');
   video = path.join(directory, 'video ü space.mp4');
   image = path.join(directory, 'image ü space.png');
@@ -242,11 +242,15 @@ describe('bundled native tools', () => {
       execute(job('video', invalid, 'mp4'), signal(), () => {}),
     ).rejects.toThrow();
     expect(
-      (await readdir(directory)).filter((name) => name.startsWith('.comet-')),
+      (await readdir(directory)).filter((name) =>
+        name.startsWith('.honeymelon-'),
+      ),
     ).toEqual([]);
   });
   it('cancels native probing/encoding and leaves no published or partial output', async () => {
-    const destination = await mkdtemp(path.join(tmpdir(), 'comet-cancel-'));
+    const destination = await mkdtemp(
+      path.join(tmpdir(), 'honeymelon-cancel-'),
+    );
     try {
       const engine = new ConversionEngine(capabilities, paths);
       const snapshot = await engine.enqueueBatch({
@@ -433,7 +437,9 @@ describe('bundled native tools', () => {
     );
     expect((await Jimp.read(decoded)).bitmap.data[3]).toBeLessThan(255);
     expect(
-      (await readdir(directory)).filter((name) => name.startsWith('.comet-')),
+      (await readdir(directory)).filter((name) =>
+        name.startsWith('.honeymelon-'),
+      ),
     ).toEqual([]);
   });
 });

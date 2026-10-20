@@ -54,7 +54,8 @@ jobs:
       - name: Cloudflare static host contract
         run: bash scripts/ci/site-static-host.sh
       - name: Install browser contract test runtime
-        run: npm exec -w @comet/e2e -- playwright install --with-deps chromium
+        run:
+          npm exec -w @honeymelon/e2e -- playwright install --with-deps chromium
       - name: Shared browser conversion harness
         run: npm run test:browser -- --project=chromium
       - name: Marketing site responsive smoke test

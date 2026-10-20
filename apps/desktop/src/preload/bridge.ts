@@ -2,7 +2,7 @@ import {
   channels,
   type DesktopBridge,
   type QueueSnapshot,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
 interface Transport {
   invoke(channel: string, payload?: unknown): Promise<unknown>;

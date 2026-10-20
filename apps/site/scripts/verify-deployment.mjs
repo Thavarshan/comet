@@ -90,7 +90,7 @@ export async function verifyDeployment(
     new URL(slash.headers.get('location'), base).pathname,
     '/download/',
   );
-  const missing = await request('/__comet_missing_page__/');
+  const missing = await request('/__honeymelon_missing_page__/');
   assert.equal(missing.status, 404);
   assert.ok((await missing.text()).includes('Wrong orbit.'));
   const robots = await (await request('/robots.txt')).text();

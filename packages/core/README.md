@@ -1,4 +1,4 @@
-# @comet/core
+# @honeymelon/core
 
 Platform-neutral conversion rules shared by desktop and browser service
 adapters. The package imports contracts only; it has no Node, Electron, React,
@@ -14,7 +14,7 @@ ambient Node types disabled through `tsconfig.browser.json`.
 | Reusable single-slot queue and executor cleanup coordination       | `QueueConversionService` in core |
 | Existing native queue, processes/workers, filesystem publication   | Native engine and its adapter    |
 | File/Blob/native-path registries and destination selection         | Platform adapter                 |
-| Shared React conversion workflow                                   | `@comet/converter`               |
+| Shared React conversion workflow                                   | `@honeymelon/converter`          |
 | Preferences persistence, document theme, platform controls         | Host application                 |
 
 `QueueConversionService` is an executor-driven scheduler, not a media codec.
@@ -56,10 +56,10 @@ integration tests retain real output/source-preservation/collision checks.
 Desktop E2E tests verify picker flows, conversion, cancellation, restart
 preferences, and legacy language/theme initialization.
 
-Run `npm test -w @comet/core`, root `npm run lint` / `npm run typecheck`, native
-`npm run test:integration`, and desktop `npm run test:e2e` after a desktop
-build. Cross-platform packaged CI remains required before merging runtime
-changes.
+Run `npm test -w @honeymelon/core`, root `npm run lint` / `npm run typecheck`,
+native `npm run test:integration`, and desktop `npm run test:e2e` after a
+desktop build. Cross-platform packaged CI remains required before merging
+runtime changes.
 
 ## Commands and output
 
@@ -69,13 +69,13 @@ workspace checks directly so dependency exports exist. Root `npm run typecheck`
 and `npm test` use Turbo to build upstream packages automatically.
 
 ```sh
-npm run build -w @comet/core
-npm run typecheck -w @comet/core
-npm test -w @comet/core
-npm run dev -w @comet/core
+npm run build -w @honeymelon/core
+npm run typecheck -w @honeymelon/core
+npm test -w @honeymelon/core
+npm run dev -w @honeymelon/core
 ```
 
-Import the public API from `@comet/core`; TypeScript emits JavaScript and
+Import the public API from `@honeymelon/core`; TypeScript emits JavaScript and
 declarations to `dist/`, and `dev` watches those outputs. The only workspace
 dependency is contracts. Keep this package browser-safe: no Node, Electron,
 React, filesystem handles, or media bytes. The browser adapter is currently an

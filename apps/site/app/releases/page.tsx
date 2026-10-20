@@ -8,7 +8,7 @@ import { pageMetadata } from '../../src/lib/metadata';
 export const metadata: Metadata = pageMetadata(
   '/releases/',
   'Releases and updates',
-  'Find official Comet release notes, stable downloads and beta testing guidance.',
+  'Find official Honeymelon release notes, stable downloads and beta testing guidance.',
 );
 
 /**
@@ -32,7 +32,7 @@ export default function ReleasesPage(): ReactElement {
         non-private sample only when you have permission to publish it.
       </p>
       <p>
-        <a href="https://github.com/Thavarshan/comet/issues">
+        <a href="https://github.com/Thavarshan/honeymelon/issues">
           Report a release problem
         </a>
       </p>

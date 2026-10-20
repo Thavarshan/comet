@@ -4,7 +4,7 @@ import { trustedSender, reply } from './ipc';
 
 it('accepts only the owning main frame at the expected origin', () => {
   const frame = {
-    url: 'file:///Applications/Comet.app/Contents/Resources/app.asar/.vite/renderer/main_window/index.html',
+    url: 'file:///Applications/Honeymelon.app/Contents/Resources/app.asar/.vite/renderer/main_window/index.html',
   };
   const event = {
     sender: { id: 1, mainFrame: frame },

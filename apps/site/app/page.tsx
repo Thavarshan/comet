@@ -1,5 +1,5 @@
-import { Badge } from '@comet/ui/components/badge';
-import { Button } from '@comet/ui/components/button';
+import { Badge } from '@honeymelon/ui/components/badge';
+import { Button } from '@honeymelon/ui/components/button';
 import {
   ArrowRight,
   Check,
@@ -21,7 +21,7 @@ import { pageMetadata } from '../src/lib/metadata';
 export const metadata: Metadata = pageMetadata(
   '/',
   'Local media converter',
-  'Convert video, audio and images locally with Comet desktop for macOS, Windows and Linux. Explore downloads, guides and source code.',
+  'Convert video, audio and images locally with Honeymelon desktop for macOS, Windows and Linux. Explore downloads, guides and source code.',
 );
 
 const proofPoints = [
@@ -31,7 +31,7 @@ const proofPoints = [
   ],
   [
     'Free & open source',
-    'Inspect the code, contribute improvements, or make it your own. Comet is MIT licensed.',
+    'Inspect the code, contribute improvements, or make it your own. Honeymelon is MIT licensed.',
   ],
   [
     'Your files stay local',
@@ -111,7 +111,7 @@ const showcases = [
       'Cancel, clear and retry',
     ],
     image: 'desktop-light',
-    alt: 'Comet 3.0 beta queue with completed video conversions',
+    alt: 'Honeymelon 3.0 beta queue with completed video conversions',
   },
   {
     title: 'Beautiful in Any Light',
@@ -123,7 +123,7 @@ const showcases = [
       'A focused, resizable window',
     ],
     image: 'desktop-dark',
-    alt: 'Comet 3.0 beta desktop conversion queue in dark mode',
+    alt: 'Honeymelon 3.0 beta desktop conversion queue in dark mode',
   },
   {
     title: 'Your Files. Your Settings.',
@@ -135,7 +135,7 @@ const showcases = [
       'Custom destination folders',
     ],
     image: 'output-settings',
-    alt: 'Comet 3.0 beta format, quality and destination settings',
+    alt: 'Honeymelon 3.0 beta format, quality and destination settings',
   },
 ] as const;
 
@@ -150,20 +150,20 @@ const highlights = [
 
 const faqs = [
   [
-    'Is Comet really free?',
-    'Yes. Comet is free and open source under the MIT license. There are no subscription fees, license keys or conversion accounts. Bundled media tools have their own license notices.',
+    'Is Honeymelon really free?',
+    'Yes. Honeymelon is free and open source under the MIT license. There are no subscription fees, license keys or conversion accounts. Bundled media tools have their own license notices.',
   ],
   [
     'Which operating systems are supported?',
     'Published desktop packages are available for macOS, Windows and Linux. Availability varies by release and processor. The download page lists exact verified packages; check the original release notes before installing.',
   ],
   [
-    'Does Comet work offline?',
-    'Media conversion happens on your computer using bundled tools. An internet connection is needed to download Comet, but your media does not need to be uploaded for conversion.',
+    'Does Honeymelon work offline?',
+    'Media conversion happens on your computer using bundled tools. An internet connection is needed to download Honeymelon, but your media does not need to be uploaded for conversion.',
   ],
   [
     'What file formats are supported?',
-    'Comet works with video, audio and images, including common formats such as MP4, MP3, JPEG and PNG. Available outputs and codecs depend on the platform and release. Not every input can become every output.',
+    'Honeymelon works with video, audio and images, including common formats such as MP4, MP3, JPEG and PNG. Available outputs and codecs depend on the platform and release. Not every input can become every output.',
   ],
   [
     'Do you upload my files?',
@@ -224,7 +224,7 @@ export default function HomePage(): ReactElement {
               Free &amp; open source · MIT licensed · Files stay on your device.
             </p>
             <Button asChild variant="outline" className="github-button">
-              <a href="https://github.com/Thavarshan/comet">
+              <a href="https://github.com/Thavarshan/honeymelon">
                 <Star aria-hidden="true" /> Star on GitHub
               </a>
             </Button>
@@ -232,13 +232,13 @@ export default function HomePage(): ReactElement {
           <figure className="hero-screenshot">
             <img
               src="/screenshots/desktop-light.webp"
-              alt="Comet 3.0 beta desktop media conversion interface"
+              alt="Honeymelon 3.0 beta desktop media conversion interface"
               width="1000"
               height="1071"
               fetchPriority="high"
             />
             <figcaption>
-              Comet 3.0 beta. Stable releases may look different.
+              Honeymelon 3.0 beta. Stable releases may look different.
             </figcaption>
           </figure>
         </div>
@@ -246,7 +246,7 @@ export default function HomePage(): ReactElement {
 
       <section id="proof" className="marketing-section section-border">
         <div className="site-container proof-container">
-          <h2 className="section-title">Why Comet?</h2>
+          <h2 className="section-title">Why Honeymelon?</h2>
           <ul className="proof-list">
             {proofPoints.map(([title, description]) => (
               <li key={title}>
@@ -347,7 +347,7 @@ export default function HomePage(): ReactElement {
                     loading="lazy"
                     decoding="async"
                   />
-                  <figcaption>Comet 3.0 beta preview.</figcaption>
+                  <figcaption>Honeymelon 3.0 beta preview.</figcaption>
                 </figure>
               </article>
             ))}
@@ -363,7 +363,7 @@ export default function HomePage(): ReactElement {
           </div>
           <div className="open-source-card">
             <div className="price-heading">
-              <h3>Comet</h3>
+              <h3>Honeymelon</h3>
               <p className="price">
                 $0 <span>forever</span>
               </p>
@@ -384,7 +384,7 @@ export default function HomePage(): ReactElement {
                 className="site-button site-button--large"
               >
                 <a href="/download/">
-                  Download Comet <ArrowRight aria-hidden="true" />
+                  Download Honeymelon <ArrowRight aria-hidden="true" />
                 </a>
               </Button>
               <Button
@@ -393,7 +393,7 @@ export default function HomePage(): ReactElement {
                 size="lg"
                 className="site-button--large"
               >
-                <a href="https://github.com/Thavarshan/comet">
+                <a href="https://github.com/Thavarshan/honeymelon">
                   View on GitHub <ExternalLink aria-hidden="true" />
                 </a>
               </Button>
@@ -414,7 +414,7 @@ export default function HomePage(): ReactElement {
           <div className="download-card">
             <div>
               <h3>
-                Comet <Badge variant="secondary">Desktop</Badge>
+                Honeymelon <Badge variant="secondary">Desktop</Badge>
               </h3>
               <p>macOS · Windows · Linux</p>
               <dl className="download-facts">
@@ -451,7 +451,7 @@ export default function HomePage(): ReactElement {
                   <span>2</span>Read the release notes and verify the download.
                 </li>
                 <li>
-                  <span>3</span>Open Comet and start converting locally.
+                  <span>3</span>Open Honeymelon and start converting locally.
                 </li>
               </ol>
               <a className="inline-link" href="/docs/">
@@ -476,8 +476,8 @@ export default function HomePage(): ReactElement {
               <thead>
                 <tr>
                   <th scope="col">Feature</th>
-                  <th scope="col">Comet Desktop</th>
-                  <th scope="col">Comet Web</th>
+                  <th scope="col">Honeymelon Desktop</th>
+                  <th scope="col">Honeymelon Web</th>
                 </tr>
               </thead>
               <tbody>
@@ -499,8 +499,8 @@ export default function HomePage(): ReactElement {
             </table>
           </div>
           <p className="section-note">
-            Comet Web is on the roadmap; it is not available yet. Browser format
-            support may differ from desktop.
+            Honeymelon Web is on the roadmap; it is not available yet. Browser
+            format support may differ from desktop.
           </p>
         </div>
       </section>
@@ -513,7 +513,7 @@ export default function HomePage(): ReactElement {
           <h2 className="section-title">Frequently Asked Questions</h2>
           <div className="faq-list">
             {faqs.map(([question, answer]) => (
-              <details key={question} name="comet-faq">
+              <details key={question} name="honeymelon-faq">
                 <summary>
                   {question}
                   <ChevronDown aria-hidden="true" />
@@ -536,8 +536,8 @@ export default function HomePage(): ReactElement {
             Open for Everyone.
           </h2>
           <p>
-            Download Comet and make media conversion feel simple again. Your
-            files, your computer, your control.
+            Download Honeymelon and make media conversion feel simple again.
+            Your files, your computer, your control.
           </p>
           <div className="hero-actions">
             <Button
@@ -555,7 +555,7 @@ export default function HomePage(): ReactElement {
               size="lg"
               className="github-button"
             >
-              <a href="https://github.com/Thavarshan/comet">
+              <a href="https://github.com/Thavarshan/honeymelon">
                 <ShieldCheck aria-hidden="true" /> Explore the Source
               </a>
             </Button>

@@ -1,7 +1,7 @@
 import {
   SelectControl,
   SelectOption,
-} from '@comet/ui/components/select-control';
+} from '@honeymelon/ui/components/select-control';
 import { useEffect, useState, type ReactElement } from 'react';
 import { Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -11,9 +11,9 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '@comet/ui/components/dialog';
-import { locales, type Locale, type Theme } from '@comet/contracts';
-import { Button } from '@comet/converter';
+} from '@honeymelon/ui/components/dialog';
+import { locales, type Locale, type Theme } from '@honeymelon/contracts';
+import { Button } from '@honeymelon/converter';
 import { useApp } from './state';
 
 const names: Record<Locale, string> = {
@@ -33,9 +33,9 @@ export function Settings(): ReactElement | null {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const show = () => setOpen(true);
-    window.addEventListener('comet:settings', show);
+    window.addEventListener('honeymelon:settings', show);
 
-    return () => window.removeEventListener('comet:settings', show);
+    return () => window.removeEventListener('honeymelon:settings', show);
   }, []);
   if (!preferences) {
     return null;

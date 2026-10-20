@@ -62,7 +62,7 @@ export async function refreshReleases({
     const raw = [];
     for (let page = 1; page <= 100; page++) {
       const response = await fetcher(
-        `https://api.github.com/repos/Thavarshan/comet/releases?per_page=100&page=${page}`,
+        `https://api.github.com/repos/Thavarshan/honeymelon/releases?per_page=100&page=${page}`,
         {
           headers: {
             Accept: 'application/vnd.github+json',

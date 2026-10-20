@@ -16,15 +16,15 @@ const packageMetadata = JSON.parse(
   version: string;
 };
 const target =
-  process.env.COMET_TARGET ?? `${process.platform}-${process.arch}`;
+  process.env.HONEYMELON_TARGET ?? `${process.platform}-${process.arch}`;
 const binaryDirectory = path.join(directory, '.cache/bin', target);
 let buildWatcher: FSWatcher | undefined;
 const signingIdentity = process.env.APPLE_IDENTITY;
 const config: ForgeConfig = {
   packagerConfig: {
-    name: 'Comet',
-    executableName: 'Comet',
-    appBundleId: 'com.thavarshan.comet',
+    name: 'Honeymelon',
+    executableName: 'Honeymelon',
+    appBundleId: 'com.thavarshan.honeymelon',
     appCategoryType: 'public.app-category.video',
     icon: path.join(assets, 'icons/icon'),
     asar: true,
@@ -86,7 +86,7 @@ const config: ForgeConfig = {
     generateAssets: async (_config, platform, arch) => {
       if (`${platform}-${arch}` !== target) {
         throw new Error(
-          'COMET_TARGET must match the Forge platform/architecture',
+          'HONEYMELON_TARGET must match the Forge platform/architecture',
         );
       }
 
@@ -107,10 +107,10 @@ const config: ForgeConfig = {
       name: '@electron-forge/maker-squirrel',
       platforms: ['win32'],
       config: {
-        name: 'Comet',
-        exe: 'Comet.exe',
+        name: 'Honeymelon',
+        exe: 'Honeymelon.exe',
         setupIcon: path.join(assets, 'icons/setup-icon.ico'),
-        setupExe: `comet-${packageMetadata.version}-${target}-setup.exe`,
+        setupExe: `honeymelon-${packageMetadata.version}-${target}-setup.exe`,
         noMsi: true,
         ...(process.env.WINDOWS_CERTIFICATE_FILE
           ? {
@@ -135,9 +135,9 @@ const config: ForgeConfig = {
       platforms: ['linux'],
       config: {
         options: {
-          name: 'comet',
-          productName: 'Comet',
-          bin: 'Comet',
+          name: 'honeymelon',
+          productName: 'Honeymelon',
+          bin: 'Honeymelon',
           icon: path.join(assets, 'icons/icon.png'),
           categories: ['AudioVideo', 'Utility'],
         },
@@ -148,9 +148,9 @@ const config: ForgeConfig = {
       platforms: ['linux'],
       config: {
         options: {
-          name: 'comet',
-          productName: 'Comet',
-          bin: 'Comet',
+          name: 'honeymelon',
+          productName: 'Honeymelon',
+          bin: 'Honeymelon',
           icon: path.join(assets, 'icons/icon.png'),
           categories: ['AudioVideo', 'Utility'],
         },

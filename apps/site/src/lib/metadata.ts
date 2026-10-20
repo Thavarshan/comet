@@ -20,7 +20,7 @@ export type PublicRoute = (typeof publicRoutes)[number];
  * instead of silently publishing localhost or a guessed production address.
  */
 export function getSiteOrigin(
-  value: string | undefined = process.env.COMET_SITE_URL,
+  value: string | undefined = process.env.HONEYMELON_SITE_URL,
 ): URL | undefined {
   if (!value) {
     return undefined;
@@ -38,7 +38,9 @@ export function getSiteOrigin(
     url.search ||
     url.hash
   ) {
-    throw new Error('COMET_SITE_URL must be an HTTPS origin without a path.');
+    throw new Error(
+      'HONEYMELON_SITE_URL must be an HTTPS origin without a path.',
+    );
   }
 
   return url;
@@ -58,10 +60,10 @@ export function pageMetadata(
   const images = origin
     ? [
         {
-          url: new URL('/og-comet.png', origin).href,
+          url: new URL('/og-honeymelon.png', origin).href,
           width: 1200,
           height: 630,
-          alt: 'Comet — local video, audio and image conversion',
+          alt: 'Honeymelon — local video, audio and image conversion',
         },
       ]
     : [];
@@ -75,7 +77,7 @@ export function pageMetadata(
     openGraph: {
       title,
       description,
-      siteName: 'Comet',
+      siteName: 'Honeymelon',
       type: 'website',
       locale: 'en_US',
       ...(url ? { url: url.href } : {}),

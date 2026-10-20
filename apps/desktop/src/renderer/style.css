@@ -1,6 +1,6 @@
-@import '@comet/ui/styles/globals.css';
+@import '@honeymelon/ui/styles/globals.css';
 @source '../../../../packages/ui/src';
-@import '@comet/converter/styles.css';
+@import '@honeymelon/converter/styles.css';
 
 * {
   box-sizing: border-box;

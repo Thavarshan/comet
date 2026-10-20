@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest';
-import type { ConversionService } from '@comet/core';
+import type { ConversionService } from '@honeymelon/core';
 import { BrowserConversionService } from './index';
 
 it('negotiates unavailable capabilities and never creates phantom jobs', async () => {

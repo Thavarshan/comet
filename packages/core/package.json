@@ -1,5 +1,5 @@
 {
-  "name": "@comet/core",
+  "name": "@honeymelon/core",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,6 +16,6 @@
     "dev": "tsc --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@comet/contracts": "*"
+    "@honeymelon/contracts": "*"
   }
 }

@@ -15,10 +15,8 @@ function Gallery(): ReactElement {
       <div className="min-h-screen bg-background text-foreground p-10 space-y-8">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold">Comet UI</h1>
-            <p className="text-muted-foreground mt-2">
-              Mira · zinc · blue · Inter
-            </p>
+            <h1 className="text-2xl font-semibold">Honeymelon UI</h1>
+            <p className="text-muted-foreground mt-2">shadcn Neutral · Inter</p>
           </div>
           <Button onClick={() => setDark(!dark)}>Toggle appearance</Button>
         </header>

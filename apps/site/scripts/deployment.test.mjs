@@ -139,12 +139,12 @@ test('live verifier rejects broken security, cache, redirects and revisions', as
 const input = {
   event: 'workflow_dispatch',
   ref: 'refs/heads/main',
-  repository: 'Thavarshan/comet',
+  repository: 'Thavarshan/honeymelon',
   sha: 'a'.repeat(40),
   target: 'preview',
   operation: 'deploy',
-  previewUrl: 'https://comet-site-preview.fixture.workers.dev',
-  productionUrl: 'https://comet-site.fixture.workers.dev',
+  previewUrl: 'https://honeymelon-site-preview.fixture.workers.dev',
+  productionUrl: 'https://honeymelon-site.fixture.workers.dev',
 };
 
 test('only deliberate trusted-main deployment inputs are accepted', () => {
@@ -156,10 +156,10 @@ test('only deliberate trusted-main deployment inputs are accepted', () => {
   for (const change of [
     { event: 'pull_request' },
     { ref: 'refs/heads/feature' },
-    { repository: 'fork/comet' },
+    { repository: 'fork/honeymelon' },
     { target: 'other' },
     { previewUrl: '' },
-    { previewUrl: 'https://comet.example' },
+    { previewUrl: 'https://honeymelon.example' },
     { previewUrl: input.productionUrl },
     { previewUrl: 'http://localhost' },
     { sha: 'main' },
@@ -222,7 +222,7 @@ test('new host propagation reruns all checks after a temporary 404', async () =>
   const pauses = [];
   const ready = publicSite('production');
   await verifyPublishedDeployment(
-    'https://comet.example.com',
+    'https://honeymelon.example.com',
     'production',
     'a'.repeat(40),
     {
@@ -246,7 +246,7 @@ test('persistent security failures exhaust retries and reject deployment', async
   let pauses = 0;
   await assert.rejects(
     verifyPublishedDeployment(
-      'https://comet.example.com',
+      'https://honeymelon.example.com',
       'production',
       'a'.repeat(40),
       {

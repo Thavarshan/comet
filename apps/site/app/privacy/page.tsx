@@ -19,9 +19,9 @@ export default function PrivacyPage(): ReactElement {
       <h1>Privacy and limitations</h1>
       <h2>Desktop media processing</h2>
       <p>
-        Comet desktop converts media on your own device. The normal conversion
-        workflow does not send source media to a Comet-operated conversion
-        server or require a user account.
+        Honeymelon desktop converts media on your own device. The normal
+        conversion workflow does not send source media to a Honeymelon-operated
+        conversion server or require a user account.
       </p>
       <h2>This website</h2>
       <p>
@@ -43,11 +43,11 @@ export default function PrivacyPage(): ReactElement {
         are unsigned; verify official release checksums before use.
       </p>
       <p>
-        Comet Web is not publicly available yet. Any future browser feature
+        Honeymelon Web is not publicly available yet. Any future browser feature
         needs separate verification before its privacy claims are published.
       </p>
       <p>
-        <a href="https://github.com/Thavarshan/comet/issues">
+        <a href="https://github.com/Thavarshan/honeymelon/issues">
           Ask a question or report an issue
         </a>{' '}
         · <a href="/download/">Downloads</a>

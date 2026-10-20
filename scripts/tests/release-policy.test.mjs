@@ -9,7 +9,7 @@ import {
 
 const expected = { target: 'linux-x64', version: '3.0.0', commit: 'abc123' };
 const receipt = { ...expected, result: 'passed', signed: true };
-const files = ['comet.deb', 'comet.rpm', 'comet.tar.gz'];
+const files = ['honeymelon.deb', 'honeymelon.rpm', 'honeymelon.tar.gz'];
 
 test('release requires complete native verification and all Linux formats', () => {
   assert.doesNotThrow(() => validateReleaseTarget(receipt, files, expected));
@@ -90,11 +90,11 @@ test('Debian prerelease assets and checksums retain the published filename', () 
   const name = releaseAssetName(
     '3.0.0-beta.1',
     'linux-x64',
-    '/make/deb/x64/comet_3.0.0~beta.1_amd64.deb',
+    '/make/deb/x64/honeymelon_3.0.0~beta.1_amd64.deb',
   );
   assert.equal(
     name,
-    'comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb',
+    'honeymelon-3.0.0-beta.1-linux-x64-honeymelon_3.0.0.beta.1_amd64.deb',
   );
   assert.match(name, /^[A-Za-z0-9._-]+$/);
 });

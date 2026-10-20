@@ -2,9 +2,10 @@ import type {
   PublishedRelease,
   ReleaseAsset,
   ReleaseManifest,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
-export const releaseRepository = 'https://github.com/Thavarshan/comet/releases';
+export const releaseRepository =
+  'https://github.com/Thavarshan/honeymelon/releases';
 
 const versionPattern =
   /^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;

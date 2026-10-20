@@ -1,5 +1,5 @@
 import type { IpcMainInvokeEvent } from 'electron';
-import type { Reply } from '@comet/contracts';
+import type { Reply } from '@honeymelon/contracts';
 
 /**
  * Accept only the owning window and its trusted, top-level document.

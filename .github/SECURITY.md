@@ -5,14 +5,12 @@
 
 ## Supported Versions
 
-| Version | Security Fixes Until |
-| ------- | -------------------- |
-| 1.0.0   | August 17th, 2024    |
-| 2.0.1   | September 17th, 2024 |
+Security fixes target the current development branch. Published prereleases are
+testing builds; report issues privately before disclosing vulnerabilities.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Sentinel, please send an email
+If you discover a security vulnerability within Honeymelon, please send an email
 to <Jerome Thayananthajothy> (<tjthavarshan@gmail.com>). All security
 vulnerabilities will be promptly addressed.
 

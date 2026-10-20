@@ -1,6 +1,6 @@
 import { ReleaseCenter } from '../../src/components/release-center';
 import { releaseSnapshot } from '../../src/lib/release-snapshot';
-import { Badge } from '@comet/ui/components/badge';
+import { Badge } from '@honeymelon/ui/components/badge';
 import type { Metadata } from 'next';
 import { pageMetadata } from '../../src/lib/metadata';
 import type { ReactElement } from 'react';
@@ -9,7 +9,7 @@ import type { ReactElement } from 'react';
 export const metadata: Metadata = pageMetadata(
   '/download/',
   'Download',
-  'Choose a published Comet desktop release and verify its checksum on GitHub.',
+  'Choose a published Honeymelon desktop release and verify its checksum on GitHub.',
 );
 
 /** Choose only exact published assets from the validated build snapshot. */
@@ -21,12 +21,12 @@ export default function DownloadPage(): ReactElement {
           Free &amp; Open Source
         </Badge>
         <h1 id="download-heading">
-          Download Comet
+          Download Honeymelon
           <br />
           <span>for Your Desktop</span>
         </h1>
         <p>
-          Download Comet from its official GitHub Releases page. Pick the
+          Download Honeymelon from its official GitHub Releases page. Pick the
           package for your machine, check the release notes, and keep control of
           your files.
         </p>
@@ -41,7 +41,7 @@ export default function DownloadPage(): ReactElement {
           There is no live browser converter yet. These links download the
           desktop application. Confirm your platform before downloading.
         </p>
-        <a href="https://github.com/Thavarshan/comet/issues/61">
+        <a href="https://github.com/Thavarshan/honeymelon/issues/61">
           See the development roadmap <span aria-hidden="true">↗</span>
         </a>
       </aside>

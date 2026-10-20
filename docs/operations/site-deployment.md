@@ -1,7 +1,7 @@
 # Static site deployment and recovery
 
 The site exports `apps/site/out/` through the normal Turbo build graph. Wrangler
-is pinned in `@comet/site`; no SSR adapter, Worker script, storage binding,
+is pinned in `@honeymelon/site`; no SSR adapter, Worker script, storage binding,
 server conversion endpoint or paid plan is needed. Cloudflare serves the assets
 directly, including the custom 404 page. `run_worker_first` stays false.
 
@@ -12,15 +12,16 @@ purchase is required. Create the two Workers, or use a temporary account-scoped
 Workers deployment token for the initial creation. Confirm their actual URLs in
 Cloudflare before setting GitHub variables; do not copy a placeholder URL.
 
-| Target     | Wrangler environment | Worker               | GitHub environment |
-| ---------- | -------------------- | -------------------- | ------------------ |
-| Preview    | `preview`            | `comet-site-preview` | `site-preview`     |
-| Production | `production`         | `comet-site`         | `site-production`  |
+| Target     | Wrangler environment | Worker                    | GitHub environment |
+| ---------- | -------------------- | ------------------------- | ------------------ |
+| Preview    | `preview`            | `honeymelon-site-preview` | `site-preview`     |
+| Production | `production`         | `honeymelon-site`         | `site-production`  |
 
-Set repository variables `COMET_SITE_PREVIEW_URL` and
-`COMET_SITE_PRODUCTION_URL` to those distinct HTTPS origins, without a path, and
-`CLOUDFLARE_ACCOUNT_ID` to the intended account. These are public config, not
-credentials. Initially the origins are the actual workers.dev addresses.
+Set repository variables `HONEYMELON_SITE_PREVIEW_URL` and
+`HONEYMELON_SITE_PRODUCTION_URL` to those distinct HTTPS origins, without a
+path, and `CLOUDFLARE_ACCOUNT_ID` to the intended account. These are public
+config, not credentials. Initially the origins are the actual workers.dev
+addresses.
 
 Create both GitHub environments **before adding their secrets**. Restrict
 deployment branches in each environment to `main`; add required reviewers to
@@ -60,16 +61,17 @@ For an authenticated local operator, the equivalent publish command after a
 verified root Turbo build and `prepare-deployment.mjs` is:
 
 ```sh
-npm exec -w @comet/site -- wrangler deploy --env preview
-node apps/site/scripts/verify-deployment.mjs "$COMET_SITE_PREVIEW_URL" preview
+npm exec -w @honeymelon/site -- wrangler deploy --env preview
+node apps/site/scripts/verify-deployment.mjs "$HONEYMELON_SITE_PREVIEW_URL" preview
 ```
 
-For production, set `COMET_SITE_URL` to the confirmed production origin before
-the root build, prepare with target `production`, and use `--env production`.
-The default Wrangler name is local-only with workers.dev disabled so operators
-must choose an explicit environment. A custom domain is optional: use a domain
-already owned, configure its Cloudflare route separately, update the production
-origin variable, then rebuild and verify; no purchase is part of this setup.
+For production, set `HONEYMELON_SITE_URL` to the confirmed production origin
+before the root build, prepare with target `production`, and use
+`--env production`. The default Wrangler name is local-only with workers.dev
+disabled so operators must choose an explicit environment. A custom domain is
+optional: use a domain already owned, configure its Cloudflare route separately,
+update the production origin variable, then rebuild and verify; no purchase is
+part of this setup.
 
 ## Rollback
 
@@ -81,8 +83,8 @@ the same procedure with `production` for a production incident. Rollback uses a
 stored Cloudflare version, not a rebuild of changed dependencies.
 
 ```sh
-npm exec -w @comet/site -- wrangler rollback VERSION_UUID --env preview --yes
-node apps/site/scripts/verify-deployment.mjs "$COMET_SITE_PREVIEW_URL" preview
+npm exec -w @honeymelon/site -- wrangler rollback VERSION_UUID --env preview --yes
+node apps/site/scripts/verify-deployment.mjs "$HONEYMELON_SITE_PREVIEW_URL" preview
 ```
 
 Cloudflare supports rollback to recent published versions; retain a known-good

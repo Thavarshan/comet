@@ -1,14 +1,13 @@
 {
-  "code": "b1a0RuGWI",
   "cli": "4.22.0",
   "base": "radix",
   "style": "mira",
-  "baseColor": "zinc",
-  "theme": "blue",
+  "baseColor": "neutral",
+  "theme": "default",
   "font": "inter",
   "iconLibrary": "lucide",
-  "radius": "medium",
+  "radius": "default",
   "radiusOverride": "0.625rem",
   "menuAccent": "subtle",
-  "menuColor": "default-translucent"
+  "menuColor": "default"
 }

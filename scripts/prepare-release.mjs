@@ -39,7 +39,7 @@ async function walk(directory) {
 }
 
 for (const target of targets) {
-  const files = await walk(path.join('artifacts', `comet-${target}`));
+  const files = await walk(path.join('artifacts', `honeymelon-${target}`));
   const receiptFile = files.find((file) =>
     file.endsWith(`/verification/${target}.json`),
   );
@@ -58,7 +58,7 @@ for (const target of targets) {
   });
 
   const actual = await artifactManifest(
-    path.join('artifacts', `comet-${target}`, 'make'),
+    path.join('artifacts', `honeymelon-${target}`, 'make'),
   );
   if (
     JSON.stringify(Object.entries(actual).sort()) !==

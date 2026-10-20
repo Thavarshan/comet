@@ -27,7 +27,7 @@ const required = [
   '_headers',
   '_redirects',
   'logo.svg',
-  'og-comet.png',
+  'og-honeymelon.png',
   'screenshots/desktop-light.webp',
   'screenshots/output-settings.webp',
   'screenshots/desktop-dark.webp',
@@ -59,7 +59,7 @@ const manifest = validateManifest(
   ),
 );
 assert.ok(
-  download.includes('href="https://github.com/Thavarshan/comet/releases"'),
+  download.includes('href="https://github.com/Thavarshan/honeymelon/releases"'),
 );
 for (const release of manifest.releases) {
   assert.ok(download.includes(`href="${release.url}"`));
@@ -86,16 +86,16 @@ const features = await readFile(
   path.join(output, 'features/index.html'),
   'utf8',
 );
-assert.ok(docs.includes('Getting started with Comet'));
+assert.ok(docs.includes('Getting started with Honeymelon'));
 assert.ok(privacy.includes('Privacy and limitations'));
 assert.ok(features.includes('Desktop or browser?'));
 assert.ok(features.includes('no live browser converter yet'));
 // Social images are emitted only when a canonical deployment is configured.
-const origin = process.env.COMET_SITE_URL;
+const origin = process.env.HONEYMELON_SITE_URL;
 const sitemap = await readFile(path.join(output, 'sitemap.xml'), 'utf8');
 const robots = await readFile(path.join(output, 'robots.txt'), 'utf8');
 if (origin) {
-  assert.ok(landing.includes('og-comet.png'));
+  assert.ok(landing.includes('og-honeymelon.png'));
   assert.ok(sitemap.includes(new URL('/features/', origin).href));
   assert.ok(robots.includes(new URL('/sitemap.xml', origin).href));
 } else {
@@ -113,11 +113,11 @@ assert.ok(headers.includes('Content-Security-Policy:'));
 assert.ok(headers.includes("frame-ancestors 'none'"));
 assert.ok(!landing.includes('/_next/image?'), 'No runtime image optimizer');
 
-console.log('Comet site static pages and release links verified');
+console.log('Honeymelon site static pages and release links verified');
 
 // Fail before deployment if a screenshot or social asset becomes excessive.
 for (const asset of [
-  'og-comet.png',
+  'og-honeymelon.png',
   'screenshots/desktop-light.webp',
   'screenshots/output-settings.webp',
   'screenshots/desktop-dark.webp',

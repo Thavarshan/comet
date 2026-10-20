@@ -1,5 +1,5 @@
-import { Alert, AlertTitle } from '@comet/ui/components/alert';
-import { Disclosure } from '@comet/ui/components/disclosure';
+import { Alert, AlertTitle } from '@honeymelon/ui/components/alert';
+import { Disclosure } from '@honeymelon/ui/components/disclosure';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 import {
@@ -7,8 +7,8 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
-} from '@comet/ui/components/tabs';
-import { TooltipProvider } from '@comet/ui/components/tooltip';
+} from '@honeymelon/ui/components/tabs';
+import { TooltipProvider } from '@honeymelon/ui/components/tooltip';
 import {
   CircleAlert,
   FileAudio,
@@ -17,7 +17,7 @@ import {
   LoaderCircle,
   X,
 } from 'lucide-react';
-import { mediaTypes, type MediaType } from '@comet/contracts';
+import { mediaTypes, type MediaType } from '@honeymelon/contracts';
 import { useTranslation } from 'react-i18next';
 import { Button } from './Button.js';
 import { ConverterPanel } from './ConverterPanel';
@@ -46,7 +46,7 @@ export function ConverterWorkspace({
 
       if (event.key.toLowerCase() === 'o') {
         event.preventDefault();
-        window.dispatchEvent(new Event('comet:add-files'));
+        window.dispatchEvent(new Event('honeymelon:add-files'));
       }
     };
 

@@ -9,28 +9,28 @@ import {
 test('canonical configuration accepts HTTPS origins and rejects URL pollution', () => {
   assert.equal(getSiteOrigin(''), undefined);
   assert.equal(
-    getSiteOrigin('https://comet.example').href,
-    'https://comet.example/',
+    getSiteOrigin('https://honeymelon.example').href,
+    'https://honeymelon.example/',
   );
   for (const value of [
     'https://localhost',
     'https://127.0.0.1',
     'https://[::1]',
-    'http://comet.example',
+    'http://honeymelon.example',
     'not a URL',
-    'https://comet.example/path',
-    'https://user:password@comet.example',
-    'https://comet.example/?tracking=1',
-    'https://comet.example/#fragment',
+    'https://honeymelon.example/path',
+    'https://user:password@honeymelon.example',
+    'https://honeymelon.example/?tracking=1',
+    'https://honeymelon.example/#fragment',
   ]) {
     assert.throws(() => getSiteOrigin(value), value);
   }
 });
 
 test('every real route has its own canonical and matching social metadata', () => {
-  const previous = process.env.COMET_SITE_URL;
+  const previous = process.env.HONEYMELON_SITE_URL;
   try {
-    process.env.COMET_SITE_URL = 'https://comet.example';
+    process.env.HONEYMELON_SITE_URL = 'https://honeymelon.example';
     for (const route of publicRoutes) {
       const metadata = pageMetadata(
         route,
@@ -39,7 +39,7 @@ test('every real route has its own canonical and matching social metadata', () =
       );
       assert.equal(
         metadata.alternates.canonical,
-        'https://comet.example' + route,
+        'https://honeymelon.example' + route,
       );
       assert.equal(metadata.openGraph.url, metadata.alternates.canonical);
       assert.equal(metadata.openGraph.title, metadata.title);
@@ -47,20 +47,20 @@ test('every real route has its own canonical and matching social metadata', () =
       assert.equal(metadata.robots.index, true);
       assert.equal(
         metadata.openGraph.images[0].url,
-        'https://comet.example/og-comet.png',
+        'https://honeymelon.example/og-honeymelon.png',
       );
     }
 
-    delete process.env.COMET_SITE_URL;
+    delete process.env.HONEYMELON_SITE_URL;
     const preview = pageMetadata('/', 'Preview', 'Not a deployed site');
     assert.equal(preview.robots.index, false);
     assert.equal(preview.alternates, undefined);
     assert.deepEqual(preview.openGraph.images, []);
   } finally {
     if (previous === undefined) {
-      delete process.env.COMET_SITE_URL;
+      delete process.env.HONEYMELON_SITE_URL;
     } else {
-      process.env.COMET_SITE_URL = previous;
+      process.env.HONEYMELON_SITE_URL = previous;
     }
   }
 });

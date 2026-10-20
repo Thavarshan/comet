@@ -1,10 +1,14 @@
-# Comet technical documentation
+# Honeymelon technical documentation
 
 Architecture contracts, operating procedures, and historical acceptance records
 for the current monorepo. Issue status below was checked on 2026-10-19; consult
 GitHub for live status before acting on a deployment or release.
 
 ## Current architecture and operations
+
+- [ADR 0002: Honeymelon identity](architecture/0002-honeymelon-identity.md) —
+  approved identifiers, preference import, coexistence and rollback.
+- [Brand provenance](branding/provenance.md) — original assets and regeneration.
 
 - [ADR 0001: local conversion platform](architecture/0001-local-conversion-platform.md)
   — original decision and implementation roadmap, with a current-state note.
@@ -34,6 +38,6 @@ GitHub for live status before acting on a deployment or release.
 As of 2026-10-19, site implementation and the GitHub-backed Release Center
 (#69–71) are closed. Cloudflare publication (#72) remains open. Browser image
 conversion, file intake/export, worker scheduling/memory controls, and the
-associated MVP preview (#74–77) remain open; `@comet/browser-engine` is still an
-unsupported stub. The marketing/download site is implemented; there is no
-product web converter app yet.
+associated MVP preview (#74–77) remain open; `@honeymelon/browser-engine` is
+still an unsupported stub. The marketing/download site is implemented; there is
+no product web converter app yet.

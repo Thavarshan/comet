@@ -8,18 +8,19 @@ product web-converter application.
 
 ## Canonical deployment
 
-Set `COMET_SITE_URL` to the **actual public HTTPS origin** in the deployment's
-build environment before publishing an indexable site. An origin has no path,
-query, fragment or credentials. Do not use a guessed hostname. This setting is
-an explicit Turbo build input so changing deployments invalidates cached SEO
-output even though other `COMET_*` settings can pass through the environment.
+Set `HONEYMELON_SITE_URL` to the **actual public HTTPS origin** in the
+deployment's build environment before publishing an indexable site. An origin
+has no path, query, fragment or credentials. Do not use a guessed hostname. This
+setting is an explicit Turbo build input so changing deployments invalidates
+cached SEO output even though other `HONEYMELON_*` settings can pass through the
+environment.
 
 Without this setting, the export is a preview: pages emit `noindex`, robots.txt
 disallows crawling, and the sitemap contains no URLs. With a valid setting, all
 seven real public routes receive canonical URLs and matching social metadata,
 robots.txt references the sitemap, and the sitemap lists those routes. No locale
 or future converter URLs are fabricated. The social image is a 1200 × 630 PNG
-exported from the checked-in Comet SVG artwork.
+exported from the checked-in Honeymelon SVG artwork.
 
 Build from the monorepo root with the pinned Node and npm versions:
 
@@ -30,7 +31,7 @@ npm run lint
 npm run typecheck
 npm test
 npm run build:browser
-npm exec -w @comet/e2e -- playwright install --with-deps chromium
+npm exec -w @honeymelon/e2e -- playwright install --with-deps chromium
 npm run test:site -- --project=site-chromium
 ```
 

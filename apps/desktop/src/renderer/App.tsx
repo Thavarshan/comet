@@ -5,10 +5,10 @@ import {
   Button,
   ConverterProvider,
   ConverterWorkspace,
-} from '@comet/converter';
-import { Alert, AlertTitle } from '@comet/ui/components/alert';
-import { Disclosure } from '@comet/ui/components/disclosure';
-import { TooltipProvider } from '@comet/ui/components/tooltip';
+} from '@honeymelon/converter';
+import { Alert, AlertTitle } from '@honeymelon/ui/components/alert';
+import { Disclosure } from '@honeymelon/ui/components/disclosure';
+import { TooltipProvider } from '@honeymelon/ui/components/tooltip';
 import { DesktopTitlebar } from './DesktopTitlebar';
 import { Settings } from './Settings';
 import { DesktopConverterPlatform } from './converter-platform';
@@ -19,7 +19,9 @@ export function App(): ReactElement {
   const { t } = useTranslation();
   const { phase, error, retry, dismiss, preferences, updatePreferences } =
     useApp();
-  const [platform] = useState(() => new DesktopConverterPlatform(window.comet));
+  const [platform] = useState(
+    () => new DesktopConverterPlatform(window.honeymelon),
+  );
   useEffect(() => {
     const shortcuts = (event: KeyboardEvent) => {
       if (
@@ -28,7 +30,7 @@ export function App(): ReactElement {
         event.key === ','
       ) {
         event.preventDefault();
-        window.dispatchEvent(new Event('comet:settings'));
+        window.dispatchEvent(new Event('honeymelon:settings'));
       }
     };
 

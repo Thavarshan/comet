@@ -1,7 +1,7 @@
-import type { DesktopBridge } from '@comet/contracts';
+import type { DesktopBridge } from '@honeymelon/contracts';
 
 declare global {
   interface Window {
-    comet: DesktopBridge<File>;
+    honeymelon: DesktopBridge<File>;
   }
 }

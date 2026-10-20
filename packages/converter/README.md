@@ -1,4 +1,4 @@
-# @comet/converter
+# @honeymelon/converter
 
 Reusable React conversion features for desktop and browser hosts. The package
 owns media navigation, drafts, queue presentation, output controls,
@@ -13,10 +13,11 @@ callback. Supply a host-configured `I18nextProvider` using `converterMessages`
 for English, Spanish, French, German, and Russian. The package never initializes
 a global i18n instance or changes document appearance by itself.
 
-Import `@comet/ui/styles/globals.css` and `@comet/converter/styles.css` through
-the host's Tailwind build. The converter stylesheet declares its source
-directory for utility scanning. The host supplies a bounded-height flex
-container, theme class, document language, and global typography.
+Import `@honeymelon/ui/styles/globals.css` and
+`@honeymelon/converter/styles.css` through the host's Tailwind build. The
+converter stylesheet declares its source directory for utility scanning. The
+host supplies a bounded-height flex container, theme class, document language,
+and global typography.
 
 `ConverterPlatform` exposes:
 
@@ -47,8 +48,8 @@ after a renderer reload. Full application restart still starts an empty queue.
 
 ## Verification
 
-`npm test -w @comet/converter` mounts the actual workspace under Strict Mode
-with a browser-style mock host and no Electron global. It checks portable
+`npm test -w @honeymelon/converter` mounts the actual workspace under Strict
+Mode with a browser-style mock host and no Electron global. It checks portable
 submission, progress/cancel, optional download actions, subscription and probe
 cleanup, stale initial snapshots, initialization recovery, and all five locales.
 The mock emits test snapshots; it does not claim to encode images.
@@ -68,17 +69,17 @@ workspace checks directly so dependency exports exist. Root `npm run typecheck`
 and `npm test` use Turbo to build upstream packages automatically.
 
 ```sh
-npm run build -w @comet/converter
-npm run typecheck -w @comet/converter
-npm test -w @comet/converter
-npm run dev -w @comet/converter
+npm run build -w @honeymelon/converter
+npm run typecheck -w @honeymelon/converter
+npm test -w @honeymelon/converter
+npm run dev -w @honeymelon/converter
 ```
 
 TypeScript emits `dist/` JavaScript and declarations; `dev` watches those
-exports. `@comet/converter/styles.css` exports source CSS. Runtime dependencies
-include contracts, core, UI, and localization helpers; React/React DOM are
-peers. There is no standalone app server in this workspace. The desktop is the
-real conversion host; the browser fixture is test infrastructure.
+exports. `@honeymelon/converter/styles.css` exports source CSS. Runtime
+dependencies include contracts, core, UI, and localization helpers; React/React
+DOM are peers. There is no standalone app server in this workspace. The desktop
+is the real conversion host; the browser fixture is test infrastructure.
 
 See [service ownership](../../docs/architecture/conversion-services.md) and
 [adapter/browser testing](../../docs/architecture/adapter-contract-testing.md).

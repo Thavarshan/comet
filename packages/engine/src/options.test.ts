@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { defaultConversion } from '@comet/contracts';
+import { defaultConversion } from '@honeymelon/contracts';
 import { encodingArguments, resolveEncoding } from './options';
 
 it('resamples AMR output to its required mono narrowband speech profile', () => {

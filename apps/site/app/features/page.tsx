@@ -21,9 +21,9 @@ export default function FeaturesPage(): ReactElement {
       <p className="section-kicker">CAPABILITIES / 003</p>
       <h1>One workflow. Many kinds of media.</h1>
       <p>
-        Comet desktop converts files on your own computer. Available encoders,
-        formats and advanced settings depend on your platform and installed
-        release. Check the output before deleting your original.
+        Honeymelon desktop converts files on your own computer. Available
+        encoders, formats and advanced settings depend on your platform and
+        installed release. Check the output before deleting your original.
       </p>
       <section aria-labelledby="image-heading">
         <h2 id="image-heading">Images</h2>
@@ -48,7 +48,7 @@ export default function FeaturesPage(): ReactElement {
         </p>
       </section>
       <section aria-labelledby="screenshots-heading">
-        <h2 id="screenshots-heading">A look inside Comet</h2>
+        <h2 id="screenshots-heading">A look inside Honeymelon</h2>
         <p>
           Desktop development previews from the project repository. Your
           installed release and operating system may look different.
@@ -62,7 +62,7 @@ export default function FeaturesPage(): ReactElement {
                 height="1071"
                 loading="lazy"
                 decoding="async"
-                alt="Comet desktop conversion queue with three completed video files and an MP4 output selector"
+                alt="Honeymelon desktop conversion queue with three completed video files and an MP4 output selector"
               />
             </a>
             <figcaption>A local queue, with progress for each file.</figcaption>
@@ -75,7 +75,7 @@ export default function FeaturesPage(): ReactElement {
                 height="1071"
                 loading="lazy"
                 decoding="async"
-                alt="Comet desktop output settings for format, codec, quality and destination"
+                alt="Honeymelon desktop output settings for format, codec, quality and destination"
               />
             </a>
             <figcaption>
@@ -87,9 +87,9 @@ export default function FeaturesPage(): ReactElement {
       <section aria-labelledby="platform-heading">
         <h2 id="platform-heading">Desktop or browser?</h2>
         <p>
-          Desktop is the available product for local conversion today. Comet Web
-          is planned, but there is no live browser converter yet. Browser codec
-          coverage and performance may differ from native builds.
+          Desktop is the available product for local conversion today.
+          Honeymelon Web is planned, but there is no live browser converter yet.
+          Browser codec coverage and performance may differ from native builds.
         </p>
         <p>
           <a href="/download/">Choose a desktop download</a> ·{' '}

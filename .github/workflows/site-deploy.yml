@@ -28,7 +28,8 @@ env:
 jobs:
   admission:
     if:
-      github.repository == 'Thavarshan/comet' && github.ref == 'refs/heads/main'
+      github.repository == 'Thavarshan/honeymelon' && github.ref ==
+      'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     outputs:
@@ -48,8 +49,8 @@ jobs:
           DEPLOY_TARGET: ${{ inputs.environment }}
           DEPLOY_OPERATION: ${{ inputs.operation }}
           DEPLOY_VERSION: ${{ inputs.version_id }}
-          PRODUCTION_URL: ${{ vars.COMET_SITE_PRODUCTION_URL }}
-          PREVIEW_URL: ${{ vars.COMET_SITE_PREVIEW_URL }}
+          PRODUCTION_URL: ${{ vars.HONEYMELON_SITE_PRODUCTION_URL }}
+          PREVIEW_URL: ${{ vars.HONEYMELON_SITE_PREVIEW_URL }}
         run: node apps/site/scripts/deployment-policy.mjs
   build:
     needs: admission
@@ -57,7 +58,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      COMET_SITE_URL: ${{ needs.admission.outputs.canonical_origin }}
+      HONEYMELON_SITE_URL: ${{ needs.admission.outputs.canonical_origin }}
       DEPLOY_TARGET: ${{ needs.admission.outputs.target }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -68,14 +69,14 @@ jobs:
       - run: npm install -g npm@12.2.0
       - run: npm ci
       - run: npm run build:browser
-      - run: npm run test -w @comet/site
+      - run: npm run test -w @honeymelon/site
       - name: Prepare the verified static artifact
         run:
           node apps/site/scripts/prepare-deployment.mjs "$DEPLOY_TARGET"
           "$GITHUB_SHA"
       - name: Validate assets-only Wrangler deployment
         run:
-          npm exec -w @comet/site -- wrangler deploy --env "$DEPLOY_TARGET"
+          npm exec -w @honeymelon/site -- wrangler deploy --env "$DEPLOY_TARGET"
           --dry-run
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -118,9 +119,9 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Configure CLOUDFLARE_ACCOUNT_ID'; exit 1; }
           test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Configure the environment CLOUDFLARE_API_TOKEN secret'; exit 1; }
           if [ "$DEPLOY_OPERATION" = rollback ]; then
-            npm exec -w @comet/site -- wrangler rollback "$DEPLOY_VERSION" --env "$DEPLOY_TARGET" --yes
+            npm exec -w @honeymelon/site -- wrangler rollback "$DEPLOY_VERSION" --env "$DEPLOY_TARGET" --yes
           else
-            npm exec -w @comet/site -- wrangler deploy --env "$DEPLOY_TARGET"
+            npm exec -w @honeymelon/site -- wrangler deploy --env "$DEPLOY_TARGET"
           fi
       - name: Verify the live deployment
         run: |

@@ -11,7 +11,7 @@ import {
 
 // Radix reserves an empty item value for clearing the selection. Keep empty
 // domain values available to callers without leaking a sentinel into settings.
-const automaticValue = '__comet_automatic__';
+const automaticValue = '__honeymelon_automatic__';
 
 /**
  * Compose a labeled, controlled select with a consistent full-width trigger.

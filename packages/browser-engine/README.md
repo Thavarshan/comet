@@ -1,4 +1,4 @@
-# @comet/browser-engine
+# @honeymelon/browser-engine
 
 The browser-side implementation point for `ConversionService`. **Currently an
 explicit unsupported stub, not a working image or media converter.** There is no
@@ -6,8 +6,8 @@ explicit unsupported stub, not a working image or media converter.** There is no
 
 ## Current behavior
 
-`BrowserConversionService`, exported from `@comet/browser-engine`, implements
-the service contract from `@comet/core`:
+`BrowserConversionService`, exported from `@honeymelon/browser-engine`,
+implements the service contract from `@honeymelon/core`:
 
 - Capability discovery marks every video, audio, and image output unavailable
   with an explanation.
@@ -30,9 +30,9 @@ workspace checks directly so dependency exports exist. Root `npm run typecheck`
 and `npm test` use Turbo to build upstream packages automatically.
 
 ```sh
-npm run build -w @comet/browser-engine
-npm run typecheck -w @comet/browser-engine
-npm test -w @comet/browser-engine
+npm run build -w @honeymelon/browser-engine
+npm run typecheck -w @honeymelon/browser-engine
+npm test -w @honeymelon/browser-engine
 npm run test:browser
 ```
 

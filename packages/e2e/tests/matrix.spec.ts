@@ -8,8 +8,8 @@ import {
   inputExtensions,
   mediaTypes,
   type MediaType,
-} from '@comet/contracts';
-import { createExecutor, type EnginePaths } from '@comet/engine';
+} from '@honeymelon/contracts';
+import { createExecutor, type EnginePaths } from '@honeymelon/engine';
 import {
   conversionJob,
   createMatrixFixtures,
@@ -56,7 +56,7 @@ let execute: ReturnType<typeof createExecutor>;
 
 test.beforeAll(async () => {
   test.setTimeout(120000);
-  directory = await mkdtemp(path.join(tmpdir(), 'comet-format-matrix-'));
+  directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-format-matrix-'));
   paths = await snapshotNativeTools(path.join(directory, 'tools'), nativePaths);
   execute = createExecutor(paths);
   fixtures = await createMatrixFixtures(
@@ -105,7 +105,7 @@ test('reports accepted inputs without a verified sample', async ({
     }
   }
 
-  if (process.env.COMET_REQUIRE_INPUT_COVERAGE === '1') {
+  if (process.env.HONEYMELON_REQUIRE_INPUT_COVERAGE === '1') {
     expect(fixtures.gaps, 'Supply the reported input-only fixtures').toEqual(
       [],
     );
@@ -173,7 +173,9 @@ for (const entry of cases) {
       await verifyMedia(paths, output, entry.target);
       expect(path.resolve(output)).not.toBe(path.resolve(source.filename));
       expect(
-        (await readdir(destination)).some((name) => name.startsWith('.comet-')),
+        (await readdir(destination)).some((name) =>
+          name.startsWith('.honeymelon-'),
+        ),
       ).toBe(false);
       entry.status = 'passed';
     } catch (error) {
