@@ -1,12 +1,12 @@
 import { useState, type ReactElement } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { Capability } from '@comet/contracts';
+import type { Capability } from '@honeymelon/contracts';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@comet/ui/components/popover';
+} from '@honeymelon/ui/components/popover';
 import {
   Command,
   CommandEmpty,
@@ -14,7 +14,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@comet/ui/components/command';
+} from '@honeymelon/ui/components/command';
 import { Button } from './Button';
 
 /**

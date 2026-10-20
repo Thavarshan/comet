@@ -28,11 +28,11 @@ const bin = path.join(resources, 'bin');
 const hashes = JSON.parse(
   await readFile(path.join(bin, 'staged-sha256.json'), 'utf8'),
 );
-const signed = process.env.COMET_EXPECT_SIGNED === 'true';
+const signed = process.env.HONEYMELON_EXPECT_SIGNED === 'true';
 
 function verifySignature(filename) {
   if (process.platform === 'darwin') {
-    if (!process.env.COMET_EXPECTED_TEAM_ID) {
+    if (!process.env.HONEYMELON_EXPECTED_TEAM_ID) {
       throw new Error('Expected Apple signing team is required');
     }
 
@@ -50,12 +50,12 @@ function verifySignature(filename) {
       description.status !== 0 ||
       !description.stderr
         .split('\n')
-        .includes(`TeamIdentifier=${process.env.COMET_EXPECTED_TEAM_ID}`)
+        .includes(`TeamIdentifier=${process.env.HONEYMELON_EXPECTED_TEAM_ID}`)
     ) {
       throw new Error('Unexpected Apple signing team');
     }
   } else if (process.platform === 'win32') {
-    if (!process.env.COMET_EXPECTED_SIGNER_THUMBPRINT) {
+    if (!process.env.HONEYMELON_EXPECTED_SIGNER_THUMBPRINT) {
       throw new Error('Expected Windows signing certificate is required');
     }
 
@@ -65,9 +65,12 @@ function verifySignature(filename) {
         '-NoProfile',
         '-NonInteractive',
         '-Command',
-        '$signature = Get-AuthenticodeSignature -LiteralPath $env:COMET_VERIFY_PATH; if ($signature.Status -ne "Valid" -or $signature.SignerCertificate.Thumbprint -ne $env:COMET_EXPECTED_SIGNER_THUMBPRINT) { exit 1 }',
+        '$signature = Get-AuthenticodeSignature -LiteralPath $env:HONEYMELON_VERIFY_PATH; if ($signature.Status -ne "Valid" -or $signature.SignerCertificate.Thumbprint -ne $env:HONEYMELON_EXPECTED_SIGNER_THUMBPRINT) { exit 1 }',
       ],
-      { env: { ...process.env, COMET_VERIFY_PATH: filename }, stdio: 'pipe' },
+      {
+        env: { ...process.env, HONEYMELON_VERIFY_PATH: filename },
+        stdio: 'pipe',
+      },
     );
   }
 }

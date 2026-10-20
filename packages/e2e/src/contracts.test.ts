@@ -6,16 +6,16 @@ import {
   ConversionEngine,
   NativeConversionService,
   type Executor,
-} from '@comet/engine';
+} from '@honeymelon/engine';
 import {
   QueueConversionService,
   outputFilename,
   type ConversionRequest,
   type ConversionService,
   type QueueExecutor,
-} from '@comet/core';
-import { BrowserConversionService } from '@comet/browser-engine';
-import type { Capabilities } from '@comet/contracts';
+} from '@honeymelon/core';
+import { BrowserConversionService } from '@honeymelon/browser-engine';
+import type { Capabilities } from '@honeymelon/contracts';
 
 const capabilities: Capabilities = {
   image: [{ format: 'png', available: true }],
@@ -123,7 +123,9 @@ async function harness(kind: 'native' | 'portable') {
   let service: ConversionService;
   let request: ConversionRequest;
   if (kind === 'native') {
-    const directory = await mkdtemp(path.join(tmpdir(), 'comet-contract-'));
+    const directory = await mkdtemp(
+      path.join(tmpdir(), 'honeymelon-contract-'),
+    );
     const execute: Executor = async (job, signal, progress) => {
       await controller.execute(job, signal, progress);
 

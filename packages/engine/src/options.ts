@@ -1,4 +1,4 @@
-import type { ConversionSpec } from '@comet/contracts';
+import type { ConversionSpec } from '@honeymelon/contracts';
 import { profiles, type EncodingProfile } from './profiles.js';
 
 const videoEncoders = {

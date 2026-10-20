@@ -1,4 +1,4 @@
-# Comet growth scorecard
+# Honeymelon growth scorecard
 
 **Status:** Initial measurement protocol. Current values need verified live
 collection; no analytics tools or product telemetry have been installed.
@@ -56,4 +56,4 @@ Use one copy per week, always recording the source and collection time.
 - Do not imply causation from one content post without reasonable referral
   evidence; report directional correlations honestly.
 
-Tracking ticket: https://github.com/Thavarshan/comet/issues/113
+Tracking ticket: https://github.com/Thavarshan/honeymelon/issues/113

@@ -7,7 +7,7 @@ import type { ReactElement } from 'react';
 export function DesktopTitlebar(): ReactElement {
   return (
     <header className="desktop-titlebar">
-      <h1 className="desktop-titlebar-name">Comet</h1>
+      <h1 className="desktop-titlebar-name">Honeymelon</h1>
     </header>
   );
 }

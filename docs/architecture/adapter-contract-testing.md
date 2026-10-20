@@ -1,15 +1,15 @@
 # Adapter and browser test contracts
 
-Run `npm test -w @comet/e2e` for the shared service suite. The same observable
-contracts run against `NativeConversionService` over its existing engine and the
-browser-safe `QueueConversionService`. Both use controlled executors: these
-tests prove scheduling, immutable admission, snapshots, progress, FIFO,
-single-slot execution, collision naming in the fixture, failure advancement,
-abort cleanup, repeated cancellation, disposal and independent unsubscribe. They
-do not claim that a mock encoded real media. Native integration tests and
-packaged platform tests retain actual output, collision and source-preservation
-coverage. A real browser encoder must join these contracts before browser
-conversion is considered implemented.
+Run `npm test -w @honeymelon/e2e` for the shared service suite. The same
+observable contracts run against `NativeConversionService` over its existing
+engine and the browser-safe `QueueConversionService`. Both use controlled
+executors: these tests prove scheduling, immutable admission, snapshots,
+progress, FIFO, single-slot execution, collision naming in the fixture, failure
+advancement, abort cleanup, repeated cancellation, disposal and independent
+unsubscribe. They do not claim that a mock encoded real media. Native
+integration tests and packaged platform tests retain actual output, collision
+and source-preservation coverage. A real browser encoder must join these
+contracts before browser conversion is considered implemented.
 
 `QueueConversionService` uses the existing core lifecycle reducer and owns no
 files, workers, Node modules or output bytes. Its executor supplies capability
@@ -28,16 +28,16 @@ API, or Electron bridge. Generated PNG/JPEG files are checked in under
 
 ```sh
 npm run build:packages
-npm exec -w @comet/e2e -- playwright install chromium firefox webkit
-npm run test:browser -w @comet/e2e
+npm exec -w @honeymelon/e2e -- playwright install chromium firefox webkit
+npm run test:browser -w @honeymelon/e2e
 ```
 
 The script builds the fixture and launches a local static Vite preview. A
 dedicated config prevents Vitest from collecting Playwright specs. Browser
 projects reuse the common trace, screenshot, and report settings. The browser
 suite rejects external requests and all methods except GET/HEAD while local
-files are selected. The optional `COMET_E2E_WEB_URL` can point these tests at an
-existing browser fixture host. There is still no product web converter
+files are selected. The optional `HONEYMELON_E2E_WEB_URL` can point these tests
+at an existing browser fixture host. There is still no product web converter
 application.
 
 Import UI and converter styles into one host CSS entry so Tailwind processes

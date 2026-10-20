@@ -6,14 +6,14 @@ import {
   type ConversionRequest,
   type ConversionService,
   type InputFile,
-} from '@comet/core';
+} from '@honeymelon/core';
 import type {
   Capabilities,
   CancelResult,
   MediaMetadata,
   QueueSnapshot,
   SourceFile,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import type { ConversionEngine } from './index.js';
 
 /** Remove all native handles before crossing the portable service boundary. */

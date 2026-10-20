@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactElement } from 'react';
-import type { MediaMetadata } from '@comet/contracts';
+import type { MediaMetadata } from '@honeymelon/contracts';
 import type { DraftFile } from './platform.js';
 import { useConverter } from './state.js';
 

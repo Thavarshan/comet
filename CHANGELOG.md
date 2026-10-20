@@ -1,3 +1,8 @@
+# Honeymelon changelog
+
+Honeymelon continues the Comet project. Historical release notes below retain
+the names and versions under which they were published.
+
 # Release Notes
 
 ## v3.0.0-beta.1 — Release candidate preparation — 2026-10-17

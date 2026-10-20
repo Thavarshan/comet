@@ -6,13 +6,13 @@ import path from 'node:path';
 import { artifactManifest } from '../lib/artifact-manifest.mjs';
 
 test('artifact receipts detect changed bytes and refuse symbolic links', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-artifacts-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-artifacts-'));
   try {
     await mkdir(path.join(directory, 'portable'));
-    const file = path.join(directory, 'portable/comet.zip');
+    const file = path.join(directory, 'portable/honeymelon.zip');
     await writeFile(file, 'verified build');
     const original = await artifactManifest(directory);
-    assert.match(original['portable/comet.zip'], /^[a-f0-9]{64}$/);
+    assert.match(original['portable/honeymelon.zip'], /^[a-f0-9]{64}$/);
     await writeFile(file, 'replaced build');
     assert.notDeepEqual(await artifactManifest(directory), original);
     // Junctions exercise this rule without Windows symlink elevation.

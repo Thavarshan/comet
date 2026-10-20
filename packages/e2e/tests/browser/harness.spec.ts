@@ -22,7 +22,7 @@ test('shared converter boots without credentials, native bridge or source upload
   });
   await page.goto('/');
   await expect(page.getByRole('tab', { name: 'Image' })).toBeVisible();
-  expect(await page.evaluate(() => 'comet' in window)).toBe(false);
+  expect(await page.evaluate(() => 'honeymelon' in window)).toBe(false);
   await page
     .getByLabel('Add files', { exact: true })
     .setInputFiles(path.resolve('fixtures/images/rgb.png'));

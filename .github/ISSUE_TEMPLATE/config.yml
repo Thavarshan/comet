@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Help & Support
-    url: https://github.com/Thavarshan/comet/discussions
+    url: https://github.com/Thavarshan/honeymelon/discussions
     about:
       'This repository is only for reporting bugs. If you have a question or
       need help using the library, click:'

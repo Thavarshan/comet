@@ -1,6 +1,6 @@
 # Shared end-to-end tests
 
-`@comet/e2e` owns Playwright configuration, desktop launch/upload helpers,
+`@honeymelon/e2e` owns Playwright configuration, desktop launch/upload helpers,
 reusable conversion page actions, native fixtures, browser harness tests, static
 site tests, and conversion coverage. It is a test workspace; applications must
 not depend on it at runtime.
@@ -23,7 +23,7 @@ npm run test:packaged
 `npm run test:matrix` uses Turbo to build upstream workspace dependencies and
 runs the native conversion project. It does not launch a browser.
 `npm run test:e2e` runs the desktop project against the development build or
-`COMET_EXECUTABLE`. `test:packaged` verifies native resources, copies the
+`HONEYMELON_EXECUTABLE`. `test:packaged` verifies native resources, copies the
 packaged application outside the checkout, and runs the same desktop suite
 against that copy. Create distributables with `make` first: the verification
 receipt hashes those outputs. `dist:portable` adds the Linux tar archive and is
@@ -56,8 +56,8 @@ ARM64 build. Supply actual small samples named `audio.amr`, `audio.ape`, and
 `audio.mpc` in an absolute directory:
 
 ```sh
-COMET_MEDIA_FIXTURES=/absolute/path/to/samples \
-COMET_REQUIRE_INPUT_COVERAGE=1 npm run test:matrix
+HONEYMELON_MEDIA_FIXTURES=/absolute/path/to/samples \
+HONEYMELON_REQUIRE_INPUT_COVERAGE=1 npm run test:matrix
 ```
 
 The strict flag fails if any accepted input lacks a fixture. External samples
@@ -73,13 +73,14 @@ OS/architecture.
 ## Browser harness and static site
 
 There is no product web converter app yet. A real browser fixture mounts
-`@comet/converter` over the explicitly unsupported `BrowserConversionService`.
-It tests unavailable capabilities, intake/UI behavior, and request boundaries;
-it does not claim to encode or download converted media.
+`@honeymelon/converter` over the explicitly unsupported
+`BrowserConversionService`. It tests unavailable capabilities, intake/UI
+behavior, and request boundaries; it does not claim to encode or download
+converted media.
 
 ```sh
 npm run build:packages
-npm exec -w @comet/e2e -- playwright install chromium firefox webkit
+npm exec -w @honeymelon/e2e -- playwright install chromium firefox webkit
 npm run test:browser
 npm run test:site
 ```
@@ -88,28 +89,29 @@ Browser projects cover Chromium, Firefox, and WebKit locally; the small PR
 harness runs Chromium. `test:site` builds the static marketing site through
 Turbo and serves its exported HTML with Python 3 on port 4187 for Chromium
 navigation, responsive layout, accessibility, motion, and download checks. The
-browser fixture uses Vite preview on port 4173; `COMET_E2E_WEB_URL` can point it
-at an existing host instead. External requests and non-GET/HEAD traffic are
-rejected by the browser boundary tests.
+browser fixture uses Vite preview on port 4173; `HONEYMELON_E2E_WEB_URL` can
+point it at an existing host instead. External requests and non-GET/HEAD traffic
+are rejected by the browser boundary tests.
 
-`npm test -w @comet/e2e` runs controlled native/core queue contract tests, not
-Playwright or real browser encoding. `npm run typecheck -w @comet/e2e` checks
-both Node tooling and browser fixture configurations.
-`npm run build -w @comet/e2e` emits reusable helpers to `dist/`.
+`npm test -w @honeymelon/e2e` runs controlled native/core queue contract tests,
+not Playwright or real browser encoding. `npm run typecheck -w @honeymelon/e2e`
+checks both Node tooling and browser fixture configurations.
+`npm run build -w @honeymelon/e2e` emits reusable helpers to `dist/`.
 
 ## Reusable helpers
 
 Future hosts can import:
 
-- `@comet/e2e/config`: `createTestConfig(options, reportName)` supplies shared
-  timeouts, traces, screenshots, and reports; pass the web app's `webServer`,
-  `baseURL`, projects, and test directory as options.
-- `@comet/e2e/converter-page`: `ConverterPage` drives accessible tabs, format
-  selection, file submission, Convert, and completion status. Its default
+- `@honeymelon/e2e/config`: `createTestConfig(options, reportName)` supplies
+  shared timeouts, traces, screenshots, and reports; pass the web app's
+  `webServer`, `baseURL`, projects, and test directory as options.
+- `@honeymelon/e2e/converter-page`: `ConverterPage` drives accessible tabs,
+  format selection, file submission, Convert, and completion status. Its default
   uploader uses browser `setInputFiles`; desktop injects `selectDesktopFiles`
   because Electron needs real native file paths.
-- `@comet/e2e/media`: native seed generation and output verification, for use in
-  the Node test process. Keep these imports out of browser/application code.
+- `@honeymelon/e2e/media`: native seed generation and output verification, for
+  use in the Node test process. Keep these imports out of browser/application
+  code.
 
 The page object currently uses English conversion control names. Web tests
 should initialize that locale or adapt the actions to their localized labels. A

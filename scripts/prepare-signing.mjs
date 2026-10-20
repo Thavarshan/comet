@@ -23,10 +23,10 @@ for (const name of required) {
 }
 
 if (process.platform === 'darwin') {
-  const filename = path.join(process.env.RUNNER_TEMP, 'comet-signing.p12');
+  const filename = path.join(process.env.RUNNER_TEMP, 'honeymelon-signing.p12');
   const keychain = path.join(
     process.env.RUNNER_TEMP,
-    'comet-build.keychain-db',
+    'honeymelon-build.keychain-db',
   );
   const password = randomUUID();
   const security = (args) => {
@@ -72,7 +72,7 @@ if (process.platform === 'darwin') {
     await rm(filename, { force: true });
   }
 } else if (process.platform === 'win32') {
-  const filename = path.join(process.env.RUNNER_TEMP, 'comet-signing.pfx');
+  const filename = path.join(process.env.RUNNER_TEMP, 'honeymelon-signing.pfx');
   await writeFile(
     filename,
     Buffer.from(process.env.WINDOWS_CERTIFICATE_BASE64, 'base64'),
@@ -99,7 +99,7 @@ if (process.platform === 'darwin') {
 
   await writeFile(
     process.env.GITHUB_ENV,
-    `WINDOWS_CERTIFICATE_FILE=${filename}\nCOMET_EXPECTED_SIGNER_THUMBPRINT=${thumbprint}\n`,
+    `WINDOWS_CERTIFICATE_FILE=${filename}\nHONEYMELON_EXPECTED_SIGNER_THUMBPRINT=${thumbprint}\n`,
     { flag: 'a' },
   );
 }

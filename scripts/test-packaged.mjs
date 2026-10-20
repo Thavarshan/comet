@@ -7,7 +7,7 @@ import { packagePaths, root } from './lib/package-paths.mjs';
 import { artifactManifest } from './lib/artifact-manifest.mjs';
 
 const { target, directory, relativeExecutable } = packagePaths();
-const isolated = await mkdtemp(path.join(tmpdir(), 'comet-packaged-'));
+const isolated = await mkdtemp(path.join(tmpdir(), 'honeymelon-packaged-'));
 try {
   const application = path.join(isolated, 'application');
   await cp(directory, application, {
@@ -16,7 +16,7 @@ try {
     mode: constants.COPYFILE_FICLONE,
   });
   const executable = path.join(application, relativeExecutable);
-  const environment = { ...process.env, COMET_EXECUTABLE: executable };
+  const environment = { ...process.env, HONEYMELON_EXECUTABLE: executable };
   delete environment.ELECTRON_RUN_AS_NODE;
   const status = await new Promise((resolve, reject) => {
     const child = spawn(
@@ -51,7 +51,7 @@ try {
         result: 'passed',
         signed:
           process.platform !== 'linux' &&
-          process.env.COMET_EXPECT_SIGNED === 'true',
+          process.env.HONEYMELON_EXPECT_SIGNED === 'true',
         artifacts: await artifactManifest(
           path.join(root, 'apps/desktop/out/make'),
         ),

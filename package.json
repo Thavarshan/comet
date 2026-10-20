@@ -1,6 +1,6 @@
 {
-  "name": "comet-monorepo",
-  "version": "3.0.0-beta.1",
+  "name": "honeymelon-monorepo",
+  "version": "3.0.0-beta.2",
   "private": true,
   "type": "module",
   "packageManager": "npm@12.2.0",
@@ -19,26 +19,28 @@
     "lint:fix": "npm run build:packages && prettier --write . && eslint . --fix && prettier --write . && node scripts/check-boundaries.mjs",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "test:integration": "npm run test:integration -w @comet/engine",
-    "test:e2e": "npm run test:desktop -w @comet/e2e",
+    "test:integration": "npm run test:integration -w @honeymelon/engine",
+    "test:e2e": "npm run test:desktop -w @honeymelon/e2e",
     "build": "turbo run build",
-    "package": "turbo run package --filter=@comet/desktop",
-    "make": "turbo run make --filter=@comet/desktop",
+    "package": "turbo run package --filter=@honeymelon/desktop",
+    "make": "turbo run make --filter=@honeymelon/desktop",
     "binaries": "node scripts/stage-binaries.mjs",
     "postinstall": "node scripts/prepare-tools.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify:packaged": "node scripts/verify-packaged.mjs",
     "test:packaged": "npm run verify:packaged && node scripts/test-packaged.mjs",
-    "ui:dev": "npm run gallery -w @comet/ui",
-    "ui:build": "npm run gallery:build -w @comet/ui",
-    "test:matrix": "turbo run test:matrix --filter=@comet/e2e",
+    "ui:dev": "npm run gallery -w @honeymelon/ui",
+    "ui:build": "npm run gallery:build -w @honeymelon/ui",
+    "test:matrix": "turbo run test:matrix --filter=@honeymelon/e2e",
     "test:ci": "node --test scripts/tests/*.test.mjs",
     "dist:portable": "node scripts/portable.mjs",
     "build:packages": "turbo run build --filter=./packages/*",
-    "build:browser": "turbo run build --filter=./packages/* --filter=./apps/* --filter=!@comet/desktop",
-    "test:site": "turbo run test:site --filter=@comet/e2e --",
-    "test:browser": "turbo run test:browser --filter=@comet/e2e --"
+    "build:browser": "turbo run build --filter=./packages/* --filter=./apps/* --filter=!@honeymelon/desktop",
+    "test:site": "turbo run test:site --filter=@honeymelon/e2e --",
+    "test:browser": "turbo run test:browser --filter=@honeymelon/e2e --",
+    "brand:assets": "node scripts/generate-brand-assets.mjs",
+    "brand:screenshots": "node scripts/capture-brand-screenshots.mjs"
   },
   "devDependencies": {
     "@electron/asar": "4.3.1",
@@ -61,7 +63,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thavarshan/comet.git"
+    "url": "https://github.com/Thavarshan/honeymelon.git"
   },
   "license": "MIT",
   "allowScripts": {

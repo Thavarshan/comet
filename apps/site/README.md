@@ -1,4 +1,4 @@
-# Comet marketing site
+# Honeymelon marketing site
 
 A **zero-server, statically generated Next.js site** for the desktop converter.
 The current implementation includes marketing pages, a versioned release and
@@ -17,8 +17,9 @@ running computer to assemble each page.
   of the page).
 - **TypeScript** checks that components receive the right kinds of values.
 - **CSS** controls typography, layouts, colors, and animations.
-- **`@comet/ui`** supplies our shared Button, Badge, Inter font, and tokens. The
-  marketing-specific layout is deliberately custom, not another dashboard.
+- **`@honeymelon/ui`** supplies our shared Button, Badge, Inter font, and
+  tokens. The marketing-specific layout is deliberately custom, not another
+  dashboard.
 - **GitHub Releases** hosts downloadable desktop applications. The site links
   visitors there; it does not create or distribute installers itself.
 
@@ -48,16 +49,16 @@ Use the repository-pinned Node.js 24.22.0 and npm 12.2.0.
 ```sh
 npm ci
 npm run build:packages
-npm run dev -w @comet/site
+npm run dev -w @honeymelon/site
 ```
 
 Open the local address printed by Next.js. While developing, React updates when
 you save a file.
 
 ```sh
-npm run typecheck -w @comet/site
-npm test -w @comet/site
-npm run build -w @comet/site
+npm run typecheck -w @honeymelon/site
+npm test -w @honeymelon/site
+npm run build -w @honeymelon/site
 ```
 
 The last command creates **`apps/site/out/`**, containing ordinary HTML and
@@ -70,25 +71,25 @@ unchanged native matrix.
 ## Motion and accessibility
 
 The visual reference is the owner-provided `honeymelon/website` directory. The
-Next.js implementation carries over its white surfaces, warm amber palette,
+Next.js implementation carries over its shared shadcn default Neutral theme,
 centered hero, generous section spacing, floating screenshots, alternating
-showcases, rounded cards, FAQ and four-column footer. Comet branding, MIT
+showcases, rounded cards, FAQ and four-column footer. Honeymelon branding, MIT
 licensing, actual desktop screenshots and verified download behavior are
 retained. Old Mac-only, remux, hardware-acceleration and concurrency claims are
 not copied.
 
-- Shared shadcn buttons, badges and dialogs come from `@comet/ui`.
+- Shared shadcn buttons, badges and dialogs come from `@honeymelon/ui`.
 - The mobile menu traps focus, supports Escape and restores trigger focus.
 - Native FAQ disclosures work with keyboard input and without JavaScript.
 - Essential navigation is also available in the static footer.
 - The opening copy has one short entrance animation, with no decorative loops.
 - `prefers-reduced-motion` disables animation automatically.
 - The footer retains the keyboard-accessible **Pause motion** control.
-- Amber controls use dark text and readable accents to preserve contrast.
+- Controls use the shared default light/dark foreground and surface tokens.
 
 No reference analytics, external fonts or visitor-time GitHub API calls are
-carried over. All media screenshots depict Comet's unsigned 3.0 beta and are
-labeled accordingly; the stable download remains separate.
+carried over. All media screenshots depict Honeymelon's unsigned 3.0 beta and
+are labeled accordingly; the stable download remains separate.
 
 ## Strict typing and boundaries
 
@@ -128,8 +129,8 @@ so users can choose a different target explicitly. Downloads go to GitHub
 release assets rather than a media/storage service owned by the site.
 
 ```sh
-npm run releases:refresh -w @comet/site
-npm run build -w @comet/site
+npm run releases:refresh -w @honeymelon/site
+npm run build -w @honeymelon/site
 npm run test:site
 ```
 
@@ -141,11 +142,11 @@ See the [release centre contract](../../docs/releases/release-center.md).
 
 ## Deployment status and configuration
 
-`COMET_SITE_URL` must contain the actual production origin for canonical URLs
-and indexable sitemap metadata. Unconfigured builds remain unindexed previews.
-The `site-deploy.yml` workflow admits verified `main` commits and provides
-explicit preview/production deployment and rollback actions. Wrangler serves
-`out/` assets without an application Worker script or storage bindings.
+`HONEYMELON_SITE_URL` must contain the actual production origin for canonical
+URLs and indexable sitemap metadata. Unconfigured builds remain unindexed
+previews. The `site-deploy.yml` workflow admits verified `main` commits and
+provides explicit preview/production deployment and rollback actions. Wrangler
+serves `out/` assets without an application Worker script or storage bindings.
 
 Live deployment requires separately configured Cloudflare account access, GitHub
 environments, URL variables and environment-scoped credentials. Follow

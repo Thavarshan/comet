@@ -1,7 +1,7 @@
-import { Hint } from '@comet/ui/components/hint';
-import { ScrollArea } from '@comet/ui/components/scroll-area';
-import { Input } from '@comet/ui/components/input';
-import { Disclosure } from '@comet/ui/components/disclosure';
+import { Hint } from '@honeymelon/ui/components/hint';
+import { ScrollArea } from '@honeymelon/ui/components/scroll-area';
+import { Input } from '@honeymelon/ui/components/input';
+import { Disclosure } from '@honeymelon/ui/components/disclosure';
 import { useEffect, useId, useRef, useState, type ReactElement } from 'react';
 import {
   Ban,
@@ -20,8 +20,8 @@ import {
   X,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@comet/ui/components/badge';
-import { Progress } from '@comet/ui/components/progress';
+import { Badge } from '@honeymelon/ui/components/badge';
+import { Progress } from '@honeymelon/ui/components/progress';
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@comet/ui/components/dialog';
+} from '@honeymelon/ui/components/dialog';
 import {
   acceptsFile,
   defaultConversion,
@@ -37,13 +37,13 @@ import {
   isTerminal,
   type MediaType,
   type ConversionSpec,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import { Button } from './Button';
 import { FormatPicker } from './FormatPicker';
 import { FileDetails } from './FileDetails';
 import { OutputInspector } from './OutputInspector';
 import { useConverter } from './state.js';
-import type { ConversionJob as Job } from '@comet/core';
+import type { ConversionJob as Job } from '@honeymelon/core';
 import type { DraftFile } from './platform.js';
 
 const icons = { video: FileVideo, audio: FileAudio, image: FileImage };
@@ -86,9 +86,9 @@ export function ConverterPanel({
     }
 
     const add = () => input.current?.click();
-    window.addEventListener('comet:add-files', add);
+    window.addEventListener('honeymelon:add-files', add);
 
-    return () => window.removeEventListener('comet:add-files', add);
+    return () => window.removeEventListener('honeymelon:add-files', add);
   }, [active]);
   if (!capabilities) {
     return null;

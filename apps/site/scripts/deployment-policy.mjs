@@ -23,7 +23,7 @@ export function deploymentPolicy(input) {
   if (
     input.event !== 'workflow_dispatch' ||
     input.ref !== 'refs/heads/main' ||
-    input.repository !== 'Thavarshan/comet'
+    input.repository !== 'Thavarshan/honeymelon'
   ) {
     throw new Error('Site deployment requires a trusted main-branch dispatch');
   }
@@ -133,7 +133,7 @@ if (
     previewUrl: process.env.PREVIEW_URL,
   });
   const response = await fetch(
-    `https://api.github.com/repos/Thavarshan/comet/commits/${process.env.GITHUB_SHA}/check-runs?filter=latest&per_page=100`,
+    `https://api.github.com/repos/Thavarshan/honeymelon/commits/${process.env.GITHUB_SHA}/check-runs?filter=latest&per_page=100`,
     {
       headers: {
         Accept: 'application/vnd.github+json',

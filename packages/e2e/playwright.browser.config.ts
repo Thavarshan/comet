@@ -1,13 +1,13 @@
 import { devices } from '@playwright/test';
 import { createTestConfig } from './src/config.js';
 
-const baseURL = process.env.COMET_E2E_WEB_URL ?? 'http://127.0.0.1:4173';
+const baseURL = process.env.HONEYMELON_E2E_WEB_URL ?? 'http://127.0.0.1:4173';
 
 export default createTestConfig(
   {
     testDir: './tests/browser',
     outputDir: './test-results/browser',
-    ...(process.env.COMET_E2E_WEB_URL
+    ...(process.env.HONEYMELON_E2E_WEB_URL
       ? {}
       : {
           webServer: {

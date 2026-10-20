@@ -1,5 +1,5 @@
 {
-  "name": "@comet/site",
+  "name": "@honeymelon/site",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,8 +11,8 @@
     "releases:refresh": "node scripts/refresh-releases.mjs"
   },
   "dependencies": {
-    "@comet/contracts": "*",
-    "@comet/ui": "*",
+    "@honeymelon/contracts": "*",
+    "@honeymelon/ui": "*",
     "next": "16.4.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",

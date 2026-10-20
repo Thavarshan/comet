@@ -7,7 +7,7 @@ import {
   defaultConversion,
   type MediaMetadata,
   type Job,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import { runProcess } from './process.js';
 import { resolveEncoding, encodingArguments } from './options.js';
 import { probeFile } from './metadata.js';
@@ -62,7 +62,7 @@ export function createExecutor(paths: EnginePaths): Executor {
 
     const temporary = path.join(
       job.outputDirectory,
-      `.comet-${randomUUID()}.${job.outputFormat}`,
+      `.honeymelon-${randomUUID()}.${job.outputFormat}`,
     );
     let published: string | undefined;
     const spec = job.spec ?? defaultConversion(job.mediaType);

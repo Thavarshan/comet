@@ -1,14 +1,17 @@
-# Comet
+# Honeymelon
+
+Previously Comet. The next desktop build is `3.0.0-beta.2`; published legacy
+releases retain their original names, filenames and checksums.
 
 A compact desktop app for converting video, audio, and images. Choose your
 files, pick an output format, and convert them locally with bundled media tools.
 No account, upload, or cloud processing is required.
 
-[Download stable](https://github.com/Thavarshan/comet/releases/latest) ·
+[Download stable](https://github.com/Thavarshan/honeymelon/releases/latest) ·
 [Release notes](CHANGELOG.md) · [Contribute](.github/CONTRIBUTING.md)
 
 > **Unsigned beta:**
-> [v3.0.0-beta.1](https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1)
+> [v3.0.0-beta.1](https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1)
 > is available for testing with the React interface shown below. macOS builds
 > are not Developer ID signed or notarized; Windows installers are not
 > Authenticode signed, so operating-system trust warnings are expected. Verify
@@ -22,7 +25,7 @@ No account, upload, or cloud processing is required.
   />
   <img
     src="assets/screenshots/desktop-light.png"
-    alt="Comet’s compact conversion queue with video, audio, and image tabs"
+    alt="Honeymelon’s compact conversion queue with video, audio, and image tabs"
     width="700"
   />
 </picture>
@@ -133,7 +136,7 @@ The engine owns submitted jobs and scheduling. Electron main owns preferences,
 resource discovery, native dialogs, and the validated IPC bridge. React displays
 queue snapshots and submits commands through the narrow preload API.
 
-The shared UI uses the Comet shadcn preset with medium radii, Radix primitives,
+The shared UI uses shadcn’s default Neutral light/dark theme, Radix primitives,
 Inter typography, tooltips, dialogs, popovers, and Scroll Area. The marketing
 site and repository documentation are implemented. A standalone web converter
 application is not present; the browser adapter and browser test harness provide
@@ -194,8 +197,9 @@ Build outputs are macOS ZIPs, Windows Squirrel installers and portable ZIPs, and
 Linux DEB, RPM, and portable tar archives. `npm run make` invokes Forge;
 `npm run dist:portable` adds the Linux tar with executable modes preserved.
 Packaging and native tests are uncached; npm downloads are cached per lockfile.
-The centralized `@comet/e2e` helpers can also support a future web application;
-there is no web application test project until that application exists.
+The centralized `@honeymelon/e2e` helpers can also support a future web
+application; there is no web application test project until that application
+exists.
 
 A `v<desktop version>` tag runs the full pipeline with signing enabled. Only
 successful native and distro verification unlock the `release` environment's
@@ -218,14 +222,14 @@ automatically merged.
 The conversion matrix records unavailable encoders and missing fixtures as
 explicit coverage gaps. AMR, APE, and MPC input fixtures still need to be
 supplied before claiming complete accepted-input coverage.
-`COMET_MEDIA_FIXTURES` supplies those fixtures; `COMET_REQUIRE_INPUT_COVERAGE=1`
-makes missing coverage fail.
+`HONEYMELON_MEDIA_FIXTURES` supplies those fixtures;
+`HONEYMELON_REQUIRE_INPUT_COVERAGE=1` makes missing coverage fail.
 
 </details>
 
 ## License
 
-Comet’s application code is [MIT licensed](LICENSE). Bundled media executables
-have their own licenses and source notices, shipped alongside the tools. Their
-versions, upstream sources, and checksums are recorded in the
+Honeymelon’s application code is [MIT licensed](LICENSE). Bundled media
+executables have their own licenses and source notices, shipped alongside the
+tools. Their versions, upstream sources, and checksums are recorded in the
 [binary manifest](scripts/binary-manifest.json).

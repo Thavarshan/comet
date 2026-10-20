@@ -2,15 +2,15 @@ import {
   formats,
   type Capabilities,
   type CancelResult,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import {
   ConversionServiceError,
   type ConversionQueue,
   type ConversionRequest,
   type ConversionService,
   type InputFile,
-} from '@comet/core';
-import type { MediaMetadata } from '@comet/contracts';
+} from '@honeymelon/core';
+import type { MediaMetadata } from '@honeymelon/contracts';
 
 /**
  * Explicit placeholder until the measured image adapter is implemented.

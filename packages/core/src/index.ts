@@ -6,7 +6,7 @@ import {
   type JobState,
   type MediaMetadata,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import { ConversionServiceError, type OutputTarget } from './service.js';
 
 export { QueueConversionService, type QueueExecutor } from './queue-service.js';

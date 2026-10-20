@@ -1,6 +1,6 @@
 # Browser workspace contract
 
-Related: [#64](https://github.com/Thavarshan/comet/issues/64) and
+Related: [#64](https://github.com/Thavarshan/honeymelon/issues/64) and
 [ADR 0001](0001-local-conversion-platform.md). Issue #64 is closed; this page
 records the active package-boundary and CI contract.
 
@@ -24,7 +24,7 @@ sources may not use test drivers as a dependency.
 | web              | core, contracts, converter, browser-engine, ui |
 | site             | contracts, ui                                  |
 
-Node builtins, Electron, native executable packages and `@comet/e2e` are
+Node builtins, Electron, native executable packages and `@honeymelon/e2e` are
 prohibited in browser runtime code. Core/contracts and either engine cannot
 import a UI framework. Engine may use Node but cannot import Electron. Desktop
 main/preload retain their existing platform responsibilities.
@@ -49,7 +49,7 @@ include only dependencies actually imported):
 
 ```json
 {
-  "name": "@comet/core",
+  "name": "@honeymelon/core",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -65,7 +65,7 @@ include only dependencies actually imported):
     "test": "vitest run"
   },
   "dependencies": {
-    "@comet/contracts": "*"
+    "@honeymelon/contracts": "*"
   }
 }
 ```
@@ -107,8 +107,8 @@ cannot accidentally weaken release checks. Signing policy is independent.
 Quality checks run root unit tests, `npm run build:browser`, the browser
 fixture, and static site tests. The static marketing/download site in
 `apps/site` is implemented. No product converter app exists under `apps/web`;
-`@comet/browser-engine` remains an unsupported stub until browser conversion
-work (#74–77) is implemented.
+`@honeymelon/browser-engine` remains an unsupported stub until browser
+conversion work (#74–77) is implemented.
 
 From a clean checkout using Node.js 24.22.0 (`.nvmrc`) and npm 12.2.0:
 
@@ -138,10 +138,10 @@ Browser libraries extend `tsconfig.browser.json`, which inherits the strict
 compiler contract from `tsconfig.base.json`. Framework-specific configuration
 stays in the app that needs it; do not copy shared compiler options into apps.
 
-Use `@comet/ui` exports for reusable components and its stylesheet for shared
-tokens. Site-specific composition, copy, and decorative styles may remain in the
-site. Declare internal dependencies in each consumer's package manifest; never
-import another workspace's private source via a relative path.
+Use `@honeymelon/ui` exports for reusable components and its stylesheet for
+shared tokens. Site-specific composition, copy, and decorative styles may remain
+in the site. Declare internal dependencies in each consumer's package manifest;
+never import another workspace's private source via a relative path.
 
 Run browser checks through the root Turbo entry points:
 
@@ -150,8 +150,8 @@ npm run test:site -- --project=site-chromium
 npm run test:browser -- --project=chromium
 ```
 
-`test:site` depends explicitly on `@comet/site#build` because the test driver
-serves exported HTML without importing the site as a runtime dependency.
+`test:site` depends explicitly on `@honeymelon/site#build` because the test
+driver serves exported HTML without importing the site as a runtime dependency.
 `test:browser` builds its declared package dependencies before its harness. Both
 browser tasks run uncached so a cached result cannot hide a browser or platform
 change. Install the required Playwright browsers before running them. Build

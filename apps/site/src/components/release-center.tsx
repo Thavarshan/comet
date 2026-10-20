@@ -1,9 +1,9 @@
 'use client';
 
-import { NativeSelect } from '@comet/ui/components/native-select';
-import { Badge } from '@comet/ui/components/badge';
-import { Button } from '@comet/ui/components/button';
-import type { ReleaseAsset, ReleaseManifest } from '@comet/contracts';
+import { NativeSelect } from '@honeymelon/ui/components/native-select';
+import { Badge } from '@honeymelon/ui/components/badge';
+import { Button } from '@honeymelon/ui/components/button';
+import type { ReleaseAsset, ReleaseManifest } from '@honeymelon/contracts';
 import { useSyncExternalStore, useState, type ReactElement } from 'react';
 import {
   detectPlatform,
@@ -87,6 +87,11 @@ export function ReleaseCenter({
       className="release-center"
       aria-label={history ? 'Release history' : 'Choose a download'}
     >
+      <p className="release-legacy-note">
+        Honeymelon continues the Comet project. Published releases below may
+        retain the former application name and filenames. A rebranded build is
+        not available until it appears in the verified release list.
+      </p>
       <div className="release-center__status">
         <Badge variant="outline">
           {history ? 'PUBLISHED RELEASES' : 'DIRECT FROM GITHUB'}
@@ -236,7 +241,11 @@ export function ReleaseCenter({
                   {(asset.size / 1048576).toFixed(1)} MiB · {asset.os} ·{' '}
                   {asset.arch} · {asset.format}
                 </p>
-                <Button asChild size="lg" className="comet-cta comet-cta--dark">
+                <Button
+                  asChild
+                  size="lg"
+                  className="honeymelon-cta honeymelon-cta--dark"
+                >
                   <a href={asset.url}>
                     Download {release.tag} for {asset.os} ({asset.arch},{' '}
                     {asset.format}) <span aria-hidden="true">↓</span>

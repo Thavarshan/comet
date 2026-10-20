@@ -1,5 +1,5 @@
 {
-  "name": "@comet/browser-engine",
+  "name": "@honeymelon/browser-engine",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -16,8 +16,8 @@
     "dev": "tsc --watch --preserveWatchOutput"
   },
   "dependencies": {
-    "@comet/contracts": "*",
-    "@comet/core": "*"
+    "@honeymelon/contracts": "*",
+    "@honeymelon/core": "*"
   },
   "devDependencies": {
     "vite": "8.3.4"

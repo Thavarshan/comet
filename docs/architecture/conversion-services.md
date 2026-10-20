@@ -1,6 +1,6 @@
 # Platform conversion services
 
-`@comet/core` defines `ConversionService`, `InputFile`, `OutputTarget`, and
+`@honeymelon/core` defines `ConversionService`, `InputFile`, `OutputTarget`, and
 `ConversionRequest`. These types contain serializable metadata and opaque IDs.
 They contain no native path, `File`, `Blob`, Electron event, or Node resource.
 The native `BatchRequest` remains a distinct, validated transport DTO.
@@ -27,18 +27,18 @@ service after a workflow ends; registered handles live until disposal.
 Independent subscriptions return independent, repeatable unsubscribe functions.
 
 The existing desktop bridge remains operational. Its renderer adapter supplies
-the service and host UI ports consumed by `@comet/converter`. Renderer-owned
-registries retain native transport details; the living main-process engine
-remains authoritative. The backend native adapter is also available for Node
-hosts. React effect cleanup removes subscriptions and aborts draft probes; it
-does not shut down the native engine.
+the service and host UI ports consumed by `@honeymelon/converter`.
+Renderer-owned registries retain native transport details; the living
+main-process engine remains authoritative. The backend native adapter is also
+available for Node hosts. React effect cleanup removes subscriptions and aborts
+draft probes; it does not shut down the native engine.
 
 See the [shared converter contract](../../packages/converter/README.md) for
 host-owned preferences, optional platform actions, localization, and styles.
 
 ## Browser ownership
 
-`@comet/browser-engine` currently supplies an explicit unsupported stub for
+`@honeymelon/browser-engine` currently supplies an explicit unsupported stub for
 contract development. Every advertised output is unavailable with a reason.
 Probing and submission reject with `unsupported`, an already aborted probe
 rejects with `AbortError`, and cancellation of unknown jobs returns `not-found`.

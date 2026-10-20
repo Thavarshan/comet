@@ -19,7 +19,7 @@
         "!.next/cache/**",
         "out/**"
       ],
-      "env": ["COMET_SITE_URL"]
+      "env": ["HONEYMELON_SITE_URL"]
     },
     "typecheck": {
       "dependsOn": ["^build"],
@@ -52,7 +52,7 @@
     },
     "test:site": {
       "cache": false,
-      "dependsOn": ["@comet/site#build"],
+      "dependsOn": ["@honeymelon/site#build"],
       "outputs": []
     },
     "test:browser": {
@@ -62,7 +62,7 @@
     }
   },
   "globalPassThroughEnv": [
-    "COMET_*",
+    "HONEYMELON_*",
     "APPLE_*",
     "WINDOWS_CERTIFICATE_*",
     "ELECTRON_CACHE"

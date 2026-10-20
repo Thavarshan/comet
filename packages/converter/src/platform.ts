@@ -3,8 +3,8 @@ import type {
   ConversionService,
   InputFile,
   OutputTarget,
-} from '@comet/core';
-import type { ConversionSpec, Locale, MediaType } from '@comet/contracts';
+} from '@honeymelon/core';
+import type { ConversionSpec, Locale, MediaType } from '@honeymelon/contracts';
 
 /** A user-facing destination label, separate from its platform-owned handle. */
 export interface Destination {

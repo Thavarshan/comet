@@ -3,8 +3,8 @@
 Date: 18 October 2026. Status: accepted architecture; browser shipping gates
 below remain unfulfilled until the corresponding implementation is tested.
 
-Related: [#63](https://github.com/Thavarshan/comet/issues/63),
-[#61](https://github.com/Thavarshan/comet/issues/61).
+Related: [#63](https://github.com/Thavarshan/honeymelon/issues/63),
+[#61](https://github.com/Thavarshan/honeymelon/issues/61).
 
 ## Current implementation status (2026-10-19)
 
@@ -13,7 +13,7 @@ historical planning context, not open-work assertions. The shared contracts,
 core lifecycle/service layer, native engine adapter, converter workspace, static
 marketing/download site, release snapshot pipeline, boundary checks, and browser
 harness have since been implemented. The marketing site is present at
-`apps/site`; there is no product web-converter app. `@comet/browser-engine`
+`apps/site`; there is no product web-converter app. `@honeymelon/browser-engine`
 remains an explicit unsupported stub. Browser image conversion and its intake,
 worker/resource, and preview milestones remain open (#74–77). Cloudflare site
 deployment remains open (#72). See [docs index](../README.md) for current
@@ -21,11 +21,10 @@ operational guides and acceptance records.
 
 ## Decision and scope
 
-Keep Comet as the product name. Defer the Honeymelon workstream (#86–96),
-retaining repository, workspace, application, installer, and user-data
-identities. The owner approved this direction, image-first browser delivery,
-maintained technical docs, and focused PRs with evidence-based closure on 18
-October 2026.
+The owner approved Honeymelon on 20 October 2026. See ADR 0002 for the identity
+transition (#86–96), which supersedes the original identity retention decision.
+The owner approved image-first browser delivery, maintained technical docs, and
+focused PRs with evidence-based closure on 18 October 2026.
 
 Use npm workspaces and Turborepo for these responsibilities:
 
@@ -47,11 +46,11 @@ existing products. The desktop release tag stays immutable while these are
 introduced.
 
 The converter consumes a conversion-service port. It must not call
-`window.comet`, read a native absolute path, or import engine implementation.
-Desktop maps opaque input IDs to native paths; web maps them to selected
-File/Blob objects. Neither path strings nor browser File objects belong in
-portable queue snapshots. Keep native bridge DTOs separate rather than weakening
-their path validation.
+`window.honeymelon`, read a native absolute path, or import engine
+implementation. Desktop maps opaque input IDs to native paths; web maps them to
+selected File/Blob objects. Neither path strings nor browser File objects belong
+in portable queue snapshots. Keep native bridge DTOs separate rather than
+weakening their path validation.
 
 Extract existing scheduler behavior without introducing a second scheduler in
 React: FIFO batches, one active job by default, submitted settings immutable,
@@ -105,9 +104,9 @@ unsupported operations; no remote conversion fallback.
 The reproducible P0 probe is
 `packages/e2e/scripts/probe-image-capabilities.mjs`. Install the pinned
 Playwright browsers with
-`npm exec -w @comet/e2e -- playwright install chromium firefox webkit`, then run
-`node packages/e2e/scripts/probe-image-capabilities.mjs`. The probe uses
-generated pixels, blocks page network requests, verifies MIME/decoded
+`npm exec -w @honeymelon/e2e -- playwright install chromium firefox webkit`,
+then run `node packages/e2e/scripts/probe-image-capabilities.mjs`. The probe
+uses generated pixels, blocks page network requests, verifies MIME/decoded
 dimensions, and records engine versions. It measures tiny still images only, not
 an end-to-end converter, mobile support, EXIF behavior, cancellation, or safe
 memory limits.
@@ -161,7 +160,7 @@ Source checks: 18 October 2026. These are service limits, not a capacity or cost
 guarantee. Recheck before deployment; no paid plan, new billing integration, or
 automatic upgrade is authorized.
 
-| Service                        | Current sourced allowance/constraint                                                 | Comet policy                                                                     |
+| Service                        | Current sourced allowance/constraint                                                 | Honeymelon policy                                                                |
 | ------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
 | Workers Static Assets          | Static requests/storage have no extra charge                                         | Assets-only site/app; no `run_worker_first` or conversion handler                |
 | Free Static Assets             | 20,000 files/version; 25 MiB/file                                                    | Build fails above either limit; check each uncompressed deployed asset           |

@@ -8,16 +8,16 @@ export const root = path.resolve(
 
 export function packagePaths() {
   const target = `${process.platform}-${process.arch}`;
-  const directory = path.join(root, 'apps/desktop/out', `Comet-${target}`);
+  const directory = path.join(root, 'apps/desktop/out', `Honeymelon-${target}`);
   const relativeExecutable =
     process.platform === 'darwin'
-      ? 'Comet.app/Contents/MacOS/Comet'
+      ? 'Honeymelon.app/Contents/MacOS/Honeymelon'
       : process.platform === 'win32'
-        ? 'Comet.exe'
-        : 'Comet';
+        ? 'Honeymelon.exe'
+        : 'Honeymelon';
   const resources =
     process.platform === 'darwin'
-      ? path.join(directory, 'Comet.app/Contents/Resources')
+      ? path.join(directory, 'Honeymelon.app/Contents/Resources')
       : path.join(directory, 'resources');
 
   return {

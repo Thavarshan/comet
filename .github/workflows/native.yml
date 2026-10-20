@@ -38,7 +38,7 @@ jobs:
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 60
     env:
-      COMET_TARGET: ${{ inputs.target }}
+      HONEYMELON_TARGET: ${{ inputs.target }}
     defaults:
       run:
         shell: bash
@@ -90,8 +90,8 @@ jobs:
       - run: npm run dist:portable
       - name: Native packaged smoke test
         env:
-          COMET_EXPECT_SIGNED: ${{ inputs.signing }}
-          COMET_EXPECTED_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          HONEYMELON_EXPECT_SIGNED: ${{ inputs.signing }}
+          HONEYMELON_EXPECTED_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
             xvfb-run --auto-servernum npm run test:packaged
@@ -100,7 +100,7 @@ jobs:
           fi
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: comet-${{ inputs.target }}
+          name: honeymelon-${{ inputs.target }}
           path: |
             apps/desktop/out/make/
             apps/desktop/out/verification/
@@ -110,9 +110,9 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           tar -czf "$RUNNER_TEMP/linux-payload.tar.gz" \
-            apps/desktop/out/Comet-${COMET_TARGET} \
+            apps/desktop/out/Honeymelon-${HONEYMELON_TARGET} \
             packages/*/dist \
-            apps/desktop/.cache/bin/${COMET_TARGET}
+            apps/desktop/.cache/bin/${HONEYMELON_TARGET}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: runner.os == 'Linux'
         with:
@@ -123,7 +123,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: comet-tests-${{ inputs.target }}
+          name: honeymelon-tests-${{ inputs.target }}
           path: |
             packages/e2e/playwright-report/
             packages/e2e/test-results/
@@ -132,7 +132,7 @@ jobs:
       - name: Remove signing material
         if: always() && inputs.signing
         run: |
-          rm -f "$RUNNER_TEMP/comet-signing.pfx" "$RUNNER_TEMP/comet-signing.p12"
+          rm -f "$RUNNER_TEMP/honeymelon-signing.pfx" "$RUNNER_TEMP/honeymelon-signing.p12"
           if [[ "$RUNNER_OS" == "macOS" ]]; then
-            security delete-keychain "$RUNNER_TEMP/comet-build.keychain-db" || true
+            security delete-keychain "$RUNNER_TEMP/honeymelon-build.keychain-db" || true
           fi

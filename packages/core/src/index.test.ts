@@ -8,7 +8,7 @@ import {
   assertMediaAvailable,
   type ConversionJob,
 } from './index.js';
-import { defaultConversion, type Capabilities } from '@comet/contracts';
+import { defaultConversion, type Capabilities } from '@honeymelon/contracts';
 
 const queued = (): ConversionJob => ({
   id: 'job-1',

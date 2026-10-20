@@ -7,7 +7,7 @@
     "types": ["react", "react-dom"],
     "baseUrl": ".",
     "paths": {
-      "@comet/ui/*": ["./src/*"]
+      "@honeymelon/ui/*": ["./src/*"]
     },
     "ignoreDeprecations": "6.0"
   },

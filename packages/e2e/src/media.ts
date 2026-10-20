@@ -7,7 +7,7 @@ import {
   detectCapabilities,
   runProcess,
   type EnginePaths,
-} from '@comet/engine';
+} from '@honeymelon/engine';
 import {
   defaultConversion,
   inputExtensions,
@@ -15,7 +15,7 @@ import {
   type ConversionSpec,
   type Job,
   type MediaType,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
 /** A real, independently probeable media stream. */
 export const streamSchema = z.object({
@@ -360,7 +360,7 @@ export async function createMatrixFixtures(
         continue;
       }
 
-      const external = process.env.COMET_MEDIA_FIXTURES;
+      const external = process.env.HONEYMELON_MEDIA_FIXTURES;
       const filename = external && path.join(external, `${media}.${format}`);
       if (filename && (await stat(filename).catch(() => null))) {
         await remember(media, format, filename, 'external');
@@ -369,7 +369,7 @@ export async function createMatrixFixtures(
           media,
           format,
           reason:
-            'No local encoder/fixture; supply COMET_MEDIA_FIXTURES/' +
+            'No local encoder/fixture; supply HONEYMELON_MEDIA_FIXTURES/' +
             `${media}.${format} to test this accepted input`,
         });
       }

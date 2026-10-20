@@ -9,8 +9,8 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { acceptQueueSnapshot, type ConversionQueue } from '@comet/core';
-import type { Capabilities } from '@comet/contracts';
+import { acceptQueueSnapshot, type ConversionQueue } from '@honeymelon/core';
+import type { Capabilities } from '@honeymelon/contracts';
 import type { ConverterPlatform, ConverterPreferences } from './platform.js';
 
 /** Shared queue state is a view; the injected service owns scheduling. */

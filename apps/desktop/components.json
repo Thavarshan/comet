@@ -6,15 +6,16 @@
   "tailwind": {
     "config": "",
     "css": "../../packages/ui/src/styles/globals.css",
-    "baseColor": "zinc",
+    "baseColor": "neutral",
     "cssVariables": true
   },
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
-    "utils": "@comet/ui/lib/utils",
-    "ui": "@comet/ui/components",
+    "utils": "@honeymelon/ui/lib/utils",
+    "ui": "@honeymelon/ui/components",
     "lib": "@/lib",
     "hooks": "@/hooks"
-  }
+  },
+  "menuColor": "default"
 }

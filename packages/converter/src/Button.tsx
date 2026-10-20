@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactElement } from 'react';
-import { Button as Primitive } from '@comet/ui/components/button';
-import { Hint } from '@comet/ui/components/hint';
-import { cn } from '@comet/ui/lib/utils';
+import { Button as Primitive } from '@honeymelon/ui/components/button';
+import { Hint } from '@honeymelon/ui/components/hint';
+import { cn } from '@honeymelon/ui/lib/utils';
 
 /**
  * Apply compact sizing to the shared Mira button primitive.

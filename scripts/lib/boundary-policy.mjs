@@ -106,7 +106,7 @@ export function boundaryViolation(owner, specifier, resolvedFile) {
     return 'UI framework in platform-neutral domain or engine';
   }
 
-  const workspace = /^@comet\/([^/]+)/.exec(specifier)?.[1];
+  const workspace = /^@honeymelon\/([^/]+)/.exec(specifier)?.[1];
   const target = (resolvedFile && boundaryOwner(resolvedFile)) || workspace;
   if (target && target !== owner && !dependencies[owner].includes(target)) {
     return `${owner} cannot depend on ${target}`;

@@ -3,7 +3,7 @@ import {
   assertOutputAvailable,
   assertMediaAvailable,
   nextQueuedJob,
-} from '@comet/core';
+} from '@honeymelon/core';
 import { resolveEncoding } from './options.js';
 import { probeFile } from './metadata.js';
 import { randomUUID } from 'node:crypto';
@@ -21,7 +21,7 @@ import {
   type MediaMetadata,
   type SourceFile,
   type QueueSnapshot,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import {
   createExecutor,
   assertDirectory,

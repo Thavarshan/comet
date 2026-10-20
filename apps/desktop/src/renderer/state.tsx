@@ -15,7 +15,7 @@ import {
   type Environment,
   type Preferences,
   type Theme,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import i18n from './i18n';
 
 interface State {
@@ -97,7 +97,7 @@ export function AppProvider({
   useEffect(() => {
     let disposed = false;
     dispatch({ type: 'phase', phase: 'loading' });
-    const unsubscribeTheme = window.comet.onThemeChanged((theme) => {
+    const unsubscribeTheme = window.honeymelon.onThemeChanged((theme) => {
       if (!disposed) {
         dispatch({ type: 'systemTheme', theme });
       }
@@ -106,8 +106,8 @@ export function AppProvider({
     async function initialize() {
       try {
         const [environmentReply, preferencesReply] = await Promise.all([
-          window.comet.getEnvironment(),
-          window.comet.getPreferences(),
+          window.honeymelon.getEnvironment(),
+          window.honeymelon.getPreferences(),
         ]);
         const environment = unwrap(environmentReply);
         let preferences = unwrap(preferencesReply);
@@ -126,7 +126,7 @@ export function AppProvider({
           }
 
           preferences = unwrap(
-            await window.comet.importLegacyPreferences({
+            await window.honeymelon.importLegacyPreferences({
               ...(locales.includes(locale as (typeof locales)[number])
                 ? { locale: locale as (typeof locales)[number] }
                 : {}),
@@ -184,7 +184,7 @@ export function AppProvider({
       preferencesRef.current = next;
       dispatch({ type: 'preferences', preferences: next });
       try {
-        const saved = unwrap(await window.comet.savePreferences(next));
+        const saved = unwrap(await window.honeymelon.savePreferences(next));
         if (preferencesRef.current === next) {
           preferencesRef.current = saved;
           dispatch({ type: 'preferences', preferences: saved });

@@ -56,5 +56,5 @@ export function validateReleaseTarget(receipt, files, expected) {
 export function releaseAssetName(version, target, filename) {
   const basename = path.basename(filename).replace(/[^A-Za-z0-9._-]/g, '.');
 
-  return `comet-${version}-${target}-${basename}`;
+  return `honeymelon-${version}-${target}-${basename}`;
 }

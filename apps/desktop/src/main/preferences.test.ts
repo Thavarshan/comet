@@ -7,7 +7,9 @@ import { PreferenceStore } from './preferences';
 const directories: string[] = [];
 
 async function location() {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-preferences-'));
+  const directory = await mkdtemp(
+    path.join(tmpdir(), 'honeymelon-preferences-'),
+  );
   directories.push(directory);
 
   return path.join(directory, 'preferences.json');

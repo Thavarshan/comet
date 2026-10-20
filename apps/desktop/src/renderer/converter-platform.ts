@@ -3,7 +3,7 @@ import {
   type ConversionQueue,
   type ConversionService,
   type InputFile,
-} from '@comet/core';
+} from '@honeymelon/core';
 import {
   mediaTypes,
   unwrap,
@@ -11,12 +11,12 @@ import {
   type Preferences,
   type QueueSnapshot,
   type SourceFile,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 import type {
   ConverterPlatform,
   ConverterPreferences,
   Destination,
-} from '@comet/converter';
+} from '@honeymelon/converter';
 import i18n from './i18n';
 
 /**

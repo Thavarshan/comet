@@ -9,20 +9,20 @@
       "version": "3.0.0-beta.1",
       "channel": "prerelease",
       "publishedAt": "2026-10-18T10:06:22.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
-      "notes": "> **Unsigned beta:** macOS builds are not Developer ID signed or notarized;\n> Windows installers are not Authenticode signed. Operating-system trust warnings\n> are expected. This prerelease is intended for testing. v2.2.3 remains stable.\n\n### Added\n\n* Shared shadcn UI components, a centered desktop titlebar, and richer conversion controls.\n* Capability-aware media formats and real conversion-pair tests.\n* Native builds and packaged tests for macOS, Windows, and Linux on x64 and ARM64.\n* Linux compatibility tests across Debian, Ubuntu, Fedora, openSUSE, and Arch Linux.\n\n### Changed\n\n* Replace Vue and Pinia with React and TypeScript while retaining five interface languages.\n* Move Comet into an npm/Turborepo monorepo with desktop, engine, contracts, UI, and E2E packages.\n* Replace fluent-ffmpeg with direct FFmpeg/FFprobe execution and isolated image processing.\n* Refresh the README with current desktop screenshots and contributor instructions.\n\n### Fixed\n\n* Wait for conversion termination and partial-output cleanup before reporting cancellation.\n* Preserve source files and handle output filename collisions safely.\n* Persist conversion settings and migrate legacy language and appearance preferences.\n* Correct cross-platform packaging, native binary selection, and desktop test shutdown.\n\n### Beta status\n\n* This is a prerelease; v2.2.3 remains the latest stable release.\n* All six native targets and eleven Linux compatibility jobs passed in [post-merge CI](https://github.com/Thavarshan/comet/actions/runs/39100845239).\n* Output availability depends on bundled encoder capabilities. AMR, APE, and MPC input fixtures remain coverage gaps.\n* Published artifacts are checked against native packaged-test receipts and SHA-256 digests. See SHA256SUMS to verify downloads.\n\n---\n\n* Prepare v3.0.0-beta.1 React modernization by @Thavarshan in https://github.com/Thavarshan/comet/pull/60\n\n**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.3...v3.0.0-beta.1\n",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
+      "notes": "> **Unsigned beta:** macOS builds are not Developer ID signed or notarized;\n> Windows installers are not Authenticode signed. Operating-system trust warnings\n> are expected. This prerelease is intended for testing. v2.2.3 remains stable.\n\n### Added\n\n* Shared shadcn UI components, a centered desktop titlebar, and richer conversion controls.\n* Capability-aware media formats and real conversion-pair tests.\n* Native builds and packaged tests for macOS, Windows, and Linux on x64 and ARM64.\n* Linux compatibility tests across Debian, Ubuntu, Fedora, openSUSE, and Arch Linux.\n\n### Changed\n\n* Replace Vue and Pinia with React and TypeScript while retaining five interface languages.\n* Move Comet into an npm/Turborepo monorepo with desktop, engine, contracts, UI, and E2E packages.\n* Replace fluent-ffmpeg with direct FFmpeg/FFprobe execution and isolated image processing.\n* Refresh the README with current desktop screenshots and contributor instructions.\n\n### Fixed\n\n* Wait for conversion termination and partial-output cleanup before reporting cancellation.\n* Preserve source files and handle output filename collisions safely.\n* Persist conversion settings and migrate legacy language and appearance preferences.\n* Correct cross-platform packaging, native binary selection, and desktop test shutdown.\n\n### Beta status\n\n* This is a prerelease; v2.2.3 remains the latest stable release.\n* All six native targets and eleven Linux compatibility jobs passed in [post-merge CI](https://github.com/Thavarshan/honeymelon/actions/runs/39100845239).\n* Output availability depends on bundled encoder capabilities. AMR, APE, and MPC input fixtures remain coverage gaps.\n* Published artifacts are checked against native packaged-test receipts and SHA-256 digests. See SHA256SUMS to verify downloads.\n\n---\n\n* Prepare v3.0.0-beta.1 React modernization by @Thavarshan in https://github.com/Thavarshan/honeymelon/pull/60\n\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/compare/v2.2.3...v3.0.0-beta.1\n",
       "assets": [
         {
           "id": 653150023,
           "name": "comet-3.0.0-beta.1-darwin-arm64-Comet-darwin-arm64-3.0.0-beta.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-darwin-arm64-Comet-darwin-arm64-3.0.0-beta.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-darwin-arm64-Comet-darwin-arm64-3.0.0-beta.1.zip",
           "size": 185994925,
           "os": "macos",
           "arch": "arm64",
           "format": "zip",
           "signing": "unsigned",
           "notarization": "not-notarized",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -33,14 +33,14 @@
         {
           "id": 653150027,
           "name": "comet-3.0.0-beta.1-darwin-x64-Comet-darwin-x64-3.0.0-beta.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-darwin-x64-Comet-darwin-x64-3.0.0-beta.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-darwin-x64-Comet-darwin-x64-3.0.0-beta.1.zip",
           "size": 202476482,
           "os": "macos",
           "arch": "x64",
           "format": "zip",
           "signing": "unsigned",
           "notarization": "not-notarized",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -51,7 +51,7 @@
         {
           "id": 653150047,
           "name": "comet-3.0.0-beta.1-linux-arm64-comet_3.0.0.beta.1_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet_3.0.0.beta.1_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet_3.0.0.beta.1_arm64.deb",
           "size": 171520744,
           "os": "linux",
           "arch": "arm64",
@@ -69,7 +69,7 @@
         {
           "id": 653150021,
           "name": "comet-3.0.0-beta.1-linux-arm64-comet-3.0.0-beta.1-linux-arm64.tar.gz",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet-3.0.0-beta.1-linux-arm64.tar.gz",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet-3.0.0-beta.1-linux-arm64.tar.gz",
           "size": 247244125,
           "os": "linux",
           "arch": "arm64",
@@ -87,7 +87,7 @@
         {
           "id": 653150024,
           "name": "comet-3.0.0-beta.1-linux-arm64-comet-3.0.0.beta.1-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet-3.0.0.beta.1-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-arm64-comet-3.0.0.beta.1-1.arm64.rpm",
           "size": 188324645,
           "os": "linux",
           "arch": "arm64",
@@ -105,7 +105,7 @@
         {
           "id": 653150640,
           "name": "comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet_3.0.0.beta.1_amd64.deb",
           "size": 192246696,
           "os": "linux",
           "arch": "x64",
@@ -123,7 +123,7 @@
         {
           "id": 653150477,
           "name": "comet-3.0.0-beta.1-linux-x64-comet-3.0.0-beta.1-linux-x64.tar.gz",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet-3.0.0-beta.1-linux-x64.tar.gz",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet-3.0.0-beta.1-linux-x64.tar.gz",
           "size": 260222086,
           "os": "linux",
           "arch": "x64",
@@ -141,7 +141,7 @@
         {
           "id": 653150635,
           "name": "comet-3.0.0-beta.1-linux-x64-comet-3.0.0.beta.1-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet-3.0.0.beta.1-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-linux-x64-comet-3.0.0.beta.1-1.x86_64.rpm",
           "size": 211942165,
           "os": "linux",
           "arch": "x64",
@@ -159,14 +159,14 @@
         {
           "id": 653150747,
           "name": "comet-3.0.0-beta.1-win32-arm64-comet-3.0.0-beta.1-win32-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-arm64-comet-3.0.0-beta.1-win32-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-arm64-comet-3.0.0-beta.1-win32-arm64-setup.exe",
           "size": 225006080,
           "os": "windows",
           "arch": "arm64",
           "format": "exe",
           "signing": "unsigned",
           "notarization": "unknown",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -177,14 +177,14 @@
         {
           "id": 653150663,
           "name": "comet-3.0.0-beta.1-win32-arm64-Comet-win32-arm64-3.0.0-beta.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-arm64-Comet-win32-arm64-3.0.0-beta.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-arm64-Comet-win32-arm64-3.0.0-beta.1.zip",
           "size": 231246827,
           "os": "windows",
           "arch": "arm64",
           "format": "zip",
           "signing": "unsigned",
           "notarization": "unknown",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -195,14 +195,14 @@
         {
           "id": 653151219,
           "name": "comet-3.0.0-beta.1-win32-x64-comet-3.0.0-beta.1-win32-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-x64-comet-3.0.0-beta.1-win32-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-x64-comet-3.0.0-beta.1-win32-x64-setup.exe",
           "size": 212591616,
           "os": "windows",
           "arch": "x64",
           "format": "exe",
           "signing": "unsigned",
           "notarization": "unknown",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -213,14 +213,14 @@
         {
           "id": 653150919,
           "name": "comet-3.0.0-beta.1-win32-x64-Comet-win32-x64-3.0.0-beta.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-x64-Comet-win32-x64-3.0.0-beta.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v3.0.0-beta.1/comet-3.0.0-beta.1-win32-x64-Comet-win32-x64-3.0.0-beta.1.zip",
           "size": 218713911,
           "os": "windows",
           "arch": "x64",
           "format": "zip",
           "signing": "unsigned",
           "notarization": "unknown",
-          "trustSource": "https://github.com/Thavarshan/comet/releases/tag/v3.0.0-beta.1",
+          "trustSource": "https://github.com/Thavarshan/honeymelon/releases/tag/v3.0.0-beta.1",
           "minimumOsVersion": null,
           "checksum": {
             "algorithm": "sha256",
@@ -236,13 +236,13 @@
       "version": "2.2.3",
       "channel": "stable",
       "publishedAt": "2024-11-07T20:16:55.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v2.2.3",
-      "notes": "### Changed\r\n\r\n* Revert to previous electron-forge version\r\n* Revert to previous eslint versions\r\n* Reset eslint configurations\r\n\r\n---\r\n\r\n* Release v2.2.1 by @Thavarshan in https://github.com/Thavarshan/comet/pull/41\r\n* Release v2.2.2 by @Thavarshan in https://github.com/Thavarshan/comet/pull/42\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.3",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v2.2.3",
+      "notes": "### Changed\r\n\r\n* Revert to previous electron-forge version\r\n* Revert to previous eslint versions\r\n* Reset eslint configurations\r\n\r\n---\r\n\r\n* Release v2.2.1 by @Thavarshan in https://github.com/Thavarshan/honeymelon/pull/41\r\n* Release v2.2.2 by @Thavarshan in https://github.com/Thavarshan/honeymelon/pull/42\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/compare/v2.2.1...v2.2.3",
       "assets": [
         {
           "id": 204874616,
           "name": "comet_2.2.3_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet_2.2.3_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet_2.2.3_amd64.deb",
           "size": 223525874,
           "os": "linux",
           "arch": "x64",
@@ -256,7 +256,7 @@
         {
           "id": 204874707,
           "name": "comet_2.2.3_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet_2.2.3_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet_2.2.3_arm64.deb",
           "size": 222844996,
           "os": "linux",
           "arch": "arm64",
@@ -270,7 +270,7 @@
         {
           "id": 204874706,
           "name": "comet-2.2.3-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet-2.2.3-1.arm64.rpm",
           "size": 227490869,
           "os": "linux",
           "arch": "arm64",
@@ -284,7 +284,7 @@
         {
           "id": 204874615,
           "name": "comet-2.2.3-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet-2.2.3-1.x86_64.rpm",
           "size": 231327405,
           "os": "linux",
           "arch": "x64",
@@ -298,7 +298,7 @@
         {
           "id": 204879516,
           "name": "comet-2.2.3-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet-2.2.3-arm64-setup.exe",
           "size": 290927016,
           "os": "windows",
           "arch": "arm64",
@@ -312,7 +312,7 @@
         {
           "id": 204879386,
           "name": "comet-2.2.3-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet-2.2.3-x64-setup.exe",
           "size": 289367464,
           "os": "windows",
           "arch": "x64",
@@ -326,7 +326,7 @@
         {
           "id": 204873993,
           "name": "Comet-darwin-arm64-2.2.3.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/Comet-darwin-arm64-2.2.3.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/Comet-darwin-arm64-2.2.3.zip",
           "size": 272677794,
           "os": "macos",
           "arch": "arm64",
@@ -340,7 +340,7 @@
         {
           "id": 204874169,
           "name": "Comet-darwin-x64-2.2.3.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.3/Comet-darwin-x64-2.2.3.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/Comet-darwin-x64-2.2.3.zip",
           "size": 276776191,
           "os": "macos",
           "arch": "x64",
@@ -359,13 +359,13 @@
       "version": "2.2.2",
       "channel": "stable",
       "publishedAt": "2024-10-20T23:58:27.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v2.2.2",
-      "notes": "### Changed\r\n\r\nRelease v2.2.1 by @Thavarshan in https://github.com/Thavarshan/comet/pull/41\r\n\r\n* Upgraded dependencies\r\n* Update `namor` `generate` method usage\r\n* Update to eslint to `v9.13`\r\n* Update eslint configs\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/comet/compare/v2.2.1...v2.2.2",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v2.2.2",
+      "notes": "### Changed\r\n\r\nRelease v2.2.1 by @Thavarshan in https://github.com/Thavarshan/honeymelon/pull/41\r\n\r\n* Upgraded dependencies\r\n* Update `namor` `generate` method usage\r\n* Update to eslint to `v9.13`\r\n* Update eslint configs\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/compare/v2.2.1...v2.2.2",
       "assets": [
         {
           "id": 200514817,
           "name": "comet_2.2.2_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet_2.2.2_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet_2.2.2_amd64.deb",
           "size": 82893998,
           "os": "linux",
           "arch": "x64",
@@ -379,7 +379,7 @@
         {
           "id": 200514803,
           "name": "comet_2.2.2_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet_2.2.2_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet_2.2.2_arm64.deb",
           "size": 86101252,
           "os": "linux",
           "arch": "arm64",
@@ -393,7 +393,7 @@
         {
           "id": 200514802,
           "name": "comet-2.2.2-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet-2.2.2-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet-2.2.2-1.arm64.rpm",
           "size": 84985729,
           "os": "linux",
           "arch": "arm64",
@@ -407,7 +407,7 @@
         {
           "id": 200514818,
           "name": "comet-2.2.2-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet-2.2.2-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet-2.2.2-1.x86_64.rpm",
           "size": 85966913,
           "os": "linux",
           "arch": "x64",
@@ -421,7 +421,7 @@
         {
           "id": 200517734,
           "name": "comet-2.2.2-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet-2.2.2-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet-2.2.2-arm64-setup.exe",
           "size": 113487784,
           "os": "windows",
           "arch": "arm64",
@@ -435,7 +435,7 @@
         {
           "id": 200517752,
           "name": "comet-2.2.2-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/comet-2.2.2-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/comet-2.2.2-x64-setup.exe",
           "size": 112965032,
           "os": "windows",
           "arch": "x64",
@@ -449,7 +449,7 @@
         {
           "id": 200514624,
           "name": "Comet-darwin-arm64-2.2.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/Comet-darwin-arm64-2.2.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/Comet-darwin-arm64-2.2.2.zip",
           "size": 98493698,
           "os": "macos",
           "arch": "arm64",
@@ -463,7 +463,7 @@
         {
           "id": 200514621,
           "name": "Comet-darwin-x64-2.2.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.2/Comet-darwin-x64-2.2.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.2/Comet-darwin-x64-2.2.2.zip",
           "size": 103403846,
           "os": "macos",
           "arch": "x64",
@@ -482,13 +482,13 @@
       "version": "2.2.1",
       "channel": "stable",
       "publishedAt": "2024-09-27T12:32:59.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v2.2.1",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v2.2.1",
       "notes": "### Changed\r\n\r\n- Update media assets\r\n\r\n### Fixed\r\n\r\n- Save directory path in Windows is not formatted properly\r\n\r\n**Full Changelog**: https://github.com/stellar-comet/comet/compare/v2.1.2...v2.2.1",
       "assets": [
         {
           "id": 204873005,
           "name": "comet_2.2.1_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet_2.2.1_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet_2.2.1_amd64.deb",
           "size": 223525636,
           "os": "linux",
           "arch": "x64",
@@ -502,7 +502,7 @@
         {
           "id": 204872995,
           "name": "comet_2.2.1_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet_2.2.1_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet_2.2.1_arm64.deb",
           "size": 222842848,
           "os": "linux",
           "arch": "arm64",
@@ -516,7 +516,7 @@
         {
           "id": 204872996,
           "name": "comet-2.2.1-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet-2.2.1-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet-2.2.1-1.arm64.rpm",
           "size": 227490805,
           "os": "linux",
           "arch": "arm64",
@@ -530,7 +530,7 @@
         {
           "id": 204873007,
           "name": "comet-2.2.1-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet-2.2.1-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet-2.2.1-1.x86_64.rpm",
           "size": 231326741,
           "os": "linux",
           "arch": "x64",
@@ -544,7 +544,7 @@
         {
           "id": 204873649,
           "name": "comet-2.2.1-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet-2.2.1-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet-2.2.1-arm64-setup.exe",
           "size": 290927528,
           "os": "windows",
           "arch": "arm64",
@@ -558,7 +558,7 @@
         {
           "id": 204873961,
           "name": "comet-2.2.1-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/comet-2.2.1-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/comet-2.2.1-x64-setup.exe",
           "size": 289366952,
           "os": "windows",
           "arch": "x64",
@@ -572,7 +572,7 @@
         {
           "id": 204872595,
           "name": "Comet-darwin-arm64-2.2.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/Comet-darwin-arm64-2.2.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/Comet-darwin-arm64-2.2.1.zip",
           "size": 272678848,
           "os": "macos",
           "arch": "arm64",
@@ -586,7 +586,7 @@
         {
           "id": 204872530,
           "name": "Comet-darwin-x64-2.2.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.2.1/Comet-darwin-x64-2.2.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.2.1/Comet-darwin-x64-2.2.1.zip",
           "size": 276776653,
           "os": "macos",
           "arch": "x64",
@@ -605,13 +605,13 @@
       "version": "2.1.2",
       "channel": "stable",
       "publishedAt": "2024-09-21T09:35:09.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v2.1.2",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v2.1.2",
       "notes": "### Added\r\n\r\n- Image conversion support using Jimp, enabling conversion of image formats such as PNG, JPEG, and BMP.\r\n\r\n### Changed\r\n\r\n- Improved UI design with a cleaner layout and enhanced user experience.\r\n- Enhanced conversion performance with optimized resource usage, making conversions faster and more efficient.\r\n- Upgraded conversion quality, particularly improving audio output and overall media fidelity.\r\n\r\n### Fixed\r\n\r\n- Fixed a non-persistent state issue where some settings (e.g., `convertTo` format) were not saved correctly between tab switches.\r\n- Resolved conversion issues with certain video files that failed to process on specific platforms and architectures.\r\n- Addressed conversion quality problems affecting the output of certain video files.\r\n- Solved high resource usage during conversions, reducing CPU and memory consumption.\r\n- Fixed a bug where removed files were still being processed in the conversion queue.\r\n\r\n**Full Changelog**: https://github.com/stellar-comet/comet/compare/v2.0.4...v2.1.2",
       "assets": [
         {
           "id": 194000290,
           "name": "comet_2.1.2_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet_2.1.2_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet_2.1.2_amd64.deb",
           "size": 223472662,
           "os": "linux",
           "arch": "x64",
@@ -625,7 +625,7 @@
         {
           "id": 194000222,
           "name": "comet_2.1.2_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet_2.1.2_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet_2.1.2_arm64.deb",
           "size": 222793666,
           "os": "linux",
           "arch": "arm64",
@@ -639,7 +639,7 @@
         {
           "id": 194000221,
           "name": "comet-2.1.2-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet-2.1.2-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet-2.1.2-1.arm64.rpm",
           "size": 227440645,
           "os": "linux",
           "arch": "arm64",
@@ -653,7 +653,7 @@
         {
           "id": 194000292,
           "name": "comet-2.1.2-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet-2.1.2-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet-2.1.2-1.x86_64.rpm",
           "size": 231277449,
           "os": "linux",
           "arch": "x64",
@@ -667,7 +667,7 @@
         {
           "id": 194000923,
           "name": "comet-2.1.2-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet-2.1.2-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet-2.1.2-arm64-setup.exe",
           "size": 290870696,
           "os": "windows",
           "arch": "arm64",
@@ -681,7 +681,7 @@
         {
           "id": 194000807,
           "name": "comet-2.1.2-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/comet-2.1.2-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/comet-2.1.2-x64-setup.exe",
           "size": 289311144,
           "os": "windows",
           "arch": "x64",
@@ -695,7 +695,7 @@
         {
           "id": 194000102,
           "name": "Comet-darwin-arm64-2.1.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/Comet-darwin-arm64-2.1.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/Comet-darwin-arm64-2.1.2.zip",
           "size": 272685234,
           "os": "macos",
           "arch": "arm64",
@@ -709,7 +709,7 @@
         {
           "id": 194000059,
           "name": "Comet-darwin-x64-2.1.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.1.2/Comet-darwin-x64-2.1.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.1.2/Comet-darwin-x64-2.1.2.zip",
           "size": 276783881,
           "os": "macos",
           "arch": "x64",
@@ -728,13 +728,13 @@
       "version": "2.0.4",
       "channel": "stable",
       "publishedAt": "2024-09-14T15:28:33.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v2.0.4",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v2.0.4",
       "notes": "### Added\r\n\r\n- Dark mode\r\n- Multi-language support\r\n- Audio conversion support\r\n\r\n### Changed\r\n\r\n- Improved UI design with better user experience\r\n- Improved conversion performance withy less resource usage\r\n- Improved conversion quality with better audio quality\r\n\r\n### Fixed\r\n\r\n- Non-persistent state issue\r\n- Conversion issue with some video files on some platforms and architectures\r\n- Conversion quality issue with some video files\r\n- High resource usage issue\r\n- Removed files would still be included in conversion queue\r\n\r\n**Full Changelog**: https://github.com/stellar-comet/comet/compare/v1.0.0...v2.0.4",
       "assets": [
         {
           "id": 192621216,
           "name": "comet_2.0.4_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet_2.0.4_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet_2.0.4_amd64.deb",
           "size": 213469110,
           "os": "linux",
           "arch": "x64",
@@ -748,7 +748,7 @@
         {
           "id": 192621235,
           "name": "comet_2.0.4_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet_2.0.4_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet_2.0.4_arm64.deb",
           "size": 212810262,
           "os": "linux",
           "arch": "arm64",
@@ -762,7 +762,7 @@
         {
           "id": 192621236,
           "name": "comet-2.0.4-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet-2.0.4-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet-2.0.4-1.arm64.rpm",
           "size": 217167785,
           "os": "linux",
           "arch": "arm64",
@@ -776,7 +776,7 @@
         {
           "id": 192621217,
           "name": "comet-2.0.4-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet-2.0.4-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet-2.0.4-1.x86_64.rpm",
           "size": 221004637,
           "os": "linux",
           "arch": "x64",
@@ -790,7 +790,7 @@
         {
           "id": 192626243,
           "name": "comet-2.0.4-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet-2.0.4-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet-2.0.4-arm64-setup.exe",
           "size": 278296488,
           "os": "windows",
           "arch": "arm64",
@@ -804,7 +804,7 @@
         {
           "id": 192626019,
           "name": "comet-2.0.4-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/comet-2.0.4-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/comet-2.0.4-x64-setup.exe",
           "size": 276734888,
           "os": "windows",
           "arch": "x64",
@@ -818,7 +818,7 @@
         {
           "id": 192620885,
           "name": "Comet-darwin-arm64-2.0.4.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/Comet-darwin-arm64-2.0.4.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/Comet-darwin-arm64-2.0.4.zip",
           "size": 259907651,
           "os": "macos",
           "arch": "arm64",
@@ -832,7 +832,7 @@
         {
           "id": 192620991,
           "name": "Comet-darwin-x64-2.0.4.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v2.0.4/Comet-darwin-x64-2.0.4.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v2.0.4/Comet-darwin-x64-2.0.4.zip",
           "size": 264103346,
           "os": "macos",
           "arch": "x64",
@@ -851,13 +851,13 @@
       "version": "1.0.0",
       "channel": "stable",
       "publishedAt": "2024-09-03T09:11:12.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v1.0.0",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v1.0.0",
       "notes": "Initial stable release.\r\n",
       "assets": [
         {
           "id": 190728490,
           "name": "comet_1.0.0_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet_1.0.0_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet_1.0.0_amd64.deb",
           "size": 207960226,
           "os": "linux",
           "arch": "x64",
@@ -871,7 +871,7 @@
         {
           "id": 190728477,
           "name": "comet_1.0.0_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet_1.0.0_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet_1.0.0_arm64.deb",
           "size": 207298310,
           "os": "linux",
           "arch": "arm64",
@@ -885,7 +885,7 @@
         {
           "id": 190728478,
           "name": "comet-1.0.0-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet-1.0.0-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet-1.0.0-1.arm64.rpm",
           "size": 210340101,
           "os": "linux",
           "arch": "arm64",
@@ -899,7 +899,7 @@
         {
           "id": 190728489,
           "name": "comet-1.0.0-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet-1.0.0-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet-1.0.0-1.x86_64.rpm",
           "size": 214177213,
           "os": "linux",
           "arch": "x64",
@@ -913,7 +913,7 @@
         {
           "id": 190729470,
           "name": "comet-1.0.0-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet-1.0.0-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet-1.0.0-arm64-setup.exe",
           "size": 269029800,
           "os": "windows",
           "arch": "arm64",
@@ -927,7 +927,7 @@
         {
           "id": 190729417,
           "name": "comet-1.0.0-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/comet-1.0.0-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/comet-1.0.0-x64-setup.exe",
           "size": 267469224,
           "os": "windows",
           "arch": "x64",
@@ -941,7 +941,7 @@
         {
           "id": 190727794,
           "name": "Comet-darwin-arm64-1.0.0.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/Comet-darwin-arm64-1.0.0.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/Comet-darwin-arm64-1.0.0.zip",
           "size": 249935002,
           "os": "macos",
           "arch": "arm64",
@@ -955,7 +955,7 @@
         {
           "id": 190727783,
           "name": "Comet-darwin-x64-1.0.0.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/Comet-darwin-x64-1.0.0.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/Comet-darwin-x64-1.0.0.zip",
           "size": 254336352,
           "os": "macos",
           "arch": "x64",
@@ -969,7 +969,7 @@
         {
           "id": 190729471,
           "name": "Comet.appx",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v1.0.0/Comet.appx",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v1.0.0/Comet.appx",
           "size": 285849502,
           "os": "windows",
           "arch": null,
@@ -988,13 +988,13 @@
       "version": "0.0.3",
       "channel": "prerelease",
       "publishedAt": "2024-08-24T19:42:06.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v0.0.3",
-      "notes": "**Alpha Release (v0.0.3)**\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/comet/commits/v0.0.3\r\n\r\n### Added\r\n- Realtime conversion progress and UI updates\r\n- Cancel conversion featrue\r\n- Already converted indication on UI\r\n- Tooltips to cancel and remove buttons\r\n\r\n### Changed\r\n- Use `lucide-vue-next` icons instead of `@heroicons/vue`\r\n- Window dimensions\r\n- Use of `ffprobe` for video conversion progress tracking\r\n- Title bar content\r\n\r\n### Fixed\r\n- Invalid executable name on `MacOS`",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v0.0.3",
+      "notes": "**Alpha Release (v0.0.3)**\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/commits/v0.0.3\r\n\r\n### Added\r\n- Realtime conversion progress and UI updates\r\n- Cancel conversion featrue\r\n- Already converted indication on UI\r\n- Tooltips to cancel and remove buttons\r\n\r\n### Changed\r\n- Use `lucide-vue-next` icons instead of `@heroicons/vue`\r\n- Window dimensions\r\n- Use of `ffprobe` for video conversion progress tracking\r\n- Title bar content\r\n\r\n### Fixed\r\n- Invalid executable name on `MacOS`",
       "assets": [
         {
           "id": 188077224,
           "name": "comet_0.0.3_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet_0.0.3_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet_0.0.3_amd64.deb",
           "size": 211164926,
           "os": "linux",
           "arch": "x64",
@@ -1008,7 +1008,7 @@
         {
           "id": 188077232,
           "name": "comet_0.0.3_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet_0.0.3_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet_0.0.3_arm64.deb",
           "size": 210454676,
           "os": "linux",
           "arch": "arm64",
@@ -1022,7 +1022,7 @@
         {
           "id": 188077229,
           "name": "comet-0.0.3-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet-0.0.3-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet-0.0.3-1.arm64.rpm",
           "size": 213752877,
           "os": "linux",
           "arch": "arm64",
@@ -1036,7 +1036,7 @@
         {
           "id": 188077209,
           "name": "comet-0.0.3-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet-0.0.3-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet-0.0.3-1.x86_64.rpm",
           "size": 217590265,
           "os": "linux",
           "arch": "x64",
@@ -1050,7 +1050,7 @@
         {
           "id": 188077198,
           "name": "comet-0.0.3-win32-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet-0.0.3-win32-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet-0.0.3-win32-arm64-setup.exe",
           "size": 272939008,
           "os": "windows",
           "arch": "arm64",
@@ -1064,7 +1064,7 @@
         {
           "id": 188077179,
           "name": "comet-0.0.3-win32-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/comet-0.0.3-win32-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/comet-0.0.3-win32-x64-setup.exe",
           "size": 271378944,
           "os": "windows",
           "arch": "x64",
@@ -1078,7 +1078,7 @@
         {
           "id": 188077242,
           "name": "Comet-darwin-arm64-0.0.3.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/Comet-darwin-arm64-0.0.3.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/Comet-darwin-arm64-0.0.3.zip",
           "size": 254115073,
           "os": "macos",
           "arch": "arm64",
@@ -1092,7 +1092,7 @@
         {
           "id": 188077236,
           "name": "Comet-darwin-x64-0.0.3.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.3/Comet-darwin-x64-0.0.3.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.3/Comet-darwin-x64-0.0.3.zip",
           "size": 258410429,
           "os": "macos",
           "arch": "x64",
@@ -1111,13 +1111,13 @@
       "version": "0.0.2",
       "channel": "prerelease",
       "publishedAt": "2024-08-22T23:38:36.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v0.0.2",
-      "notes": "**Alpha Release (v0.0.2)**\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/comet/commits/v0.0.2\r\n\r\n## Added\r\n\r\n- Overhauled UI and icons\r\n- Update media content\r\n\r\n## Fixed\r\n\r\n- Resolve issue #5 \r\n- Resolve issue #1 ",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v0.0.2",
+      "notes": "**Alpha Release (v0.0.2)**\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/commits/v0.0.2\r\n\r\n## Added\r\n\r\n- Overhauled UI and icons\r\n- Update media content\r\n\r\n## Fixed\r\n\r\n- Resolve issue #5 \r\n- Resolve issue #1 ",
       "assets": [
         {
           "id": 187751179,
           "name": "comet_0.0.2_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet_0.0.2_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet_0.0.2_amd64.deb",
           "size": 113601712,
           "os": "linux",
           "arch": "x64",
@@ -1131,7 +1131,7 @@
         {
           "id": 187751187,
           "name": "comet_0.0.2_arm64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet_0.0.2_arm64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet_0.0.2_arm64.deb",
           "size": 113004838,
           "os": "linux",
           "arch": "arm64",
@@ -1145,7 +1145,7 @@
         {
           "id": 187751182,
           "name": "comet-0.0.2-1.arm64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet-0.0.2-1.arm64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet-0.0.2-1.arm64.rpm",
           "size": 113078229,
           "os": "linux",
           "arch": "arm64",
@@ -1159,7 +1159,7 @@
         {
           "id": 187751177,
           "name": "comet-0.0.2-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet-0.0.2-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet-0.0.2-1.x86_64.rpm",
           "size": 116918169,
           "os": "linux",
           "arch": "x64",
@@ -1173,7 +1173,7 @@
         {
           "id": 187751171,
           "name": "comet-0.0.2-win32-arm64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet-0.0.2-win32-arm64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet-0.0.2-win32-arm64-setup.exe",
           "size": 153418240,
           "os": "windows",
           "arch": "arm64",
@@ -1187,7 +1187,7 @@
         {
           "id": 187751164,
           "name": "comet-0.0.2-win32-x64-setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/comet-0.0.2-win32-x64-setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/comet-0.0.2-win32-x64-setup.exe",
           "size": 151858176,
           "os": "windows",
           "arch": "x64",
@@ -1201,7 +1201,7 @@
         {
           "id": 187751191,
           "name": "Comet-darwin-arm64-0.0.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/Comet-darwin-arm64-0.0.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/Comet-darwin-arm64-0.0.2.zip",
           "size": 130660916,
           "os": "macos",
           "arch": "arm64",
@@ -1215,7 +1215,7 @@
         {
           "id": 187751190,
           "name": "Comet-darwin-x64-0.0.2.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.2/Comet-darwin-x64-0.0.2.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.2/Comet-darwin-x64-0.0.2.zip",
           "size": 134815078,
           "os": "macos",
           "arch": "x64",
@@ -1234,13 +1234,13 @@
       "version": "0.0.1",
       "channel": "prerelease",
       "publishedAt": "2024-08-18T10:57:51.000Z",
-      "url": "https://github.com/Thavarshan/comet/releases/tag/v0.0.1",
-      "notes": "**Alpha Release (v0.0.1)**\r\n\r\nWe're excited to share the first release of Comet, a no-nonsense video converter. This alpha version includes basic video conversion features across various formats.\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/comet/commits/v0.0.1",
+      "url": "https://github.com/Thavarshan/honeymelon/releases/tag/v0.0.1",
+      "notes": "**Alpha Release (v0.0.1)**\r\n\r\nWe're excited to share the first release of Comet, a no-nonsense video converter. This alpha version includes basic video conversion features across various formats.\r\n\r\n**Disclaimer:** This is an alpha release meant for personal use. Expect some bugs or issues. Please use with caution and share any feedback you have.\r\n\r\n**Full Changelog**: https://github.com/Thavarshan/honeymelon/commits/v0.0.1",
       "assets": [
         {
           "id": 186701243,
           "name": "comet_0.0.1_amd64.deb",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.1/comet_0.0.1_amd64.deb",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.1/comet_0.0.1_amd64.deb",
           "size": 131018100,
           "os": "linux",
           "arch": "x64",
@@ -1254,7 +1254,7 @@
         {
           "id": 186701242,
           "name": "comet-0.0.1-1.x86_64.rpm",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.1/comet-0.0.1-1.x86_64.rpm",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.1/comet-0.0.1-1.x86_64.rpm",
           "size": 134238289,
           "os": "linux",
           "arch": "x64",
@@ -1268,7 +1268,7 @@
         {
           "id": 186701199,
           "name": "comet-0.0.1.Setup.exe",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.1/comet-0.0.1.Setup.exe",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.1/comet-0.0.1.Setup.exe",
           "size": 171662848,
           "os": "windows",
           "arch": null,
@@ -1282,7 +1282,7 @@
         {
           "id": 186700858,
           "name": "comet-darwin-arm64-0.0.1.zip",
-          "url": "https://github.com/Thavarshan/comet/releases/download/v0.0.1/comet-darwin-arm64-0.0.1.zip",
+          "url": "https://github.com/Thavarshan/honeymelon/releases/download/v0.0.1/comet-darwin-arm64-0.0.1.zip",
           "size": 141739205,
           "os": "macos",
           "arch": "arm64",

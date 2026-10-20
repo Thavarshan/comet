@@ -1,19 +1,19 @@
-# Comet marketing operations
+# Honeymelon marketing operations
 
 This directory contains the source-of-truth materials for a **$0 paid-media**
 organic discovery and contributor-growth campaign. It does not change the
 product name, GitHub repository identity, release processes, or customer data.
 
-- [Campaign tracker / goals](https://github.com/Thavarshan/comet/issues/110)
+- [Campaign tracker / goals](https://github.com/Thavarshan/honeymelon/issues/110)
 - [KPI scorecard](SCORECARD.md)
 - [Six-week editorial calendar](EDITORIAL_CALENDAR.md)
 - [Approved-for-review copy drafts](COPY_BANK.md)
 
 ## What we are marketing
 
-**Current:** Comet is a free, open-source desktop app that converts video, audio
-and images locally with bundled media tools. Files do not need to be uploaded to
-a Comet-hosted service and the desktop app requires no account.
+**Current:** Honeymelon is a free, open-source desktop app that converts video,
+audio and images locally with bundled media tools. Files do not need to be
+uploaded to a Honeymelon-hosted service and the desktop app requires no account.
 
 **Stable vs beta:** The project README identifies v2.2.3 as stable and
 v3.0.0-beta.1 as an unsigned beta. Confirm release status before publication.
@@ -25,13 +25,14 @@ implemented in `apps/site`. Verify the current public deployment before sharing
 its URL; deployment evidence belongs in issue #72.
 
 **Not yet released:** browser-based conversion and full browser/desktop format
-parity. Comet remains the product name; the Honeymelon rebrand is deferred.
+parity. Honeymelon is the approved product name. The identity transition is
+documented in `../architecture/0002-honeymelon-identity.md`.
 
 ## Audiences and honest value proposition
 
 1. People needing a simple local video/audio/image converter: approachable UI,
    multiple-file intake, no media uploads to the service.
-2. Privacy-conscious people: conversions happen locally; no Comet account.
+2. Privacy-conscious people: conversions happen locally; no Honeymelon account.
 3. Engineers: a nontrivial, testable TypeScript/React/Electron/FFmpeg codebase,
    plus opportunities in test coverage, accessibility, docs and localization.
 
@@ -73,7 +74,7 @@ Suggested topics to verify against GitHub rules and actually shipped features:
 The issue template's support link calls this a "library" and says issues are
 bug-only while feature templates exist. Security documentation also references a
 different product and stale support versions. These need careful correction: see
-[M1](https://github.com/Thavarshan/comet/issues/112), not silent removal.
+[M1](https://github.com/Thavarshan/honeymelon/issues/112), not silent removal.
 
 ## Weekly operating procedure
 

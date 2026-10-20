@@ -32,7 +32,7 @@ test('site navigates from home to official desktop downloads', async ({
     .click();
   await expect(page).toHaveURL('/download/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Download Comet',
+    'Download Honeymelon',
   );
 
   const release = page.getByRole('link', {
@@ -40,7 +40,7 @@ test('site navigates from home to official desktop downloads', async ({
   });
   await expect(release).toHaveAttribute(
     'href',
-    'https://github.com/Thavarshan/comet/releases',
+    'https://github.com/Thavarshan/honeymelon/releases',
   );
 
   expect(forbiddenRequests).toEqual([]);
@@ -130,7 +130,7 @@ test('product guidance is navigable and honest about browser availability', asyn
     .click();
   await expect(page).toHaveURL('/docs/');
   await expect(
-    page.getByRole('heading', { name: 'Getting started with Comet' }),
+    page.getByRole('heading', { name: 'Getting started with Honeymelon' }),
   ).toBeVisible();
 
   await page.getByRole('link', { name: 'Privacy' }).click();
@@ -280,7 +280,7 @@ test('essential content works without JavaScript', async ({
     await page.goto('/');
     await page.getByRole('link', { name: 'Docs', exact: true }).click();
     await expect(
-      page.getByRole('heading', { name: 'Getting started with Comet' }),
+      page.getByRole('heading', { name: 'Getting started with Honeymelon' }),
     ).toBeVisible();
     await expect(
       page.getByText('shasum -a 256 PACKAGE', { exact: true }),
@@ -297,9 +297,9 @@ test('mobile first paint and layout stay within lab budgets', async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
     const state = { lcp: 0, cls: 0 };
-    const host = window as Window & { cometLabVitals?: typeof state };
+    const host = window as Window & { honeymelonLabVitals?: typeof state };
 
-    host.cometLabVitals = state;
+    host.honeymelonLabVitals = state;
     new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         state.lcp = entry.startTime;
@@ -324,17 +324,17 @@ test('mobile first paint and layout stay within lab budgets', async ({
     await page.goto(route, { waitUntil: 'networkidle' });
     await page.waitForFunction(() => {
       const host = window as Window & {
-        cometLabVitals?: { lcp: number; cls: number };
+        honeymelonLabVitals?: { lcp: number; cls: number };
       };
 
-      return (host.cometLabVitals?.lcp ?? 0) > 0;
+      return (host.honeymelonLabVitals?.lcp ?? 0) > 0;
     });
     const metrics = await page.evaluate(() => {
       const host = window as Window & {
-        cometLabVitals?: { lcp: number; cls: number };
+        honeymelonLabVitals?: { lcp: number; cls: number };
       };
 
-      return host.cometLabVitals;
+      return host.honeymelonLabVitals;
     });
 
     expect(metrics, 'Missing lab metrics for ' + route).toBeDefined();
@@ -368,7 +368,7 @@ test('release selector offers exact assets with explicit architecture and format
     page.getByRole('link', { name: /^Download v2.2.3/ }),
   ).toHaveAttribute(
     'href',
-    'https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet-2.2.3-arm64-setup.exe',
+    'https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet-2.2.3-arm64-setup.exe',
   );
   await page
     .getByLabel('Release channel', { exact: true })
@@ -429,7 +429,7 @@ test('Linux package choice and release controls support keyboard navigation', as
     page.getByRole('link', { name: /^Download v2.2.3/ }),
   ).toHaveAttribute(
     'href',
-    'https://github.com/Thavarshan/comet/releases/download/v2.2.3/comet_2.2.3_amd64.deb',
+    'https://github.com/Thavarshan/honeymelon/releases/download/v2.2.3/comet_2.2.3_amd64.deb',
   );
   await page
     .getByLabel('Release channel', { exact: true })
@@ -451,7 +451,7 @@ test('Linux package choice and release controls support keyboard navigation', as
     page.getByRole('link', { name: 'Check this release on GitHub' }),
   ).toHaveAttribute(
     'href',
-    'https://github.com/Thavarshan/comet/releases/tag/v0.0.1',
+    'https://github.com/Thavarshan/honeymelon/releases/tag/v0.0.1',
   );
 });
 
@@ -511,7 +511,7 @@ test('mobile navigation traps focus, closes with Escape and follows links', asyn
   const trigger = page.getByRole('button', { name: 'Open menu' });
 
   await trigger.click();
-  const dialog = page.getByRole('dialog', { name: 'Comet', exact: true });
+  const dialog = page.getByRole('dialog', { name: 'Honeymelon', exact: true });
   await expect(dialog).toBeVisible();
   await page.keyboard.press('Tab');
   expect(
@@ -526,7 +526,7 @@ test('mobile navigation traps focus, closes with Escape and follows links', asyn
   await dialog.getByRole('link', { name: 'Docs', exact: true }).click();
   await expect(page).toHaveURL('/docs/');
   await expect(
-    page.getByRole('heading', { name: 'Getting started with Comet' }),
+    page.getByRole('heading', { name: 'Getting started with Honeymelon' }),
   ).toBeVisible();
 });
 
@@ -540,7 +540,7 @@ test('FAQ remains keyboard operable without JavaScript', async ({
     await page.goto('/');
     const question = page
       .locator('summary')
-      .filter({ hasText: 'Is Comet really free?' });
+      .filter({ hasText: 'Is Honeymelon really free?' });
     await question.focus();
     await page.keyboard.press('Enter');
     await expect(

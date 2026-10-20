@@ -15,24 +15,24 @@ test('syntax inspection catches side effects and every module import form', () =
     // import 'node:not-an-import';
     const text = "require('node:also-not-an-import')";
     import 'node:fs';
-    export * from '@comet/engine';
+    export * from '@honeymelon/engine';
     export { readFile } from 'fs/promises';
     const worker = import('node:worker_threads');
     const fs = require('fs');
     import child = require('child_process');
-    type Engine = import('@comet/engine').Engine;
+    type Engine = import('@honeymelon/engine').Engine;
     const dynamic = import(prefix + filename);
   `;
   assert.deepEqual(
     sourceImports('sample.ts', source).map((entry) => entry.specifier),
     [
       'node:fs',
-      '@comet/engine',
+      '@honeymelon/engine',
       'fs/promises',
       'node:worker_threads',
       'fs',
       'child_process',
-      '@comet/engine',
+      '@honeymelon/engine',
       null,
     ],
   );
@@ -55,8 +55,8 @@ test('browser boundaries reject native modules and unsafe workspace edges', () =
       'node:fs',
       'electron',
       'electron/main',
-      '@comet/engine',
-      '@comet/e2e',
+      '@honeymelon/engine',
+      '@honeymelon/e2e',
       'ffmpeg-static',
       null,
     ]) {
@@ -68,11 +68,11 @@ test('browser boundaries reject native modules and unsafe workspace edges', () =
   assert.ok(boundaryViolation('engine', 'electron'));
   assert.ok(boundaryViolation('unknown-package', 'zod'));
   assert.equal(boundaryViolation('engine', 'node:fs'), null);
-  assert.equal(boundaryViolation('engine', '@comet/core'), null);
-  assert.equal(boundaryViolation('converter', '@comet/core'), null);
-  assert.equal(boundaryViolation('web', '@comet/browser-engine'), null);
+  assert.equal(boundaryViolation('engine', '@honeymelon/core'), null);
+  assert.equal(boundaryViolation('converter', '@honeymelon/core'), null);
+  assert.equal(boundaryViolation('web', '@honeymelon/browser-engine'), null);
   assert.equal(boundaryViolation('ui', 'react'), null);
-  assert.equal(boundaryViolation('ui', '@comet/ui/lib/utils'), null);
+  assert.equal(boundaryViolation('ui', '@honeymelon/ui/lib/utils'), null);
 });
 
 test('resolved aliases and relative paths cannot cross native boundaries', () => {
@@ -104,7 +104,7 @@ test('resolved aliases and relative paths cannot cross native boundaries', () =>
 });
 
 test('real checker discovers new workspaces and reports file and line', async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'comet-boundary-'));
+  const directory = await mkdtemp(path.join(tmpdir(), 'honeymelon-boundary-'));
   try {
     await mkdir(path.join(directory, 'apps/web/src'), { recursive: true });
     await mkdir(path.join(directory, 'packages/engine/src'), {
@@ -154,7 +154,7 @@ test('real checker discovers new workspaces and reports file and line', async ()
     await writeFile(path.join(directory, 'apps/web/src/main.ts'), 'export {};');
     await writeFile(
       path.join(directory, 'apps/web/package.json'),
-      JSON.stringify({ dependencies: { '@comet/engine': '*' } }),
+      JSON.stringify({ dependencies: { '@honeymelon/engine': '*' } }),
     );
     const manifest = spawnSync(
       process.execPath,

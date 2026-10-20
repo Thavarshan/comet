@@ -38,18 +38,18 @@ cd /work
 tar -xzf /payload/linux-payload.tar.gz
 # Packager output can retain owner-only directory permissions. The test user
 # needs read/traverse access after extraction under a different UID.
-chmod -R a+rX "apps/desktop/out/Comet-${COMET_TARGET}"
+chmod -R a+rX "apps/desktop/out/Honeymelon-${HONEYMELON_TARGET}"
 # Chromium's setuid sandbox must remain root-owned while the app runs unprivileged.
-chown root:root "apps/desktop/out/Comet-${COMET_TARGET}/chrome-sandbox"
-chmod 4755 "apps/desktop/out/Comet-${COMET_TARGET}/chrome-sandbox"
-useradd --create-home --uid 1500 comet-ci
+chown root:root "apps/desktop/out/Honeymelon-${HONEYMELON_TARGET}/chrome-sandbox"
+chmod 4755 "apps/desktop/out/Honeymelon-${HONEYMELON_TARGET}/chrome-sandbox"
+useradd --create-home --uid 1500 honeymelon-ci
 mkdir -p packages/e2e/playwright-report packages/e2e/test-results
-chown -R comet-ci packages/e2e/playwright-report packages/e2e/test-results
+chown -R honeymelon-ci packages/e2e/playwright-report packages/e2e/test-results
 export PATH="/node/bin:$PATH"
-export COMET_EXECUTABLE="/work/apps/desktop/out/Comet-${COMET_TARGET}/Comet"
-export HOME=/home/comet-ci
+export HONEYMELON_EXECUTABLE="/work/apps/desktop/out/Honeymelon-${HONEYMELON_TARGET}/Honeymelon"
+export HOME=/home/honeymelon-ci
 # Native FFmpeg/FFprobe and image worker are supplied by the native build job.
 # Some distributions reset PATH in runuser; restore the mounted Node SDK after
 # switching users so npm and its child processes resolve the same runtime.
-runuser -u comet-ci -- env PATH="$PATH" \
+runuser -u honeymelon-ci -- env PATH="$PATH" \
   xvfb-run --auto-servernum /node/bin/npm run test:e2e

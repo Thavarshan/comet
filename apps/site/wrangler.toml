@@ -1,5 +1,5 @@
 # Static assets only: no Worker script, SSR, or billable conversion endpoint.
-name = "comet-site-local"
+name = "honeymelon-site-local"
 compatibility_date = "2026-10-16"
 workers_dev = false
 
@@ -10,7 +10,7 @@ html_handling = "auto-trailing-slash"
 run_worker_first = false
 
 [env.preview]
-name = "comet-site-preview"
+name = "honeymelon-site-preview"
 workers_dev = true
 
 [env.preview.assets]
@@ -20,7 +20,7 @@ html_handling = "auto-trailing-slash"
 run_worker_first = false
 
 [env.production]
-name = "comet-site"
+name = "honeymelon-site"
 workers_dev = true
 
 [env.production.assets]

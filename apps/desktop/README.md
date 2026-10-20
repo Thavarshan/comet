@@ -1,4 +1,4 @@
-# @comet/desktop
+# @honeymelon/desktop
 
 The Electron desktop application for local video, audio, and image conversion.
 Its package version is `3.0.0-beta.1`; that beta is explicitly permitted to ship
@@ -11,14 +11,15 @@ policy.
   discovery, validated IPC, and the authoritative native conversion engine.
 - `src/preload/`: the narrow typed bridge exposed to the renderer.
 - `src/renderer/`: desktop shell, title bar, settings, localization, and the
-  `ConverterPlatform` transport adapter used by `@comet/converter`.
+  `ConverterPlatform` transport adapter used by `@honeymelon/converter`.
 - `forge.config.ts` and `vite.*.config.ts`: packaging, runtime bundling,
   renderer assets, binary staging, and platform makers.
 
-The renderer uses shared converter features and `@comet/ui`, with contracts and
-core types. Native execution belongs to `@comet/engine` in the main process;
-renderer code must not import Node modules, Electron, or the native engine.
-Hosts own service lifetime; a React unmount must not terminate active jobs.
+The renderer uses shared converter features and `@honeymelon/ui`, with contracts
+and core types. Native execution belongs to `@honeymelon/engine` in the main
+process; renderer code must not import Node modules, Electron, or the native
+engine. Hosts own service lifetime; a React unmount must not terminate active
+jobs.
 
 Preferences persist across launches. Queue state does not: restarting the app
 starts an empty queue. Submitted batches retain their settings, cancellation
@@ -33,10 +34,10 @@ workspace checks directly so dependency exports exist. Root `npm run typecheck`
 and `npm test` use Turbo to build upstream packages automatically.
 
 ```sh
-npm run dev -w @comet/desktop
+npm run dev -w @honeymelon/desktop
 npm run build
-npm test -w @comet/desktop
-npm run typecheck -w @comet/desktop
+npm test -w @honeymelon/desktop
+npm run typecheck -w @honeymelon/desktop
 npm run binaries
 npm run test:integration
 npm run test:e2e

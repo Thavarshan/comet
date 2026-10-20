@@ -6,7 +6,7 @@ import {
   legacySchema,
   preferencesSchema,
   type Preferences,
-} from '@comet/contracts';
+} from '@honeymelon/contracts';
 
 /**
  * Persist versioned preferences through serialized, atomic file replacement.

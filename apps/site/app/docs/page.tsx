@@ -6,7 +6,7 @@ import type { ReactElement } from 'react';
 export const metadata: Metadata = pageMetadata(
   '/docs/',
   'Getting started',
-  'Install Comet desktop, verify downloads and troubleshoot local media conversion.',
+  'Install Honeymelon desktop, verify downloads and troubleshoot local media conversion.',
 );
 
 /**
@@ -16,9 +16,9 @@ export default function GettingStartedPage(): ReactElement {
   return (
     <main id="main-content" className="content-page" tabIndex={-1}>
       <p className="section-kicker">FIELD GUIDE / 001</p>
-      <h1>Getting started with Comet</h1>
+      <h1>Getting started with Honeymelon</h1>
       <p>
-        Comet is a local desktop media converter. The browser converter is
+        Honeymelon is a local desktop media converter. The browser converter is
         planned, not available.
       </p>
       <h2>1. Choose a release</h2>
@@ -67,36 +67,36 @@ export default function GettingStartedPage(): ReactElement {
       </p>
       <h2>3. Convert a local file</h2>
       <p>
-        Open Comet, select a source file, choose an output supported by your
-        installed version, and select a destination. Available formats and
+        Open Honeymelon, select a source file, choose an output supported by
+        your installed version, and select a destination. Available formats and
         controls vary by platform and encoder. Keep the original until you have
         checked the result.
       </p>
       <h2>4. Troubleshoot or contribute</h2>
       <p>
-        When reporting a problem, include your Comet version, operating system,
-        input and output formats, expected result, actual result, and steps to
-        reproduce. Never attach private media to a public issue.
+        When reporting a problem, include your Honeymelon version, operating
+        system, input and output formats, expected result, actual result, and
+        steps to reproduce. Never attach private media to a public issue.
       </p>
       <p>
-        <a href="https://github.com/Thavarshan/comet/issues">
+        <a href="https://github.com/Thavarshan/honeymelon/issues">
           Report an issue on GitHub
         </a>{' '}
         ·{' '}
-        <a href="https://github.com/Thavarshan/comet/blob/main/.github/CONTRIBUTING.md">
+        <a href="https://github.com/Thavarshan/honeymelon/blob/main/.github/CONTRIBUTING.md">
           Contributor guide
         </a>
       </p>
       <h2>Frequently asked questions</h2>
       <h3>Do I need an account?</h3>
       <p>No account is required for the desktop conversion workflow.</p>
-      <h3>Does Comet upload my files?</h3>
+      <h3>Does Honeymelon upload my files?</h3>
       <p>
         The desktop conversion workflow processes source media locally rather
-        than uploading it to a Comet conversion server. External websites linked
-        from this site have their own policies.
+        than uploading it to a Honeymelon conversion server. External websites
+        linked from this site have their own policies.
       </p>
-      <h3>Can I use Comet offline?</h3>
+      <h3>Can I use Honeymelon offline?</h3>
       <p>
         Desktop media conversion runs locally. Downloading the application,
         visiting documentation and checking GitHub releases require a network

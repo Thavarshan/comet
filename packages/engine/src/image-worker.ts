@@ -1,7 +1,7 @@
 import { parentPort, workerData } from 'node:worker_threads';
 import { writeFile } from 'node:fs/promises';
 import { Jimp } from 'jimp';
-import { conversionSchema } from '@comet/contracts';
+import { conversionSchema } from '@honeymelon/contracts';
 
 const {
   inputPath,

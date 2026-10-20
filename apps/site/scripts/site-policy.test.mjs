@@ -6,7 +6,7 @@ import { test } from 'node:test';
  * Fetch a checked-in source file as text.
  *
  * new URL resolves relative to this test file, so this works from the
- * monorepo root as well as from the @comet/site workspace.
+ * monorepo root as well as from the @honeymelon/site workspace.
  *
  * @param {string} name - Site-relative filename, for example app/page.tsx.
  * @returns {Promise<string>} Text from the requested file.
@@ -39,12 +39,12 @@ test('both marketing pages use the actual shared UI components', async () => {
   for (const name of ['app/page.tsx', 'src/components/release-center.tsx']) {
     const page = await source(name);
 
-    assert.ok(page.includes("from '@comet/ui/components/button'"));
-    assert.ok(page.includes("from '@comet/ui/components/badge'"));
+    assert.ok(page.includes("from '@honeymelon/ui/components/button'"));
+    assert.ok(page.includes("from '@honeymelon/ui/components/badge'"));
   }
 
   const styles = await source('app/globals.css');
-  assert.ok(styles.includes("@import '@comet/ui/styles/globals.css'"));
+  assert.ok(styles.includes("@import '@honeymelon/ui/styles/globals.css'"));
 });
 
 test('motion has an accessible pause control and an OS-level opt out', async () => {
@@ -72,7 +72,7 @@ test('the static marketing workspace cannot import the native engine', async () 
   );
 
   for (const page of pages) {
-    assert.ok(!page.includes("from '@comet/engine'"));
+    assert.ok(!page.includes("from '@honeymelon/engine'"));
     assert.ok(!page.includes("from 'electron'"));
   }
 });
@@ -96,5 +96,5 @@ test('feature descriptions remain explicit about web availability', async () => 
   assert.ok(features.includes('no live browser converter yet'));
   assert.ok(layout.includes('href="/features/"'));
   const metadata = await source('src/lib/metadata.ts');
-  assert.ok(metadata.includes('og-comet.png'));
+  assert.ok(metadata.includes('og-honeymelon.png'));
 });
